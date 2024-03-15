@@ -1,3 +1,4 @@
+import Navbar from "@/components/Navbar";
 import "@/assets/styles/globals.css";
 
 interface MainLayoutProps {
@@ -15,7 +16,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 	return (
 		<html lang="en">
 			<body>
-				<div>{children}</div>
+				<Navbar />
+				<main>{children}</main>
 			</body>
 		</html>
 	);
