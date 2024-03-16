@@ -41,7 +41,7 @@ const Navbar = () => {
 							<Image className="h-10 w-auto" src={logo} alt="PropertyPulse" />
 
 							<span className="hidden md:block text-white text-2xl font-bold ml-2">
-								PropertyPulse
+								Trip Report
 							</span>
 						</a>
 						{/* <!-- Desktop Menu Hidden below md screens --> */}
@@ -54,16 +54,16 @@ const Navbar = () => {
 									Home
 								</a>
 								<a
-									href="/properties.html"
+									href="/reports.html"
 									className="text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
 								>
-									Properties
+									Reports
 								</a>
 								<a
-									href="/add-property.html"
+									href="/add-report.html"
 									className="text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
 								>
-									Add Property
+									Add Report
 								</a>
 							</div>
 						</div>
@@ -180,16 +180,16 @@ const Navbar = () => {
 						Home
 					</a>
 					<a
-						href="/properties.html"
+						href="/reportss.html"
 						className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
 					>
-						Properties
+						Reports
 					</a>
 					<a
-						href="/add-property.html"
+						href="/add-report.html"
 						className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
 					>
-						Add Property
+						Add Report
 					</a>
 					<button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4">
 						<i className="fa-brands fa-google mr-2"></i>
