@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
 
@@ -37,34 +38,34 @@ const Navbar = () => {
 
 					<div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
 						{/* <!-- Logo --> */}
-						<a className="flex flex-shrink-0 items-center" href="/index.html">
+						<Link className="flex flex-shrink-0 items-center" href="/">
 							<Image className="h-10 w-auto" src={logo} alt="PropertyPulse" />
 
 							<span className="hidden md:block text-white text-2xl font-bold ml-2">
 								Trip Report
 							</span>
-						</a>
+						</Link>
 						{/* <!-- Desktop Menu Hidden below md screens --> */}
 						<div className="hidden md:ml-6 md:block">
 							<div className="flex space-x-2">
-								<a
-									href="/index.html"
+								<Link
+									href="/"
 									className="text-white bg-black hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
 								>
 									Home
-								</a>
-								<a
-									href="/reports.html"
+								</Link>
+								<Link
+									href="/reports"
 									className="text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
 								>
 									Reports
-								</a>
-								<a
-									href="/add-report.html"
+								</Link>
+								<Link
+									href="/reports/add"
 									className="text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
 								>
 									Add Report
-								</a>
+								</Link>
 							</div>
 						</div>
 					</div>
@@ -81,7 +82,7 @@ const Navbar = () => {
 
 					{/* <!-- Right Side Menu (Logged In) --> */}
 					<div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
-						<a href="messages.html" className="relative group">
+						<Link href="/messages" className="relative group">
 							<button
 								type="button"
 								className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -107,7 +108,7 @@ const Navbar = () => {
 								2
 								{/* <!-- Replace with the actual number of notifications --> */}
 							</span>
-						</a>
+						</Link>
 						{/* <!-- Profile dropdown button --> */}
 						<div className="relative ml-3">
 							<div>
@@ -137,33 +138,32 @@ const Navbar = () => {
 								aria-labelledby="user-menu-button"
 								tabIndex={-1}
 							>
-								<a
-									href="/profile.html"
+								<Link
+									href="/profile"
 									className="block px-4 py-2 text-sm text-gray-700"
 									role="menuitem"
 									tabIndex={-1}
 									id="user-menu-item-0"
 								>
 									Your Profile
-								</a>
-								<a
-									href="saved-properties.html"
+								</Link>
+								<Link
+									href="/reports/saved"
 									className="block px-4 py-2 text-sm text-gray-700"
 									role="menuitem"
 									tabIndex={-1}
 									id="user-menu-item-2"
 								>
-									Saved Properties
-								</a>
-								<a
-									href="#"
+									Saved Reports
+								</Link>
+								<button
 									className="block px-4 py-2 text-sm text-gray-700"
 									role="menuitem"
 									tabIndex={-1}
 									id="user-menu-item-2"
 								>
 									Sign Out
-								</a>
+								</button>
 							</div>
 						</div>
 					</div>
@@ -173,24 +173,24 @@ const Navbar = () => {
 			{/* <!-- Mobile menu, show/hide based on menu state. --> */}
 			<div className="hidden" id="mobile-menu">
 				<div className="space-y-1 px-2 pb-3 pt-2">
-					<a
-						href="/index.html"
+					<Link
+						href="/"
 						className="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium"
 					>
 						Home
-					</a>
-					<a
-						href="/reportss.html"
+					</Link>
+					<Link
+						href="/reports"
 						className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
 					>
 						Reports
-					</a>
-					<a
-						href="/add-report.html"
+					</Link>
+					<Link
+						href="/reports/add"
 						className="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
 					>
 						Add Report
-					</a>
+					</Link>
 					<button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4">
 						<i className="fa-brands fa-google mr-2"></i>
 						<span>Login or Register</span>
