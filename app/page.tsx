@@ -1,4 +1,5 @@
-import Link from "next/link";
+import Hero from "@/components/Hero";
+import InfoBoxes from "@/components/InfoBoxes";
 
 type HomePageProps = {
 	// Add any props here if needed
@@ -6,10 +7,10 @@ type HomePageProps = {
 
 const HomePage: React.FC<HomePageProps> = () => {
 	return (
-		<div>
-			<h1 className="text-3xl">Welcome</h1>
-			<Link href="/reports">Go To Reports</Link>
-		</div>
+		<>
+			<Hero />
+			<InfoBoxes />
+		</>
 	);
 };
 export default HomePage;
