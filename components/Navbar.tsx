@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import logo from "@/assets/images/logo-white.png";
@@ -13,6 +13,13 @@ type NavbarProps = {
 const Navbar: React.FC<NavbarProps> = () => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+	useEffect(() => {
+		// Close mobile menu if viewport size is changed
+		window.addEventListener("resize", () => {
+			setIsMobileMenuOpen(false);
+		});
+	}, []);
 
 	return (
 		<nav className="bg-blue-700 border-b border-blue-500">
