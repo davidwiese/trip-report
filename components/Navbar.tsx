@@ -6,7 +6,11 @@ import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
 import { FaGoogle } from "react-icons/fa";
 
-const Navbar = () => {
+type NavbarProps = {
+	// Add any props here if needed
+};
+
+const Navbar: React.FC<NavbarProps> = () => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 

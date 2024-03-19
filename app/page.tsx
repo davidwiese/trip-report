@@ -1,6 +1,10 @@
 import Link from "next/link";
 
-const HomePage = () => {
+type HomePageProps = {
+	// Add any props here if needed
+};
+
+const HomePage: React.FC<HomePageProps> = () => {
 	return (
 		<div>
 			<h1 className="text-3xl">Welcome</h1>
