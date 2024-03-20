@@ -1,14 +1,15 @@
 import { NextRequest } from "next/server";
 import connectDB from "@/config/database";
+import Report from "@/models/Report";
 
-// GET /api/properties
+// GET /api/reports
 export const GET = async (request: NextRequest) => {
 	try {
 		await connectDB();
 
-		return new Response(JSON.stringify({ message: "Hello World" }), {
-			status: 200,
-		});
+		const reports = await Report.find({});
+
+		return Response.json(reports);
 	} catch (error) {
 		return new Response("Something went wrong", { status: 500 });
 	}
