@@ -7,6 +7,7 @@ import { Report } from "@/types";
 import ReportHeaderImage from "@/components/ReportHeaderImage";
 import ReportDetails from "@/components/ReportDetails";
 import { FaArrowLeft } from "react-icons/fa";
+import Spinner from "@/components/Spinner";
 
 type ReportPageProps = {
 	// Add any props here if needed
@@ -44,6 +45,7 @@ const ReportPage: React.FC<ReportPageProps> = () => {
 
 	return (
 		<>
+			{loading && <Spinner loading={loading} />}
 			{!loading && report && (
 				<>
 					<ReportHeaderImage image={report.images[0]} />
