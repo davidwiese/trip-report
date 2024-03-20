@@ -1,24 +1,10 @@
 import ReportCard from "@/components/ReportCard";
 import { Report } from "@/types";
+import { fetchReports } from "@/utils/requests";
 
 type ReportsPageProps = {
 	// Add any props here if needed
 };
-
-async function fetchReports() {
-	try {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMAIN}/reports`, {
-			cache: "no-store",
-		});
-
-		if (!res.ok) {
-			throw new Error("Failed to fetch data");
-		}
-		return res.json();
-	} catch (error) {
-		console.log(error);
-	}
-}
 
 const ReportsPage: React.FC<ReportsPageProps> = async () => {
 	const reports = await fetchReports();
