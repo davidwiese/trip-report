@@ -90,6 +90,7 @@ const ReportSchema = new Schema(
 	}
 );
 
+// Prevent creation of multiple instances of the same model
 const Report = models.Report || model("Report", ReportSchema);
 
 export default Report;

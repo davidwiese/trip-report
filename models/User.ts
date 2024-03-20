@@ -26,6 +26,7 @@ const UserSchema = new Schema(
 	}
 );
 
+// Prevent creation of multiple instances of the same model
 const User = models.User || model("User", UserSchema);
 
 export default User;
