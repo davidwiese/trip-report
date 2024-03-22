@@ -1,5 +1,12 @@
+import connectDB from "@/config/database";
+import User from "@/models/User";
+import { Profile, Session } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { Account, Profile, Session, User } from "next-auth";
+
+// Create a custom type that extends the Profile type
+interface GoogleProfile extends Profile {
+	picture: string;
+}
 
 export const authOptions = {
 	providers: [
@@ -17,32 +24,34 @@ export const authOptions = {
 	],
 	callbacks: {
 		// Invoked on successful sign in
-		async signIn({
-			user,
-			account,
-			profile,
-			email,
-			credentials,
-		}: {
-			user: User;
-			account: Account | null;
-			profile?: Profile;
-			email?: {
-				verificationRequest?: boolean;
-			};
-			credentials?: Record<string, unknown>;
-		}) {
+		async signIn({ profile }: { profile: GoogleProfile }) {
 			// Connect to DB
+			await connectDB();
 			// Check if user exists
+			const userExists = await User.findOne({ email: profile.email });
 			// If not, add user to DB
+			if (!userExists) {
+				// Truncate user name if too long
+				const username = profile.name?.slice(0, 20);
+
+				await User.create({
+					email: profile.email,
+					username,
+					image: profile.picture,
+				});
+			}
 			// Return true to allow sign in
 			return true;
 		},
 
 		// Modifies session object
-		async session({ session, user }: { session: Session; user: User }) {
+		async session({ session }: { session: Session }) {
 			// Get user from DB
+			const user = await User.findOne({ email: session.user?.email });
 			// Assign user id to session
+			if (user && session.user) {
+				(session.user as any).id = user._id.toString();
+			}
 			// Return session
 			return session;
 		},
