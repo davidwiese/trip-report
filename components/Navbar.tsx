@@ -209,6 +209,9 @@ const Navbar: React.FC<NavbarProps> = () => {
 											role="menuitem"
 											tabIndex={-1}
 											id="user-menu-item-0"
+											onClick={() => {
+												setIsProfileMenuOpen(false);
+											}}
 										>
 											Your Profile
 										</Link>
@@ -218,6 +221,9 @@ const Navbar: React.FC<NavbarProps> = () => {
 											role="menuitem"
 											tabIndex={-1}
 											id="user-menu-item-2"
+											onClick={() => {
+												setIsProfileMenuOpen(false);
+											}}
 										>
 											Saved Reports
 										</Link>
