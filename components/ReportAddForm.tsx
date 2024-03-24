@@ -447,6 +447,8 @@ const ReportAddForm = () => {
 						name="seller_info.name."
 						className="border rounded w-full py-2 px-3"
 						placeholder="Name"
+						value={fields.seller_info.name}
+						onChange={handleChange}
 					/>
 				</div>
 				<div className="mb-4">
@@ -463,6 +465,8 @@ const ReportAddForm = () => {
 						className="border rounded w-full py-2 px-3"
 						placeholder="Email address"
 						required
+						value={fields.seller_info.email}
+						onChange={handleChange}
 					/>
 				</div>
 				<div className="mb-4">
@@ -478,6 +482,8 @@ const ReportAddForm = () => {
 						name="seller_info.phone"
 						className="border rounded w-full py-2 px-3"
 						placeholder="Phone"
+						value={fields.seller_info.phone}
+						onChange={handleChange}
 					/>
 				</div>
 
