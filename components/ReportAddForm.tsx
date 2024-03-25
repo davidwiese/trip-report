@@ -98,7 +98,7 @@ const ReportAddForm = () => {
 
 	return (
 		mounted && (
-			<form>
+			<form action="/api/reports" method="POST" encType="multipart/form-data">
 				<h2 className="text-3xl text-center font-semibold mb-6">
 					Add Trip Report
 				</h2>
