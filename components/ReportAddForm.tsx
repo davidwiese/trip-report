@@ -34,20 +34,78 @@ const ReportAddForm = () => {
 		setMounted(true);
 	}, []);
 
-	const handleChange = () => {};
-	const handleAmenitiesChange = () => {};
-	const handleImageChange = () => {};
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+
+		// Check if nested report
+		if (name.includes(".")) {
+			const [outerKey, innerKey] = name.split(".");
+			setFields((prevFields) => ({
+				...prevFields,
+				[outerKey]: {
+					...prevFields[outerKey],
+					[innerKey]: value,
+				},
+			}));
+		} else {
+			// Not nested
+			setFields((prevFields) => ({
+				...prevFields,
+				[name]: value,
+			}));
+		}
+	};
+	const handleAmenitiesChange = (e) => {
+		const { value, checked } = e.target;
+
+		// Clone current amenities array
+		const updatedAmenities = [...fields.amenities];
+
+		if (checked) {
+			// Add value to array
+			updatedAmenities.push(value);
+		} else {
+			// Remove valye from array
+			const index = updatedAmenities.indexOf(value);
+
+			if (index !== -1) {
+				updatedAmenities.splice(index, 1);
+			}
+		}
+		// Update state with updated array
+		setFields((prevFields) => ({
+			...prevFields,
+			amenities: updatedAmenities,
+		}));
+	};
+	const handleImageChange = (e) => {
+		const { files } = e.target;
+
+		// Clone images array
+		const updatedImages = [...fields.images];
+
+		// Add new files to the array
+		for (const file of files) {
+			updatedImages.push(file);
+		}
+
+		// Update state with array of images
+		setFields((prevFields) => ({
+			...prevFields,
+			images: updatedImages,
+		}));
+	};
 
 	return (
 		mounted && (
 			<form>
 				<h2 className="text-3xl text-center font-semibold mb-6">
-					Add Property
+					Add Trip Report
 				</h2>
 
 				<div className="mb-4">
 					<label htmlFor="type" className="block text-gray-700 font-bold mb-2">
-						Property Type
+						Trip Type
 					</label>
 					<select
 						id="type"
@@ -92,8 +150,8 @@ const ReportAddForm = () => {
 						id="description"
 						name="description"
 						className="border rounded w-full py-2 px-3"
-						rows="4"
-						placeholder="Add an optional description of your property"
+						rows={4}
+						placeholder="Add an optional description of your trip"
 						value={fields.description}
 						onChange={handleChange}
 					></textarea>
@@ -510,7 +568,7 @@ const ReportAddForm = () => {
 						className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
 						type="submit"
 					>
-						Add Property
+						Add Report
 					</button>
 				</div>
 			</form>
