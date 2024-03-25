@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { getSessionUser } from "@/utils/getSessionUser";
+import cloudinary from "@/config/cloudinary";
 
 // GET /api/reports
 export const GET = async (request: NextRequest) => {
@@ -33,13 +34,41 @@ export const POST = async (request: NextRequest) => {
 		const formData = await request.formData();
 
 		// Access all values from amenities and images
-		const amenities = formData.getAll("amenities");
+		const amenities = formData
+			.getAll("amenities")
+			.map((amenity) => amenity.toString());
 		const images = formData
 			.getAll("images")
 			.filter((image) => (image as File).name !== "");
 
 		// Create reportData object for database
-		const reportData = {
+		const reportData: {
+			type: FormDataEntryValue | null;
+			name: FormDataEntryValue | null;
+			description: FormDataEntryValue | null;
+			location: {
+				street: FormDataEntryValue | null;
+				city: FormDataEntryValue | null;
+				state: FormDataEntryValue | null;
+				zipcode: FormDataEntryValue | null;
+			};
+			beds: FormDataEntryValue | null;
+			baths: FormDataEntryValue | null;
+			square_feet: FormDataEntryValue | null;
+			amenities: string[];
+			rates: {
+				weekly: FormDataEntryValue | null;
+				monthly: FormDataEntryValue | null;
+				nightly: FormDataEntryValue | null;
+			};
+			seller_info: {
+				name: FormDataEntryValue | null;
+				email: FormDataEntryValue | null;
+				phone: FormDataEntryValue | null;
+			};
+			owner: string;
+			images: string[]; // Update the type to string[]
+		} = {
 			type: formData.get("type"),
 			name: formData.get("name"),
 			description: formData.get("description"),
@@ -64,8 +93,33 @@ export const POST = async (request: NextRequest) => {
 				phone: formData.get("seller_info.phone"),
 			},
 			owner: userId,
-			// images,
+			images: [], // Initialize as an empty array of type string[]
 		};
+
+		// Upload image(s) to Cloudinary
+		const imageUrls = [];
+
+		for (const imageFile of images) {
+			const imageBuffer = await (imageFile as File).arrayBuffer();
+			const imageArray = Array.from(new Uint8Array(imageBuffer));
+			const imageData = Buffer.from(imageArray);
+
+			// Convert the image data to base64
+			const imageBase64 = imageData.toString("base64");
+
+			// Make request to upload to Cloudinary
+			const result = await cloudinary.uploader.upload(
+				`data:image/png;base64,${imageBase64}`,
+				{
+					folder: "trip-report",
+				}
+			);
+
+			imageUrls.push(result.secure_url);
+
+			// Add uploaded images to the reportData object
+			reportData.images = imageUrls;
+		}
 
 		const newReport = new Report(reportData);
 		await newReport.save();
