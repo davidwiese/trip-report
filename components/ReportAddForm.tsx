@@ -1,9 +1,36 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
+
+type Fields = {
+	type: string;
+	name: string;
+	description: string;
+	location: {
+		street: string;
+		city: string;
+		state: string;
+		zipcode: string;
+	};
+	beds: string;
+	baths: string;
+	square_feet: string;
+	amenities: string[];
+	rates: {
+		weekly: string;
+		monthly: string;
+		nightly: string;
+	};
+	seller_info: {
+		name: string;
+		email: string;
+		phone: string;
+	};
+	images: File[];
+};
 
 const ReportAddForm = () => {
 	const [mounted, setMounted] = useState(false);
-	const [fields, setFields] = useState({
+	const [fields, setFields] = useState<Fields>({
 		type: "Apartment",
 		name: "Test Property",
 		description: "",
@@ -34,7 +61,9 @@ const ReportAddForm = () => {
 		setMounted(true);
 	}, []);
 
-	const handleChange = (e) => {
+	const handleChange = (
+		e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+	) => {
 		const { name, value } = e.target;
 
 		// Check if nested report
@@ -43,7 +72,7 @@ const ReportAddForm = () => {
 			setFields((prevFields) => ({
 				...prevFields,
 				[outerKey]: {
-					...prevFields[outerKey],
+					...(prevFields[outerKey as keyof Fields] as Record<string, unknown>),
 					[innerKey]: value,
 				},
 			}));
@@ -55,7 +84,8 @@ const ReportAddForm = () => {
 			}));
 		}
 	};
-	const handleAmenitiesChange = (e) => {
+
+	const handleAmenitiesChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { value, checked } = e.target;
 
 		// Clone current amenities array
@@ -65,7 +95,7 @@ const ReportAddForm = () => {
 			// Add value to array
 			updatedAmenities.push(value);
 		} else {
-			// Remove valye from array
+			// Remove value from array
 			const index = updatedAmenities.indexOf(value);
 
 			if (index !== -1) {
@@ -78,22 +108,24 @@ const ReportAddForm = () => {
 			amenities: updatedAmenities,
 		}));
 	};
-	const handleImageChange = (e) => {
+	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const { files } = e.target;
 
-		// Clone images array
-		const updatedImages = [...fields.images];
+		if (files) {
+			// Clone images array
+			const updatedImages = [...fields.images];
 
-		// Add new files to the array
-		for (const file of files) {
-			updatedImages.push(file);
+			// Add new files to the array
+			for (const file of Array.from(files)) {
+				updatedImages.push(file);
+			}
+
+			// Update state with array of images
+			setFields((prevFields) => ({
+				...prevFields,
+				images: updatedImages,
+			}));
 		}
-
-		// Update state with array of images
-		setFields((prevFields) => ({
-			...prevFields,
-			images: updatedImages,
-		}));
 	};
 
 	return (
@@ -502,7 +534,7 @@ const ReportAddForm = () => {
 					<input
 						type="text"
 						id="seller_name"
-						name="seller_info.name."
+						name="seller_info.name"
 						className="border rounded w-full py-2 px-3"
 						placeholder="Name"
 						value={fields.seller_info.name}
@@ -560,6 +592,7 @@ const ReportAddForm = () => {
 						accept="image/*"
 						multiple
 						onChange={handleImageChange}
+						required
 					/>
 				</div>
 
