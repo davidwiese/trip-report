@@ -501,6 +501,7 @@ const ReportAddForm = () => {
 						className="border rounded w-full py-2 px-3"
 						accept="image/*"
 						multiple
+						onChange={handleImageChange}
 					/>
 				</div>
 
