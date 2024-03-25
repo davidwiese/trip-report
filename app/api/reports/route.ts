@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { revalidatePath } from "next/cache";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { getSessionUser } from "@/utils/getSessionUser";
@@ -124,6 +125,7 @@ export const POST = async (request: NextRequest) => {
 		const newReport = new Report(reportData);
 		await newReport.save();
 
+		revalidatePath("/reports");
 		return Response.redirect(
 			`${process.env.NEXTAUTH_URL}/reports/${newReport._id}`
 		);

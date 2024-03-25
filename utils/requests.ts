@@ -8,9 +8,7 @@ async function fetchReports() {
 			return [];
 		}
 
-		const res = await fetch(`${apiDomain}/reports`, {
-			cache: "no-store",
-		});
+		const res = await fetch(`${apiDomain}/reports`);
 
 		if (!res.ok) {
 			throw new Error("Failed to fetch data");
