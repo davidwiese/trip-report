@@ -8,6 +8,7 @@ import ReportHeaderImage from "@/components/ReportHeaderImage";
 import ReportDetails from "@/components/ReportDetails";
 import { FaArrowLeft } from "react-icons/fa";
 import Spinner from "@/components/Spinner";
+import ReportImages from "@/components/ReportImages";
 
 type ReportPageProps = {
 	// Add any props here if needed
@@ -150,6 +151,7 @@ const ReportPage: React.FC<ReportPageProps> = () => {
 							</div>
 						</div>
 					</section>
+					<ReportImages images={report.images} />
 				</>
 			)}
 		</>

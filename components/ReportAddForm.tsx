@@ -28,7 +28,11 @@ type Fields = {
 	images: File[];
 };
 
-const ReportAddForm = () => {
+type ReportAddFormProps = {
+	// Add any props here if needed
+};
+
+const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [mounted, setMounted] = useState(false);
 	const [fields, setFields] = useState<Fields>({
 		type: "Apartment",
