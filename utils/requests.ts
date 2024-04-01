@@ -21,7 +21,7 @@ async function fetchReports() {
 }
 
 // Fetch single report
-async function fetchReport(id: string) {
+async function fetchReport(id: string | string[]) {
 	try {
 		// Handle case where domain is not available yet, such as on build/deploy
 		if (!apiDomain) {
