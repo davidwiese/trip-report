@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import profileDefault from "@/assets/images/profile.png";
 import Spinner from "@/components/Spinner";
+import { toast } from "react-toastify";
 
 type ProfilePageProps = {
 	// Add any props here if needed
@@ -78,12 +79,12 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 					(report) => report._id !== reportId
 				);
 				setReports(updatedReports);
-				alert("Report deleted");
+				toast.success("Report deleted");
 			} else {
-				alert("Failed to delete report");
+				toast.error("Failed to delete report");
 			}
 		} catch (error) {
-			alert("Failed to delete report");
+			toast.error("Failed to delete report");
 			console.log(error);
 		}
 	};
