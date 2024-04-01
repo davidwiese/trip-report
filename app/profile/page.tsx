@@ -64,18 +64,26 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 	}, [session]);
 
 	const handleDeleteReport = async (reportId: string) => {
-		try {
-			const res = await fetch(`/api/reports/${reportId}`, {
-				method: "DELETE",
-			});
+		const confirmed = window.confirm(
+			"Are you sure you want to delete this report?"
+		);
 
+		if (!confirmed) return;
+
+		try {
+			const res = await fetch(`/api/reports/${reportId}`, { method: "DELETE" });
 			if (res.status === 200) {
-				// Remove the deleted report from the local state
-				setReports((prevReports) =>
-					prevReports.filter((report) => report._id !== reportId)
+				// Remove the property from state
+				const updatedReports = reports.filter(
+					(report) => report._id !== reportId
 				);
+				setReports(updatedReports);
+				alert("Report deleted");
+			} else {
+				alert("Failed to delete report");
 			}
 		} catch (error) {
+			alert("Failed to delete report");
 			console.log(error);
 		}
 	};
