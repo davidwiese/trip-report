@@ -132,7 +132,28 @@ const ReportEditForm: React.FC<ReportEditFormProps> = () => {
 		}));
 	};
 
-	const handleSubmit = async () => {};
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
+		try {
+			const formData = new FormData(e.target as HTMLFormElement);
+			const res = await fetch(`/api/reports/${id}`, {
+				method: "PUT",
+				body: formData,
+			});
+
+			if (res.status === 200) {
+				router.push(`/reports/${id}`);
+			} else if (res.status === 401 || res.status === 403) {
+				toast.error("Permission denied");
+			} else {
+				toast.error("Something went wrong");
+			}
+		} catch (error) {
+			toast.error("Something went wrong");
+			console.log(error);
+		}
+	};
 
 	return (
 		mounted &&
