@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { Session } from "next-auth";
 import profileDefault from "@/assets/images/profile.png";
 import Spinner from "@/components/Spinner";
 
@@ -11,15 +10,24 @@ type ProfilePageProps = {
 	// Add any props here if needed
 };
 
-// Extend the Session type to include the user property with an id field
-interface CustomSession extends Session {
-	user?: {
-		id?: string;
-		name?: string | null;
-		email?: string | null;
-		image?: string | null;
+// Define the Report type
+interface Report {
+	_id: string;
+	name: string;
+	images: string[];
+	location: {
+		street: string;
+		city: string;
+		state: string;
 	};
 }
+
+type SessionUser = {
+	id?: string;
+	name?: string | null;
+	email?: string | null;
+	image?: string | null;
+};
 
 const ProfilePage: React.FC<ProfilePageProps> = () => {
 	const { data: session } = useSession();
@@ -27,11 +35,11 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 	const profileName = session?.user?.name;
 	const profileEmail = session?.user?.email;
 
-	const [reports, setReports] = useState([]);
+	const [reports, setReports] = useState<Report[]>([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const fetchUserReports = async (userId: string) => {
+		const fetchUserReports = async (userId: string | undefined) => {
 			if (!userId) {
 				return;
 			}
@@ -50,12 +58,27 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 		};
 
 		// Fetch user reports when session is available
-		if (session?.user?.id) {
-			fetchUserReports(session.user.id);
+		if (session?.user) {
+			fetchUserReports((session.user as SessionUser).id);
 		}
 	}, [session]);
 
-	const handleDeleteReport = () => {};
+	const handleDeleteReport = async (reportId: string) => {
+		try {
+			const res = await fetch(`/api/reports/${reportId}`, {
+				method: "DELETE",
+			});
+
+			if (res.status === 200) {
+				// Remove the deleted report from the local state
+				setReports((prevReports) =>
+					prevReports.filter((report) => report._id !== reportId)
+				);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<section className="bg-blue-50">
