@@ -71,7 +71,7 @@ const ReportPage: React.FC<ReportPageProps> = () => {
 								<aside className="space-y-4">
 									<BookmarkButton report={report} />
 									<ShareButtons report={report} />
-									<ReportContactForm report={report}/>
+									<ReportContactForm report={report} />
 								</aside>
 							</div>
 						</div>
