@@ -23,6 +23,7 @@ const ReportMap: React.FC<ReportMapProps> = ({ report }) => {
 		height: "500px",
 	});
 	const [loading, setLoading] = useState(true);
+	const [geocodingError, setGeocodingError] = useState(false);
 
 	setDefaults({
 		key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY,
@@ -33,20 +34,32 @@ const ReportMap: React.FC<ReportMapProps> = ({ report }) => {
 
 	useEffect(() => {
 		const fetchCoords = async () => {
-			const res = await fromAddress(
-				`${report.location.street} ${report.location.city} ${report.location.state} ${report.location.zipcode}`
-			);
+			try {
+				const res = await fromAddress(
+					`${report.location.street} ${report.location.city} ${report.location.state} ${report.location.zipcode}`
+				);
+				// Check for results
+				if (res.results.length === 0) {
+					// No results found
+					setGeocodingError(true);
+					setLoading(false);
+					return;
+				}
+				const { lat, lng } = res.results[0].geometry.location;
+				setLat(lat);
+				setLng(lng);
+				setViewport({
+					...viewport,
+					latitude: lat,
+					longitude: lng,
+				});
 
-			const { lat, lng } = res.results[0].geometry.location;
-			setLat(lat);
-			setLng(lng);
-			setViewport({
-				...viewport,
-				latitude: lat,
-				longitude: lng,
-			});
-
-			setLoading(false);
+				setLoading(false);
+			} catch (error) {
+				console.log(error);
+				setGeocodingError(true);
+				setLoading(false);
+			}
 		};
 
 		fetchCoords();
@@ -59,6 +72,11 @@ const ReportMap: React.FC<ReportMapProps> = ({ report }) => {
 	]);
 
 	if (loading) return <Spinner loading={loading} />;
+
+	// Handle case where geocoding failed
+	if (geocodingError) {
+		return <div className="text-xl">No location data found</div>;
+	}
 
 	return (
 		!loading && (
