@@ -13,7 +13,6 @@ const HomePage: React.FC<HomePageProps> = () => {
 			<Hero />
 			<InfoBoxes />
 			<HomeReports />
-			<Footer />
 		</>
 	);
 };
