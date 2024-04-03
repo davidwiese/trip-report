@@ -1,4 +1,15 @@
-import { FaShare } from "react-icons/fa";
+import {
+	FacebookShareButton,
+	TwitterShareButton,
+	TelegramShareButton,
+	RedditShareButton,
+	EmailShareButton,
+	FacebookIcon,
+	TwitterIcon,
+	TelegramIcon,
+	RedditIcon,
+	EmailIcon,
+} from "react-share";
 import { Report } from "@/types";
 
 type ShareButtonsProps = {
@@ -6,10 +17,37 @@ type ShareButtonsProps = {
 };
 
 const ShareButtons: React.FC<ShareButtonsProps> = ({ report }) => {
+	const shareUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/reports/${report._id}`;
+
 	return (
-		<button className="bg-orange-500 hover:bg-orange-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center">
-			<FaShare className="mr-2" /> Share Report
-		</button>
+		<>
+			<h3 className="text-xl font-bold text-center pt-2">Share This Report:</h3>
+			<div className="flex gap-3 justify-center pb-5">
+				<FacebookShareButton url={shareUrl} hashtag={`#${report.type}`}>
+					<FacebookIcon size={40} round={true}></FacebookIcon>
+				</FacebookShareButton>
+				<TwitterShareButton
+					url={shareUrl}
+					title={report.name}
+					hashtags={[`${report.type.replace(/\s/g, "")}`, "TripReport"]}
+				>
+					<TwitterIcon size={40} round={true}></TwitterIcon>
+				</TwitterShareButton>
+				<TelegramShareButton url={shareUrl} title={report.name}>
+					<TelegramIcon size={40} round={true}></TelegramIcon>
+				</TelegramShareButton>
+				<RedditShareButton url={shareUrl} title={report.name}>
+					<RedditIcon size={40} round={true}></RedditIcon>
+				</RedditShareButton>
+				<EmailShareButton
+					url={shareUrl}
+					subject={report.name}
+					body={`Check out this trip report: ${shareUrl}`}
+				>
+					<EmailIcon size={40} round={true}></EmailIcon>
+				</EmailShareButton>
+			</div>
+		</>
 	);
 };
 export default ShareButtons;
