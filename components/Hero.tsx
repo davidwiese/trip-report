@@ -13,7 +13,7 @@ const Hero: React.FC<HeroProps> = () => {
 						Find The Perfect Rental
 					</h1>
 					<p className="my-4 text-xl text-white">
-						Discover the perfect property that suits your needs.
+						Discover the perfect objective for your next trip.
 					</p>
 				</div>
 				<form className="mt-3 mx-auto max-w-2xl w-full flex flex-col md:flex-row items-center">
@@ -29,11 +29,11 @@ const Hero: React.FC<HeroProps> = () => {
 						/>
 					</div>
 					<div className="w-full md:w-2/5 md:pl-2">
-						<label htmlFor="property-type" className="sr-only">
-							Property Type
+						<label htmlFor="report-type" className="sr-only">
+							Trip Type
 						</label>
 						<select
-							id="property-type"
+							id="report-type"
 							className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
 						>
 							<option value="All">All</option>

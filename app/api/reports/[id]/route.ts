@@ -52,7 +52,7 @@ export const DELETE = async (
 
 		await report.deleteOne();
 
-		return new Response("Property deleted", { status: 200 });
+		return new Response("Report deleted", { status: 200 });
 	} catch (error) {
 		return new Response("Something went wrong", { status: 500 });
 	}

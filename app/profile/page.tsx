@@ -74,7 +74,7 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 		try {
 			const res = await fetch(`/api/reports/${reportId}`, { method: "DELETE" });
 			if (res.status === 200) {
-				// Remove the property from state
+				// Remove the report from state
 				const updatedReports = reports.filter(
 					(report) => report._id !== reportId
 				);

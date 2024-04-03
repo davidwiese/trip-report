@@ -8,7 +8,7 @@ type ReportContactFormProps = {
 const ReportContactForm: React.FC<ReportContactFormProps> = () => {
 	return (
 		<div className="bg-white p-6 rounded-lg shadow-md">
-			<h3 className="text-xl font-bold mb-6">Contact Property Manager</h3>
+			<h3 className="text-xl font-bold mb-6">Contact Report Author</h3>
 			<form>
 				<div className="mb-4">
 					<label
