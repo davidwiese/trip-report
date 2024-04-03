@@ -36,7 +36,7 @@ const HomeReports: React.FC<HomeReportsProps> = async () => {
 					href="/reports"
 					className="block bg-black text-white text-center py-4 px-6 rounded-xl hover:bg-gray-700"
 				>
-					View All Properties
+					View All Reports
 				</Link>
 			</section>
 		</>
