@@ -1,4 +1,4 @@
-import React from "react";
+import ReportSearchForm from "@/components/ReportSearchForm";
 
 type HeroProps = {
 	// Add any props here if needed
@@ -16,6 +16,7 @@ const Hero: React.FC<HeroProps> = () => {
 						Discover the perfect objective for your next trip.
 					</p>
 				</div>
+				<ReportSearchForm />
 			</div>
 		</section>
 	);
