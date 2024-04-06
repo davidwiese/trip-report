@@ -1,3 +1,5 @@
+"use client";
+
 type ReportSearchFormProps = {
 	// Add any props here if needed
 };
