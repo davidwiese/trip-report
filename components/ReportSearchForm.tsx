@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 
 type ReportSearchFormProps = {
 	// Add any props here if needed
