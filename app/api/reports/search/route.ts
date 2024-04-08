@@ -11,19 +11,20 @@ export const GET = async (request: NextRequest) => {
 		const location = searchParams.get("location");
 		const reportType = searchParams.get("reportType");
 
-		const locationPattern = new RegExp(location, "i");
+		const locationPattern = location ? new RegExp(location, "i") : null;
 
 		// Match location pattern against database fields
-		let query = {
-			$or: [
+		let query: any = {};
+		if (locationPattern) {
+			query.$or = [
 				{ name: locationPattern },
 				{ description: locationPattern },
 				{ "location.street": locationPattern },
 				{ "location.city": locationPattern },
 				{ "location.state": locationPattern },
 				{ "location.zipcode": locationPattern },
-			],
-		};
+			];
+		}
 
 		// Only check for report if it's not "All"
 		if (reportType && reportType !== "All") {
