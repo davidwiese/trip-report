@@ -24,10 +24,7 @@ interface Report {
 }
 
 type SessionUser = {
-	id?: string;
-	name?: string | null;
-	email?: string | null;
-	image?: string | null;
+	id: string;
 };
 
 const ProfilePage: React.FC<ProfilePageProps> = () => {
