@@ -1,13 +1,32 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type ReportSearchFormProps = {
 	// Add any props here if needed
 };
 
 const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
+	const [location, setLocation] = useState("");
+	const [reportType, setReportType] = useState("All");
+
+	const router = useRouter();
+
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		if (location === "" && reportType === "All") {
+			router.push("/reports");
+		} else {
+			const query = `?location=${location}&reportType=${reportType}`;
+			router.push(`/reports/search-results${query}`);
+		}
+	};
+
 	return (
-		<form className="mt-3 mx-auto max-w-2xl w-full flex flex-col md:flex-row items-center">
+		<form
+			onSubmit={handleSubmit}
+			className="mt-3 mx-auto max-w-2xl w-full flex flex-col md:flex-row items-center"
+		>
 			<div className="w-full md:w-3/5 md:pr-2 mb-4 md:mb-0">
 				<label htmlFor="location" className="sr-only">
 					Location
@@ -15,8 +34,10 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 				<input
 					type="text"
 					id="location"
-					placeholder="Enter Location (City, State, Zip, etc"
+					placeholder="Enter location or keywords"
 					className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+					value={location}
+					onChange={(e) => setLocation(e.target.value)}
 				/>
 			</div>
 			<div className="w-full md:w-2/5 md:pl-2">
@@ -26,6 +47,8 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 				<select
 					id="report-type"
 					className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+					value={reportType}
+					onChange={(e) => setReportType(e.target.value)}
 				>
 					<option value="All">All</option>
 					<option value="Apartment">Apartment</option>
