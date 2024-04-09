@@ -2,39 +2,35 @@ type MessageProps = {
 	// Add any props here if needed
 };
 
-const Message: React.FC<MessageProps> = () => {
+const Message: React.FC<MessageProps> = ({ message }) => {
 	return (
 		<div className="relative bg-white p-4 rounded-md shadow-md border border-gray-200">
 			<h2 className="text-xl mb-4">
-				<span className="font-bold">Property Inquiry:</span>
-				Boston Commons Retreat
+				<span className="font-bold">Trip Report Inquiry: </span>
+				{message.report.name}
 			</h2>
-			<p className="text-gray-700">
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati
-				libero nobis vero quos aspernatur nemo alias nam, odit dolores sed
-				quaerat illum impedit quibusdam officia ad voluptatibus molestias sequi?
-				Repudiandae!
-			</p>
+			<p className="text-gray-700">{message.body}</p>
 
 			<ul className="mt-4">
 				<li>
-					<strong>Name:</strong> John Doe
+					<strong>Name:</strong> {message.sender.username}
 				</li>
 
 				<li>
-					<strong>Reply Email:</strong>
-					<a href="mailto:recipient@example.com" className="text-blue-500">
-						recipient@example.com
+					<strong>Reply Email: </strong>
+					<a href={`mailto:${message.email}`} className="text-blue-500">
+						{message.email}
 					</a>
 				</li>
 				<li>
-					<strong>Reply Phone:</strong>
-					<a href="tel:123-456-7890" className="text-blue-500">
-						123-456-7890
+					<strong>Reply Phone: </strong>
+					<a href={`tel:${message.phone}`} className="text-blue-500">
+						{message.phone}
 					</a>
 				</li>
 				<li>
-					<strong>Received:</strong>1/1/2024 12:00 PM
+					<strong>Received: </strong>
+					{new Date(message.createdAt).toLocaleString()}
 				</li>
 			</ul>
 			<button className="mt-4 mr-3 bg-blue-500 text-white py-1 px-3 rounded-md">
