@@ -9,6 +9,32 @@ type SessionUser = {
 	id: string;
 };
 
+// GET /api/messages
+export const GET = async () => {
+	try {
+		await connectDB();
+
+		const sessionUser = await getSessionUser();
+
+		if (!sessionUser || !sessionUser.user) {
+			return new Response(JSON.stringify("User ID is required"), {
+				status: 401,
+			});
+		}
+
+		const { userId } = sessionUser;
+
+		const messages = await Message.find({ recipient: userId })
+			.populate("sender", "name")
+			.populate("report", "title");
+
+		return new Response(JSON.stringify(messages), { status: 200 });
+	} catch (error) {
+		console.log(error);
+		return new Response("Something went wrong", { status: 500 });
+	}
+};
+
 // POST /api/messages
 export const POST = async (request: NextRequest) => {
 	try {
@@ -16,6 +42,7 @@ export const POST = async (request: NextRequest) => {
 
 		const { name, email, phone, message, report, recipient } =
 			await request.json();
+
 		const sessionUser = await getSessionUser();
 
 		if (!sessionUser || !sessionUser.user) {
