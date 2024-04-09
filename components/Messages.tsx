@@ -19,7 +19,7 @@ type Message = {
 };
 
 type MessagesProps = {
-	message: {
+	message?: {
 		_id: string;
 		report: {
 			name: string;
