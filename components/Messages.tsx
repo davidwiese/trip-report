@@ -15,10 +15,23 @@ type Message = {
 	email: string;
 	phone: string;
 	createdAt: string;
+	read: boolean;
 };
 
 type MessagesProps = {
-	// Add any props here if needed
+	message: {
+		_id: string;
+		report: {
+			name: string;
+		};
+		body: string;
+		sender: {
+			username: string;
+		};
+		email: string;
+		phone: string;
+		createdAt: string;
+	};
 };
 
 const Messages: React.FC<MessagesProps> = () => {
