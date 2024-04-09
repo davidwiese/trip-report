@@ -3,12 +3,26 @@ import { useState, useEffect } from "react";
 import Spinner from "@/components/Spinner";
 import Message from "@/components/Message";
 
+type Message = {
+	_id: string;
+	report: {
+		name: string;
+	};
+	body: string;
+	sender: {
+		username: string;
+	};
+	email: string;
+	phone: string;
+	createdAt: string;
+};
+
 type MessagesProps = {
 	// Add any props here if needed
 };
 
 const Messages: React.FC<MessagesProps> = () => {
-	const [messages, setMessages] = useState([]);
+	const [messages, setMessages] = useState<Message[]>([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
