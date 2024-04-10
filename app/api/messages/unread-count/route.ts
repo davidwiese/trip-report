@@ -20,12 +20,12 @@ export const GET = async (request: NextRequest) => {
 
 		const { userId } = sessionUser;
 
-		const unreadMessageCount = await Message.countDocuments({
+		const count = await Message.countDocuments({
 			recipient: userId,
 			read: false,
 		});
 
-		return new Response(JSON.stringify({ count: unreadMessageCount }), {
+		return new Response(JSON.stringify(count), {
 			status: 200,
 		});
 	} catch (error) {
