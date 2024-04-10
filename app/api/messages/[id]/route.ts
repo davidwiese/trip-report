@@ -5,7 +5,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 
 export const dynamic = "force-dynamic";
 
-// PUT /api/message/:id
+// PUT /api/messages/:id
 export const PUT = async (
 	request: NextRequest,
 	{ params }: { params: { id: string } }
@@ -46,7 +46,7 @@ export const PUT = async (
 	}
 };
 
-// DELETE /api/message/:id
+// DELETE /api/messages/:id
 export const DELETE = async (
 	request: NextRequest,
 	{ params }: { params: { id: string } }
