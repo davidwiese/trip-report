@@ -1,14 +1,17 @@
 const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
 // Fetch all reports
-async function fetchReports() {
+async function fetchReports({ showFeatured = false } = {}) {
 	try {
 		// Handle case where domain is not available yet, such as on build/deploy
 		if (!apiDomain) {
 			return [];
 		}
 
-		const res = await fetch(`${apiDomain}/reports`);
+		const res = await fetch(
+			`${apiDomain}/reports${showFeatured ? "/featured" : ""}`,
+			{ cache: "no-store" }
+		);
 
 		if (!res.ok) {
 			throw new Error("Failed to fetch data");

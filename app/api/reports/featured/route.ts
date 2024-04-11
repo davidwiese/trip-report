@@ -1,5 +1,4 @@
 import { NextRequest } from "next/server";
-
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 
@@ -8,9 +7,7 @@ export const GET = async (request: NextRequest) => {
 	try {
 		await connectDB();
 
-		const reports = await Report.find({
-			is_featured: true,
-		});
+		const reports = await Report.find({ isFeatured: true });
 
 		return Response.json(reports);
 	} catch (error) {
