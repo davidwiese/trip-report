@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { getSessionUser } from "@/utils/getSessionUser";
-import { revalidatePath } from "next/cache";
+import cloudinary from "@/config/cloudinary";
 
 // GET /api/reports/:id
 export const GET = async (
@@ -48,6 +48,25 @@ export const DELETE = async (
 		// Verify ownership
 		if (report.owner.toString() !== userId) {
 			return new Response("Unauthorized", { status: 401 });
+		}
+
+		// extract public id's from image url in DB
+		const publicIds = report.images.map((imageUrl: string) => {
+			const parts = imageUrl.split("/");
+			const lastPart = parts.at(-1);
+			return lastPart ? lastPart.split(".").at(0) : undefined;
+		});
+
+		// Filter out any undefined publicIds
+		const validPublicIds = publicIds.filter(
+			(publicId: string): publicId is string => publicId !== undefined
+		);
+
+		// Delete images from Cloudinary
+		if (validPublicIds.length > 0) {
+			for (let publicId of validPublicIds) {
+				await cloudinary.uploader.destroy("trip-report/" + publicId);
+			}
 		}
 
 		await report.deleteOne();
