@@ -3,6 +3,7 @@ import { Report } from "@/types";
 import { useState, useEffect } from "react";
 import ReportCard from "@/components/ReportCard";
 import Spinner from "@/components/Spinner";
+import Pagination from "@/components/Pagination";
 
 type ReportsProps = {
 	// Add any props here if needed
@@ -12,7 +13,7 @@ const Reports: React.FC<ReportsProps> = () => {
 	const [reports, setReports] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [page, setPage] = useState(1);
-	const [pageSize, setPageSize] = useState(3);
+	const [pageSize, setPageSize] = useState(6);
 	const [totalItems, setTotalItems] = useState(0);
 
 	useEffect(() => {
@@ -36,6 +37,10 @@ const Reports: React.FC<ReportsProps> = () => {
 		fetchReports();
 	}, [page, pageSize]);
 
+	const handlePageChange = (newPage: number) => {
+		setPage(newPage);
+	};
+
 	return loading ? (
 		<Spinner loading={loading} />
 	) : (
@@ -50,6 +55,12 @@ const Reports: React.FC<ReportsProps> = () => {
 						))}
 					</div>
 				)}
+				<Pagination
+					page={page}
+					pageSize={pageSize}
+					totalItems={totalItems}
+					onPageChange={handlePageChange}
+				/>
 			</div>
 		</section>
 	);

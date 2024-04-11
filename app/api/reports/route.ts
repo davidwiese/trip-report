@@ -14,7 +14,7 @@ export const GET = async (request: NextRequest) => {
 		// Pagination
 		const page = parseInt(request.nextUrl.searchParams.get("page") || "1", 10);
 		const pageSize = parseInt(
-			request.nextUrl.searchParams.get("pageSize") || "3",
+			request.nextUrl.searchParams.get("pageSize") || "6",
 			10
 		);
 
