@@ -8,8 +8,9 @@ type HomeReportsProps = {
 };
 
 const HomeReports: React.FC<HomeReportsProps> = async () => {
-	const reports = await fetchReports();
-	const recentReports = reports
+	const data = await fetchReports();
+
+	const recentReports = data.reports
 		.sort(() => Math.random() - Math.random())
 		.slice(0, 3);
 

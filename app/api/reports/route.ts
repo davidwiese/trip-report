@@ -4,15 +4,31 @@ import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { getSessionUser } from "@/utils/getSessionUser";
 import cloudinary from "@/config/cloudinary";
+import { getJsPageSizeInKb } from "next/dist/build/utils";
 
 // GET /api/reports
 export const GET = async (request: NextRequest) => {
 	try {
 		await connectDB();
 
-		const reports = await Report.find({});
+		// Pagination
+		const page = parseInt(request.nextUrl.searchParams.get("page") || "1", 10);
+		const pageSize = parseInt(
+			request.nextUrl.searchParams.get("pageSize") || "3",
+			10
+		);
 
-		return Response.json(reports);
+		const skip = (page - 1) * pageSize;
+
+		const total = await Report.countDocuments({});
+		const reports = await Report.find({}).skip(skip).limit(pageSize);
+
+		const result = {
+			total,
+			reports,
+		};
+
+		return Response.json(result);
 	} catch (error) {
 		return new Response("Something went wrong", { status: 500 });
 	}

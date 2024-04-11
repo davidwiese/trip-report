@@ -11,16 +11,22 @@ type ReportsProps = {
 const Reports: React.FC<ReportsProps> = () => {
 	const [reports, setReports] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const [page, setPage] = useState(1);
+	const [pageSize, setPageSize] = useState(3);
+	const [totalItems, setTotalItems] = useState(0);
 
 	useEffect(() => {
 		const fetchReports = async () => {
 			try {
-				const res = await fetch("/api/reports");
+				const res = await fetch(
+					`/api/reports?page=${page}&pageSize=${pageSize}`
+				);
 				if (!res.ok) {
 					throw new Error("Failed to fetch data");
 				}
 				const data = await res.json();
-				setReports(data);
+				setReports(data.reports);
+				setTotalItems(data.total);
 			} catch (error) {
 				console.log(error);
 			} finally {
@@ -28,7 +34,7 @@ const Reports: React.FC<ReportsProps> = () => {
 			}
 		};
 		fetchReports();
-	}, []);
+	}, [page, pageSize]);
 
 	return loading ? (
 		<Spinner loading={loading} />
