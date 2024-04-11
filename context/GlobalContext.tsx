@@ -7,7 +7,10 @@ interface ContextType {
 }
 
 // Create context
-const GlobalContext = createContext<ContextType | null>(null);
+const GlobalContext = createContext<ContextType>({
+	unreadCount: 0,
+	setUnreadCount: () => {},
+});
 
 // Create a provider
 export function GlobalProvider({ children }: { children: React.ReactNode }) {
