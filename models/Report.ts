@@ -75,11 +75,15 @@ const ReportSchema = new Schema(
 				type: String,
 			},
 		},
-		images: [
-			{
-				type: String,
+		// NOTE: Limit the user to a maximum of 4 images
+		images: {
+			type: [String],
+			validate: {
+				validator: (v: string[]) => v.length <= 4,
+				message: (props: { value: string[] }) =>
+					`The images array can contain a maximum of 4 images, but has ${props.value.length}`,
 			},
-		],
+		},
 		isFeatured: {
 			type: Boolean,
 			default: false,
