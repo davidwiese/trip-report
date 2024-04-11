@@ -4,7 +4,6 @@ import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { getSessionUser } from "@/utils/getSessionUser";
 import cloudinary from "@/config/cloudinary";
-import { getJsPageSizeInKb } from "next/dist/build/utils";
 
 // GET /api/reports
 export const GET = async (request: NextRequest) => {
