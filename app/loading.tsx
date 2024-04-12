@@ -2,7 +2,7 @@
 import ClipLoader from "react-spinners/ClipLoader";
 
 type LoadingPageProps = {
-	loading: boolean;
+	// Add any props here if needed
 };
 
 const override = {
