@@ -144,10 +144,6 @@ export const POST = async (request: NextRequest) => {
 		return Response.redirect(
 			`${process.env.NEXTAUTH_URL}/reports/${newReport._id}`
 		);
-
-		// return new Response(JSON.stringify({ message: "Success" }), {
-		// 	status: 200,
-		// });
 	} catch (error) {
 		return new Response("Failed to add report", { status: 500 });
 	}
