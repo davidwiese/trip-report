@@ -15,13 +15,6 @@ type ReportMapProps = {
 const ReportMap: React.FC<ReportMapProps> = ({ report }) => {
 	const [lat, setLat] = useState<number | null>(null);
 	const [lng, setLng] = useState<number | null>(null);
-	const [viewport, setViewport] = useState({
-		latitude: 0,
-		longitude: 0,
-		zoom: 12,
-		width: "100%",
-		height: "500px",
-	});
 	const [loading, setLoading] = useState(true);
 	const [geocodingError, setGeocodingError] = useState(false);
 
@@ -48,11 +41,6 @@ const ReportMap: React.FC<ReportMapProps> = ({ report }) => {
 				const { lat, lng } = res.results[0].geometry.location;
 				setLat(lat);
 				setLng(lng);
-				setViewport({
-					...viewport,
-					latitude: lat,
-					longitude: lng,
-				});
 
 				setLoading(false);
 			} catch (error) {
@@ -68,7 +56,6 @@ const ReportMap: React.FC<ReportMapProps> = ({ report }) => {
 		report.location.state,
 		report.location.street,
 		report.location.zipcode,
-		viewport,
 	]);
 
 	if (loading) return <Spinner loading={loading} />;
