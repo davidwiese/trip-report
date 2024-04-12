@@ -170,9 +170,7 @@ export const PUT = async (
 		// Update report in database
 		const updatedReport = await Report.findByIdAndUpdate(id, reportData);
 
-		return new Response(JSON.stringify(updatedReport), {
-			status: 200,
-		});
+		return Response.json(updatedReport);
 	} catch (error) {
 		return new Response("Failed to edit report", { status: 500 });
 	}
