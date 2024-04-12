@@ -34,9 +34,7 @@ export const GET = async (request: NextRequest) => {
 
 		const reports = await Report.find(query);
 
-		return new Response(JSON.stringify(reports), {
-			status: 200,
-		});
+		return Response.json(reports);
 	} catch (error) {
 		console.log(error);
 		return new Response(JSON.stringify("Something went wrong"), {
