@@ -25,7 +25,7 @@ export const GET = async (request: NextRequest) => {
 		// Get user's bookmarks
 		const bookmarks = await Report.find({ _id: { $in: user.bookmarks } });
 
-		return new Response(JSON.stringify(bookmarks), { status: 200 });
+		return Response.json(bookmarks);
 	} catch (error) {
 		console.log(error);
 		return new Response("Something went wrong", { status: 500 });
@@ -69,9 +69,7 @@ export const POST = async (request: NextRequest) => {
 
 		await user.save();
 
-		return new Response(JSON.stringify({ message, isBookmarked }), {
-			status: 200,
-		});
+		return Response.json({ message, isBookmarked });
 	} catch (error) {
 		console.log(error);
 		return new Response("Something went wrong", { status: 500 });
