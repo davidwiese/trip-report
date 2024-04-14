@@ -1,84 +1,80 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
 import Link from "next/link";
-import { fetchReport } from "@/utils/requests";
-import { Report } from "@/types";
 import ReportHeaderImage from "@/components/ReportHeaderImage";
 import ReportDetails from "@/components/ReportDetails";
-import { FaArrowLeft } from "react-icons/fa";
-import Spinner from "@/components/Spinner";
 import ReportImages from "@/components/ReportImages";
 import BookmarkButton from "@/components/BookmarkButton";
-import ShareButtons from "@/components/ShareButtons";
 import ReportContactForm from "@/components/ReportContactForm";
+import ShareButtons from "@/components/ShareButtons";
+import { FaArrowLeft } from "react-icons/fa";
+import connectDB from "@/config/database";
+import Report from "@/models/Report";
+import { convertToSerializableObject } from "@/utils/convertToObject";
+import { Report as ReportProps } from "@/types";
 
 type ReportPageProps = {
-	// Add any props here if needed
+	params: {
+		id: string;
+	};
 };
 
-const ReportPage: React.FC<ReportPageProps> = () => {
-	const { id } = useParams();
+const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
+	const PUBLIC_DOMAIN = process.env.VERCEL_URL
+		? `https://${process.env.VERCEL_URL}`
+		: "http://localhost:3000";
 
-	const [report, setReport] = useState<Report | null>(null);
-	const [loading, setLoading] = useState(true);
+	await connectDB();
 
-	useEffect(() => {
-		const fetchReportData = async () => {
-			if (!id || Array.isArray(id)) return;
-			try {
-				const report = await fetchReport(id);
-				setReport(report);
-			} catch (error) {
-				console.error("Error fetching report: ", error);
-			} finally {
-				setLoading(false);
-			}
-		};
+	// Query the report in the DB
+	const reportDoc = await Report.findById(params.id).lean();
 
-		if (report === null) {
-			fetchReportData();
-		}
-	}, [id, report]);
-
-	if (!report && !loading) {
+	// Null check
+	if (!reportDoc) {
 		return (
-			<h1 className="text-center text-2xl font-bold mt-10">Report not found</h1>
+			<h1 className="text-center text-2xl font-bold mt-10">
+				Property Not Found
+			</h1>
+		);
+	}
+
+	// Convert the document to a plain js object so we can pass to client
+	// components
+	const report = convertToSerializableObject(reportDoc) as ReportProps;
+
+	if (!report) {
+		return (
+			<h1 className="text-center text-2xl font-bold mt-10">
+				Property Not Found
+			</h1>
 		);
 	}
 
 	return (
 		<>
-			{loading && <Spinner loading={loading} />}
-			{!loading && report && (
-				<>
-					<ReportHeaderImage image={report.images[0]} />
-					<section>
-						<div className="container m-auto py-6 px-6">
-							<Link
-								href="/reports"
-								className="text-blue-500 hover:text-blue-600 flex items-center"
-							>
-								<FaArrowLeft className="mr-2" /> Back to Reports
-							</Link>
-						</div>
-					</section>
-					<section className="bg-blue-50">
-						<div className="container m-auto py-10 px-6">
-							<div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
-								<ReportDetails report={report} />
+			<ReportHeaderImage image={report.images[0]} />
+			<section>
+				<div className="container m-auto py-6 px-6">
+					<Link
+						href="/reports"
+						className="text-blue-500 hover:text-blue-600 flex items-center"
+					>
+						<FaArrowLeft className="mr-2" /> Back to Reports
+					</Link>
+				</div>
+			</section>
+			<section className="bg-blue-50">
+				<div className="container m-auto py-10 px-6">
+					<div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
+						<ReportDetails report={report} />
 
-								<aside className="space-y-4">
-									<BookmarkButton report={report} />
-									<ShareButtons report={report} />
-									<ReportContactForm report={report} />
-								</aside>
-							</div>
-						</div>
-					</section>
-					<ReportImages images={report.images} />
-				</>
-			)}
+						<aside className="space-y-4">
+							<BookmarkButton report={report} />
+							<ShareButtons report={report} PUBLIC_DOMAIN={PUBLIC_DOMAIN} />
+							<ReportContactForm report={report} />
+						</aside>
+					</div>
+				</div>
+			</section>
+			<ReportImages images={report.images} />
 		</>
 	);
 };

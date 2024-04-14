@@ -1,3 +1,4 @@
+"use client";
 import {
 	FacebookShareButton,
 	TwitterShareButton,
@@ -14,10 +15,14 @@ import { Report } from "@/types";
 
 type ShareButtonsProps = {
 	report: Report;
+	PUBLIC_DOMAIN: string;
 };
 
-const ShareButtons: React.FC<ShareButtonsProps> = ({ report }) => {
-	const shareUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/reports/${report._id}`;
+const ShareButtons: React.FC<ShareButtonsProps> = ({
+	report,
+	PUBLIC_DOMAIN,
+}) => {
+	const shareUrl = `${PUBLIC_DOMAIN}/reports/${report._id}`;
 
 	return (
 		<>
