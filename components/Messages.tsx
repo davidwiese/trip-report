@@ -2,10 +2,9 @@ import MessageCard from "@/components/Message";
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import { getSessionUser } from "@/utils/getSessionUser";
-import { Message as MessageType } from "@/types";
 
 type MessagesProps = {
-	// Add any props here if needed
+	// Add any props if needed
 };
 
 const Messages: React.FC<MessagesProps> = async () => {
@@ -35,7 +34,14 @@ const Messages: React.FC<MessagesProps> = async () => {
 		.populate("report", "name")
 		.lean();
 
-	const messages = [...unreadMessages, ...readMessages] as MessageType[];
+	const messages = [...unreadMessages, ...readMessages].map((message: any) => ({
+		...message,
+		_id: message._id.toString(),
+		report: {
+			...message.report,
+			_id: message.report._id.toString(),
+		},
+	}));
 
 	// TODO: Fallback to loader
 
