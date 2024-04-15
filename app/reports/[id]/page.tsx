@@ -9,7 +9,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { convertToSerializableObject } from "@/utils/convertToObject";
-import { Report as ReportProps } from "@/types";
+import { Report as ReportType } from "@/types";
 
 type ReportPageProps = {
 	params: {
@@ -38,13 +38,11 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 
 	// Convert the document to a plain js object so we can pass to client
 	// components
-	const report = convertToSerializableObject(reportDoc) as ReportProps;
+	const report = convertToSerializableObject(reportDoc) as ReportType;
 
 	if (!report) {
 		return (
-			<h1 className="text-center text-2xl font-bold mt-10">
-				Property Not Found
-			</h1>
+			<h1 className="text-center text-2xl font-bold mt-10">Report Not Found</h1>
 		);
 	}
 
