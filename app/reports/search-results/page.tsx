@@ -1,45 +1,45 @@
-"use client";
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import ReportCard from "@/components/ReportCard";
-import Spinner from "@/components/Spinner";
-import { Report } from "@/types";
+import Report from "@/models/Report";
 import ReportSearchForm from "@/components/ReportSearchForm";
+import connectDB from "@/config/database";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 
 type SearchResultsPageProps = {
-	// Add any props here if needed
+	searchParams: {
+		location: string;
+		reportType: string;
+	};
 };
 
-const SearchResultsPage: React.FC<SearchResultsPageProps> = () => {
-	const searchParams = useSearchParams();
-	const [reports, setReports] = useState([]);
-	const [loading, setLoading] = useState(true);
+const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
+	searchParams: { location, reportType },
+}) => {
+	await connectDB();
 
-	const location = searchParams.get("location");
-	const reportType = searchParams.get("reportType");
+	const locationPattern = new RegExp(location, "i");
 
-	useEffect(() => {
-		const fetchSearchResults = async () => {
-			try {
-				const res = await fetch(
-					`/api/reports/search?location=${location}&reportType=${reportType}`
-				);
-				if (res.status === 200) {
-					const data = await res.json();
-					setReports(data);
-				} else {
-					setReports([]);
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchSearchResults();
-	}, [location, reportType]);
+	// Match location pattern against database fields
+	let query: any = {
+		$or: [
+			{ name: locationPattern },
+			{ description: locationPattern },
+			{ "location.street": locationPattern },
+			{ "location.city": locationPattern },
+			{ "location.state": locationPattern },
+			{ "location.zipcode": locationPattern },
+		],
+	};
+
+	// Only check for property if its not 'All'
+	if (reportType && reportType !== "All") {
+		const typePattern = new RegExp(reportType, "i");
+		query.type = typePattern;
+	}
+
+	const reportsQueryResults = await Report.find(query).lean();
+	const reports = convertToSerializableObject(reportsQueryResults);
 
 	return (
 		<>
@@ -48,30 +48,26 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = () => {
 					<ReportSearchForm />
 				</div>
 			</section>
-			{loading ? (
-				<Spinner loading={loading} />
-			) : (
-				<section className="px-4 py-6">
-					<div className="container-xl lg:container m-auto px-4 py-6">
-						<Link
-							href="/reports"
-							className="flex items-center text-blue-500 hover:underline mb-3"
-						>
-							<FaArrowAltCircleLeft className="mr-2 mb-1" /> Back To Reports
-						</Link>
-						<h1 className="text-2xl mb-4">Search Results</h1>
-						{reports.length === 0 ? (
-							<p>No search results found</p>
-						) : (
-							<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-								{(reports as Report[]).map((report) => (
-									<ReportCard key={report._id} report={report} />
-								))}
-							</div>
-						)}
-					</div>
-				</section>
-			)}
+			<section className="px-4 py-6">
+				<div className="container-xl lg:container m-auto px-4 py-6">
+					<Link
+						href="/reports"
+						className="flex items-center text-blue-500 hover:underline mb-3"
+					>
+						<FaArrowAltCircleLeft className="mr-2 mb-1" /> Back To Reports
+					</Link>
+					<h1 className="text-2xl mb-4">Search Results</h1>
+					{reports.length === 0 ? (
+						<p>No search results found</p>
+					) : (
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+							{(reports as Report[]).map((report: any) => (
+								<ReportCard key={report._id} report={report} />
+							))}
+						</div>
+					)}
+				</div>
+			</section>
 		</>
 	);
 };
