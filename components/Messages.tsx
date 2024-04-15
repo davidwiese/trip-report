@@ -1,64 +1,45 @@
-"use client";
-import { useState, useEffect } from "react";
-import Spinner from "@/components/Spinner";
-import Message from "@/components/Message";
-
-type Message = {
-	_id: string;
-	report: {
-		name: string;
-	};
-	body: string;
-	sender: {
-		username: string;
-	};
-	email: string;
-	phone: string;
-	createdAt: string;
-	read: boolean;
-};
+import MessageCard from "@/components/Message";
+import connectDB from "@/config/database";
+import Message from "@/models/Message";
+import { getSessionUser } from "@/utils/getSessionUser";
+import { Message as MessageType } from "@/types";
 
 type MessagesProps = {
-	message?: {
-		_id: string;
-		report: {
-			name: string;
-		};
-		body: string;
-		sender: {
-			username: string;
-		};
-		email: string;
-		phone: string;
-		createdAt: string;
-	};
+	// Add any props here if needed
 };
 
-const Messages: React.FC<MessagesProps> = () => {
-	const [messages, setMessages] = useState<Message[]>([]);
-	const [loading, setLoading] = useState(true);
+const Messages: React.FC<MessagesProps> = async () => {
+	await connectDB();
 
-	useEffect(() => {
-		const getMessages = async () => {
-			try {
-				const res = await fetch("/api/messages");
-				if (res.status === 200) {
-					const data = await res.json();
-					setMessages(data);
-				}
-			} catch (error) {
-				console.log("Error fetching messages: ", error);
-			} finally {
-				setLoading(false);
-			}
-		};
+	const sessionUser = await getSessionUser();
 
-		getMessages();
-	}, []);
+	if (!sessionUser || !sessionUser.userId) {
+		// Handle case when session user or userId is not available
+		return <div>Loading...</div>;
+	}
 
-	return loading ? (
-		<Spinner loading={loading} />
-	) : (
+	const { userId } = sessionUser;
+
+	const readMessages = await Message.find({ recipient: userId, read: true })
+		.sort({ createdAt: -1 })
+		.populate("sender", "username")
+		.populate("report", "name")
+		.lean();
+
+	const unreadMessages = await Message.find({
+		recipient: userId,
+		read: false,
+	})
+		.sort({ createdAt: -1 })
+		.populate("sender", "username")
+		.populate("report", "name")
+		.lean();
+
+	const messages = [...unreadMessages, ...readMessages] as MessageType[];
+
+	// TODO: Fallback to loader
+
+	return (
 		<section className="bg-blue-50">
 			<div className="container m-auto py-24 max-w-6xl">
 				<div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
@@ -69,7 +50,7 @@ const Messages: React.FC<MessagesProps> = () => {
 							<p>You have no messages</p>
 						) : (
 							messages.map((message) => (
-								<Message key={message._id} message={message} />
+								<MessageCard key={message._id} message={message} />
 							))
 						)}
 					</div>

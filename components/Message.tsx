@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useGlobalContext } from "@/context/GlobalContext";
 
@@ -20,7 +20,7 @@ type MessageProps = {
 	};
 };
 
-const Message: React.FC<MessageProps> = ({ message }) => {
+const MessageCard: React.FC<MessageProps> = ({ message }) => {
 	const [isRead, setIsRead] = useState(message.read);
 	const [isDeleted, setIsDeleted] = useState(false);
 
@@ -121,4 +121,4 @@ const Message: React.FC<MessageProps> = ({ message }) => {
 		</div>
 	);
 };
-export default Message;
+export default MessageCard;

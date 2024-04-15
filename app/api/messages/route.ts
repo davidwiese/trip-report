@@ -9,42 +9,7 @@ type SessionUser = {
 	id: string;
 };
 
-// GET /api/messages
-export const GET = async () => {
-	try {
-		await connectDB();
-
-		const sessionUser = await getSessionUser();
-
-		if (!sessionUser || !sessionUser.user) {
-			return new Response(JSON.stringify("User ID is required"), {
-				status: 401,
-			});
-		}
-
-		const { userId } = sessionUser;
-
-		const readMessages = await Message.find({ recipient: userId, read: true })
-			.sort({ createdAt: -1 }) // Sort read messages in ascending order
-			.populate("sender", "username")
-			.populate("report", "name");
-
-		const unreadMessages = await Message.find({
-			recipient: userId,
-			read: false,
-		})
-			.sort({ createdAt: -1 }) // Sort unread messages in ascending order
-			.populate("sender", "username")
-			.populate("report", "name");
-
-		const messages = [...unreadMessages, ...readMessages];
-
-		return Response.json(messages);
-	} catch (error) {
-		console.log(error);
-		return new Response("Something went wrong", { status: 500 });
-	}
-};
+// NOTE: the GET function is no longer used as we can server render the Messages
 
 // POST /api/messages
 export const POST = async (request: NextRequest) => {

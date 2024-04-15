@@ -29,3 +29,23 @@ export type Report = {
 	createdAt: string;
 	updatedAt: string;
 };
+
+export type Message = {
+	_id: string;
+	sender: {
+		_id: string;
+		username: string;
+	};
+	recipient: string;
+	report: {
+		_id: string;
+		name: string;
+	};
+	name: string;
+	email: string;
+	phone: string;
+	body: string;
+	read: boolean;
+	createdAt: string;
+	updatedAt: string;
+};
