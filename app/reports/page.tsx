@@ -5,7 +5,7 @@ import connectDB from "@/config/database";
 
 type ReportsPageProps = {
 	searchParams: {
-		pageSize: number;
+		pageSize: string;
 		page: string;
 		reports: Report[];
 		total: number;
@@ -13,14 +13,17 @@ type ReportsPageProps = {
 };
 
 const ReportsPage: React.FC<ReportsPageProps> = async ({
-	searchParams: { pageSize = 6, page = "1" },
+	searchParams: { pageSize = "6", page = "1" },
 }) => {
 	await connectDB();
 
-	const skip = (parseInt(page, 10) - 1) * pageSize;
+	const validPage = parseInt(page, 10) || 1;
+	const validPageSize = parseInt(pageSize, 10) || 6;
+
+	const skip = (validPage - 1) * validPageSize;
 
 	const total = await Report.countDocuments({});
-	const reports = await Report.find({}).skip(skip).limit(pageSize);
+	const reports = await Report.find({}).skip(skip).limit(validPageSize);
 
 	return (
 		<>
@@ -32,8 +35,8 @@ const ReportsPage: React.FC<ReportsPageProps> = async ({
 			<Reports
 				reports={reports}
 				total={total}
-				page={parseInt(page, 10)}
-				pageSize={pageSize}
+				page={validPage}
+				pageSize={validPageSize}
 			/>
 		</>
 	);

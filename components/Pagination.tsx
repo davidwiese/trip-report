@@ -13,6 +13,11 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
 	const totalPages = Math.ceil(totalItems / pageSize);
 
+	// Check if page or pageSize is invalid
+	if (isNaN(page) || isNaN(pageSize) || pageSize <= 0) {
+		return <div>Invalid search parameters</div>;
+	}
+
 	return (
 		<section className="container mx-auto flex justify-center items-center my-8">
 			{page > 1 ? (
