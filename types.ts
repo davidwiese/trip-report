@@ -49,3 +49,13 @@ export type Message = {
 	createdAt: string;
 	updatedAt: string;
 };
+
+export type User = {
+	_id: string;
+	email: string;
+	username: string;
+	image?: string;
+	bookmarks: Report[];
+	createdAt: string;
+	updatedAt: string;
+};
