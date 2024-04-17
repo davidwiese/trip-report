@@ -12,15 +12,39 @@ type ProfilePageProps = {
 	sessionUser: {
 		userId: string;
 		user: {
-			name: string;
-			email: string;
-			image: string;
+			name?: string | null;
+			email?: string | null;
+			image?: string | null;
 		};
 	} | null;
 };
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ reports, sessionUser }) => {
+async function loader(): Promise<ProfilePageProps> {
+	await connectDB();
+	const sessionUser = await getSessionUser();
+
 	if (!sessionUser || !sessionUser.userId) {
+		return {
+			reports: [],
+			sessionUser: null,
+		};
+	}
+
+	const { userId } = sessionUser;
+
+	const reportsDocs = await Report.find({ owner: userId }).lean();
+	const reports = reportsDocs.map(convertToSerializableObject) as ReportType[];
+
+	return {
+		reports,
+		sessionUser,
+	};
+}
+
+const ProfilePage: React.FC<ProfilePageProps> = async () => {
+	const { reports, sessionUser } = await loader();
+
+	if (!sessionUser) {
 		return <p>You must be logged in to view this page.</p>;
 	}
 
@@ -64,32 +88,5 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ reports, sessionUser }) => {
 		</section>
 	);
 };
-
-export async function getStaticProps() {
-	await connectDB();
-
-	const sessionUser = await getSessionUser();
-
-	if (!sessionUser || !sessionUser.userId) {
-		return {
-			props: {
-				sessionUser: null,
-				reports: [],
-			},
-		};
-	}
-
-	const { userId } = sessionUser;
-
-	const reportsDocs = await Report.find({ owner: userId }).lean();
-	const reports = reportsDocs.map(convertToSerializableObject) as ReportType[];
-
-	return {
-		props: {
-			sessionUser,
-			reports,
-		},
-	};
-}
 
 export default ProfilePage;
