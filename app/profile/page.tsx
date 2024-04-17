@@ -65,8 +65,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ reports, sessionUser }) => {
 	);
 };
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
 	await connectDB();
+
 	const sessionUser = await getSessionUser();
 
 	if (!sessionUser || !sessionUser.userId) {
