@@ -7,19 +7,7 @@ import { convertToSerializableObject } from "@/utils/convertToObject";
 import Report from "@/models/Report";
 import { Report as ReportType } from "@/types";
 
-type ProfilePageProps = {
-	reports: ReportType[];
-	sessionUser: {
-		userId: string;
-		user: {
-			name?: string | null;
-			email?: string | null;
-			image?: string | null;
-		};
-	} | null;
-};
-
-async function loader(): Promise<ProfilePageProps> {
+async function loader() {
 	await connectDB();
 	const sessionUser = await getSessionUser();
 
@@ -41,7 +29,7 @@ async function loader(): Promise<ProfilePageProps> {
 	};
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = async () => {
+const ProfilePage: React.FC = async () => {
 	const { reports, sessionUser } = await loader();
 
 	if (!sessionUser) {
