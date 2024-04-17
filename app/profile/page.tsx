@@ -8,7 +8,7 @@ import Report from "@/models/Report";
 import { Report as ReportType } from "@/types";
 
 type ProfilePageProps = {
-	report: ReportType;
+	reports: ReportType[];
 };
 
 const ProfilePage: React.FC<ProfilePageProps> = async () => {
