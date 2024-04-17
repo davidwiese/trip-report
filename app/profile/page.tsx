@@ -7,23 +7,22 @@ import { convertToSerializableObject } from "@/utils/convertToObject";
 import Report from "@/models/Report";
 import { Report as ReportType } from "@/types";
 
-const ProfilePage: React.FC = async () => {
-	await connectDB();
+type ProfilePageProps = {
+	reports: ReportType[];
+	sessionUser: {
+		userId: string;
+		user: {
+			name: string;
+			email: string;
+			image: string;
+		};
+	} | null;
+};
 
-	const sessionUser = await getSessionUser();
-
+const ProfilePage: React.FC<ProfilePageProps> = ({ reports, sessionUser }) => {
 	if (!sessionUser || !sessionUser.userId) {
-		throw new Error("Must be logged in");
+		return <p>You must be logged in to view this page.</p>;
 	}
-
-	const { userId } = sessionUser;
-
-	if (!userId) {
-		throw new Error("User ID is required");
-	}
-
-	const reportsDocs = await Report.find({ owner: userId }).lean();
-	const reports = reportsDocs.map(convertToSerializableObject) as ReportType[];
 
 	return (
 		<section className="bg-blue-50">
@@ -65,4 +64,31 @@ const ProfilePage: React.FC = async () => {
 		</section>
 	);
 };
+
+export async function getServerSideProps() {
+	await connectDB();
+	const sessionUser = await getSessionUser();
+
+	if (!sessionUser || !sessionUser.userId) {
+		return {
+			props: {
+				sessionUser: null,
+				reports: [],
+			},
+		};
+	}
+
+	const { userId } = sessionUser;
+
+	const reportsDocs = await Report.find({ owner: userId }).lean();
+	const reports = reportsDocs.map(convertToSerializableObject) as ReportType[];
+
+	return {
+		props: {
+			sessionUser,
+			reports,
+		},
+	};
+}
+
 export default ProfilePage;
