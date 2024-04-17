@@ -7,11 +7,7 @@ import { convertToSerializableObject } from "@/utils/convertToObject";
 import Report from "@/models/Report";
 import { Report as ReportType } from "@/types";
 
-type ProfilePageProps = {
-	reports: ReportType[];
-};
-
-const ProfilePage: React.FC<ProfilePageProps> = async () => {
+const ProfilePage: React.FC = async () => {
 	await connectDB();
 
 	const sessionUser = await getSessionUser();
