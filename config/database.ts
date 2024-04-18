@@ -13,17 +13,9 @@ const connectDB = async () => {
 	}
 
 	// Connect to MongoDB
-	try {
-		if (process.env.MONGODB_URI) {
-			await mongoose.connect(process.env.MONGODB_URI);
-			connected = true;
-			console.log("MongoDB connected...");
-		} else {
-			console.log("MongoDB URL is undefined");
-		}
-	} catch (error) {
-		console.log(error);
-	}
+	await mongoose.connect(process.env.MONGODB_URI as string);
+	connected = true;
+	console.log("MongoDB connected...");
 };
 
 export default connectDB;
