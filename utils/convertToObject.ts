@@ -5,6 +5,11 @@
  * @returns {Object} A plain JavaScript object that is a serializable representation of the input document.
  */
 
+/**
+ * Recursively converts complex types (like MongoDB ObjectId, Dates, etc.) into strings
+ * and handles nested structures.
+ */
+
 export function convertToSerializableObject(
 	leanDocument: Record<string, any>
 ): Record<string, any> {
