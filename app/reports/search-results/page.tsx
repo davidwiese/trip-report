@@ -32,7 +32,7 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 		],
 	};
 
-	// Only check for property if its not 'All'
+	// Only check for report if its not 'All'
 	if (reportType && reportType !== "All") {
 		const typePattern = new RegExp(reportType, "i");
 		query.type = typePattern;

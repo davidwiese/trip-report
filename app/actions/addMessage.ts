@@ -11,7 +11,7 @@ type FormState = {
 };
 
 // NOTE: here we have previousState as a first argument as in our
-// PropertyContactForm we are using the useFormState hook from React DOM to give
+// ReportContactForm we are using the useFormState hook from React DOM to give
 // the user some information about the state of the form submission.
 // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#server-side-validation-and-error-handling
 
@@ -25,7 +25,7 @@ async function addMessage(
 
 	// NOTE: Here we send an { error } object back which we can use to then show
 	// the user a toast message.
-	// We don't want to throw here like we did in our property server actions as that would
+	// We don't want to throw here like we did in our report server actions as that would
 	// then be 'caught' by our error.jsx ErrorBoundary component and show the user
 	// our Error page.
 

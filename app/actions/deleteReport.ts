@@ -47,7 +47,7 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 		}
 	}
 
-	// Proceed with property deletion
+	// Proceed with report deletion
 	await report.deleteOne();
 
 	// Revalidate the cache

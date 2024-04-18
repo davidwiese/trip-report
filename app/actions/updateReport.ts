@@ -31,7 +31,7 @@ async function updateReport(reportId: string, formData: FormData) {
 	// Access all values from amenities and images
 	const amenities = formData.getAll("amenities");
 
-	// Create propertyData object for database
+	// Create reportData object for database
 	const reportData = {
 		type: formData.get("type"),
 		name: formData.get("name"),
