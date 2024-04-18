@@ -1,72 +1,87 @@
 "use client";
-import { Report } from "@/types";
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { FaPaperPlane } from "react-icons/fa";
 import { toast } from "react-toastify";
+import addMessage from "@/app/actions/addMessage";
+import { useFormStatus, useFormState } from "react-dom";
+import { useEffect, useRef } from "react";
+import { Report } from "@/types";
 
 type ReportContactFormProps = {
 	report: Report;
 };
 
+// NOTE: Using a separate component for our submit button allows us to use the
+// useFormStatus hook to give the user feedback about sending a message, in the
+// button itself.
+// https://react.dev/reference/react-dom/hooks/useFormStatus
+
+function SubmitMessageButton() {
+	const status = useFormStatus();
+	return (
+		<button
+			className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center"
+			type="submit"
+		>
+			<FaPaperPlane className="mr-2" />{" "}
+			{status.pending ? "Sending..." : "Send Message"}
+		</button>
+	);
+}
+
+// NOTE: This component has been changed to use server actions to send a message
+// to another user.
+
 const ReportContactForm: React.FC<ReportContactFormProps> = ({ report }) => {
 	const { data: session } = useSession();
-	const [name, setName] = useState("");
-	const [email, setEmail] = useState("");
-	const [phone, setPhone] = useState("");
-	const [message, setMessage] = useState("");
-	const [wasSubmitted, setWasSubmitted] = useState(false);
+	// NOTE: use the useFormState hook to know when form has submitted.
+	// https://react.dev/reference/react-dom/hooks/useFormState
+	const [submitState, formAction] = useFormState(addMessage, {
+		error: "",
+		submitted: false,
+	});
+	const formRef = useRef<HTMLFormElement>(null);
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		const data = {
-			name,
-			email,
-			phone,
-			message,
-			recipient: report.owner,
-			report: report._id,
-		};
-
-		try {
-			const res = await fetch("/api/messages", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(data),
-			});
-
-			if (res.status === 200) {
-				toast.success("Message sent successfully");
-				setWasSubmitted(true);
-			} else if (res.status === 400 || res.status === 401) {
-				const dataObj = await res.json();
-				toast.error(dataObj.message);
-			} else {
-				toast.error("Error sending message");
+	useEffect(() => {
+		if (submitState.error) {
+			toast.error(submitState.error);
+			// Check for specific error and reset form if needed
+			if (
+				submitState.error === "You can not send a message to yourself" &&
+				formRef.current
+			) {
+				formRef.current.reset(); // Reset the form using ref
 			}
-		} catch (error) {
-			console.log(error);
-			toast.error("Error sending message");
-		} finally {
-			setName("");
-			setEmail("");
-			setPhone("");
-			setMessage("");
 		}
-	};
+		if (submitState.submitted) {
+			toast.success("Message sent successfully");
+		}
+	}, [submitState]);
 
 	return (
 		<div className="bg-white p-6 rounded-lg shadow-md">
 			<h3 className="text-xl font-bold mb-6">Contact Report Author</h3>
 			{!session ? (
-				<p>Log in to send a message</p>
-			) : wasSubmitted ? (
-				<p className="text-green-500 mb-4">Your message has been sent</p>
+				<p>You must be logged in to send a message</p>
+			) : submitState.submitted ? (
+				<p className="text-green-500 mb-4">
+					Your message has been sent successfully
+				</p>
 			) : (
-				<form onSubmit={handleSubmit}>
+				<form ref={formRef} action={formAction}>
+					{/* NOTE: Here we have two hidden inputs to add the report id and the owner to our FormData submission */}
+					<input
+						type="hidden"
+						id="report"
+						name="report"
+						defaultValue={report._id}
+					/>
+					<input
+						type="hidden"
+						id="recipient"
+						name="recipient"
+						defaultValue={report.owner}
+					/>
 					<div className="mb-4">
 						<label
 							className="block text-gray-700 text-sm font-bold mb-2"
@@ -77,11 +92,10 @@ const ReportContactForm: React.FC<ReportContactFormProps> = ({ report }) => {
 						<input
 							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 							id="name"
+							name="name"
 							type="text"
 							placeholder="Enter your name"
 							required
-							value={name}
-							onChange={(e) => setName(e.target.value)}
 						/>
 					</div>
 					<div className="mb-4">
@@ -94,11 +108,10 @@ const ReportContactForm: React.FC<ReportContactFormProps> = ({ report }) => {
 						<input
 							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 							id="email"
+							name="email"
 							type="email"
 							placeholder="Enter your email"
 							required
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</div>
 					<div className="mb-4">
@@ -113,8 +126,6 @@ const ReportContactForm: React.FC<ReportContactFormProps> = ({ report }) => {
 							id="phone"
 							type="text"
 							placeholder="Enter your phone number"
-							value={phone}
-							onChange={(e) => setPhone(e.target.value)}
 						/>
 					</div>
 					<div className="mb-4">
@@ -127,18 +138,12 @@ const ReportContactForm: React.FC<ReportContactFormProps> = ({ report }) => {
 						<textarea
 							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-44 focus:outline-none focus:shadow-outline"
 							id="message"
+							name="message"
 							placeholder="Enter your message"
-							value={message}
-							onChange={(e) => setMessage(e.target.value)}
 						></textarea>
 					</div>
 					<div>
-						<button
-							className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center"
-							type="submit"
-						>
-							<FaPaperPlane className="mr-2" /> Send Message
-						</button>
+						<SubmitMessageButton />
 					</div>
 				</form>
 			)}

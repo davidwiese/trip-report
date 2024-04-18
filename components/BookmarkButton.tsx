@@ -1,12 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FaBookmark } from "react-icons/fa";
-import { Report } from "@/types";
+import { Report as ReportType } from "@/types";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
+import checkBookmarkStatus from "@/app/actions/checkBookmarkStatus";
+import bookmarkReport from "@/app/actions/bookmarkReport";
 
 type BookmarkButtonProps = {
-	report: Report;
+	report: ReportType;
 };
 
 type SessionUser = {
@@ -24,35 +26,18 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ report }) => {
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-		const checkBookmarkStatus = async () => {
-			if (!userId) {
-				setLoading(false);
-				return;
-			}
+		if (!userId) {
+			setLoading(false);
+			return;
+		}
 
-			try {
-				const res = await fetch("/api/bookmarks/check", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						reportId: report._id,
-					}),
-				});
-
-				if (res.status === 200) {
-					const data = await res.json();
-					setIsBookmarked(data.isBookmarked);
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		checkBookmarkStatus();
+		// NOTE: here we can use a server action to check the bookmark status for a
+		// specific use for the report
+		checkBookmarkStatus(report._id).then((res) => {
+			if (res.error) toast.error(res.error);
+			if (res.isBookmarked) setIsBookmarked(res.isBookmarked);
+			setLoading(false);
+		});
 	}, [report._id, userId]);
 
 	const handleClick = async () => {
@@ -61,26 +46,13 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ report }) => {
 			return;
 		}
 
-		try {
-			const res = await fetch("/api/bookmarks", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					reportId: report._id,
-				}),
-			});
-
-			if (res.status === 200) {
-				const data = await res.json();
-				toast.success(data.message);
-				setIsBookmarked(data.isBookmarked);
-			}
-		} catch (error) {
-			console.log(error);
-			toast.error("Something went wrong");
-		}
+		// NOTE: here we can use a server action to mark bookmark a report for the
+		// user
+		bookmarkReport(report._id).then((res) => {
+			if (res.error) return toast.error(res.error);
+			setIsBookmarked(res.isBookmarked);
+			toast.success(res.message);
+		});
 	};
 
 	if (loading) {
