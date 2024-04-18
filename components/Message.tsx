@@ -4,22 +4,10 @@ import { toast } from "react-toastify";
 import { useGlobalContext } from "@/context/GlobalContext";
 import markMessageAsRead from "@/app/actions/markMessageAsRead";
 import deleteMessage from "@/app/actions/deleteMessage";
+import { Message as MessageType } from "@/types";
 
 type MessageProps = {
-	message: {
-		_id: string;
-		report: {
-			name: string;
-		};
-		body: string;
-		sender: {
-			username: string;
-		};
-		email: string;
-		phone: string;
-		createdAt: string;
-		read: boolean;
-	};
+	message: MessageType;
 };
 
 const MessageCard: React.FC<MessageProps> = ({ message }) => {

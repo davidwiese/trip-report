@@ -3,6 +3,7 @@ import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { Message as MessageType } from "@/types";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 
 type MessagesPageProps = {
 	// Add any props here if needed
@@ -43,7 +44,9 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 		.populate("report", "name")
 		.lean();
 
-	const messages = [...unreadMessages, ...readMessages];
+	const messages = [...unreadMessages, ...readMessages].map((message) =>
+		convertToSerializableObject(message)
+	);
 
 	return (
 		<section className="bg-blue-50">
