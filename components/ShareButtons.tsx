@@ -22,6 +22,10 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({
 	report,
 	PUBLIC_DOMAIN,
 }) => {
+	// NOTE: here we receive a prop from our parent page component which is
+	// server rendered and knows if we are in deployed to Vercel or developing
+	// locally.
+
 	const shareUrl = `${PUBLIC_DOMAIN}/reports/${report._id}`;
 
 	return (

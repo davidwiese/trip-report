@@ -18,6 +18,9 @@ type ReportPageProps = {
 };
 
 const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
+	// NOTE: here we can check if we are running in in production on vercel and get
+	// the public URL at build time for the ShareButtons, or fall back to localhost in development.
+
 	const PUBLIC_DOMAIN = process.env.VERCEL_URL
 		? `https://${process.env.VERCEL_URL}`
 		: "http://localhost:3000";
@@ -30,9 +33,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	// Null check
 	if (!reportDoc) {
 		return (
-			<h1 className="text-center text-2xl font-bold mt-10">
-				Report Not Found
-			</h1>
+			<h1 className="text-center text-2xl font-bold mt-10">Report Not Found</h1>
 		);
 	}
 
