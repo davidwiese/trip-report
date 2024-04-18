@@ -1,29 +1,33 @@
 import mongoose from "mongoose";
 
-let connected = false;
+const options = {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+	bufferCommands: false, // Disable mongoose buffering
+};
 
 const connectDB = async () => {
 	// Only fields specified in our schema will be saved to the db
 	mongoose.set("strictQuery", true);
 
-	// Since we're using Next API serverless functions, if the db is already connected, don't connect again
-	if (connected) {
+	// Since we're using Next API serverless functions, check mongoose connection state
+	// 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
+	if (mongoose.connection.readyState === 1) {
 		console.log("MongoDB is already connected...");
 		return;
 	}
 
 	// Connect to MongoDB
-	try {
-		if (process.env.MONGODB_URI) {
-			await mongoose.connect(process.env.MONGODB_URI);
-			connected = true;
+	const mongoURI = process.env.MONGODB_URI;
+	if (mongoURI) {
+		try {
+			await mongoose.connect(mongoURI, options);
 			console.log("MongoDB connected...");
-		} else {
-			console.log("MongoDB URL is undefined");
+		} catch (err) {
+			console.error("Error connecting to MongoDB:", err);
 		}
-	} catch (error) {
-		console.log(error);
+	} else {
+		console.error("MongoDB URI is not defined or is not a string.");
 	}
 };
-
 export default connectDB;
