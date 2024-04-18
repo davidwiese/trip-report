@@ -166,7 +166,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 										/>
 									</svg>
 								</button>
-								<UnreadMessageCount session={session}/>
+								<UnreadMessageCount />
 							</Link>
 							{/* <!-- Profile dropdown button --> */}
 							<div className="relative ml-3">
