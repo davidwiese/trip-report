@@ -1,18 +1,20 @@
 import Link from "next/link";
 import ReportCard from "@/components/ReportCard";
-import { fetchReports } from "@/utils/requests";
-import { Report } from "@/types";
+import connectDB from "@/config/database";
+import { Report as ReportType } from "@/types";
+import Report from "@/models/Report";
 
 type HomeReportsProps = {
 	// Add any props here if needed
 };
 
 const HomeReports: React.FC<HomeReportsProps> = async () => {
-	const data = await fetchReports();
+	await connectDB();
 
-	const recentReports = data.reports
-		.sort(() => Math.random() - Math.random())
-		.slice(0, 3);
+	const recentReports: ReportType[] = await Report.find({})
+		.sort({ createdAt: -1 })
+		.limit(3)
+		.lean();
 
 	return (
 		<>
@@ -25,7 +27,7 @@ const HomeReports: React.FC<HomeReportsProps> = async () => {
 						{recentReports.length === 0 ? (
 							<p>No reports found</p>
 						) : (
-							recentReports.map((report: Report) => (
+							recentReports.map((report: ReportType) => (
 								<ReportCard key={report._id} report={report} />
 							))
 						)}

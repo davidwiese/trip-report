@@ -1,90 +1,40 @@
-"use client";
-import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
 import profileDefault from "@/assets/images/profile.png";
-import Spinner from "@/components/Spinner";
-import { toast } from "react-toastify";
+import ProfileReports from "@/components/ProfileReports";
+import connectDB from "@/config/database";
+import { getSessionUser } from "@/utils/getSessionUser";
+import { convertToSerializableObject } from "@/utils/convertToObject";
+import Report from "@/models/Report";
+import { Report as ReportType } from "@/types";
 
-type ProfilePageProps = {
-	// Add any props here if needed
-};
+async function loader() {
+	await connectDB();
+	const sessionUser = await getSessionUser();
 
-// Define the Report type
-interface Report {
-	_id: string;
-	name: string;
-	images: string[];
-	location: {
-		street: string;
-		city: string;
-		state: string;
+	if (!sessionUser || !sessionUser.userId) {
+		return {
+			reports: [],
+			sessionUser: null,
+		};
+	}
+
+	const { userId } = sessionUser;
+
+	const reportsDocs = await Report.find({ owner: userId }).lean();
+	const reports = reportsDocs.map(convertToSerializableObject) as ReportType[];
+
+	return {
+		reports,
+		sessionUser,
 	};
 }
 
-type SessionUser = {
-	id: string;
-};
+const ProfilePage: React.FC = async () => {
+	const { reports, sessionUser } = await loader();
 
-const ProfilePage: React.FC<ProfilePageProps> = () => {
-	const { data: session } = useSession();
-	const profileImage = session?.user?.image;
-	const profileName = session?.user?.name;
-	const profileEmail = session?.user?.email;
-
-	const [reports, setReports] = useState<Report[]>([]);
-	const [loading, setLoading] = useState(true);
-
-	useEffect(() => {
-		const fetchUserReports = async (userId: string | undefined) => {
-			if (!userId) {
-				return;
-			}
-
-			try {
-				const res = await fetch(`/api/reports/user/${userId}`);
-				if (res.status === 200) {
-					const data = await res.json();
-					setReports(data);
-				}
-			} catch (error) {
-				console.log(error);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		// Fetch user reports when session is available
-		if (session?.user) {
-			fetchUserReports((session.user as SessionUser).id);
-		}
-	}, [session]);
-
-	const handleDeleteReport = async (reportId: string) => {
-		const confirmed = window.confirm(
-			"Are you sure you want to delete this report?"
-		);
-
-		if (!confirmed) return;
-
-		try {
-			const res = await fetch(`/api/reports/${reportId}`, { method: "DELETE" });
-			if (res.status === 200) {
-				// Remove the report from state
-				const updatedReports = reports.filter(
-					(report) => report._id !== reportId
-				);
-				setReports(updatedReports);
-				toast.success("Report deleted");
-			} else {
-				toast.error("Failed to delete report");
-			}
-		} catch (error) {
-			toast.error("Failed to delete report");
-			console.log(error);
-		}
-	};
+	if (!sessionUser) {
+		return <p>You must be logged in to view this page.</p>;
+	}
 
 	return (
 		<section className="bg-blue-50">
@@ -96,64 +46,28 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 							<div className="mb-4">
 								<Image
 									className="h-32 w-32 md:h-48 md:w-48 rounded-full mx-auto md:mx-0"
-									src={profileImage || profileDefault}
+									src={sessionUser.user.image || profileDefault}
 									alt="User"
 									width={200}
 									height={200}
 								/>
 							</div>
 							<h2 className="text-2xl mb-4">
-								<span className="font-bold block">Name: </span> {profileName}
+								<span className="font-bold block">Name: </span>{" "}
+								{sessionUser.user.name}
 							</h2>
 							<h2 className="text-2xl">
-								<span className="font-bold block">Email: </span> {profileEmail}
+								<span className="font-bold block">Email: </span>{" "}
+								{sessionUser.user.email}
 							</h2>
 						</div>
 
 						<div className="md:w-3/4 md:pl-4">
-							<h2 className="text-xl font-semibold mb-4">Your Listings</h2>
-							{!loading && reports.length === 0 && (
+							<h2 className="text-xl font-semibold mb-4">Your Reports</h2>
+							{reports.length === 0 ? (
 								<p>You have no trip reports</p>
-							)}
-							{loading ? (
-								<Spinner loading={loading} />
 							) : (
-								reports.map((report) => (
-									<div key={report._id} className="mb-10">
-										<Link href={`/reports/${report._id}`}>
-											<Image
-												className="h-32 w-full rounded-md object-cover"
-												src={report.images[0]}
-												alt=""
-												width={500}
-												height={100}
-												priority={true}
-											/>
-										</Link>
-										<div className="mt-2">
-											<p className="text-lg font-semibold">{report.name}</p>
-											<p className="text-gray-600">
-												Address: {report.location.street} {report.location.city}{" "}
-												{report.location.state}
-											</p>
-										</div>
-										<div className="mt-2">
-											<Link
-												href={`/reports/${report._id}/edit`}
-												className="bg-blue-500 text-white px-3 py-3 rounded-md mr-2 hover:bg-blue-600"
-											>
-												Edit
-											</Link>
-											<button
-												onClick={() => handleDeleteReport(report._id)}
-												className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
-												type="button"
-											>
-												Delete
-											</button>
-										</div>
-									</div>
-								))
+								<ProfileReports reports={reports} />
 							)}
 						</div>
 					</div>
@@ -162,4 +76,5 @@ const ProfilePage: React.FC<ProfilePageProps> = () => {
 		</section>
 	);
 };
+
 export default ProfilePage;
