@@ -20,8 +20,8 @@ export const metadata = {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 	return (
-		<GlobalProvider>
-			<AuthProvider>
+		<AuthProvider>
+			<GlobalProvider>
 				<html lang="en">
 					<body>
 						<Navbar />
@@ -30,8 +30,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 						<ToastContainer />
 					</body>
 				</html>
-			</AuthProvider>
-		</GlobalProvider>
+			</GlobalProvider>
+		</AuthProvider>
 	);
 };
 export default MainLayout;
