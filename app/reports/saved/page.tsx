@@ -1,6 +1,5 @@
 import ReportCard from "@/components/ReportCard";
 import connectDB from "@/config/database";
-import Report from "@/models/Report";
 import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { Report as ReportType, User as UserType } from "@/types";

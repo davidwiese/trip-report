@@ -1,6 +1,5 @@
 import MessageCard from "@/components/Message";
 import connectDB from "@/config/database";
-import Report from "@/models/Report";
 import Message from "@/models/Message";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { Message as MessageType } from "@/types";

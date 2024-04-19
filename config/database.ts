@@ -25,10 +25,10 @@ const connectDB = async () => {
 			await mongoose.connect(mongoURI, options);
 			console.log("MongoDB connected...");
 
-			// Register models
-			User; // This will ensure the User model is registered
-			Report; // This will ensure the Report model is registered
-			Message; // This will ensure the Message model is registered
+			// Explicitly register models
+			mongoose.model("User", User.schema);
+			mongoose.model("Report", Report.schema);
+			mongoose.model("Message", Message.schema);
 		} catch (err) {
 			console.error("Error connecting to MongoDB:", err);
 		}
