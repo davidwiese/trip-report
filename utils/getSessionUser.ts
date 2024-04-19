@@ -1,10 +1,6 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/utils/authOptions";
 
-interface SessionUserType {
-	id: string;
-}
-
 export const getSessionUser = async () => {
 	try {
 		const session = await getServerSession(authOptions);
@@ -13,21 +9,12 @@ export const getSessionUser = async () => {
 			throw new Error("No session or user found");
 		}
 
-		const expiresAt = new Date(session.expires);
-		const currentTime = new Date();
-
-		if (expiresAt < currentTime) {
-			throw new Error("Session has expired");
-		}
-
-		const user = session.user as SessionUserType;
-
 		return {
-			user,
-			userId: user.id,
+			user: session.user,
+			userId: (session.user as { id: string }).id,
 		};
 	} catch (error) {
 		console.error("Error in getSessionUser:", error);
-		throw error;
+		return null;
 	}
 };
