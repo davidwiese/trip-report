@@ -1,3 +1,4 @@
+// import "./models/Message";
 import MessageCard from "@/components/Message";
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
@@ -10,6 +11,9 @@ type MessagesPageProps = {
 };
 
 const MessagePage: React.FC<MessagesPageProps> = async () => {
+	require("./models/Report");
+	require("./models/User");
+	require("./models/Message");
 	await connectDB();
 
 	const sessionUser = await getSessionUser();
