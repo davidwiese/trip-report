@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const ReportSchema = new Schema(
 	{
@@ -95,7 +95,6 @@ const ReportSchema = new Schema(
 );
 
 // Prevent creation of multiple instances of the same model
-const Report =
-	mongoose.model("Report") || mongoose.model("Report", ReportSchema);
+const Report = models.Report || model("Report", ReportSchema);
 
 export default Report;

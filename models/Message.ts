@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, models } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const MessageSchema = new Schema(
 	{
@@ -43,7 +43,6 @@ const MessageSchema = new Schema(
 );
 
 // Prevent creation of multiple instances of the same model
-const Message =
-	mongoose.model("Message") || mongoose.model("Message", MessageSchema);
+const Message = models.Message || model("Message", MessageSchema);
 
 export default Message;
