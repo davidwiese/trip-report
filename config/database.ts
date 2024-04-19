@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
 const options = {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
 	bufferCommands: false, // Disable mongoose buffering
 };
 
