@@ -14,8 +14,6 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 	await connectDB();
 
 	require("@/models/Report");
-	require("@/models/User");
-	require("@/models/Message");
 
 	const sessionUser = await getSessionUser();
 
