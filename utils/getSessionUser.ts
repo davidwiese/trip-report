@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/utils/authOptions";
 
-interface SessionUser {
+interface SessionUserType {
 	id: string;
 }
 
@@ -20,7 +20,7 @@ export const getSessionUser = async () => {
 			throw new Error("Session has expired");
 		}
 
-		const user = session.user as SessionUser;
+		const user = session.user as SessionUserType;
 
 		return {
 			user,
