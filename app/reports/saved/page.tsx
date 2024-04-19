@@ -11,6 +11,10 @@ type SavedReportsPageProps = {
 const SavedReportsPage: React.FC<SavedReportsPageProps> = async () => {
 	await connectDB();
 
+	require("@/models/Report");
+	require("@/models/User");
+	require("@/models/Message");
+
 	const sessionUser = await getSessionUser();
 
 	if (!sessionUser || !sessionUser.userId) {

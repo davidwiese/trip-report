@@ -11,10 +11,11 @@ type MessagesPageProps = {
 };
 
 const MessagePage: React.FC<MessagesPageProps> = async () => {
-	require("./models/Report");
-	require("./models/User");
-	require("./models/Message");
 	await connectDB();
+
+	require("@/models/Report");
+	require("@/models/User");
+	require("@/models/Message");
 
 	const sessionUser = await getSessionUser();
 
