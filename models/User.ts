@@ -1,4 +1,4 @@
-import { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema(
 	{
@@ -27,6 +27,7 @@ const UserSchema = new Schema(
 );
 
 // Prevent creation of multiple instances of the same model
-const User = models.User || model("User", UserSchema);
+let Use = mongoose.model("User", UserSchema);
+const User = mongoose.model("User") || Use;
 
 export default User;
