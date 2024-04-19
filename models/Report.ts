@@ -95,7 +95,7 @@ const ReportSchema = new Schema(
 );
 
 // Prevent creation of multiple instances of the same model
-let Repo = mongoose.model("Report", ReportSchema);
-const Report = mongoose.model("Report") || Repo;
+const Report =
+	mongoose.model("Report") || mongoose.model("Report", ReportSchema);
 
 export default Report;

@@ -43,7 +43,7 @@ const MessageSchema = new Schema(
 );
 
 // Prevent creation of multiple instances of the same model
-let Mess = mongoose.model("Message", MessageSchema);
-const Message = mongoose.model("Message") || Mess;
+const Message =
+	mongoose.model("Message") || mongoose.model("Message", MessageSchema);
 
 export default Message;

@@ -27,7 +27,6 @@ const UserSchema = new Schema(
 );
 
 // Prevent creation of multiple instances of the same model
-let Use = mongoose.model("User", UserSchema);
-const User = mongoose.model("User") || Use;
+const User = mongoose.model("User") || mongoose.model("User", UserSchema);
 
 export default User;
