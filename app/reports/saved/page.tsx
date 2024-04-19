@@ -1,5 +1,6 @@
 import ReportCard from "@/components/ReportCard";
 import connectDB from "@/config/database";
+import Report from "@/models/Report";
 import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { Report as ReportType, User as UserType } from "@/types";
@@ -10,8 +11,6 @@ type SavedReportsPageProps = {
 
 const SavedReportsPage: React.FC<SavedReportsPageProps> = async () => {
 	await connectDB();
-
-	require("@/models/Report");
 
 	const sessionUser = await getSessionUser();
 
