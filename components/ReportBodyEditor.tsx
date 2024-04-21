@@ -3,6 +3,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import MenuBar from "@/components/MenuBar";
+import Heading from "@tiptap/extension-heading";
 
 const ReportBodyEditor = ({
 	onChange,
@@ -20,9 +21,12 @@ const ReportBodyEditor = ({
 			StarterKit.configure({
 				code: false,
 				codeBlock: false,
-				heading: {
-					levels: [2, 3],
+			}),
+			Heading.configure({
+				HTMLAttributes: {
+					class: "text-3xl font-bold mb-4",
 				},
+				levels: [2],
 			}),
 		],
 	});

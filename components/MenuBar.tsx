@@ -5,7 +5,6 @@ import {
 	Italic,
 	Strikethrough,
 	Heading2,
-	Heading3,
 	List,
 	ListOrdered,
 	Quote,
@@ -34,7 +33,7 @@ const MenuBar = ({ editor }: Props) => {
 					editor.isActive("paragraph") ? "bg-black text-white" : ""
 				}`}
 			>
-				<Pilcrow className="w-4 h-4" /> paragraph
+				<Pilcrow className="w-4 h-4" />
 			</button>
 			<button
 				onClick={(e) => {
@@ -45,7 +44,7 @@ const MenuBar = ({ editor }: Props) => {
 					editor.isActive("bold") ? "bg-black text-white" : ""
 				}`}
 			>
-				<BoldIcon className="w-4 h-4" /> bold
+				<BoldIcon className="w-4 h-4" />
 			</button>
 			<button
 				onClick={(e) => {
@@ -56,7 +55,7 @@ const MenuBar = ({ editor }: Props) => {
 					editor.isActive("italic") ? "bg-black text-white" : ""
 				}`}
 			>
-				<Italic className="w-4 h-4" /> italic
+				<Italic className="w-4 h-4" />
 			</button>
 			<button
 				onClick={(e) => {
@@ -67,7 +66,18 @@ const MenuBar = ({ editor }: Props) => {
 					editor.isActive("strike") ? "bg-black text-white" : ""
 				}`}
 			>
-				<Strikethrough className="w-4 h-4" /> strikethrough
+				<Strikethrough className="w-4 h-4" />
+			</button>
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					editor.chain().focus().toggleHeading({ level: 2 }).run();
+				}}
+				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
+					editor.isActive("heading", { level: 2 }) ? "bg-black text-white" : ""
+				}`}
+			>
+				<Heading2 className="w-4 h-4" />
 			</button>
 		</div>
 	);
