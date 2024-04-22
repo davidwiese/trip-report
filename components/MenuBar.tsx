@@ -79,6 +79,48 @@ const MenuBar = ({ editor }: Props) => {
 			>
 				<Heading2 className="w-4 h-4" />
 			</button>
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					editor.chain().focus().toggleBulletList().run();
+				}}
+				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
+					editor.isActive("bulletList") ? "bg-black text-white" : ""
+				}`}
+			>
+				<List className="w-4 h-4" />
+			</button>
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					editor.chain().focus().toggleOrderedList().run();
+				}}
+				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
+					editor.isActive("orderedList") ? "bg-black text-white" : ""
+				}`}
+			>
+				<ListOrdered className="w-4 h-4" />
+			</button>
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					editor.chain().focus().toggleBlockquote().run();
+				}}
+				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
+					editor.isActive("blockquote") ? "bg-black text-white" : ""
+				}`}
+			>
+				<Quote className="w-4 h-4" />
+			</button>
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					editor.chain().focus().setHorizontalRule().run();
+				}}
+				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1`}
+			>
+				<Minus className="w-4 h-4" />
+			</button>
 		</div>
 	);
 };
