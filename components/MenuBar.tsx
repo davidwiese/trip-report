@@ -121,6 +121,24 @@ const MenuBar = ({ editor }: Props) => {
 			>
 				<Minus className="w-4 h-4" />
 			</button>
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					editor.chain().focus().undo().run();
+				}}
+				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1`}
+			>
+				<Undo className="w-4 h-4" />
+			</button>
+			<button
+				onClick={(e) => {
+					e.preventDefault();
+					editor.chain().focus().redo().run();
+				}}
+				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1`}
+			>
+				<Redo className="w-4 h-4" />
+			</button>
 		</div>
 	);
 };
