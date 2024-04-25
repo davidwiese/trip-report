@@ -1,3 +1,9 @@
+export type Rating = {
+	user: string;
+	rating: number;
+	report: string;
+};
+
 export type Report = {
 	_id: string;
 	owner: string;
@@ -13,6 +19,26 @@ export type Report = {
 	endDate: string;
 	images: string[];
 	isFeatured: boolean;
+	ratings: Rating[];
+	createdAt: string;
+	updatedAt: string;
+};
+
+export type User = {
+	_id: string;
+	email: string;
+	username: string;
+	password?: string;
+	provider?: string;
+	providerId?: string;
+	bio?: string;
+	totalReports: number;
+	totalDistance: number;
+	totalElevationGain: number;
+	totalElevationLoss: number;
+	reports: Report[];
+	image?: string;
+	bookmarks: Report[];
 	createdAt: string;
 	updatedAt: string;
 };
@@ -33,16 +59,6 @@ export type Message = {
 	phone: string;
 	body: string;
 	read: boolean;
-	createdAt: string;
-	updatedAt: string;
-};
-
-export type User = {
-	_id: string;
-	email: string;
-	username: string;
-	image?: string;
-	bookmarks: Report[];
 	createdAt: string;
 	updatedAt: string;
 };

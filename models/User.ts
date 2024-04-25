@@ -11,6 +11,44 @@ const UserSchema = new Schema(
 			type: String,
 			required: [true, "Username is required"],
 		},
+		password: {
+			type: String,
+			required: function (this: any) {
+				// Require password only if no providerId is present (i.e., not using OAuth)
+				return !this.providerId;
+			},
+		},
+		provider: {
+			type: String, // e.g., 'google', 'facebook', etc.
+		},
+		providerId: {
+			type: String, // ID from the OAuth provider
+		},
+		bio: {
+			type: String,
+		},
+		totalReports: {
+			type: Number,
+			default: 0,
+		},
+		totalDistance: {
+			type: Number,
+			default: 0,
+		},
+		totalElevationGain: {
+			type: Number,
+			default: 0,
+		},
+		totalElevationLoss: {
+			type: Number,
+			default: 0,
+		},
+		reports: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: "Report",
+			},
+		],
 		image: {
 			type: String,
 		},

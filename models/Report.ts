@@ -1,5 +1,29 @@
 import { Schema, model, models } from "mongoose";
 
+const RatingSchema = new Schema(
+	{
+		user: {
+			type: Schema.Types.ObjectId,
+			ref: "User",
+			required: true,
+		},
+		report: {
+			type: Schema.Types.ObjectId,
+			ref: "Report",
+			required: true,
+		},
+		rating: {
+			type: Number,
+			required: true,
+			min: 1,
+			max: 5,
+		},
+	},
+	{ _id: false, timestamps: true }
+);
+
+RatingSchema.index({ user: 1, report: 1 }, { unique: true });
+
 const ReportSchema = new Schema(
 	{
 		owner: {
@@ -65,6 +89,11 @@ const ReportSchema = new Schema(
 		isFeatured: {
 			type: Boolean,
 			default: false,
+		},
+		ratings: [RatingSchema],
+		averageRating: {
+			type: Number,
+			default: 0,
 		},
 	},
 	{
