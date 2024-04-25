@@ -12,21 +12,9 @@ const MessageSchema = new Schema(
 			ref: "User",
 			required: true,
 		},
-		report: {
-			type: Schema.Types.ObjectId,
-			ref: "Report",
-			required: true,
-		},
-		name: {
+		subject: {
 			type: String,
-			required: [true, "Name is required"],
-		},
-		email: {
-			type: String,
-			required: [true, "Email is required"],
-		},
-		phone: {
-			type: String,
+			required: [true, "Subject is required"],
 		},
 		body: {
 			type: String,
@@ -41,6 +29,10 @@ const MessageSchema = new Schema(
 		timestamps: true,
 	}
 );
+
+// Add indexes for frequently queried fields
+MessageSchema.index({ sender: 1, recipient: 1 });
+MessageSchema.index({ read: 1 });
 
 // Prevent creation of multiple instances of the same model
 const Message = models.Message || model("Message", MessageSchema);
