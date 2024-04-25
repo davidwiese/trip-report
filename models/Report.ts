@@ -7,11 +7,11 @@ const ReportSchema = new Schema(
 			ref: "User",
 			required: true,
 		},
-		name: {
+		title: {
 			type: String,
 			required: true,
 		},
-		type: {
+		activityType: {
 			type: String,
 			required: true,
 		},
@@ -20,59 +20,37 @@ const ReportSchema = new Schema(
 			required: true,
 		},
 		location: {
-			street: {
-				type: String,
-			},
-			city: {
-				type: String,
-				required: true,
-			},
-			state: {
-				type: String,
-				required: true,
-			},
-			zipcode: {
-				type: String,
-			},
+			type: String,
+			required: true,
 		},
-		beds: {
+		distance: {
 			type: Number,
 			required: true,
 		},
-		baths: {
+		elevationGain: {
 			type: Number,
 			required: true,
 		},
-		square_feet: {
+		elevationLoss: {
 			type: Number,
 			required: true,
 		},
-		amenities: [
-			{
-				type: String,
-			},
-		],
-		rates: {
-			nightly: {
-				type: Number,
-			},
-			weekly: {
-				type: Number,
-			},
-			monthly: {
-				type: Number,
-			},
+		duration: {
+			type: Number,
+			required: true,
 		},
-		seller_info: {
-			name: {
-				type: String,
-			},
-			email: {
-				type: String,
-				required: true,
-			},
-			phone: {
-				type: String,
+		startDate: {
+			type: Date,
+			required: true,
+		},
+		endDate: {
+			type: Date,
+			required: true,
+			validate: {
+				validator: function (this: any, value: Date): boolean {
+					return this.startDate <= value;
+				},
+				message: "End date must be equal to or later than the start date.",
 			},
 		},
 		// NOTE: Limit the user to a maximum of 4 images
