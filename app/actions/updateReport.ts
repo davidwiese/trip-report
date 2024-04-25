@@ -19,6 +19,10 @@ async function updateReport(reportId: string, formData: FormData) {
 
 	const existingReport = await Report.findById(reportId);
 
+	if (!existingReport) {
+		throw new Error("Report not found");
+	}
+
 	// Verify ownership
 	if (existingReport.owner.toString() !== userId) {
 		throw new Error("Current user does not own this report.");
