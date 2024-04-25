@@ -20,12 +20,26 @@ const connectDB = async () => {
 
 	if (mongoose.connection.readyState >= 2) {
 		console.log("MongoDB connection is currently in progress...");
-		await new Promise((resolve, reject) => {
-			mongoose.connection.once("connected", resolve);
-			mongoose.connection.once("error", reject);
-			mongoose.connection.once("disconnected", () =>
-				reject(new Error("Disconnected during connection attempt"))
-			);
+		await new Promise<void>((resolve, reject) => {
+			const onConnected = () => {
+				mongoose.connection.off("error", onError);
+				mongoose.connection.off("disconnected", onDisconnected);
+				resolve();
+			};
+			const onError = (err: Error) => {
+				mongoose.connection.off("connected", onConnected);
+				mongoose.connection.off("disconnected", onDisconnected);
+				reject(err);
+			};
+			const onDisconnected = () => {
+				mongoose.connection.off("connected", onConnected);
+				mongoose.connection.off("error", onError);
+				reject(new Error("Disconnected during connection attempt"));
+			};
+
+			mongoose.connection.once("connected", onConnected);
+			mongoose.connection.once("error", onError);
+			mongoose.connection.once("disconnected", onDisconnected);
 		});
 		return;
 	}
