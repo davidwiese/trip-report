@@ -22,68 +22,39 @@ async function addReport(formData: FormData) {
 
 	const { userId } = sessionUser;
 
-	// Access all values from amenities and images
-	const amenities = formData
-		.getAll("amenities")
-		.map((amenity) => amenity.toString());
-
 	const images = formData
 		.getAll("images")
 		.filter((image) => (image as File).name !== "");
 
 	// Create reportData object for database
 	const reportData: {
-		type: FormDataEntryValue | null;
-		name: FormDataEntryValue | null;
-		description: FormDataEntryValue | null;
-		location: {
-			street: FormDataEntryValue | null;
-			city: FormDataEntryValue | null;
-			state: FormDataEntryValue | null;
-			zipcode: FormDataEntryValue | null;
-		};
-		beds: FormDataEntryValue | null;
-		baths: FormDataEntryValue | null;
-		square_feet: FormDataEntryValue | null;
-		amenities: string[];
-		rates: {
-			weekly: FormDataEntryValue | null;
-			monthly: FormDataEntryValue | null;
-			nightly: FormDataEntryValue | null;
-		};
-		seller_info: {
-			name: FormDataEntryValue | null;
-			email: FormDataEntryValue | null;
-			phone: FormDataEntryValue | null;
-		};
 		owner: string;
-		images: string[]; // Update the type to string[]
+		title: FormDataEntryValue | null;
+		activityType: FormDataEntryValue | null;
+		description: FormDataEntryValue | null;
+		location: FormDataEntryValue | null;
+		distance: FormDataEntryValue | null;
+		elevationGain: FormDataEntryValue | null;
+		elevationLoss: FormDataEntryValue | null;
+		duration: FormDataEntryValue | null;
+		startDate: FormDataEntryValue | null;
+		endDate: FormDataEntryValue | null;
+		images: string[];
+		isFeatured: boolean;
 	} = {
-		type: formData.get("type"),
-		name: formData.get("name"),
-		description: formData.get("description"),
-		location: {
-			street: formData.get("location.street"),
-			city: formData.get("location.city"),
-			state: formData.get("location.state"),
-			zipcode: formData.get("location.zipcode"),
-		},
-		beds: formData.get("beds"),
-		baths: formData.get("baths"),
-		square_feet: formData.get("square_feet"),
-		amenities,
-		rates: {
-			weekly: formData.get("rates.weekly"),
-			monthly: formData.get("rates.monthly"),
-			nightly: formData.get("rates.nightly"),
-		},
-		seller_info: {
-			name: formData.get("seller_info.name"),
-			email: formData.get("seller_info.email"),
-			phone: formData.get("seller_info.phone"),
-		},
 		owner: userId,
+		title: formData.get("title"),
+		activityType: formData.get("activityType"),
+		description: formData.get("description"),
+		location: formData.get("location"),
+		distance: formData.get("distance"),
+		elevationGain: formData.get("elevationGain"),
+		elevationLoss: formData.get("elevationLoss"),
+		duration: formData.get("duration"),
+		startDate: formData.get("startDate"),
+		endDate: formData.get("endDate"),
 		images: [], // Initialize as an empty array of type string[]
+		isFeatured: false,
 	};
 
 	// Upload image(s) to Cloudinary
