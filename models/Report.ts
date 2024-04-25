@@ -101,6 +101,13 @@ const ReportSchema = new Schema(
 	}
 );
 
+ReportSchema.index({ owner: 1 });
+ReportSchema.index({ activityType: 1 });
+ReportSchema.index({ location: "text" });
+ReportSchema.index({ startDate: 1 });
+ReportSchema.index({ endDate: 1 });
+ReportSchema.index({ averageRating: -1 });
+
 // Prevent creation of multiple instances of the same model
 const Report = models.Report || model("Report", ReportSchema);
 
