@@ -20,6 +20,13 @@ const connectDB = async () => {
 
 	if (mongoose.connection.readyState >= 2) {
 		console.log("MongoDB connection is currently in progress...");
+		await new Promise((resolve, reject) => {
+			mongoose.connection.once("connected", resolve);
+			mongoose.connection.once("error", reject);
+			mongoose.connection.once("disconnected", () =>
+				reject(new Error("Disconnected during connection attempt"))
+			);
+		});
 		return;
 	}
 
