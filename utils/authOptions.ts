@@ -2,19 +2,10 @@ import connectDB from "@/config/database";
 import User from "@/models/User";
 import { Profile, Session, Account, User as NextAuthUser } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { Types } from "mongoose";
 
 // Create a custom type that extends the Profile type
 interface GoogleProfile extends Profile {
 	picture: string;
-}
-
-// Create an interface that represents the User model
-interface UserDoc {
-	email: string;
-	username: string;
-	image?: string;
-	bookmarks?: Types.ObjectId[];
 }
 
 export const authOptions = {
@@ -50,19 +41,29 @@ export const authOptions = {
 		}) {
 			// Connect to DB
 			await connectDB();
+			const userEmail = (profile as GoogleProfile)?.email;
 			// Check if user exists
-			const userExists = await User.findOne({
-				email: (profile as GoogleProfile)?.email,
+			let userExists = await User.findOne({
+				email: userEmail,
 			});
 			// If not, add user to DB
 			if (!userExists) {
 				// Truncate user name if too long
 				const username = (profile as GoogleProfile)?.name?.slice(0, 20);
 
-				await User.create({
-					email: (profile as GoogleProfile)?.email,
+				userExists = await User.create({
+					email: userEmail,
 					username,
+					bio: "",
 					image: (profile as GoogleProfile)?.picture,
+					totalReports: 0,
+					totalDistance: 0,
+					totalElevationGain: 0,
+					totalElevationLoss: 0,
+					reports: [],
+					bookmarks: [],
+					provider: account?.provider,
+					providerId: account?.providerAccountId,
 				});
 			}
 			// Return true to allow sign in
