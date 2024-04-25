@@ -11,10 +11,6 @@ async function updateReport(reportId: string, formData: FormData) {
 
 	const sessionUser = await getSessionUser();
 
-	// NOTE: throwing an Error from our server actions will be caught by our
-	// error.jsx ErrorBoundary component and show the user an Error page with
-	// message of the thrown error.
-
 	if (!sessionUser || !sessionUser.userId) {
 		throw new Error("User ID is required");
 	}
@@ -28,41 +24,24 @@ async function updateReport(reportId: string, formData: FormData) {
 		throw new Error("Current user does not own this report.");
 	}
 
-	// Access all values from amenities and images
-	const amenities = formData.getAll("amenities");
-
 	// Create reportData object for database
 	const reportData = {
-		type: formData.get("type"),
-		name: formData.get("name"),
+		title: formData.get("title"),
+		activityType: formData.get("activityType"),
 		description: formData.get("description"),
-		location: {
-			street: formData.get("location.street"),
-			city: formData.get("location.city"),
-			state: formData.get("location.state"),
-			zipcode: formData.get("location.zipcode"),
-		},
-		beds: formData.get("beds"),
-		baths: formData.get("baths"),
-		square_feet: formData.get("square_feet"),
-		amenities,
-		rates: {
-			weekly: formData.get("rates.weekly"),
-			monthly: formData.get("rates.monthly"),
-			nightly: formData.get("rates.nightly."),
-		},
-		seller_info: {
-			name: formData.get("seller_info.name"),
-			email: formData.get("seller_info.email"),
-			phone: formData.get("seller_info.phone"),
-		},
-		owner: userId,
+		location: formData.get("location"),
+		distance: formData.get("distance"),
+		elevationGain: formData.get("elevationGain"),
+		elevationLoss: formData.get("elevationLoss"),
+		duration: formData.get("duration"),
+		startDate: formData.get("startDate"),
+		endDate: formData.get("endDate"),
 	};
 
 	const updatedReport = await Report.findByIdAndUpdate(reportId, reportData);
 
 	// Revalidate the cache
-	// NOTE: since properties are pretty much on every page, we can simply
+	// NOTE: since reports are pretty much on every page, we can simply
 	// revalidate everything that uses our top level layout
 	revalidatePath("/", "layout");
 
