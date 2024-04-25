@@ -6,6 +6,9 @@ import MenuBar from "@/components/MenuBar";
 import Heading from "@tiptap/extension-heading";
 import Blockquote from "@tiptap/extension-blockquote";
 import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import BulletList from "@tiptap/extension-bullet-list";
+import OrderedList from "@tiptap/extension-ordered-list";
+import ListItem from "@tiptap/extension-list-item";
 
 const ReportBodyEditor = ({
 	onChange,
@@ -23,20 +26,12 @@ const ReportBodyEditor = ({
 			StarterKit.configure({
 				code: false,
 				codeBlock: false,
-				bulletList: {
-					HTMLAttributes: {
-						class: "",
-					},
-					keepMarks: true,
-					keepAttributes: false,
-				},
-				orderedList: {
-					HTMLAttributes: {
-						class: "",
-					},
-					keepMarks: true,
-					keepAttributes: false,
-				},
+				heading: false,
+				blockquote: false,
+				horizontalRule: false,
+				bulletList: false,
+				orderedList: false,
+				listItem: false,
 			}),
 			Heading.configure({
 				HTMLAttributes: {
@@ -54,7 +49,23 @@ const ReportBodyEditor = ({
 					class: "border-t border-gray-200 my-4",
 				},
 			}),
+			BulletList.configure({
+				HTMLAttributes: {
+					class: "list-disc ml-6",
+				},
+			}),
+			OrderedList.configure({
+				HTMLAttributes: {
+					class: "list-decimal ml-5",
+				},
+			}),
+			ListItem.configure({
+				HTMLAttributes: {
+					class: "pl-2",
+				},
+			}),
 		],
+		content: `<h2>Type your Trip Report here...</h2><p>Format it with the menu bar above.</p>`,
 	});
 
 	if (!editor) {
