@@ -57,6 +57,38 @@ async function addReport(formData: FormData) {
 		isFeatured: false,
 	};
 
+	// Validation for required fields
+	const requiredFields = [
+		"title",
+		"activityType",
+		"description",
+		"location",
+		"distance",
+		"elevationGain",
+		"elevationLoss",
+		"duration",
+		"startDate",
+		"endDate",
+	];
+	for (const field of requiredFields) {
+		if (!formData.get(field)) {
+			throw new Error(`${field} is required`);
+		}
+	}
+
+	const numericFields = [
+		"distance",
+		"elevationGain",
+		"elevationLoss",
+		"duration",
+	];
+	numericFields.forEach((field) => {
+		const value = formData.get(field);
+		if (value && isNaN(Number(value))) {
+			throw new Error(`${field} must be a number`);
+		}
+	});
+
 	// Upload image(s) to Cloudinary
 	// NOTE: this will be an array of strings, not a array of Promises
 	// So imageUploadPromises has been changed to imageUrls to more

@@ -4,6 +4,7 @@ import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
+import User from "@/models/User";
 
 type FormState = {
 	error: string;
@@ -31,6 +32,12 @@ async function addMessage(
 
 	if (!sessionUser || !sessionUser.user) {
 		return { error: "You must be logged in to send a message" };
+	}
+
+	const recipientId = formData.get("recipient");
+	const recipientExists = await User.findById(recipientId);
+	if (!recipientExists) {
+		return { error: "Recipient does not exist" };
 	}
 
 	const { userId } = sessionUser;
