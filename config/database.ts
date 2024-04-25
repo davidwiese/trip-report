@@ -18,22 +18,30 @@ const connectDB = async () => {
 		return;
 	}
 
+	if (mongoose.connection.readyState >= 2) {
+		console.log("MongoDB connection is currently in progress...");
+		return;
+	}
+
 	// Connect to MongoDB
 	const mongoURI = process.env.MONGODB_URI;
-	if (mongoURI) {
-		try {
-			await mongoose.connect(mongoURI, options);
-			console.log("MongoDB connected...");
+	if (!mongoURI) {
+		console.error("MongoDB URI is not defined.");
+		throw new Error("MongoDB connection URI is not defined.");
+	}
 
-			// Explicitly register models
-			mongoose.model("User", User.schema);
-			mongoose.model("Report", Report.schema);
-			mongoose.model("Message", Message.schema);
-		} catch (err) {
-			console.error("Error connecting to MongoDB:", err);
-		}
-	} else {
-		console.error("MongoDB URI is not defined or is not a string.");
+	try {
+		await mongoose.connect(mongoURI, options);
+		console.log("MongoDB connected...");
+	} catch (err) {
+		console.error("Error connecting to MongoDB:", err);
+		throw err;
 	}
 };
+
+// Explicitly register models
+mongoose.model("User", User.schema);
+mongoose.model("Report", Report.schema);
+mongoose.model("Message", Message.schema);
+
 export default connectDB;
