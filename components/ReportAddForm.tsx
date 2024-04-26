@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
 
+// TODO - REFACTOR LOCATION (continent, country, state/province, lat/long map picker)
+
 type ReportAddFormProps = {
 	// Add any props here if needed
 };
