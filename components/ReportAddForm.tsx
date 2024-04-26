@@ -32,20 +32,6 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			</h2>
 
 			<div className="mb-4">
-				<label htmlFor="title" className="block text-gray-700 font-bold mb-2">
-					Title
-				</label>
-				<input
-					type="text"
-					id="title"
-					name="title"
-					className="border rounded w-full py-2 px-3 mb-2"
-					placeholder="Enter a title for your trip report"
-					required
-				/>
-			</div>
-
-			<div className="mb-4">
 				<label className="block text-gray-700 font-bold mb-2">
 					Activity Type
 				</label>
@@ -349,6 +335,20 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					id="endDate"
 					name="endDate"
 					className="border rounded w-full py-2 px-3"
+					required
+				/>
+			</div>
+
+			<div className="mb-4">
+				<label htmlFor="title" className="block text-gray-700 font-bold mb-2">
+					Title
+				</label>
+				<input
+					type="text"
+					id="title"
+					name="title"
+					className="border rounded w-full py-2 px-3 mb-2"
+					placeholder="Enter a title for your trip report"
 					required
 				/>
 			</div>
