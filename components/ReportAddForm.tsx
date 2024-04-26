@@ -355,7 +355,9 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					Trip Report
 				</label>
 				<input type="hidden" name="body" />
-				<ReportBodyEditor />
+				<div className="border rounded">
+					<ReportBodyEditor />
+				</div>
 			</div>
 
 			<div className="mb-4">
