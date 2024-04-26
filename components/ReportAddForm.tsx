@@ -2,6 +2,7 @@
 import addReport from "@/app/actions/addReport";
 import { ChangeEvent } from "react";
 import { toast } from "react-toastify";
+import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
 
 type ReportAddFormProps = {
@@ -352,7 +353,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					Trip Report
 				</label>
 				<input type="hidden" name="body" />
-				<p>RICH TEXT EDITOR</p>
+				<ReportBodyEditor />
 			</div>
 
 			<div className="mb-4">

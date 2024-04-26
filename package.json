@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tiptap/pm": "^2.3.0",
+    "@tiptap/react": "^2.3.0",
+    "@tiptap/starter-kit": "^2.3.0",
     "cloudinary": "^2.0.3",
     "mapbox-gl": "^3.2.0",
     "mongodb": "^6.5.0",
