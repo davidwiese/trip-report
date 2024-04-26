@@ -36,10 +36,14 @@ const ReportSchema = new Schema(
 			required: true,
 		},
 		activityType: {
-			type: String,
+			type: [String],
 			required: true,
 		},
 		description: {
+			type: String,
+			required: true,
+		},
+		body: {
 			type: String,
 			required: true,
 		},

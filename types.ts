@@ -8,8 +8,9 @@ export type Report = {
 	_id: string;
 	owner: string;
 	title: string;
-	activityType: string;
+	activityType: string[];
 	description: string;
+	body: string;
 	location: string;
 	distance: number;
 	elevationGain: number;

@@ -30,8 +30,9 @@ async function addReport(formData: FormData) {
 	const reportData: {
 		owner: string;
 		title: FormDataEntryValue | null;
-		activityType: FormDataEntryValue | null;
+		activityType: string[];
 		description: FormDataEntryValue | null;
+		body: FormDataEntryValue | null;
 		location: FormDataEntryValue | null;
 		distance: FormDataEntryValue | null;
 		elevationGain: FormDataEntryValue | null;
@@ -44,8 +45,9 @@ async function addReport(formData: FormData) {
 	} = {
 		owner: userId,
 		title: formData.get("title"),
-		activityType: formData.get("activityType"),
+		activityType: formData.getAll("activityType") as string[],
 		description: formData.get("description"),
+		body: formData.get("body"),
 		location: formData.get("location"),
 		distance: formData.get("distance"),
 		elevationGain: formData.get("elevationGain"),
@@ -71,7 +73,11 @@ async function addReport(formData: FormData) {
 		"endDate",
 	];
 	for (const field of requiredFields) {
-		if (!formData.get(field)) {
+		if (field === "activityType") {
+			if (!formData.getAll(field).length) {
+				throw new Error(`${field} is required`);
+			}
+		} else if (!formData.get(field)) {
 			throw new Error(`${field} is required`);
 		}
 	}
