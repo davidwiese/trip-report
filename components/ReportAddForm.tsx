@@ -13,9 +13,15 @@ type ReportAddFormProps = {
 
 const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [content, setContent] = useState<string>("");
+	const [description, setDescription] = useState<string>("");
+	const maxDescriptionLength = 500;
 
 	const handleContentChange = (reason: any) => {
 		setContent(reason);
+	};
+
+	const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+		setDescription(e.target.value);
 	};
 
 	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -225,8 +231,13 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					rows={4}
 					placeholder="Add a brief description of your trip (500 character limit)"
 					maxLength={500}
+					value={description}
+					onChange={handleDescriptionChange}
 					required
 				></textarea>
+				<div className="text-right text-sm mt-1 text-gray-600">
+					{maxDescriptionLength - description.length} characters remaining
+				</div>
 			</div>
 
 			<div className="mb-4">
