@@ -187,6 +187,16 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					<div>
 						<input
 							type="checkbox"
+							id="activityType_cycling"
+							name="activityType"
+							value="Cycling"
+							className="mr-2"
+						/>
+						<label htmlFor="activityType_cycling">Cycling</label>
+					</div>
+					<div>
+						<input
+							type="checkbox"
 							id="activityType_bikepacking"
 							name="activityType"
 							value="Bikepacking"
