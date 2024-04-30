@@ -30,7 +30,7 @@ const ReportBodyEditor = ({
 	return (
 		<div className="rounded p-4">
 			<input type="hidden" name="body" value={editor?.getHTML() || ""} />
-			<MenuBar editor={editor} content={content} />
+			<MenuBar editor={editor} />
 			<EditorContent editor={editor} />
 		</div>
 	);

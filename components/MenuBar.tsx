@@ -3,10 +3,9 @@ import { BoldIcon, Italic } from "lucide-react";
 
 type Props = {
 	editor: Editor | null;
-	content: string;
 };
 
-const MenuBar = ({ editor, content }: Props) => {
+const MenuBar = ({ editor }: Props) => {
 	if (!editor) {
 		return null;
 	}
