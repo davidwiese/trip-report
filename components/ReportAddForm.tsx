@@ -1,6 +1,6 @@
 "use client";
 import addReport from "@/app/actions/addReport";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
@@ -12,15 +12,18 @@ type ReportAddFormProps = {
 };
 
 const ReportAddForm: React.FC<ReportAddFormProps> = () => {
+	const [content, setContent] = useState<string>("");
+
+	const handleContentChange = (reason: any) => {
+		setContent(reason);
+	};
+
 	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 4) {
 			e.target.value = "";
 			toast.error("You can select up to 4 images");
 		}
 	};
-
-	// NOTE: this component has been changed to use a server action so we no
-	// longer need an API route handler for a POST at app/api/reports/route.js
 
 	return (
 		<form action={addReport}>
@@ -356,7 +359,10 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 				</label>
 				<input type="hidden" name="body" />
 				<div className="border rounded">
-					<ReportBodyEditor />
+					<ReportBodyEditor
+						content={content}
+						onChange={(value: string) => handleContentChange(value)}
+					/>
 				</div>
 			</div>
 
