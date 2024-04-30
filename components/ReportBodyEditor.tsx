@@ -16,11 +16,15 @@ const ReportBodyEditor = ({
 	};
 
 	const editor = useEditor({
-		extensions: [StarterKit],
-		content,
-		onUpdate: ({ editor }) => {
-			handleChange(editor.getHTML());
-		},
+		extensions: [
+			StarterKit.configure({
+				code: false,
+				codeBlock: false,
+				heading: {
+					levels: [2, 3],
+				},
+			}),
+		],
 	});
 
 	if (!editor) {
