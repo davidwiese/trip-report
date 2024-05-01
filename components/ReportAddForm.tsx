@@ -361,6 +361,38 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			</div>
 
 			<div className="mb-4">
+				<label
+					htmlFor="gpxKmlFile"
+					className="block text-gray-700 font-bold mb-2"
+				>
+					Upload GPX/KML File (optional)
+				</label>
+				<input
+					type="file"
+					id="gpxKmlFile"
+					name="gpxKmlFile"
+					className="border rounded w-full py-2 px-3"
+					accept=".gpx,.kml"
+				/>
+			</div>
+
+			<div className="mb-4">
+				<label
+					htmlFor="caltopoUrl"
+					className="block text-gray-700 font-bold mb-2"
+				>
+					Caltopo URL (optional)
+				</label>
+				<input
+					type="url"
+					id="caltopoUrl"
+					name="caltopoUrl"
+					className="border rounded w-full py-2 px-3"
+					placeholder="e.g. https://caltopo.com/m/EH41"
+				/>
+			</div>
+
+			<div className="mb-4">
 				<label htmlFor="title" className="block text-gray-700 font-bold mb-2">
 					Title
 				</label>

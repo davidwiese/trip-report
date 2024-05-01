@@ -101,3 +101,28 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report }) => {
 	);
 };
 export default ReportDetails;
+
+// Download link for GPX/KML file and Caltopo map embed:
+// {
+// 	report.gpxKmlFile && (
+// 		<a
+// 			href={report.gpxKmlFile}
+// 			download
+// 			className="text-blue-500 hover:underline"
+// 		>
+// 			Download GPX/KML File
+// 		</a>
+// 	);
+// }
+
+// {
+// 	report.caltopoMapUrl && (
+// 		<iframe
+// 			src={report.caltopoMapUrl}
+// 			width="100%"
+// 			height="500"
+// 			style={{ border: 0 }}
+// 			allowFullScreen
+// 		></iframe>
+// 	);
+// }

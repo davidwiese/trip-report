@@ -26,6 +26,24 @@ async function addReport(formData: FormData) {
 		.getAll("images")
 		.filter((image) => (image as File).name !== "");
 
+	const gpxKmlFile = formData.get("gpxKmlFile") as File | null;
+	let gpxKmlFileUrl = "";
+
+	if (gpxKmlFile) {
+		// Convert file to buffer
+		const fileBuffer = await gpxKmlFile.arrayBuffer();
+		const base64 = Buffer.from(fileBuffer).toString("base64");
+		const fileMime = gpxKmlFile.type;
+		const base64File = `data:${fileMime};base64,${base64}`;
+
+		// Upload to Cloudinary
+		const result = await cloudinary.uploader.upload(base64File, {
+			folder: "trip-report/gpx",
+			resource_type: "raw",
+		});
+		gpxKmlFileUrl = result.secure_url;
+	}
+
 	// Create reportData object for database
 	const reportData: {
 		owner: string;
@@ -41,6 +59,8 @@ async function addReport(formData: FormData) {
 		startDate: FormDataEntryValue | null;
 		endDate: FormDataEntryValue | null;
 		images: string[];
+		gpxKmlFile: string;
+		caltopoUrl: FormDataEntryValue | null;
 		isFeatured: boolean;
 	} = {
 		owner: userId,
@@ -56,6 +76,8 @@ async function addReport(formData: FormData) {
 		startDate: formData.get("startDate"),
 		endDate: formData.get("endDate"),
 		images: [], // Initialize as an empty array of type string[]
+		gpxKmlFile: gpxKmlFileUrl,
+		caltopoUrl: formData.get("caltopoUrl"),
 		isFeatured: false,
 	};
 
