@@ -67,6 +67,12 @@ const ReportSchema = new Schema(
 			type: Number,
 			required: true,
 		},
+		gpxKmlFile: {
+			type: String,
+		},
+		caltopoUrl: {
+			type: String,
+		},
 		startDate: {
 			type: Date,
 			required: true,
