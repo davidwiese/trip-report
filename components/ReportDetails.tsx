@@ -116,9 +116,9 @@ export default ReportDetails;
 // }
 
 // {
-// 	report.caltopoMapUrl && (
+// 	report.caltopoUrl && (
 // 		<iframe
-// 			src={report.caltopoMapUrl}
+// 			src={report.caltopoUrl}
 // 			width="100%"
 // 			height="500"
 // 			style={{ border: 0 }}
