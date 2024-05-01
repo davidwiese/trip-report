@@ -48,8 +48,18 @@ const ReportSchema = new Schema(
 			required: true,
 		},
 		location: {
-			type: String,
-			required: true,
+			country: {
+				type: String,
+				required: true,
+			},
+			region: {
+				type: String,
+				required: true,
+			},
+			localArea: {
+				type: String,
+				required: true,
+			},
 		},
 		distance: {
 			type: Number,
