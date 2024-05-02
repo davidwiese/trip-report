@@ -35,9 +35,25 @@ async function updateReport(reportId: string, formData: FormData) {
 		const fileName = imageUrl.split("/").pop()?.split(".")[0];
 		if (fileName) {
 			await cloudinary.uploader.destroy(`trip-report/${fileName}`);
-		} else {
-			// Handle the error or log it
-			console.error("Invalid image URL:", imageUrl);
+		}
+	}
+
+	const newImages = [];
+	const files = formData.getAll("images");
+	for (const file of files) {
+		if (file instanceof File) {
+			// Convert the file to a base64 string
+			const fileBuffer = await file.arrayBuffer();
+			const base64 = Buffer.from(fileBuffer).toString("base64");
+			const fileMime = file.type;
+			const base64File = `data:${fileMime};base64,${base64}`;
+
+			// Upload to Cloudinary
+			const uploadResult = await cloudinary.uploader.upload(base64File, {
+				folder: "trip-report",
+				resource_type: "image", // Assuming these are images
+			});
+			newImages.push(uploadResult.secure_url);
 		}
 	}
 
@@ -51,8 +67,8 @@ async function updateReport(reportId: string, formData: FormData) {
 		existingReport.gpxKmlFile = "";
 	}
 
-	let gpxKmlFileUrl = existingReport.gpxKmlFile;
 	const gpxKmlFile = formData.get("gpxKmlFile");
+	let gpxKmlFileUrl = existingReport.gpxKmlFile;
 	if (gpxKmlFile && gpxKmlFile instanceof File) {
 		const fileBuffer = await gpxKmlFile.arrayBuffer();
 		const base64 = Buffer.from(fileBuffer).toString("base64");
@@ -84,6 +100,12 @@ async function updateReport(reportId: string, formData: FormData) {
 		endDate: formData.get("endDate"),
 		caltopoUrl: formData.get("caltopoUrl"),
 		gpxKmlFile: gpxKmlFileUrl,
+		images: [
+			...existingReport.images.filter(
+				(img: string) => !imagesToRemove.includes(img)
+			),
+			...newImages,
+		],
 	};
 
 	const updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {

@@ -521,6 +521,14 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 					</div>
 				))}
+				{imagesToRemove.map((image, index) => (
+					<input
+						key={index}
+						type="hidden"
+						name="imagesToRemove"
+						value={image}
+					/>
+				))}
 			</div>
 
 			<div>
