@@ -44,6 +44,12 @@ async function addReport(formData: FormData) {
 		gpxKmlFileUrl = result.secure_url;
 	}
 
+	type LocationType = {
+		country: FormDataEntryValue | null;
+		region: FormDataEntryValue | null;
+		localArea: FormDataEntryValue | null;
+	};
+
 	// Create reportData object for database
 	const reportData: {
 		owner: string;
@@ -51,7 +57,7 @@ async function addReport(formData: FormData) {
 		activityType: string[];
 		description: FormDataEntryValue | null;
 		body: FormDataEntryValue | null;
-		location: FormDataEntryValue | null;
+		location: LocationType;
 		distance: FormDataEntryValue | null;
 		elevationGain: FormDataEntryValue | null;
 		elevationLoss: FormDataEntryValue | null;
@@ -68,7 +74,11 @@ async function addReport(formData: FormData) {
 		activityType: formData.getAll("activityType") as string[],
 		description: formData.get("description"),
 		body: formData.get("body"),
-		location: formData.get("location"),
+		location: {
+			country: formData.get("location.country"),
+			region: formData.get("location.region"),
+			localArea: formData.get("location.localArea"),
+		},
 		distance: formData.get("distance"),
 		elevationGain: formData.get("elevationGain"),
 		elevationLoss: formData.get("elevationLoss"),

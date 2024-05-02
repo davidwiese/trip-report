@@ -31,9 +31,13 @@ async function updateReport(reportId: string, formData: FormData) {
 	// Create reportData object for database
 	const reportData = {
 		title: formData.get("title"),
-		activityType: formData.get("activityType"),
+		activityType: formData.getAll("activityType") as string[],
 		description: formData.get("description"),
-		location: formData.get("location"),
+		location: {
+			country: formData.get("location.country"),
+			region: formData.get("location.region"),
+			localArea: formData.get("location.localArea"),
+		},
 		distance: formData.get("distance"),
 		elevationGain: formData.get("elevationGain"),
 		elevationLoss: formData.get("elevationLoss"),
@@ -42,7 +46,9 @@ async function updateReport(reportId: string, formData: FormData) {
 		endDate: formData.get("endDate"),
 	};
 
-	const updatedReport = await Report.findByIdAndUpdate(reportId, reportData);
+	const updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {
+		new: true,
+	});
 
 	// Revalidate the cache
 	// NOTE: since reports are pretty much on every page, we can simply

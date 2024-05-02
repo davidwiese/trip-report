@@ -4,6 +4,12 @@ export type Rating = {
 	report: string;
 };
 
+export type Location = {
+	country: string;
+	region: string;
+	localArea: string;
+};
+
 export type Report = {
 	_id: string;
 	owner: string;
@@ -11,7 +17,7 @@ export type Report = {
 	activityType: string[];
 	description: string;
 	body: string;
-	location: string;
+	location: Location;
 	distance: number;
 	elevationGain: number;
 	elevationLoss: number;

@@ -2,10 +2,9 @@
 import addReport from "@/app/actions/addReport";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
-
-// TODO - REFACTOR LOCATION (continent, country, state/province, lat/long map picker)
 
 type ReportAddFormProps = {
 	// Add any props here if needed
@@ -14,6 +13,8 @@ type ReportAddFormProps = {
 const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [content, setContent] = useState<string>("");
 	const [description, setDescription] = useState<string>("");
+	const [country, setCountry] = useState("");
+	const [region, setRegion] = useState("");
 	const maxDescriptionLength = 500;
 
 	const handleContentChange = (reason: any) => {
@@ -251,18 +252,27 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			</div>
 
 			<div className="mb-4">
-				<label
-					htmlFor="location"
-					className="block text-gray-700 font-bold mb-2"
-				>
-					Location
-				</label>
+				<label className="block text-gray-700 font-bold mb-2">Location</label>
+				<CountryDropdown
+					value={country}
+					onChange={(val) => setCountry(val)}
+					priorityOptions={["US", "CA", "MX", "GB", "FR", "DE", "IT", "ES"]}
+					classes="border rounded w-full py-2 px-3 mb-2"
+				/>
+				<RegionDropdown
+					country={country}
+					value={region}
+					onChange={(val) => setRegion(val)}
+					disableWhenEmpty={true}
+					blankOptionLabel="Select Region"
+					classes="border rounded w-full py-2 px-3 mb-2"
+				/>
 				<input
 					type="text"
-					id="location"
-					name="location"
+					id="localArea"
+					name="location.localArea"
 					className="border rounded w-full py-2 px-3 mb-2"
-					placeholder="Enter the location of your trip"
+					placeholder="Local area (peak or trail name, mountain range, park, etc.)"
 					required
 				/>
 			</div>
