@@ -5,6 +5,7 @@ import Report from "@/models/Report";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import cloudinary from "@/config/cloudinary";
 
 async function updateReport(reportId: string, formData: FormData) {
 	await connectDB();
@@ -28,6 +29,31 @@ async function updateReport(reportId: string, formData: FormData) {
 		throw new Error("Current user does not own this report");
 	}
 
+	// Check if there's a request to remove the existing GPX/KML file
+	const removeGpxKmlFile = formData.get("removeGpxKmlFile") === "true";
+	if (removeGpxKmlFile && existingReport.gpxKmlFile) {
+		// Remove file from Cloudinary
+		await cloudinary.uploader.destroy(existingReport.gpxKmlFile, {
+			resource_type: "raw",
+		});
+		existingReport.gpxKmlFile = "";
+	}
+
+	let gpxKmlFileUrl = existingReport.gpxKmlFile;
+	const gpxKmlFile = formData.get("gpxKmlFile");
+	if (gpxKmlFile && gpxKmlFile instanceof File) {
+		const fileBuffer = await gpxKmlFile.arrayBuffer();
+		const base64 = Buffer.from(fileBuffer).toString("base64");
+		const fileMime = gpxKmlFile.type;
+		const base64File = `data:${fileMime};base64,${base64}`;
+
+		const uploadResult = await cloudinary.uploader.upload(base64File, {
+			folder: "trip-report/gpx",
+			resource_type: "raw",
+		});
+		gpxKmlFileUrl = uploadResult.secure_url;
+	}
+
 	// Create reportData object for database
 	const reportData = {
 		title: formData.get("title"),
@@ -45,6 +71,7 @@ async function updateReport(reportId: string, formData: FormData) {
 		startDate: formData.get("startDate"),
 		endDate: formData.get("endDate"),
 		caltopoUrl: formData.get("caltopoUrl"),
+		gpxKmlFile: gpxKmlFileUrl,
 	};
 
 	const updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {

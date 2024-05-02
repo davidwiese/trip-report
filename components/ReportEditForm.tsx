@@ -15,11 +15,24 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [description, setDescription] = useState<string>(report.description);
 	const [country, setCountry] = useState(report.location.country);
 	const [region, setRegion] = useState(report.location.region);
-	const [localArea, setLocalArea] = useState(report.location.localArea);
+	const [gpxKmlFile, setGpxKmlFile] = useState<File | null>(null);
+	const [isFileRemoved, setIsFileRemoved] = useState(false);
 	const maxDescriptionLength = 500;
 
 	const handleContentChange = (value: string) => {
 		setContent(value);
+	};
+
+	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files?.length) {
+			setGpxKmlFile(event.target.files[0]);
+			setIsFileRemoved(false); // Reset removal flag if new file is selected
+		}
+	};
+
+	const removeFile = () => {
+		setGpxKmlFile(null);
+		setIsFileRemoved(true);
 	};
 
 	const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -398,19 +411,25 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div className="mb-4">
-				<label
-					htmlFor="gpxKmlFile"
-					className="block text-gray-700 font-bold mb-2"
-				>
-					Upload GPX/KML File (optional)
-				</label>
-				<input
-					type="file"
-					id="gpxKmlFile"
-					name="gpxKmlFile"
-					className="border rounded w-full py-2 px-3"
-					accept=".gpx,.kml"
-				/>
+				{report.gpxKmlFile && !isFileRemoved ? (
+					<div>
+						<p>Current File: {report.gpxKmlFile}</p>
+						<button type="button" onClick={removeFile}>
+							Remove File
+						</button>
+					</div>
+				) : (
+					<input
+						type="file"
+						id="gpxKmlFile"
+						name="gpxKmlFile"
+						onChange={handleFileChange}
+						accept=".gpx,.kml"
+					/>
+				)}
+				{isFileRemoved && (
+					<input type="hidden" name="removeGpxKmlFile" value="true" />
+				)}
 			</div>
 
 			<div className="mb-4">
