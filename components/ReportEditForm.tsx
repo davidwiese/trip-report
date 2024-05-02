@@ -272,6 +272,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="location.localArea"
 					className="border rounded w-full py-2 px-3 mb-2"
 					placeholder="Local area (peak or trail name, mountain range, park, etc.)"
+					defaultValue={report.location.localArea}
 					required
 				/>
 			</div>
