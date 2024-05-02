@@ -29,6 +29,18 @@ async function updateReport(reportId: string, formData: FormData) {
 		throw new Error("Current user does not own this report");
 	}
 
+	// Handle removed images
+	const imagesToRemove = formData.getAll("imagesToRemove").map(String);
+	for (const imageUrl of imagesToRemove) {
+		const fileName = imageUrl.split("/").pop()?.split(".")[0];
+		if (fileName) {
+			await cloudinary.uploader.destroy(`trip-report/${fileName}`);
+		} else {
+			// Handle the error or log it
+			console.error("Invalid image URL:", imageUrl);
+		}
+	}
+
 	// Check if there's a request to remove the existing GPX/KML file
 	const removeGpxKmlFile = formData.get("removeGpxKmlFile") === "true";
 	if (removeGpxKmlFile && existingReport.gpxKmlFile) {

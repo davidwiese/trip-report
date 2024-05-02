@@ -5,6 +5,7 @@ import { Report as ReportType } from "@/types";
 import { ChangeEvent, useState } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
+import Image from "next/image";
 
 type ReportEditFormProps = {
 	report: ReportType;
@@ -17,6 +18,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [region, setRegion] = useState(report.location.region);
 	const [gpxKmlFile, setGpxKmlFile] = useState<File | null>(null);
 	const [isFileRemoved, setIsFileRemoved] = useState(false);
+	const [selectedImages, setSelectedImages] = useState<File[]>([]);
+	const [imagesToRemove, setImagesToRemove] = useState<string[]>([]);
 	const maxDescriptionLength = 500;
 
 	const handleContentChange = (value: string) => {
@@ -37,6 +40,16 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 
 	const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
 		setDescription(e.target.value);
+	};
+
+	const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		if (event.target.files) {
+			setSelectedImages([...selectedImages, ...Array.from(event.target.files)]);
+		}
+	};
+
+	const handleRemoveImage = (imageUrl: string) => {
+		setImagesToRemove([...imagesToRemove, imageUrl]);
 	};
 
 	// NOTE: to pass the id to our server action we can use Function.bind
@@ -477,21 +490,38 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				</div>
 			</div>
 
-			{/* <div className="mb-4">
-				<label htmlFor="images" className="block text-gray-700 font-bold mb-2">
-					Images (Select up to 4 images)
-				</label>
+			<div className="mb-4">
+				{report.images.map((image, index) => (
+					<div key={index}>
+						<Image
+							src={image}
+							alt={`Report Image ${index + 1}`}
+							layout="fill"
+							objectFit="cover"
+						/>{" "}
+						<button type="button" onClick={() => handleRemoveImage(image)}>
+							Remove Image
+						</button>
+					</div>
+				))}
 				<input
 					type="file"
-					id="images"
-					name="images"
-					className="border rounded w-full py-2 px-3"
-					accept="image/*"
 					multiple
 					onChange={handleImageChange}
-					required
+					accept="image/*"
 				/>
-			</div> */}
+				{/* Optionally display new selected images before upload */}
+				{selectedImages.map((file, index) => (
+					<div key={index}>
+						<Image
+							src={URL.createObjectURL(file)}
+							alt={`New Image ${index + 1}`}
+							layout="fill"
+							objectFit="cover"
+						/>
+					</div>
+				))}
+			</div>
 
 			<div>
 				<SubmitButton pendingText="Updating Report..." text="Update Report" />
