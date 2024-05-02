@@ -34,7 +34,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	return (
 		<form action={updateReportById}>
 			<h2 className="text-3xl text-center font-semibold mb-6">
-				Add Trip Report
+				Edit Trip Report
 			</h2>
 
 			<div className="mb-4">
@@ -49,6 +49,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Hiking"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Hiking")}
 						/>
 						<label htmlFor="activityType_hiking">Hiking</label>
 					</div>
@@ -59,6 +60,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Backpacking"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Backpacking")}
 						/>
 						<label htmlFor="activityType_backpacking">Backpacking</label>
 					</div>
@@ -69,6 +71,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Trail Running"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Trail Running")}
 						/>
 						<label htmlFor="activityType_trailRunning">Trail Running</label>
 					</div>
@@ -79,6 +82,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Rock Climbing"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Rock Climbing")}
 						/>
 						<label htmlFor="activityType_rockClimbing">Rock Climbing</label>
 					</div>
@@ -89,6 +93,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Sport Climbing"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Sport Climbing")}
 						/>
 						<label htmlFor="activityType_sportClimbing">Sport Climbing</label>
 					</div>
@@ -99,6 +104,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Trad Climbing"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Trad Climbing")}
 						/>
 						<label htmlFor="activityType_tradClimbing">Trad Climbing</label>
 					</div>
@@ -109,6 +115,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Aid Climbing"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Aid Climbing")}
 						/>
 						<label htmlFor="activityType_aidClimbing">Aid Climbing</label>
 					</div>
@@ -119,6 +126,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Ice Climbing"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Ice Climbing")}
 						/>
 						<label htmlFor="activityType_iceClimbing">Ice Climbing</label>
 					</div>
@@ -129,6 +137,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Mixed Climbing"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Mixed Climbing")}
 						/>
 						<label htmlFor="activityType_mixedClimbing">Mixed Climbing</label>
 					</div>
@@ -139,6 +148,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Mountaineering"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Mountaineering")}
 						/>
 						<label htmlFor="activityType_mountaineering">Mountaineering</label>
 					</div>
@@ -149,6 +159,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Ski Touring"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Ski Touring")}
 						/>
 						<label htmlFor="activityType_skiTouring">Ski Touring</label>
 					</div>
@@ -159,6 +170,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Ski Mountaineering"
 							className="mr-2"
+							defaultChecked={report.activityType.includes(
+								"Ski Mountaineering"
+							)}
 						/>
 						<label htmlFor="activityType_skiMountaineering">
 							Ski Mountaineering
@@ -171,6 +185,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Canyoneering"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Canyoneering")}
 						/>
 						<label htmlFor="activityType_canyoneering">Canyoneering</label>
 					</div>
@@ -181,6 +196,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Mountain Biking"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Mountain Biking")}
 						/>
 						<label htmlFor="activityType_mountainBiking">Mountain Biking</label>
 					</div>
@@ -191,6 +207,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Cycling"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Cycling")}
 						/>
 						<label htmlFor="activityType_cycling">Cycling</label>
 					</div>
@@ -201,6 +218,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Bikepacking"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Bikepacking")}
 						/>
 						<label htmlFor="activityType_bikepacking">Bikepacking</label>
 					</div>
@@ -211,6 +229,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Kayaking"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Kayaking")}
 						/>
 						<label htmlFor="activityType_kayaking">Kayaking</label>
 					</div>
@@ -221,6 +240,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							name="activityType"
 							value="Packrafting"
 							className="mr-2"
+							defaultChecked={report.activityType.includes("Packrafting")}
 						/>
 						<label htmlFor="activityType_packrafting">Packrafting</label>
 					</div>
@@ -243,6 +263,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					maxLength={500}
 					value={description}
 					onChange={handleDescriptionChange}
+					defaultValue={report.description}
 					required
 				></textarea>
 				<div className="text-right text-sm mt-1 text-gray-600">
@@ -290,6 +311,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						id="distance"
 						name="distance"
 						className="border rounded w-full py-2 px-3"
+						defaultValue={report.distance}
 						required
 					/>
 				</div>
@@ -305,6 +327,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						id="elevationGain"
 						name="elevationGain"
 						className="border rounded w-full py-2 px-3"
+						defaultValue={report.elevationGain}
 						required
 					/>
 				</div>
@@ -320,6 +343,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						id="elevationLoss"
 						name="elevationLoss"
 						className="border rounded w-full py-2 px-3"
+						defaultValue={report.elevationLoss}
 						required
 					/>
 				</div>
@@ -337,6 +361,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					id="duration"
 					name="duration"
 					className="border rounded w-full py-2 px-3"
+					defaultValue={report.duration}
 					required
 				/>
 			</div>
@@ -353,6 +378,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					id="startDate"
 					name="startDate"
 					className="border rounded w-full py-2 px-3"
+					defaultValue={report.startDate}
 					required
 				/>
 			</div>
@@ -366,6 +392,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					id="endDate"
 					name="endDate"
 					className="border rounded w-full py-2 px-3"
+					defaultValue={report.endDate}
 					required
 				/>
 			</div>
@@ -399,6 +426,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="caltopoUrl"
 					className="border rounded w-full py-2 px-3"
 					placeholder="e.g. https://caltopo.com/m/EH41"
+					defaultValue={report.caltopoUrl || ""}
 				/>
 			</div>
 
@@ -412,6 +440,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="title"
 					className="border rounded w-full py-2 px-3 mb-2"
 					placeholder="Enter a title for your trip report"
+					defaultValue={report.title}
 					required
 				/>
 			</div>
@@ -446,7 +475,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div> */}
 
 			<div>
-				<SubmitButton />
+				<SubmitButton pendingText="Updating Report..." text="Update Report" />
 			</div>
 		</form>
 	);
