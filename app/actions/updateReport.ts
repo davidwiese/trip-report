@@ -25,7 +25,7 @@ async function updateReport(reportId: string, formData: FormData) {
 
 	// Verify ownership
 	if (existingReport.owner.toString() !== userId) {
-		throw new Error("Current user does not own this report.");
+		throw new Error("Current user does not own this report");
 	}
 
 	// Create reportData object for database
@@ -44,6 +44,7 @@ async function updateReport(reportId: string, formData: FormData) {
 		duration: formData.get("duration"),
 		startDate: formData.get("startDate"),
 		endDate: formData.get("endDate"),
+		caltopoUrl: formData.get("caltopoUrl"),
 	};
 
 	const updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {
