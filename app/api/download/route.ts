@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
+import { ratelimit } from "@/utils/ratelimit";
 
 export async function GET(request: NextRequest) {
+	const ip = request.ip ?? "127.0.0.1";
+	const { success } = await ratelimit.limit(ip);
+
+	if (!success) {
+		return NextResponse.json(
+			{ error: "Too many requests. Please try again later." },
+			{ status: 429 }
+		);
+	}
+
 	const { searchParams } = new URL(request.url);
 	const url = searchParams.get("url");
 	const filename = searchParams.get("filename");
