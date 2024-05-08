@@ -122,10 +122,18 @@ async function addReport(formData: FormData) {
 			"startDate",
 			"endDate",
 		];
+
 		for (const field of requiredFields) {
 			if (field === "activityType") {
 				if (!formData.getAll(field).length) {
 					throw new Error(`${field} is required`);
+				}
+			} else if (field === "body") {
+				const bodyValue = formData.get(field);
+				if (typeof bodyValue === "string" && bodyValue.trim() === "") {
+					// Set default content for the body field if it's empty or contains only whitespace
+					reportData.body =
+						"<h2>Type your Trip Report here...</h2><p>Format it with the menu bar above.</p>";
 				}
 			} else if (!formData.get(field)) {
 				throw new Error(`${field} is required`);
