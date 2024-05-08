@@ -25,6 +25,26 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		setDescription(e.target.value);
 	};
 
+	const handleCountryChange = (val: string) => {
+		setCountry(val);
+		const countryInput = document.getElementById(
+			"location.country"
+		) as HTMLInputElement;
+		if (countryInput) {
+			countryInput.value = val;
+		}
+	};
+
+	const handleRegionChange = (val: string) => {
+		setRegion(val);
+		const regionInput = document.getElementById(
+			"location.region"
+		) as HTMLInputElement;
+		if (regionInput) {
+			regionInput.value = val;
+		}
+	};
+
 	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files && e.target.files.length > 4) {
 			e.target.value = "";
@@ -255,17 +275,29 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 				<label className="block text-gray-700 font-bold mb-2">Location</label>
 				<CountryDropdown
 					value={country}
-					onChange={(val) => setCountry(val)}
+					onChange={handleCountryChange}
 					priorityOptions={["US", "CA", "MX", "GB", "FR", "DE", "IT", "ES"]}
 					classes="border rounded w-full py-2 px-3 mb-2"
 				/>
 				<RegionDropdown
 					country={country}
 					value={region}
-					onChange={(val) => setRegion(val)}
+					onChange={handleRegionChange}
 					disableWhenEmpty={true}
 					blankOptionLabel="Select Region"
 					classes="border rounded w-full py-2 px-3 mb-2"
+				/>
+				<input
+					type="hidden"
+					id="location.country"
+					name="location.country"
+					value={country}
+				/>
+				<input
+					type="hidden"
+					id="location.region"
+					name="location.region"
+					value={region}
 				/>
 				<input
 					type="text"

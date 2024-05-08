@@ -21,7 +21,8 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report }) => {
 				<div className="text-gray-500 mb-4 flex align-middle justify-center md:justify-start">
 					<FaMapMarker className="text-lg text-orange-700 mr-2" />
 					<p className="text-orange-700">
-						{report.location}, {report.location} {report.location}
+						{report.location.country}, {report.location.region}{" "}
+						{report.location.localArea}
 					</p>
 				</div>
 

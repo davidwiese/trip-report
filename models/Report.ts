@@ -43,10 +43,10 @@ const ReportSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		body: {
-			type: String,
-			required: true,
-		},
+		// body: {
+		// 	type: String,
+		// 	required: true,
+		// },
 		location: {
 			country: {
 				type: String,
@@ -77,9 +77,9 @@ const ReportSchema = new Schema(
 			type: Number,
 			required: true,
 		},
-		gpxKmlFile: {
-			type: String,
-		},
+		// gpxKmlFile: {
+		// 	type: String,
+		// },
 		caltopoUrl: {
 			type: String,
 		},

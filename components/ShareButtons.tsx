@@ -32,25 +32,30 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({
 		<>
 			<h3 className="text-xl font-bold text-center pt-2">Share This Report:</h3>
 			<div className="flex gap-3 justify-center pb-5">
-				<FacebookShareButton url={shareUrl} hashtag={`#${report.type}`}>
+				<FacebookShareButton url={shareUrl} hashtag={`#${report.activityType}`}>
 					<FacebookIcon size={40} round={true}></FacebookIcon>
 				</FacebookShareButton>
 				<TwitterShareButton
 					url={shareUrl}
-					title={report.name}
-					hashtags={[`${report.type.replace(/\s/g, "")}`, "TripReport"]}
+					title={report.title}
+					hashtags={[
+						...report.activityType.map((activity) =>
+							activity.replace(/\s/g, "")
+						),
+						"TripReport",
+					]}
 				>
 					<TwitterIcon size={40} round={true}></TwitterIcon>
 				</TwitterShareButton>
-				<TelegramShareButton url={shareUrl} title={report.name}>
+				<TelegramShareButton url={shareUrl} title={report.title}>
 					<TelegramIcon size={40} round={true}></TelegramIcon>
 				</TelegramShareButton>
-				<RedditShareButton url={shareUrl} title={report.name}>
+				<RedditShareButton url={shareUrl} title={report.title}>
 					<RedditIcon size={40} round={true}></RedditIcon>
 				</RedditShareButton>
 				<EmailShareButton
 					url={shareUrl}
-					subject={report.name}
+					subject={report.title}
 					body={`Check out this trip report: ${shareUrl}`}
 				>
 					<EmailIcon size={40} round={true}></EmailIcon>

@@ -26,28 +26,29 @@ async function addReport(formData: FormData) {
 		.getAll("images")
 		.filter((image) => (image as File).name !== "");
 
-	const gpxKmlFile = formData.get("gpxKmlFile") as File | null;
-	let gpxKmlFileUrl = "";
+	// GPX upload
+	// const gpxKmlFile = formData.get("gpxKmlFile") as File | null;
+	// let gpxKmlFileUrl = "";
 
-	if (gpxKmlFile) {
-		// Convert file to buffer
-		const fileBuffer = await gpxKmlFile.arrayBuffer();
-		const base64 = Buffer.from(fileBuffer).toString("base64");
-		const fileMime = gpxKmlFile.type;
-		const base64File = `data:${fileMime};base64,${base64}`;
+	// if (gpxKmlFile) {
+	// 	// Convert file to buffer
+	// 	const fileBuffer = await gpxKmlFile.arrayBuffer();
+	// 	const base64 = Buffer.from(fileBuffer).toString("base64");
+	// 	const fileMime = gpxKmlFile.type;
+	// 	const base64File = `data:${fileMime};base64,${base64}`;
 
-		// Upload to Cloudinary
-		const result = await cloudinary.uploader.upload(base64File, {
-			folder: "trip-report/gpx",
-			resource_type: "raw",
-		});
-		gpxKmlFileUrl = result.secure_url;
-	}
+	// 	// Upload to Cloudinary
+	// 	const result = await cloudinary.uploader.upload(base64File, {
+	// 		folder: "trip-report/gpx",
+	// 		resource_type: "raw",
+	// 	});
+	// 	gpxKmlFileUrl = result.secure_url;
+	// }
 
 	type LocationType = {
-		country: FormDataEntryValue | null;
-		region: FormDataEntryValue | null;
-		localArea: FormDataEntryValue | null;
+		country: FormDataEntryValue;
+		region: FormDataEntryValue;
+		localArea: FormDataEntryValue;
 	};
 
 	// Create reportData object for database
@@ -56,7 +57,7 @@ async function addReport(formData: FormData) {
 		title: FormDataEntryValue | null;
 		activityType: string[];
 		description: FormDataEntryValue | null;
-		body: FormDataEntryValue | null;
+		// body: FormDataEntryValue | null;
 		location: LocationType;
 		distance: FormDataEntryValue | null;
 		elevationGain: FormDataEntryValue | null;
@@ -65,7 +66,7 @@ async function addReport(formData: FormData) {
 		startDate: FormDataEntryValue | null;
 		endDate: FormDataEntryValue | null;
 		images: string[];
-		gpxKmlFile: string;
+		// gpxKmlFile: string;
 		caltopoUrl: FormDataEntryValue | null;
 		isFeatured: boolean;
 	} = {
@@ -73,11 +74,11 @@ async function addReport(formData: FormData) {
 		title: formData.get("title"),
 		activityType: formData.getAll("activityType") as string[],
 		description: formData.get("description"),
-		body: formData.get("body"),
+		// body: formData.get("body"),
 		location: {
-			country: formData.get("location.country"),
-			region: formData.get("location.region"),
-			localArea: formData.get("location.localArea"),
+			country: formData.get("location.country")!,
+			region: formData.get("location.region")!,
+			localArea: formData.get("location.localArea")!,
 		},
 		distance: formData.get("distance"),
 		elevationGain: formData.get("elevationGain"),
@@ -86,7 +87,7 @@ async function addReport(formData: FormData) {
 		startDate: formData.get("startDate"),
 		endDate: formData.get("endDate"),
 		images: [], // Initialize as an empty array of type string[]
-		gpxKmlFile: gpxKmlFileUrl,
+		// gpxKmlFile: gpxKmlFileUrl,
 		caltopoUrl: formData.get("caltopoUrl"),
 		isFeatured: false,
 	};
@@ -96,7 +97,9 @@ async function addReport(formData: FormData) {
 		"title",
 		"activityType",
 		"description",
-		"location",
+		"location.country",
+		"location.region",
+		"location.localArea",
 		"distance",
 		"elevationGain",
 		"elevationLoss",
