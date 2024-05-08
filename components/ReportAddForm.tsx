@@ -11,14 +11,14 @@ type ReportAddFormProps = {
 };
 
 const ReportAddForm: React.FC<ReportAddFormProps> = () => {
-	const [content, setContent] = useState<string>("");
+	const [body, setBody] = useState<string>("");
 	const [description, setDescription] = useState<string>("");
 	const [country, setCountry] = useState("");
 	const [region, setRegion] = useState("");
 	const maxDescriptionLength = 500;
 
-	const handleContentChange = (reason: any) => {
-		setContent(reason);
+	const handleBodyChange = (content: string) => {
+		setBody(content);
 	};
 
 	const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -452,12 +452,9 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 				<label htmlFor="body" className="block text-gray-700 font-bold mb-2">
 					Trip Report
 				</label>
-				<input type="hidden" name="body" />
+				<input type="hidden" name="body" value={body} />
 				<div className="border rounded">
-					<ReportBodyEditor
-						content={content}
-						onChange={(value: string) => handleContentChange(value)}
-					/>
+					<ReportBodyEditor onChange={handleBodyChange} />
 				</div>
 			</div>
 

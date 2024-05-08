@@ -8,6 +8,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 async function addReport(formData: FormData) {
+	let redirectUrl = "";
+
 	try {
 		await connectDB();
 
@@ -116,6 +118,7 @@ async function addReport(formData: FormData) {
 			"elevationGain",
 			"elevationLoss",
 			"duration",
+			"body",
 			"startDate",
 			"endDate",
 		];
@@ -180,16 +183,22 @@ async function addReport(formData: FormData) {
 		await newReport.save();
 
 		// Revalidate the cache
-		// NOTE: since properties are pretty much on every page, we can simply
+		// NOTE: since reports are pretty much on every page, we can simply
 		// revalidate everything that uses our top level layout
-		revalidatePath("/", "layout");
 
-		redirect(`/reports/${newReport._id}`);
+		// Set the redirect URL
+		redirectUrl = `/reports/${newReport._id}`;
 	} catch (error) {
 		console.error("Error adding report:", error);
 		throw new Error(
 			"An error occurred while adding the report. Please try again."
 		);
+	}
+
+	revalidatePath("/", "layout");
+
+	if (redirectUrl) {
+		redirect(redirectUrl);
 	}
 }
 

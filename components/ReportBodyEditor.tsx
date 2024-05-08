@@ -12,15 +12,9 @@ import ListItem from "@tiptap/extension-list-item";
 
 const ReportBodyEditor = ({
 	onChange,
-	content,
 }: {
-	content: string;
-	onChange: any;
+	onChange: (content: string) => void;
 }) => {
-	const handleChange = (value: string) => {
-		onChange(value);
-	};
-
 	const editor = useEditor({
 		extensions: [
 			StarterKit.configure({
@@ -66,6 +60,9 @@ const ReportBodyEditor = ({
 			}),
 		],
 		content: `<h2>Type your Trip Report here...</h2><p>Format it with the menu bar above.</p>`,
+		onUpdate({ editor }) {
+			onChange(editor.getHTML());
+		},
 	});
 
 	if (!editor) {
