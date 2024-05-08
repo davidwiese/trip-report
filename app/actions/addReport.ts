@@ -37,10 +37,21 @@ async function addReport(formData: FormData) {
 		const fileMime = gpxKmlFile.type;
 		const base64File = `data:${fileMime};base64,${base64}`;
 
+		// Get the original file name and extension
+		const originalFileName = gpxKmlFile.name;
+		const fileExtension = originalFileName.substring(
+			originalFileName.lastIndexOf(".") + 1
+		);
+
 		// Upload to Cloudinary
 		const result = await cloudinary.uploader.upload(base64File, {
 			folder: "trip-report/gpx",
 			resource_type: "raw",
+			public_id: `${originalFileName.substring(
+				0,
+				originalFileName.lastIndexOf(".")
+			)}`,
+			format: fileExtension,
 		});
 		gpxKmlFileUrl = result.secure_url;
 	}
