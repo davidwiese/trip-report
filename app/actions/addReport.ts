@@ -69,7 +69,7 @@ async function addReport(formData: FormData) {
 			title: FormDataEntryValue | null;
 			activityType: string[];
 			description: FormDataEntryValue | null;
-			// body: FormDataEntryValue | null;
+			body: FormDataEntryValue | null;
 			location: LocationType;
 			distance: FormDataEntryValue | null;
 			elevationGain: FormDataEntryValue | null;
@@ -86,7 +86,7 @@ async function addReport(formData: FormData) {
 			title: formData.get("title"),
 			activityType: formData.getAll("activityType") as string[],
 			description: formData.get("description"),
-			// body: formData.get("body"),
+			body: formData.get("body"),
 			location: {
 				country: formData.get("location.country")!,
 				region: formData.get("location.region")!,
