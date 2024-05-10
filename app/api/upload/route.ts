@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import cloudinary from "cloudinary";
+import { ratelimit } from "@/utils/ratelimit";
 
 cloudinary.v2.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -8,6 +9,13 @@ cloudinary.v2.config({
 });
 
 export async function POST(request: Request) {
+	const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
+	const { success } = await ratelimit.limit(ip);
+
+	if (!success) {
+		return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+	}
+
 	try {
 		const data = await request.formData();
 		const file = data.get("file") as File;
