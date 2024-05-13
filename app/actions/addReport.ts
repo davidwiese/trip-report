@@ -25,9 +25,10 @@ async function addReport(formData: FormData) {
 
 		const { userId } = sessionUser;
 
-		const images = formData
-			.getAll("images")
-			.filter((image) => (image as File).name !== "");
+		const images = formData.getAll("images").filter((image) => {
+			const file = image as File;
+			return file.size > 0 && file.name !== "undefined";
+		});
 
 		// GPX upload
 		const gpxKmlFile = formData.get("gpxKmlFile") as File | null;
@@ -80,7 +81,7 @@ async function addReport(formData: FormData) {
 			duration: FormDataEntryValue | null;
 			startDate: FormDataEntryValue | null;
 			endDate: FormDataEntryValue | null;
-			images: string[];
+			images?: string[];
 			gpxKmlFile: string;
 			caltopoUrl: FormDataEntryValue | null;
 			isFeatured: boolean;
@@ -102,7 +103,6 @@ async function addReport(formData: FormData) {
 			duration: formData.get("duration"),
 			startDate: formData.get("startDate"),
 			endDate: formData.get("endDate"),
-			images: [], // Initialize as an empty array of type string[]
 			gpxKmlFile: gpxKmlFileUrl,
 			caltopoUrl: formData.get("caltopoUrl"),
 			isFeatured: false,
@@ -160,11 +160,13 @@ async function addReport(formData: FormData) {
 		// NOTE: this will be an array of strings, not a array of Promises
 		// So imageUploadPromises has been changed to imageUrls to more
 		// declaratively represent its type.
-		const imageUrls = [];
-
+		console.log("Number of images:", images.length);
 		if (images.length > 0) {
+			const imageUrls: string[] = [];
+
 			for (const imageFile of images) {
 				const imageBuffer = await (imageFile as File).arrayBuffer();
+				console.log("Processing image:", imageFile);
 				const imageArray = Array.from(new Uint8Array(imageBuffer));
 				const imageData = Buffer.from(imageArray);
 
@@ -180,18 +182,16 @@ async function addReport(formData: FormData) {
 				);
 
 				imageUrls.push(result.secure_url);
-
-				// Add uploaded images to the reportData object
-				reportData.images = imageUrls;
 			}
+			console.log("Uploaded image URLs:", imageUrls);
+			reportData.images = imageUrls;
 		}
 
 		// NOTE: here there is no need to await the resolution of
 		// imageUploadPromises as it's not a array of Promises it's an array of
 		// strings, additionally we should not await on every iteration of our loop.
 
-		reportData.images = imageUrls;
-
+		console.log("Report data:", reportData);
 		const newReport = new Report(reportData);
 		await newReport.save();
 

@@ -25,7 +25,7 @@ export type Report = {
 	duration: number;
 	startDate: string;
 	endDate: string;
-	images: string[];
+	images?: string[];
 	caltopoUrl?: string;
 	gpxKmlFile?: string;
 	isFeatured: boolean;
