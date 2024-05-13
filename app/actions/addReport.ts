@@ -162,26 +162,28 @@ async function addReport(formData: FormData) {
 		// declaratively represent its type.
 		const imageUrls = [];
 
-		for (const imageFile of images) {
-			const imageBuffer = await (imageFile as File).arrayBuffer();
-			const imageArray = Array.from(new Uint8Array(imageBuffer));
-			const imageData = Buffer.from(imageArray);
+		if (images.length > 0) {
+			for (const imageFile of images) {
+				const imageBuffer = await (imageFile as File).arrayBuffer();
+				const imageArray = Array.from(new Uint8Array(imageBuffer));
+				const imageData = Buffer.from(imageArray);
 
-			// Convert the image data to base64
-			const imageBase64 = imageData.toString("base64");
+				// Convert the image data to base64
+				const imageBase64 = imageData.toString("base64");
 
-			// Make request to upload to Cloudinary
-			const result = await cloudinary.uploader.upload(
-				`data:image/png;base64,${imageBase64}`,
-				{
-					folder: "trip-report",
-				}
-			);
+				// Make request to upload to Cloudinary
+				const result = await cloudinary.uploader.upload(
+					`data:image/png;base64,${imageBase64}`,
+					{
+						folder: "trip-report",
+					}
+				);
 
-			imageUrls.push(result.secure_url);
+				imageUrls.push(result.secure_url);
 
-			// Add uploaded images to the reportData object
-			reportData.images = imageUrls;
+				// Add uploaded images to the reportData object
+				reportData.images = imageUrls;
+			}
 		}
 
 		// NOTE: here there is no need to await the resolution of

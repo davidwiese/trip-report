@@ -468,7 +468,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 
 			<div className="mb-4">
 				<label htmlFor="images" className="block text-gray-700 font-bold mb-2">
-					Images (Select up to 4 images)
+					Images (Select up to 5 images, optional)
 				</label>
 				<input
 					type="file"
@@ -478,7 +478,6 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					accept="image/*"
 					multiple
 					onChange={handleImageChange}
-					required
 				/>
 			</div>
 
