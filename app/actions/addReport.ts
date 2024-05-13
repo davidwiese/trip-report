@@ -63,6 +63,7 @@ async function addReport(formData: FormData) {
 			country: FormDataEntryValue;
 			region: FormDataEntryValue;
 			localArea: FormDataEntryValue;
+			objective: FormDataEntryValue;
 		};
 
 		// Create reportData object for database
@@ -93,6 +94,7 @@ async function addReport(formData: FormData) {
 				country: formData.get("location.country")!,
 				region: formData.get("location.region")!,
 				localArea: formData.get("location.localArea")!,
+				objective: formData.get("location.objective")!,
 			},
 			distance: formData.get("distance"),
 			elevationGain: formData.get("elevationGain"),
@@ -114,6 +116,7 @@ async function addReport(formData: FormData) {
 			"location.country",
 			"location.region",
 			"location.localArea",
+			"location.objective",
 			"distance",
 			"elevationGain",
 			"elevationLoss",

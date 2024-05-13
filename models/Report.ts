@@ -60,6 +60,10 @@ const ReportSchema = new Schema(
 				type: String,
 				required: true,
 			},
+			objective: {
+				type: String,
+				required: true,
+			},
 		},
 		distance: {
 			type: Number,

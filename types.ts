@@ -8,6 +8,7 @@ export type Location = {
 	country: string;
 	region: string;
 	localArea: string;
+	objective: string;
 };
 
 export type Report = {

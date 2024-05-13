@@ -304,7 +304,15 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					id="localArea"
 					name="location.localArea"
 					className="border rounded w-full py-2 px-3 mb-2"
-					placeholder="Local area (peak or trail name, mountain range, park, etc.)"
+					placeholder="Local area (mountain range, park, etc.)"
+					required
+				/>
+				<input
+					type="text"
+					id="objective"
+					name="location.objective"
+					className="border rounded w-full py-2 px-3"
+					placeholder="Objective (specific trail, peak, or climb, etc.)"
 					required
 				/>
 			</div>
