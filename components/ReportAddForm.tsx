@@ -1,6 +1,6 @@
 "use client";
 import addReport from "@/app/actions/addReport";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, FormEvent } from "react";
 import { toast } from "react-toastify";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
@@ -15,6 +15,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [description, setDescription] = useState<string>("");
 	const [country, setCountry] = useState("");
 	const [region, setRegion] = useState("");
+	const [errors, setErrors] = useState<string[]>([]);
 	const maxDescriptionLength = 500;
 
 	const handleBodyChange = (content: string) => {
@@ -52,8 +53,41 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		}
 	};
 
+	const validateForm = () => {
+		const newErrors: string[] = [];
+
+		const checkedActivities = Array.from(
+			document.querySelectorAll("input[name='activityType']:checked")
+		).length;
+
+		if (checkedActivities === 0)
+			newErrors.push("At least one activity type is required");
+		if (!description) newErrors.push("Description is required");
+		if (description.length > maxDescriptionLength)
+			newErrors.push("Description is too long");
+		if (!country) newErrors.push("Country is required");
+		if (!region) newErrors.push("Region is required");
+
+		setErrors(newErrors);
+		return newErrors.length === 0;
+	};
+
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+		if (!validateForm()) {
+			e.preventDefault();
+		} else {
+			// Add hidden body field to form data
+			const form = e.currentTarget;
+			const bodyInput = document.createElement("input");
+			bodyInput.type = "hidden";
+			bodyInput.name = "body";
+			bodyInput.value = body;
+			form.appendChild(bodyInput);
+		}
+	};
+
 	return (
-		<form action={addReport}>
+		<form onSubmit={handleSubmit} action={addReport}>
 			<h2 className="text-3xl text-center font-semibold mb-6">
 				Add Trip Report
 			</h2>
@@ -484,6 +518,15 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			<div>
 				<SubmitButton />
 			</div>
+			{errors.length > 0 && (
+				<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded my-4">
+					<ul>
+						{errors.map((error, index) => (
+							<li key={index}>{error}</li>
+						))}
+					</ul>
+				</div>
+			)}
 		</form>
 	);
 };
