@@ -18,6 +18,14 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	);
 	const [country, setCountry] = useState(report.location.country || "");
 	const [region, setRegion] = useState(report.location.region || "");
+	const [startDate, setStartDate] = useState(
+		report.startDate
+			? new Date(report.startDate).toISOString().split("T")[0]
+			: ""
+	);
+	const [endDate, setEndDate] = useState(
+		report.endDate ? new Date(report.endDate).toISOString().split("T")[0] : ""
+	);
 	const [errors, setErrors] = useState<string[]>([]);
 	const [gpxKmlFile, setGpxKmlFile] = useState<File | null>(null);
 	const [images, setImages] = useState<File[]>([]);
@@ -490,7 +498,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="startDate"
 					className="border rounded w-full py-2 px-3"
 					required
-					defaultValue={report.startDate}
+					value={startDate}
+					onChange={(e) => setStartDate(e.target.value)}
 				/>
 			</div>
 
@@ -504,7 +513,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="endDate"
 					className="border rounded w-full py-2 px-3"
 					required
-					defaultValue={report.endDate}
+					value={endDate}
+					onChange={(e) => setEndDate(e.target.value)}
 				/>
 			</div>
 
@@ -573,12 +583,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				<label htmlFor="body" className="block text-gray-700 font-bold mb-2">
 					Trip Report
 				</label>
-				<input
-					type="hidden"
-					name="body"
-					value={body}
-					defaultValue={report.body}
-				/>
+				<input type="hidden" name="body" value={body} />
 				<div className="border rounded">
 					<ReportBodyEditor onChange={handleBodyChange} />
 				</div>
