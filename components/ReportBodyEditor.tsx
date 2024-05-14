@@ -11,8 +11,10 @@ import OrderedList from "@tiptap/extension-ordered-list";
 import ListItem from "@tiptap/extension-list-item";
 
 const ReportBodyEditor = ({
+	value,
 	onChange,
 }: {
+	value?: string;
 	onChange: (content: string) => void;
 }) => {
 	const editor = useEditor({
@@ -59,7 +61,9 @@ const ReportBodyEditor = ({
 				},
 			}),
 		],
-		content: `<h2>Type your Trip Report here...</h2><p>Format it with the menu bar above.</p>`,
+		content:
+			value ||
+			`<h2>Type your Trip Report here...</h2><p>Format it with the menu bar above.</p>`,
 		onUpdate({ editor }) {
 			onChange(editor.getHTML());
 		},

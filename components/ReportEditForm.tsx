@@ -585,7 +585,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				</label>
 				<input type="hidden" name="body" value={body} />
 				<div className="border rounded">
-					<ReportBodyEditor onChange={handleBodyChange} />
+					<ReportBodyEditor value={body} onChange={handleBodyChange} />
 				</div>
 			</div>
 
