@@ -83,7 +83,7 @@ async function addReport(formData: FormData) {
 			endDate: FormDataEntryValue | null;
 			images?: string[];
 			gpxKmlFile?: string;
-			caltopoUrl: FormDataEntryValue | null;
+			caltopoUrl?: FormDataEntryValue | null;
 			isFeatured: boolean;
 		} = {
 			owner: userId,
@@ -103,13 +103,46 @@ async function addReport(formData: FormData) {
 			duration: formData.get("duration"),
 			startDate: formData.get("startDate"),
 			endDate: formData.get("endDate"),
-			caltopoUrl: formData.get("caltopoUrl"),
 			isFeatured: false,
 		};
 
 		// Conditionally add gpxKmlFile if it has a value
 		if (gpxKmlFileUrl) {
 			reportData.gpxKmlFile = gpxKmlFileUrl;
+		}
+
+		// Conditionally add caltopoUrl if it has a value
+		const caltopoUrl = formData.get("caltopoUrl");
+		if (caltopoUrl) {
+			reportData.caltopoUrl = caltopoUrl;
+		}
+
+		// Upload image(s) to Cloudinary
+		// NOTE: this will be an array of strings, not a array of Promises
+		// So imageUploadPromises has been changed to imageUrls to more
+		// declaratively represent its type.
+		if (images.length > 0) {
+			const imageUrls: string[] = [];
+
+			for (const imageFile of images) {
+				const imageBuffer = await (imageFile as File).arrayBuffer();
+				const imageArray = Array.from(new Uint8Array(imageBuffer));
+				const imageData = Buffer.from(imageArray);
+
+				// Convert the image data to base64
+				const imageBase64 = imageData.toString("base64");
+
+				// Make request to upload to Cloudinary
+				const result = await cloudinary.uploader.upload(
+					`data:image/png;base64,${imageBase64}`,
+					{
+						folder: "trip-report",
+					}
+				);
+
+				imageUrls.push(result.secure_url);
+			}
+			reportData.images = imageUrls;
 		}
 
 		// Validation for required fields
@@ -160,48 +193,11 @@ async function addReport(formData: FormData) {
 			}
 		});
 
-		// Upload image(s) to Cloudinary
-		// NOTE: this will be an array of strings, not a array of Promises
-		// So imageUploadPromises has been changed to imageUrls to more
-		// declaratively represent its type.
-		console.log("Number of images:", images.length);
-		if (images.length > 0) {
-			const imageUrls: string[] = [];
-
-			for (const imageFile of images) {
-				const imageBuffer = await (imageFile as File).arrayBuffer();
-				console.log("Processing image:", imageFile);
-				const imageArray = Array.from(new Uint8Array(imageBuffer));
-				const imageData = Buffer.from(imageArray);
-
-				// Convert the image data to base64
-				const imageBase64 = imageData.toString("base64");
-
-				// Make request to upload to Cloudinary
-				const result = await cloudinary.uploader.upload(
-					`data:image/png;base64,${imageBase64}`,
-					{
-						folder: "trip-report",
-					}
-				);
-
-				imageUrls.push(result.secure_url);
-			}
-			console.log("Uploaded image URLs:", imageUrls);
-			reportData.images = imageUrls;
-		}
-
 		// NOTE: here there is no need to await the resolution of
 		// imageUploadPromises as it's not a array of Promises it's an array of
 		// strings, additionally we should not await on every iteration of our loop.
-
-		console.log("Report data:", reportData);
 		const newReport = new Report(reportData);
 		await newReport.save();
-
-		// Revalidate the cache
-		// NOTE: since reports are pretty much on every page, we can simply
-		// revalidate everything that uses our top level layout
 
 		// Set the redirect URL
 		redirectUrl = `/reports/${newReport._id}`;
@@ -211,7 +207,9 @@ async function addReport(formData: FormData) {
 			"An error occurred while adding the report. Please try again."
 		);
 	}
-
+	// Revalidate the cache
+	// NOTE: since reports are pretty much on every page, we can simply
+	// revalidate everything that uses our top level layout
 	revalidatePath("/", "layout");
 
 	if (redirectUrl) {
