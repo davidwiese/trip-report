@@ -101,9 +101,10 @@ const ReportSchema = new Schema(
 				message: "End date must be equal to or later than the start date.",
 			},
 		},
-		// NOTE: Limit the user to a maximum of 4 images
+		// NOTE: Limit the user to a maximum of 5 images
 		images: {
 			type: [String],
+			default: undefined, // Don't send empty array if no images selected
 			validate: {
 				validator: (v: string[]) => v.length <= 5,
 				message: (props: { value: string[] }) =>

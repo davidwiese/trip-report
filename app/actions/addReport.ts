@@ -27,8 +27,8 @@ async function addReport(formData: FormData) {
 
 		const images = formData.getAll("images").filter((image) => {
 			const file = image as File;
-			return file.size > 0 && file.name !== "undefined";
-		});
+			return file && file.size > 0 && file.name !== "undefined";
+		}) as File[];
 
 		// GPX upload
 		const gpxKmlFile = formData.get("gpxKmlFile") as File | null;
@@ -142,7 +142,9 @@ async function addReport(formData: FormData) {
 
 				imageUrls.push(result.secure_url);
 			}
-			reportData.images = imageUrls;
+			if (imageUrls.length > 0) {
+				reportData.images = imageUrls;
+			}
 		}
 
 		// Validation for required fields
