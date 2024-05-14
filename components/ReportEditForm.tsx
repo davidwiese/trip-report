@@ -1,6 +1,6 @@
 "use client";
 import updateReport from "@/app/actions/updateReport";
-import { ChangeEvent, useState, FormEvent, useEffect } from "react";
+import { ChangeEvent, useState, FormEvent } from "react";
 import { toast } from "react-toastify";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
@@ -119,23 +119,6 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			form.appendChild(bodyInput);
 		}
 	};
-
-	useEffect(() => {
-		// Pre-fill activity type checkboxes
-		if (report.activityType && Array.isArray(report.activityType)) {
-			report.activityType.forEach((type) => {
-				const checkbox = document.getElementById(
-					`activityType_${type}`
-				) as HTMLInputElement;
-				if (checkbox) {
-					checkbox.checked = true;
-				}
-			});
-		}
-	}, [report.activityType]);
-
-	// NOTE: to pass the id to our server action we can use Function.bind
-	//https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations#passing-additional-arguments
 
 	const updateReportById = updateReport.bind(null, report._id);
 
@@ -372,7 +355,6 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					value={description}
 					onChange={handleDescriptionChange}
 					required
-					defaultValue={report.description}
 				></textarea>
 				<div className="text-right text-sm mt-1 text-gray-600">
 					{maxDescriptionLength - description.length} characters remaining
