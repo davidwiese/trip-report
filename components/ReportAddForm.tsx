@@ -16,6 +16,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [country, setCountry] = useState("");
 	const [region, setRegion] = useState("");
 	const [errors, setErrors] = useState<string[]>([]);
+	const [gpxKmlFile, setGpxKmlFile] = useState<File | null>(null);
+	const [images, setImages] = useState<File[]>([]);
 	const maxDescriptionLength = 500;
 
 	const handleBodyChange = (content: string) => {
@@ -46,10 +48,39 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		}
 	};
 
+	const handleGpxKmlFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files) {
+			setGpxKmlFile(e.target.files[0]);
+		}
+	};
+
+	const removeGpxKmlFile = () => {
+		setGpxKmlFile(null);
+		const gpxInput = document.getElementById("gpxKmlFile") as HTMLInputElement;
+		if (gpxInput) {
+			gpxInput.value = "";
+		}
+	};
+
 	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-		if (e.target.files && e.target.files.length > 5) {
-			e.target.value = "";
-			toast.error("You can select up to 5 images");
+		if (e.target.files) {
+			const selectedFiles = Array.from(e.target.files);
+			if (selectedFiles.length > 5) {
+				toast.error("You can select up to 5 images");
+			} else {
+				setImages(selectedFiles);
+			}
+		}
+	};
+
+	const removeImage = (index: number) => {
+		const newImages = images.filter((_, i) => i !== index);
+		setImages(newImages);
+		const imageInput = document.getElementById("images") as HTMLInputElement;
+		if (imageInput) {
+			const dt = new DataTransfer();
+			newImages.forEach((file) => dt.items.add(file));
+			imageInput.files = dt.files;
 		}
 	};
 
@@ -457,7 +488,20 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					name="gpxKmlFile"
 					className="border rounded w-full py-2 px-3"
 					accept=".gpx,.kml"
+					onChange={handleGpxKmlFileChange}
 				/>
+				{gpxKmlFile && (
+					<div className="mt-2">
+						<span>{gpxKmlFile.name}</span>
+						<button
+							type="button"
+							className="ml-2 text-red-500"
+							onClick={removeGpxKmlFile}
+						>
+							Remove
+						</button>
+					</div>
+				)}
 			</div>
 
 			<div className="mb-4">
@@ -513,6 +557,24 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					multiple
 					onChange={handleImageChange}
 				/>
+				{images.length > 0 && (
+					<div className="mt-2">
+						<ul>
+							{images.map((image, index) => (
+								<li key={index} className="flex items-center">
+									<span>{image.name}</span>
+									<button
+										type="button"
+										className="ml-2 text-red-500"
+										onClick={() => removeImage(index)}
+									>
+										Remove
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
+				)}
 			</div>
 
 			<div>
