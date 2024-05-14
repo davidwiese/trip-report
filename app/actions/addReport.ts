@@ -32,7 +32,7 @@ async function addReport(formData: FormData) {
 
 		// GPX upload
 		const gpxKmlFile = formData.get("gpxKmlFile") as File | null;
-		let gpxKmlFileUrl = "";
+		let gpxKmlFileUrl: string | undefined;
 
 		if (gpxKmlFile && gpxKmlFile.size > 0) {
 			// Convert file to buffer
@@ -82,7 +82,7 @@ async function addReport(formData: FormData) {
 			startDate: FormDataEntryValue | null;
 			endDate: FormDataEntryValue | null;
 			images?: string[];
-			gpxKmlFile: string;
+			gpxKmlFile?: string;
 			caltopoUrl: FormDataEntryValue | null;
 			isFeatured: boolean;
 		} = {
@@ -103,10 +103,14 @@ async function addReport(formData: FormData) {
 			duration: formData.get("duration"),
 			startDate: formData.get("startDate"),
 			endDate: formData.get("endDate"),
-			gpxKmlFile: gpxKmlFileUrl,
 			caltopoUrl: formData.get("caltopoUrl"),
 			isFeatured: false,
 		};
+
+		// Conditionally add gpxKmlFile if it has a value
+		if (gpxKmlFileUrl) {
+			reportData.gpxKmlFile = gpxKmlFileUrl;
+		}
 
 		// Validation for required fields
 		const requiredFields = [
