@@ -123,23 +123,29 @@ async function addReport(formData: FormData) {
 			const imageUrls: string[] = [];
 
 			for (const imageFile of images) {
-				const imageBuffer = await (imageFile as File).arrayBuffer();
-				const imageArray = Array.from(new Uint8Array(imageBuffer));
-				const imageData = Buffer.from(imageArray);
+				const imageBuffer = await imageFile.arrayBuffer();
+				const base64 = Buffer.from(imageBuffer).toString("base64");
+				const fileMime = imageFile.type;
+				const base64File = `data:${fileMime};base64,${base64}`;
 
-				// Convert the image data to base64
-				const imageBase64 = imageData.toString("base64");
-
-				// Upload to Cloudinary
-				const result = await cloudinary.uploader.upload(
-					`data:image/png;base64,${imageBase64}`,
-					{
-						folder: "trip-report",
-					}
+				const originalFileName = imageFile.name;
+				const fileExtension = originalFileName.substring(
+					originalFileName.lastIndexOf(".") + 1
 				);
+
+				const result = await cloudinary.uploader.upload(base64File, {
+					folder: "trip-report",
+					resource_type: "image",
+					public_id: `${originalFileName.substring(
+						0,
+						originalFileName.lastIndexOf(".")
+					)}`,
+					format: fileExtension,
+				});
 
 				imageUrls.push(result.secure_url);
 			}
+
 			if (imageUrls.length > 0) {
 				reportData.images = imageUrls;
 			}
