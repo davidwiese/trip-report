@@ -600,7 +600,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="caltopoUrl"
 					className="border rounded w-full py-2 px-3"
 					placeholder="e.g. https://caltopo.com/m/EH41"
-					defaultValue={report.caltopoUrl || "e.g. https://caltopo.com/m/EH41"}
+					defaultValue={report.caltopoUrl || ""}
 				/>
 			</div>
 

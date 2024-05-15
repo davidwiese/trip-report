@@ -70,7 +70,7 @@ async function updateReport(reportId: string, formData: FormData) {
 	}
 
 	// Update the GPX/KML file
-	let gpxKmlFileUrl = existingReport.gpxKmlFile;
+	let gpxKmlFileUrl: string | undefined = existingReport.gpxKmlFile;
 	const gpxKmlFile = formData.get("gpxKmlFile");
 
 	if (gpxKmlFile && gpxKmlFile instanceof File && gpxKmlFile.size > 0) {
@@ -109,11 +109,36 @@ async function updateReport(reportId: string, formData: FormData) {
 				resource_type: "raw",
 			});
 		}
-		gpxKmlFileUrl = ""; // Clear the URL if the file is removed
+		gpxKmlFileUrl = undefined; // Set the URL to undefined if the file is removed
+	}
+
+	// Handle Caltopo URL
+	let caltopoUrl = formData.get("caltopoUrl") as FormDataEntryValue | null;
+	if (caltopoUrl === "e.g. https://caltopo.com/m/EH41" || caltopoUrl === "") {
+		caltopoUrl = null; // Set Caltopo URL to null if it's the placeholder or empty
 	}
 
 	// Create reportData object for database
-	const reportData = {
+	const reportData: {
+		title: FormDataEntryValue | null;
+		activityType: string[];
+		description: FormDataEntryValue | null;
+		body: FormDataEntryValue | null;
+		location: {
+			country: FormDataEntryValue | null;
+			region: FormDataEntryValue | null;
+			localArea: FormDataEntryValue | null;
+		};
+		distance: FormDataEntryValue | null;
+		elevationGain: FormDataEntryValue | null;
+		elevationLoss: FormDataEntryValue | null;
+		duration: FormDataEntryValue | null;
+		startDate: FormDataEntryValue | null;
+		endDate: FormDataEntryValue | null;
+		caltopoUrl?: FormDataEntryValue | null;
+		gpxKmlFile?: string | undefined;
+		images: string[];
+	} = {
 		title: formData.get("title"),
 		activityType: formData.getAll("activityType") as string[],
 		description: formData.get("description"),
@@ -129,8 +154,8 @@ async function updateReport(reportId: string, formData: FormData) {
 		duration: formData.get("duration"),
 		startDate: formData.get("startDate"),
 		endDate: formData.get("endDate"),
-		caltopoUrl: formData.get("caltopoUrl"),
-		gpxKmlFile: gpxKmlFileUrl,
+		caltopoUrl: caltopoUrl, // Conditionally add the Caltopo URL
+		gpxKmlFile: gpxKmlFileUrl, // Conditionally add the gpxKmlFile URL
 		images: [
 			...existingReport.images.filter(
 				(img: string) => !imagesToRemove.includes(img)
@@ -139,6 +164,13 @@ async function updateReport(reportId: string, formData: FormData) {
 		],
 	};
 
+	// Remove undefined keys from the reportData object
+	Object.keys(reportData).forEach((key) => {
+		if (reportData[key as keyof typeof reportData] === undefined) {
+			delete reportData[key as keyof typeof reportData];
+		}
+	});
+
 	const updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {
 		new: true,
 	});
@@ -146,6 +178,7 @@ async function updateReport(reportId: string, formData: FormData) {
 	// Revalidate the cache
 	// NOTE: since reports are pretty much on every page, we can simply
 	// revalidate everything that uses our top level layout
+	revalidatePath(`/reports/${reportId}`);
 	revalidatePath("/", "layout");
 
 	redirect(`/reports/${updatedReport._id}`);
