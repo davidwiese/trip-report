@@ -42,7 +42,7 @@ async function updateReport(reportId: string, formData: FormData) {
 	const newImages = [];
 	const files = formData.getAll("images");
 	for (const file of files) {
-		if (file instanceof File) {
+		if (file instanceof File && file.size > 0) {
 			// Convert the file to a base64 string
 			const fileBuffer = await file.arrayBuffer();
 			const base64 = Buffer.from(fileBuffer).toString("base64");
@@ -73,7 +73,7 @@ async function updateReport(reportId: string, formData: FormData) {
 	let gpxKmlFileUrl = existingReport.gpxKmlFile;
 	const gpxKmlFile = formData.get("gpxKmlFile");
 
-	if (gpxKmlFile && gpxKmlFile instanceof File) {
+	if (gpxKmlFile && gpxKmlFile instanceof File && gpxKmlFile.size > 0) {
 		// If a new GPX file is provided, remove the old one from Cloudinary (if it exists)
 		if (existingReport.gpxKmlFile) {
 			await cloudinary.uploader.destroy(existingReport.gpxKmlFile, {
