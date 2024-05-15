@@ -94,6 +94,7 @@ async function updateReport(reportId: string, formData: FormData) {
 		title: formData.get("title"),
 		activityType: formData.getAll("activityType") as string[],
 		description: formData.get("description"),
+		body: formData.get("body"),
 		location: {
 			country: formData.get("location.country"),
 			region: formData.get("location.region"),
