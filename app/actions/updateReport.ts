@@ -128,6 +128,7 @@ async function updateReport(reportId: string, formData: FormData) {
 			country: FormDataEntryValue | null;
 			region: FormDataEntryValue | null;
 			localArea: FormDataEntryValue | null;
+			objective: FormDataEntryValue | null;
 		};
 		distance: FormDataEntryValue | null;
 		elevationGain: FormDataEntryValue | null;
@@ -147,6 +148,7 @@ async function updateReport(reportId: string, formData: FormData) {
 			country: formData.get("location.country"),
 			region: formData.get("location.region"),
 			localArea: formData.get("location.localArea"),
+			objective: formData.get("location.objective"),
 		},
 		distance: formData.get("distance"),
 		elevationGain: formData.get("elevationGain"),
