@@ -67,14 +67,6 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 		}
 	};
 
-	const removeGpxKmlFile = () => {
-		setGpxKmlFile(null);
-		const gpxInput = document.getElementById("gpxKmlFile") as HTMLInputElement;
-		if (gpxInput) {
-			gpxInput.value = "";
-		}
-	};
-
 	const toggleRemoveGpxKmlFile = () => {
 		setRemoveGpx((prev) => !prev);
 	};
@@ -131,6 +123,15 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			bodyInput.name = "body";
 			bodyInput.value = body;
 			form.appendChild(bodyInput);
+
+			// Add the removeGpxKmlFile field to form data if the file is marked for removal
+			if (removeGpx) {
+				const removeGpxInput = document.createElement("input");
+				removeGpxInput.type = "hidden";
+				removeGpxInput.name = "removeGpxKmlFile";
+				removeGpxInput.value = "true";
+				form.appendChild(removeGpxInput);
+			}
 		}
 	};
 
@@ -531,35 +532,33 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				>
 					Upload GPX/KML File (optional)
 				</label>
-				{report.gpxKmlFile && !removeGpx && (
-					<div>
+				{report.gpxKmlFile && (
+					<div className="flex items-center">
 						<a
 							href={report.gpxKmlFile}
 							target="_blank"
 							rel="noopener noreferrer"
+							className={`${removeGpx ? "line-through text-gray-500" : ""}`}
 						>
 							{report.gpxKmlFile.split("/").pop()}
 						</a>
-						<button
-							className="ml-2 text-red-500"
-							type="button"
-							onClick={toggleRemoveGpxKmlFile}
-						>
-							Remove File
-						</button>
-					</div>
-				)}
-				{removeGpx && (
-					<div>
-						<p className="text-red-500">File marked for removal.</p>
-						<button
-							className="ml-2 text-blue-500"
-							type="button"
-							onClick={toggleRemoveGpxKmlFile}
-						>
-							Undo
-						</button>
-						<input type="hidden" name="removeGpxKmlFile" value="true" />
+						{!removeGpx ? (
+							<button
+								className="ml-2 text-red-500"
+								type="button"
+								onClick={toggleRemoveGpxKmlFile}
+							>
+								Remove File
+							</button>
+						) : (
+							<button
+								className="ml-2 text-blue-500"
+								type="button"
+								onClick={toggleRemoveGpxKmlFile}
+							>
+								Undo
+							</button>
+						)}
 					</div>
 				)}
 				<input
