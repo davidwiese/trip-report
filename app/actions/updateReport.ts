@@ -67,9 +67,18 @@ async function updateReport(reportId: string, formData: FormData) {
 		existingReport.gpxKmlFile = "";
 	}
 
+	// Update the GPX/KML file
 	const gpxKmlFile = formData.get("gpxKmlFile");
 	let gpxKmlFileUrl = existingReport.gpxKmlFile;
+
 	if (gpxKmlFile && gpxKmlFile instanceof File) {
+		// If a new GPX file is provided, remove the old one from Cloudinary (if it exists)
+		if (existingReport.gpxKmlFile) {
+			await cloudinary.uploader.destroy(existingReport.gpxKmlFile, {
+				resource_type: "raw",
+			});
+		}
+
 		const fileBuffer = await gpxKmlFile.arrayBuffer();
 		const base64 = Buffer.from(fileBuffer).toString("base64");
 		const fileMime = gpxKmlFile.type;
