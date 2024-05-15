@@ -7,7 +7,7 @@ type SubmitButtonProps = {
 };
 
 const SubmitButton: React.FC<SubmitButtonProps> = ({
-	pendingText = "Adding report...",
+	pendingText = "Adding Report...",
 	text = "Add Report",
 }) => {
 	const status = useFormStatus();

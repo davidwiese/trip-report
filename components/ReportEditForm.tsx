@@ -623,7 +623,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div>
-				<SubmitButton />
+				<SubmitButton text="Update Report" pendingText="Updating Report..." />
 			</div>
 			{errors.length > 0 && (
 				<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded my-4">
