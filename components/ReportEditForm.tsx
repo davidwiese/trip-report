@@ -525,26 +525,32 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				>
 					Upload GPX/KML File (optional)
 				</label>
+				{report.gpxKmlFile && (
+					<div>
+						<a
+							href={report.gpxKmlFile}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							{report.gpxKmlFile.split("/").pop()}
+						</a>
+						<button
+							className="ml-2 text-red-500"
+							type="button"
+							onClick={removeGpxKmlFile}
+						>
+							Remove File
+						</button>
+						<input type="hidden" name="removeGpxKmlFile" value="true" />
+					</div>
+				)}
 				<input
 					type="file"
 					id="gpxKmlFile"
 					name="gpxKmlFile"
-					className="border rounded w-full py-2 px-3"
-					accept=".gpx,.kml"
 					onChange={handleGpxKmlFileChange}
+					className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 				/>
-				{gpxKmlFile && (
-					<div className="mt-2">
-						<span>{gpxKmlFile.name}</span>
-						<button
-							type="button"
-							className="ml-2 text-red-500"
-							onClick={removeGpxKmlFile}
-						>
-							Remove
-						</button>
-					</div>
-				)}
 			</div>
 
 			<div className="mb-4">
