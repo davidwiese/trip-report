@@ -30,6 +30,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [gpxKmlFile, setGpxKmlFile] = useState<File | null>(null);
 	const [removeGpx, setRemoveGpx] = useState<boolean>(false); // Track removal state
 	const [images, setImages] = useState<File[]>([]);
+	const [removeImages, setRemoveImages] = useState<string[]>([]); // Track images marked for removal
 	const maxDescriptionLength = 500;
 
 	const handleBodyChange = (content: string) => {
@@ -63,7 +64,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const handleGpxKmlFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			setGpxKmlFile(e.target.files[0]);
-			setRemoveGpx(false); // Unmark removal if a new file is selected
+			setRemoveGpx(false); // Un-mark removal if a new file is selected
 		}
 	};
 
@@ -74,23 +75,27 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const selectedFiles = Array.from(e.target.files);
-			if (selectedFiles.length > 5) {
-				toast.error("You can select up to 5 images");
+			if (
+				selectedFiles.length +
+					(report.images?.length ?? 0) -
+					removeImages.length >
+				5
+			) {
+				toast.error("You can select up to 5 images in total");
 			} else {
 				setImages(selectedFiles);
 			}
 		}
 	};
 
-	const removeImage = (index: number) => {
-		const newImages = images.filter((_, i) => i !== index);
-		setImages(newImages);
-		const imageInput = document.getElementById("images") as HTMLInputElement;
-		if (imageInput) {
-			const dt = new DataTransfer();
-			newImages.forEach((file) => dt.items.add(file));
-			imageInput.files = dt.files;
-		}
+	const toggleRemoveImage = (imageUrl: string) => {
+		setRemoveImages((prevRemoveImages) => {
+			if (prevRemoveImages.includes(imageUrl)) {
+				return prevRemoveImages.filter((url) => url !== imageUrl);
+			} else {
+				return [...prevRemoveImages, imageUrl];
+			}
+		});
 	};
 
 	const validateForm = () => {
@@ -116,8 +121,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 		if (!validateForm()) {
 			e.preventDefault();
 		} else {
-			// Add hidden body field to form data
 			const form = e.currentTarget;
+
+			// Add hidden body field to form data
 			const bodyInput = document.createElement("input");
 			bodyInput.type = "hidden";
 			bodyInput.name = "body";
@@ -131,6 +137,17 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				removeGpxInput.name = "removeGpxKmlFile";
 				removeGpxInput.value = "true";
 				form.appendChild(removeGpxInput);
+			}
+
+			// Add the removeImages field to form data if images are marked for removal
+			if (removeImages.length > 0) {
+				removeImages.forEach((imageUrl) => {
+					const removeImageInput = document.createElement("input");
+					removeImageInput.type = "hidden";
+					removeImageInput.name = "imagesToRemove";
+					removeImageInput.value = imageUrl;
+					form.appendChild(removeImageInput);
+				});
 			}
 		}
 	};
@@ -625,19 +642,40 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					multiple
 					onChange={handleImageChange}
 				/>
-				{images.length > 0 && (
+				{(report.images ?? []).length > 0 && (
 					<div className="mt-2">
 						<ul>
-							{images.map((image, index) => (
-								<li key={index} className="flex items-center">
-									<span>{image.name}</span>
-									<button
-										type="button"
-										className="ml-2 text-red-500"
-										onClick={() => removeImage(index)}
+							{(report.images ?? []).map((imageUrl) => (
+								<li key={imageUrl} className="flex items-center">
+									<a
+										href={imageUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+										className={`${
+											removeImages.includes(imageUrl)
+												? "line-through text-gray-500"
+												: ""
+										}`}
 									>
-										Remove
-									</button>
+										{imageUrl.split("/").pop()}
+									</a>
+									{!removeImages.includes(imageUrl) ? (
+										<button
+											className="ml-2 text-red-500"
+											type="button"
+											onClick={() => toggleRemoveImage(imageUrl)}
+										>
+											Remove
+										</button>
+									) : (
+										<button
+											className="ml-2 text-blue-500"
+											type="button"
+											onClick={() => toggleRemoveImage(imageUrl)}
+										>
+											Undo
+										</button>
+									)}
 								</li>
 							))}
 						</ul>
