@@ -38,6 +38,7 @@ async function updateReport(reportId: string, formData: FormData) {
 		}
 	}
 
+	// Handle new images
 	const newImages = [];
 	const files = formData.getAll("images");
 	for (const file of files) {
@@ -48,10 +49,21 @@ async function updateReport(reportId: string, formData: FormData) {
 			const fileMime = file.type;
 			const base64File = `data:${fileMime};base64,${base64}`;
 
+			// Get the original file name and extension
+			const originalFileName = file.name;
+			const fileExtension = originalFileName.substring(
+				originalFileName.lastIndexOf(".") + 1
+			);
+
 			// Upload to Cloudinary
 			const uploadResult = await cloudinary.uploader.upload(base64File, {
 				folder: "trip-report",
-				resource_type: "image", // Assuming these are images
+				resource_type: "image",
+				public_id: `${originalFileName.substring(
+					0,
+					originalFileName.lastIndexOf(".")
+				)}`,
+				format: fileExtension,
 			});
 			newImages.push(uploadResult.secure_url);
 		}
@@ -74,9 +86,20 @@ async function updateReport(reportId: string, formData: FormData) {
 		const fileMime = gpxKmlFile.type;
 		const base64File = `data:${fileMime};base64,${base64}`;
 
+		// Get the original file name and extension
+		const originalFileName = gpxKmlFile.name;
+		const fileExtension = originalFileName.substring(
+			originalFileName.lastIndexOf(".") + 1
+		);
+
 		const uploadResult = await cloudinary.uploader.upload(base64File, {
 			folder: "trip-report/gpx",
 			resource_type: "raw",
+			public_id: `${originalFileName.substring(
+				0,
+				originalFileName.lastIndexOf(".")
+			)}`,
+			format: fileExtension,
 		});
 		gpxKmlFileUrl = uploadResult.secure_url;
 	} else if (formData.get("removeGpxKmlFile") === "true") {
