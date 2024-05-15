@@ -1,6 +1,6 @@
 "use client";
 import updateReport from "@/app/actions/updateReport";
-import { ChangeEvent, useState, FormEvent, useEffect } from "react";
+import { ChangeEvent, useState, FormEvent } from "react";
 import { toast } from "react-toastify";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
@@ -18,8 +18,6 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	);
 	const [country, setCountry] = useState(report.location.country || "");
 	const [region, setRegion] = useState(report.location.region || "");
-	const [localArea, setLocalArea] = useState(report.location.localArea || "");
-	const [objective, setObjective] = useState(report.location.objective || "");
 	const [startDate, setStartDate] = useState(
 		report.startDate
 			? new Date(report.startDate).toISOString().split("T")[0]
@@ -34,28 +32,6 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [images, setImages] = useState<File[]>([]);
 	const [removeImages, setRemoveImages] = useState<string[]>([]); // Track images marked for removal
 	const maxDescriptionLength = 500;
-
-	useEffect(() => {
-		setBody(report.body || "");
-		setDescription(report.description || "");
-		setCountry(report.location.country || "");
-		setRegion(report.location.region || "");
-		setLocalArea(report.location.localArea || "");
-		setObjective(report.location.objective || "");
-		setStartDate(
-			report.startDate
-				? new Date(report.startDate).toISOString().split("T")[0]
-				: ""
-		);
-		setEndDate(
-			report.endDate ? new Date(report.endDate).toISOString().split("T")[0] : ""
-		);
-		setImages([]);
-		setRemoveImages([]);
-		setGpxKmlFile(null);
-		setRemoveGpx(false);
-		setErrors([]);
-	}, [report]);
 
 	const handleBodyChange = (content: string) => {
 		setBody(content);
@@ -136,8 +112,6 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			newErrors.push("Description is too long");
 		if (!country) newErrors.push("Country is required");
 		if (!region) newErrors.push("Region is required");
-		if (!localArea) newErrors.push("Local Area is required");
-		if (!objective) newErrors.push("Objective is required");
 
 		setErrors(newErrors);
 		return newErrors.length === 0;
@@ -454,8 +428,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					className="border rounded w-full py-2 px-3 mb-2"
 					placeholder="Local area (mountain range, park, etc.)"
 					required
-					onChange={(e) => setLocalArea(e.target.value)}
-					value={localArea}
+					defaultValue={report.location.localArea}
 				/>
 				<input
 					type="text"
@@ -464,8 +437,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					className="border rounded w-full py-2 px-3"
 					placeholder="Objective (specific trail, peak, or climb, etc.)"
 					required
-					onChange={(e) => setObjective(e.target.value)}
-					value={objective}
+					defaultValue={report.location.objective}
 				/>
 			</div>
 
