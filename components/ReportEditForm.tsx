@@ -75,12 +75,13 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const selectedFiles = Array.from(e.target.files);
-			if (
-				selectedFiles.length +
-					(report.images?.length ?? 0) -
-					removeImages.length >
-				5
-			) {
+			const existingImageCount = report.images?.length ?? 0;
+			const markedForRemovalCount = removeImages.length;
+			const newImageCount = selectedFiles.length;
+			const totalImages =
+				existingImageCount - markedForRemovalCount + newImageCount;
+
+			if (totalImages > 5) {
 				toast.error("You can select up to 5 images in total");
 			} else {
 				setImages(selectedFiles);
