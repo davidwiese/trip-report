@@ -57,19 +57,9 @@ async function updateReport(reportId: string, formData: FormData) {
 		}
 	}
 
-	// Check if there's a request to remove the existing GPX/KML file
-	const removeGpxKmlFile = formData.get("removeGpxKmlFile") === "true";
-	if (removeGpxKmlFile && existingReport.gpxKmlFile) {
-		// Remove file from Cloudinary
-		await cloudinary.uploader.destroy(existingReport.gpxKmlFile, {
-			resource_type: "raw",
-		});
-		existingReport.gpxKmlFile = "";
-	}
-
 	// Update the GPX/KML file
-	const gpxKmlFile = formData.get("gpxKmlFile");
 	let gpxKmlFileUrl = existingReport.gpxKmlFile;
+	const gpxKmlFile = formData.get("gpxKmlFile");
 
 	if (gpxKmlFile && gpxKmlFile instanceof File) {
 		// If a new GPX file is provided, remove the old one from Cloudinary (if it exists)
@@ -89,6 +79,14 @@ async function updateReport(reportId: string, formData: FormData) {
 			resource_type: "raw",
 		});
 		gpxKmlFileUrl = uploadResult.secure_url;
+	} else if (formData.get("removeGpxKmlFile") === "true") {
+		// If there's a request to remove the existing GPX/KML file
+		if (existingReport.gpxKmlFile) {
+			await cloudinary.uploader.destroy(existingReport.gpxKmlFile, {
+				resource_type: "raw",
+			});
+		}
+		gpxKmlFileUrl = ""; // Clear the URL if the file is removed
 	}
 
 	// Create reportData object for database
