@@ -43,17 +43,11 @@ async function updateReport(reportId: string, formData: FormData) {
 	const files = formData
 		.getAll("images")
 		.filter((file: any) => file instanceof File && file.size > 0); // Filter out empty files
-	console.log("Files: ", files);
 	const existingImageCount = existingReport.images.length;
-	console.log("Existing images: ", existingImageCount);
 	const markedForRemovalCount = imagesToRemove.length;
-	console.log("Marked for removal: ", markedForRemovalCount);
 	const newImageCount = files.length;
-	console.log("New images: ", newImageCount);
 	const totalImages =
 		existingImageCount - markedForRemovalCount + newImageCount;
-
-	console.log("Total images: ", totalImages);
 
 	if (totalImages > 5) {
 		throw new Error("You can have a maximum of 5 images in total.");
