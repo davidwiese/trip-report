@@ -217,9 +217,16 @@ async function updateReport(reportId: string, formData: FormData) {
 		}
 	});
 
-	const updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {
-		new: true,
-	});
+	let updatedReport;
+	if (gpxKmlFileUrl === null) {
+		// Explicitly remove gpxKmlFile key if it is null
+		await Report.updateOne({ _id: reportId }, { $unset: { gpxKmlFile: 1 } });
+		updatedReport = await Report.findById(reportId);
+	} else {
+		updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {
+			new: true,
+		});
+	}
 
 	// Revalidate the cache
 	// NOTE: since reports are pretty much on every page, we can simply
