@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
 
 async function updateReport(reportId: string, formData: FormData) {
+	console.log("Received form data:", formData);
 	await connectDB();
 
 	const sessionUser = await getSessionUser();
@@ -82,15 +83,54 @@ async function updateReport(reportId: string, formData: FormData) {
 	}
 
 	// Update the GPX/KML file
-	let gpxKmlFileUrl: string | undefined = existingReport.gpxKmlFile;
+	let gpxKmlFileUrl: string | undefined | null = existingReport.gpxKmlFile;
 	const gpxKmlFile = formData.get("gpxKmlFile");
+	const removeGpxKmlFile = formData.get("removeGpxKmlFile");
+	console.log("gpxKmlFile:", gpxKmlFile);
+	console.log("removeGpxKmlFile:", removeGpxKmlFile);
 
-	if (gpxKmlFile && gpxKmlFile instanceof File && gpxKmlFile.size > 0) {
+	if (removeGpxKmlFile === "true") {
+		// If there's a request to remove the existing GPX/KML file
+		if (existingReport.gpxKmlFile) {
+			console.log("existingReport.gpxKmlFile:", existingReport.gpxKmlFile);
+			const publicId = existingReport.gpxKmlFile.split("/").pop();
+			console.log("Extracted publicId for removal:", publicId);
+			if (publicId) {
+				try {
+					const result = await cloudinary.uploader.destroy(
+						`trip-report/gpx/${publicId}`,
+						{
+							resource_type: "raw",
+						}
+					);
+					console.log("Cloudinary removal result:", result);
+					if (result.result !== "ok") {
+						throw new Error(`Failed to remove GPX/KML file: ${result.result}`);
+					}
+				} catch (error) {
+					console.error("Error removing GPX/KML file from Cloudinary:", error);
+					throw new Error("Failed to remove GPX/KML file from Cloudinary");
+				}
+			}
+		}
+		gpxKmlFileUrl = null; // Set the URL to null if the file is removed
+	} else if (gpxKmlFile instanceof File && gpxKmlFile.size > 0) {
 		// If a new GPX file is provided, remove the old one from Cloudinary (if it exists)
 		if (existingReport.gpxKmlFile) {
-			await cloudinary.uploader.destroy(existingReport.gpxKmlFile, {
-				resource_type: "raw",
-			});
+			try {
+				const publicId = existingReport.gpxKmlFile.split("/").pop();
+				if (publicId) {
+					await cloudinary.uploader.destroy(publicId, {
+						resource_type: "raw",
+					});
+				}
+			} catch (error) {
+				console.error(
+					"Error removing old GPX/KML file from Cloudinary:",
+					error
+				);
+				throw new Error("Failed to remove old GPX/KML file from Cloudinary");
+			}
 		}
 
 		const fileBuffer = await gpxKmlFile.arrayBuffer();
@@ -114,14 +154,6 @@ async function updateReport(reportId: string, formData: FormData) {
 			format: fileExtension,
 		});
 		gpxKmlFileUrl = uploadResult.secure_url;
-	} else if (formData.get("removeGpxKmlFile") === "true") {
-		// If there's a request to remove the existing GPX/KML file
-		if (existingReport.gpxKmlFile) {
-			await cloudinary.uploader.destroy(existingReport.gpxKmlFile, {
-				resource_type: "raw",
-			});
-		}
-		gpxKmlFileUrl = undefined; // Set the URL to undefined if the file is removed
 	}
 
 	// Handle Caltopo URL
@@ -149,7 +181,7 @@ async function updateReport(reportId: string, formData: FormData) {
 		startDate: FormDataEntryValue | null;
 		endDate: FormDataEntryValue | null;
 		caltopoUrl?: FormDataEntryValue | null;
-		gpxKmlFile?: string | undefined;
+		gpxKmlFile?: string | undefined | null;
 		images: string[];
 	} = {
 		title: formData.get("title"),
@@ -193,6 +225,7 @@ async function updateReport(reportId: string, formData: FormData) {
 	// NOTE: since reports are pretty much on every page, we can simply
 	// revalidate everything that uses our top level layout
 	revalidatePath(`/reports/${reportId}`);
+	revalidatePath(`/reports/${reportId}/edit`, "layout");
 	revalidatePath("/", "layout");
 
 	redirect(`/reports/${updatedReport._id}`);

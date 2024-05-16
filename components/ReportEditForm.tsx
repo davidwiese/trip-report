@@ -128,6 +128,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	};
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+		console.log("removeGpx before submit:", removeGpx);
 		if (!validateForm()) {
 			e.preventDefault();
 		} else {
@@ -140,13 +141,24 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			bodyInput.value = body;
 			form.appendChild(bodyInput);
 
-			// Add the removeGpxKmlFile field to form data if the file is marked for removal
-			if (removeGpx) {
-				const removeGpxInput = document.createElement("input");
-				removeGpxInput.type = "hidden";
-				removeGpxInput.name = "removeGpxKmlFile";
-				removeGpxInput.value = "true";
-				form.appendChild(removeGpxInput);
+			// Add the removeGpxKmlFile field to form data
+			const removeGpxInput = document.createElement("input");
+			removeGpxInput.type = "hidden";
+			removeGpxInput.name = "removeGpxKmlFile";
+			removeGpxInput.value = removeGpx.toString();
+			form.appendChild(removeGpxInput);
+
+			console.log("removeGpxKmlFile field value:", removeGpxInput.value);
+
+			// Add the gpxKmlFile field to form data only if a new file is selected
+			if (gpxKmlFile && !removeGpx) {
+				const gpxKmlFileInput = document.createElement("input");
+				gpxKmlFileInput.type = "hidden";
+				gpxKmlFileInput.name = "gpxKmlFile";
+				form.appendChild(gpxKmlFileInput);
+				const fileData = new DataTransfer();
+				fileData.items.add(gpxKmlFile);
+				(gpxKmlFileInput as HTMLInputElement).files = fileData.files;
 			}
 
 			// Add the removeImages field to form data if images are marked for removal
