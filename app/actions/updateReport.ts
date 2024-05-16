@@ -198,7 +198,7 @@ async function updateReport(reportId: string, formData: FormData) {
 		endDate: FormDataEntryValue | null;
 		caltopoUrl?: FormDataEntryValue | null;
 		gpxKmlFile?: string | undefined | null;
-		images: string[];
+		images?: string[];
 	} = {
 		title: formData.get("title"),
 		activityType: formData.getAll("activityType") as string[],
@@ -234,9 +234,16 @@ async function updateReport(reportId: string, formData: FormData) {
 	});
 
 	let updatedReport;
-	if (gpxKmlFileUrl === null) {
-		// Explicitly remove gpxKmlFile key if it is null
-		await Report.updateOne({ _id: reportId }, { $unset: { gpxKmlFile: 1 } });
+	if (gpxKmlFileUrl === null || caltopoUrl === null) {
+		// Create an object to unset fields
+		const unsetFields: any = {};
+		if (gpxKmlFileUrl === null) {
+			unsetFields.gpxKmlFile = 1;
+		}
+		if (caltopoUrl === null) {
+			unsetFields.caltopoUrl = 1;
+		}
+		await Report.updateOne({ _id: reportId }, { $unset: unsetFields });
 		updatedReport = await Report.findById(reportId);
 	} else {
 		updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {
