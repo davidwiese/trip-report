@@ -44,6 +44,7 @@ async function updateReport(reportId: string, formData: FormData) {
 	const files = formData
 		.getAll("images")
 		.filter((file: any) => file instanceof File && file.size > 0); // Filter out empty files
+	console.log("Files to be uploaded:", files);
 	const existingImageCount = existingReport.images?.length ?? 0; // Use optional chaining or provide a default value
 	const markedForRemovalCount = imagesToRemove.length;
 	const newImageCount = files.length;
@@ -81,6 +82,17 @@ async function updateReport(reportId: string, formData: FormData) {
 			newImages.push(uploadResult.secure_url);
 		}
 	}
+
+	console.log("New images:", newImages);
+
+	// Merge new images with existing images and filter out any images marked for removal
+	const finalImages = [
+		...(existingReport.images || []).filter(
+			(image: string) => !imagesToRemove.includes(image)
+		),
+		...newImages,
+	];
+	console.log("Final images array:", finalImages);
 
 	// Update the GPX/KML file
 	let gpxKmlFileUrl: string | undefined | null = existingReport.gpxKmlFile;
@@ -218,13 +230,10 @@ async function updateReport(reportId: string, formData: FormData) {
 		endDate: formData.get("endDate"),
 		caltopoUrl: caltopoUrl, // Conditionally add the Caltopo URL
 		gpxKmlFile: gpxKmlFileUrl, // Conditionally add the gpxKmlFile URL
-		images: [
-			...(existingReport.images?.filter(
-				(img: string) => !imagesToRemove.includes(img)
-			) ?? []),
-			...newImages,
-		],
+		images: finalImages,
 	};
+
+	console.log("Final reportData before Object.keys:", reportData);
 
 	// Remove undefined keys from the reportData object
 	Object.keys(reportData).forEach((key) => {
@@ -233,7 +242,10 @@ async function updateReport(reportId: string, formData: FormData) {
 		}
 	});
 
+	console.log("Final reportData after Object.keys:", reportData);
+
 	let updatedReport;
+	console.log("updatedReport before update:", updatedReport);
 	if (gpxKmlFileUrl === null || caltopoUrl === null) {
 		// Create an object to unset fields
 		const unsetFields: any = {};
@@ -244,12 +256,16 @@ async function updateReport(reportId: string, formData: FormData) {
 			unsetFields.caltopoUrl = 1;
 		}
 		await Report.updateOne({ _id: reportId }, { $unset: unsetFields });
-		updatedReport = await Report.findById(reportId);
-	} else {
-		updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {
-			new: true,
-		});
 	}
+	if (reportData.images && reportData.images.length === 0) {
+		console.log("reportData.images:", reportData.images);
+		// If images is an empty array, unset the images field
+		await Report.updateOne({ _id: reportId }, { $unset: { images: 1 } });
+	}
+	updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {
+		new: true,
+	});
+	console.log("updatedReport after update statement:", updatedReport);
 
 	// Revalidate the cache
 	// NOTE: since reports are pretty much on every page, we can simply
