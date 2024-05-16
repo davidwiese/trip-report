@@ -115,21 +115,37 @@ async function updateReport(reportId: string, formData: FormData) {
 		}
 		gpxKmlFileUrl = null; // Set the URL to null if the file is removed
 	} else if (gpxKmlFile instanceof File && gpxKmlFile.size > 0) {
+		console.log(
+			"New GPX/KML file provided. Removing old GPX/KML file if it exists..."
+		);
 		// If a new GPX file is provided, remove the old one from Cloudinary (if it exists)
 		if (existingReport.gpxKmlFile) {
-			try {
-				const publicId = existingReport.gpxKmlFile.split("/").pop();
-				if (publicId) {
-					await cloudinary.uploader.destroy(publicId, {
-						resource_type: "raw",
-					});
+			const publicId = existingReport.gpxKmlFile.split("/").pop();
+			console.log("Existing GPX/KML file publicId:", publicId);
+			if (publicId) {
+				try {
+					const result = await cloudinary.uploader.destroy(
+						`trip-report/gpx/${publicId}`,
+						{
+							resource_type: "raw",
+						}
+					);
+					console.log(
+						"Result of removing old GPX/KML file from Cloudinary:",
+						result
+					);
+					if (result.result !== "ok") {
+						throw new Error(
+							`Failed to remove old GPX/KML file: ${result.result}`
+						);
+					}
+				} catch (error) {
+					console.error(
+						"Error removing old GPX/KML file from Cloudinary:",
+						error
+					);
+					throw new Error("Failed to remove old GPX/KML file from Cloudinary");
 				}
-			} catch (error) {
-				console.error(
-					"Error removing old GPX/KML file from Cloudinary:",
-					error
-				);
-				throw new Error("Failed to remove old GPX/KML file from Cloudinary");
 			}
 		}
 
