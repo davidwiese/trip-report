@@ -114,6 +114,15 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 		if (!country) newErrors.push("Country is required");
 		if (!region) newErrors.push("Region is required");
 
+		const existingImageCount = report.images?.length ?? 0;
+		const markedForRemovalCount = removeImages.length;
+		const newImageCount = images.length;
+		const totalImages =
+			existingImageCount - markedForRemovalCount + newImageCount;
+
+		if (totalImages > 5)
+			newErrors.push("You can select up to 5 images in total");
+
 		setErrors(newErrors);
 		return newErrors.length === 0;
 	};

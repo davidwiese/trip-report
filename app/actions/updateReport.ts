@@ -41,6 +41,16 @@ async function updateReport(reportId: string, formData: FormData) {
 	// Handle new images
 	const newImages = [];
 	const files = formData.getAll("images");
+	const existingImageCount = existingReport.images.length;
+	const markedForRemovalCount = imagesToRemove.length;
+	const newImageCount = files.length;
+	const totalImages =
+		existingImageCount - markedForRemovalCount + newImageCount;
+
+	if (totalImages > 5) {
+		throw new Error("You can have a maximum of 5 images in total.");
+	}
+
 	for (const file of files) {
 		if (file instanceof File && file.size > 0) {
 			// Convert the file to a base64 string
