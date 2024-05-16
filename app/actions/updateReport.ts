@@ -43,7 +43,7 @@ async function updateReport(reportId: string, formData: FormData) {
 	const files = formData
 		.getAll("images")
 		.filter((file: any) => file instanceof File && file.size > 0); // Filter out empty files
-	const existingImageCount = existingReport.images.length;
+	const existingImageCount = existingReport.images?.length ?? 0; // Use optional chaining or provide a default value
 	const markedForRemovalCount = imagesToRemove.length;
 	const newImageCount = files.length;
 	const totalImages =
@@ -171,9 +171,9 @@ async function updateReport(reportId: string, formData: FormData) {
 		caltopoUrl: caltopoUrl, // Conditionally add the Caltopo URL
 		gpxKmlFile: gpxKmlFileUrl, // Conditionally add the gpxKmlFile URL
 		images: [
-			...existingReport.images.filter(
+			...(existingReport.images?.filter(
 				(img: string) => !imagesToRemove.includes(img)
-			),
+			) ?? []),
 			...newImages,
 		],
 	};
