@@ -212,7 +212,7 @@ async function updateReport(reportId: string, formData: FormData) {
 		endDate: formData.get("endDate"),
 		caltopoUrl: caltopoUrl, // Conditionally add the Caltopo URL
 		gpxKmlFile: gpxKmlFileUrl, // Conditionally add the gpxKmlFile URL
-		images: finalImages,
+		images: finalImages, // Conditionally add the images array
 	};
 
 	let updatedReport;
