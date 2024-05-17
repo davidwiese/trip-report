@@ -33,6 +33,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		const countryInput = document.getElementById(
 			"location.country"
 		) as HTMLInputElement;
+
 		if (countryInput) {
 			countryInput.value = val;
 		}
@@ -43,6 +44,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		const regionInput = document.getElementById(
 			"location.region"
 		) as HTMLInputElement;
+
 		if (regionInput) {
 			regionInput.value = val;
 		}
@@ -57,6 +59,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const removeGpxKmlFile = () => {
 		setGpxKmlFile(null);
 		const gpxInput = document.getElementById("gpxKmlFile") as HTMLInputElement;
+
 		if (gpxInput) {
 			gpxInput.value = "";
 		}
@@ -65,7 +68,9 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const selectedFiles = Array.from(e.target.files);
-			if (selectedFiles.length > 5) {
+			const totalImages = selectedFiles.length;
+
+			if (totalImages > 5) {
 				toast.error("You can select up to 5 images");
 			} else {
 				setImages(selectedFiles);
@@ -77,6 +82,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		const newImages = images.filter((_, i) => i !== index);
 		setImages(newImages);
 		const imageInput = document.getElementById("images") as HTMLInputElement;
+
 		if (imageInput) {
 			const dt = new DataTransfer();
 			newImages.forEach((file) => dt.items.add(file));
@@ -98,6 +104,12 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			newErrors.push("Description is too long");
 		if (!country) newErrors.push("Country is required");
 		if (!region) newErrors.push("Region is required");
+
+		const totalImages = images.length;
+
+		if (totalImages > 5) {
+			newErrors.push("You can select up to 5 images");
+		}
 
 		setErrors(newErrors);
 		return newErrors.length === 0;
