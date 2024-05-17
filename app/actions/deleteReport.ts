@@ -28,27 +28,59 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 		throw new Error("Unauthorized");
 	}
 
-	// extract public id's from image url in DB
-	const publicIds = report.images.map((imageUrl: string) => {
-		const parts = imageUrl.split("/");
-		const lastPart = parts.at(-1);
-		return lastPart ? lastPart.split(".").at(0) : undefined;
-	});
-
-	// Filter out any undefined publicIds
-	const validPublicIds = publicIds.filter(
-		(publicId: string): publicId is string => publicId !== undefined
-	);
-
 	// Delete images from Cloudinary
-	if (validPublicIds.length > 0) {
-		for (let publicId of validPublicIds) {
-			await cloudinary.uploader.destroy("trip-report/" + publicId);
+	if (report.images && report.images.length > 0) {
+		console.log("Deleting images from Cloudinary...");
+		console.log("Images:", report.images);
+		console.log("Images length:", report.images.length);
+		for (const imageUrl of report.images) {
+			const fileName = decodeURIComponent(
+				imageUrl.split("/").pop()?.split(".").slice(0, -1).join(".")
+			);
+			console.log("Image file name:", fileName);
+			console.log(`Deleting image: ${fileName} from URL: ${imageUrl}`);
+			if (fileName) {
+				try {
+					const result = await cloudinary.uploader.destroy(
+						`trip-report/${fileName}`
+					);
+					console.log("Image deletion result:", result);
+				} catch (error) {
+					console.error(
+						`Error deleting image with file name ${fileName}:`,
+						error
+					);
+				}
+			}
+		}
+	}
+
+	// Delete GPX/KML file from Cloudinary (if any)
+	if (report.gpxKmlFile) {
+		const gpxKmlPublicId = report.gpxKmlFile.split("/").pop();
+		if (gpxKmlPublicId) {
+			try {
+				await cloudinary.uploader.destroy(`trip-report/gpx/${gpxKmlPublicId}`, {
+					resource_type: "raw",
+				});
+			} catch (error) {
+				console.error(
+					`Error deleting GPX/KML file with public ID ${gpxKmlPublicId}:`,
+					error
+				);
+			}
 		}
 	}
 
 	// Proceed with report deletion
-	await report.deleteOne();
+	try {
+		await report.deleteOne();
+	} catch (error) {
+		console.error("Error deleting report:", error);
+		throw new Error(
+			"An error occurred while deleting the report. Please try again."
+		);
+	}
 
 	// Revalidate the cache
 	// NOTE: since properties are pretty much on every page, we can simply
