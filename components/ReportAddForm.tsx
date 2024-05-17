@@ -68,10 +68,12 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const selectedFiles = Array.from(e.target.files);
-			const totalImages = selectedFiles.length;
+			const totalImages = images.length + selectedFiles.length;
 
 			if (totalImages > 5) {
 				toast.error("You can select up to 5 images");
+				setImages([]); // Clear the previously selected images
+				e.target.value = ""; // Clear the file input
 			} else {
 				setImages(selectedFiles);
 			}
