@@ -30,21 +30,15 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 
 	// Delete images from Cloudinary
 	if (report.images && report.images.length > 0) {
-		console.log("Deleting images from Cloudinary...");
-		console.log("Images:", report.images);
-		console.log("Images length:", report.images.length);
 		for (const imageUrl of report.images) {
 			const fileName = decodeURIComponent(
 				imageUrl.split("/").pop()?.split(".").slice(0, -1).join(".")
 			);
-			console.log("Image file name:", fileName);
-			console.log(`Deleting image: ${fileName} from URL: ${imageUrl}`);
 			if (fileName) {
 				try {
 					const result = await cloudinary.uploader.destroy(
 						`trip-report/${fileName}`
 					);
-					console.log("Image deletion result:", result);
 				} catch (error) {
 					console.error(
 						`Error deleting image with file name ${fileName}:`,

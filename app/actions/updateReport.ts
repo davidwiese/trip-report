@@ -6,6 +6,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
+import { v4 as uuidv4 } from "uuid";
 
 async function updateReport(reportId: string, formData: FormData) {
 	let updatedReport;
@@ -35,9 +36,17 @@ async function updateReport(reportId: string, formData: FormData) {
 		// Handle removed images
 		const imagesToRemove = formData.getAll("imagesToRemove").map(String);
 		for (const imageUrl of imagesToRemove) {
-			const fileName = imageUrl.split("/").pop()?.split(".")[0];
-			if (fileName) {
-				await cloudinary.uploader.destroy(`trip-report/${fileName}`);
+			const urlParts = imageUrl.split("/").pop()?.split(".");
+			const fileExtension = urlParts?.pop();
+			const publicId = urlParts?.join(".");
+			if (publicId) {
+				try {
+					const result = await cloudinary.uploader.destroy(
+						`trip-report/${publicId}`
+					);
+				} catch (error) {
+					console.error("Error removing image from Cloudinary:", error);
+				}
 			}
 		}
 
@@ -64,21 +73,19 @@ async function updateReport(reportId: string, formData: FormData) {
 				const fileMime = file.type;
 				const base64File = `data:${fileMime};base64,${base64}`;
 
-				// Get the original file name and extension
-				const originalFileName = file.name;
-				const fileExtension = originalFileName.substring(
-					originalFileName.lastIndexOf(".") + 1
+				// Get the file extension
+				const fileExtension = file.name.substring(
+					file.name.lastIndexOf(".") + 1
 				);
+
+				// Generate a unique file name using uuidv4
+				const uniqueFileName = `${uuidv4()}.${fileExtension}`;
 
 				// Upload to Cloudinary
 				const uploadResult = await cloudinary.uploader.upload(base64File, {
 					folder: "trip-report",
 					resource_type: "image",
-					public_id: `${originalFileName.substring(
-						0,
-						originalFileName.lastIndexOf(".")
-					)}`,
-					format: fileExtension,
+					public_id: uniqueFileName,
 				});
 				newImages.push(uploadResult.secure_url);
 			}

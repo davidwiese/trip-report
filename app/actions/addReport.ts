@@ -6,6 +6,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 import cloudinary from "@/config/cloudinary";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
 async function addReport(formData: FormData) {
 	let redirectUrl = "";
@@ -179,19 +180,15 @@ async function addReport(formData: FormData) {
 					const fileMime = imageFile.type;
 					const base64File = `data:${fileMime};base64,${base64}`;
 
-					const originalFileName = imageFile.name;
-					const fileExtension = originalFileName.substring(
-						originalFileName.lastIndexOf(".") + 1
+					const fileExtension = imageFile.name.substring(
+						imageFile.name.lastIndexOf(".") + 1
 					);
+					const uniqueFileName = `${uuidv4()}.${fileExtension}`;
 
 					const result = await cloudinary.uploader.upload(base64File, {
 						folder: "trip-report",
 						resource_type: "image",
-						public_id: `${originalFileName.substring(
-							0,
-							originalFileName.lastIndexOf(".")
-						)}`,
-						format: fileExtension,
+						public_id: uniqueFileName,
 					});
 
 					imageUrls.push(result.secure_url);
