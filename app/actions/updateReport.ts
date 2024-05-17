@@ -251,14 +251,17 @@ async function updateReport(reportId: string, formData: FormData) {
 		const unsetFields: any = {};
 		if (gpxKmlFileUrl === null) {
 			unsetFields.gpxKmlFile = 1;
+			reportData.gpxKmlFile = undefined;
 		}
 		if (caltopoUrl === null) {
 			unsetFields.caltopoUrl = 1;
+			reportData.caltopoUrl = undefined;
 		}
 		await Report.updateOne({ _id: reportId }, { $unset: unsetFields });
 	}
 	if (reportData.images && reportData.images.length === 0) {
 		console.log("reportData.images:", reportData.images);
+		reportData.images = undefined;
 		// If images is an empty array, unset the images field
 		await Report.updateOne({ _id: reportId }, { $unset: { images: 1 } });
 	}
