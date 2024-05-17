@@ -8,7 +8,6 @@ import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
 
 async function updateReport(reportId: string, formData: FormData) {
-	console.log("Received form data:", formData);
 	await connectDB();
 
 	const sessionUser = await getSessionUser();
@@ -44,7 +43,6 @@ async function updateReport(reportId: string, formData: FormData) {
 	const files = formData
 		.getAll("images")
 		.filter((file: any) => file instanceof File && file.size > 0); // Filter out empty files
-	console.log("Files to be uploaded:", files);
 	const existingImageCount = existingReport.images?.length ?? 0; // Use optional chaining or provide a default value
 	const markedForRemovalCount = imagesToRemove.length;
 	const newImageCount = files.length;
@@ -83,8 +81,6 @@ async function updateReport(reportId: string, formData: FormData) {
 		}
 	}
 
-	console.log("New images:", newImages);
-
 	// Merge new images with existing images and filter out any images marked for removal
 	const finalImages = [
 		...(existingReport.images || []).filter(
@@ -92,21 +88,16 @@ async function updateReport(reportId: string, formData: FormData) {
 		),
 		...newImages,
 	];
-	console.log("Final images array:", finalImages);
 
 	// Update the GPX/KML file
 	let gpxKmlFileUrl: string | undefined | null = existingReport.gpxKmlFile;
 	const gpxKmlFile = formData.get("gpxKmlFile");
 	const removeGpxKmlFile = formData.get("removeGpxKmlFile");
-	console.log("gpxKmlFile:", gpxKmlFile);
-	console.log("removeGpxKmlFile:", removeGpxKmlFile);
 
 	if (removeGpxKmlFile === "true") {
 		// If there's a request to remove the existing GPX/KML file
 		if (existingReport.gpxKmlFile) {
-			console.log("existingReport.gpxKmlFile:", existingReport.gpxKmlFile);
 			const publicId = existingReport.gpxKmlFile.split("/").pop();
-			console.log("Extracted publicId for removal:", publicId);
 			if (publicId) {
 				try {
 					const result = await cloudinary.uploader.destroy(
@@ -115,7 +106,6 @@ async function updateReport(reportId: string, formData: FormData) {
 							resource_type: "raw",
 						}
 					);
-					console.log("Cloudinary removal result:", result);
 					if (result.result !== "ok") {
 						throw new Error(`Failed to remove GPX/KML file: ${result.result}`);
 					}
@@ -127,13 +117,9 @@ async function updateReport(reportId: string, formData: FormData) {
 		}
 		gpxKmlFileUrl = null; // Set the URL to null if the file is removed
 	} else if (gpxKmlFile instanceof File && gpxKmlFile.size > 0) {
-		console.log(
-			"New GPX/KML file provided. Removing old GPX/KML file if it exists..."
-		);
 		// If a new GPX file is provided, remove the old one from Cloudinary (if it exists)
 		if (existingReport.gpxKmlFile) {
 			const publicId = existingReport.gpxKmlFile.split("/").pop();
-			console.log("Existing GPX/KML file publicId:", publicId);
 			if (publicId) {
 				try {
 					const result = await cloudinary.uploader.destroy(
@@ -141,10 +127,6 @@ async function updateReport(reportId: string, formData: FormData) {
 						{
 							resource_type: "raw",
 						}
-					);
-					console.log(
-						"Result of removing old GPX/KML file from Cloudinary:",
-						result
 					);
 					if (result.result !== "ok") {
 						throw new Error(
@@ -233,19 +215,8 @@ async function updateReport(reportId: string, formData: FormData) {
 		images: finalImages,
 	};
 
-	console.log("Final reportData before Object.keys:", reportData);
-
-	// Remove undefined keys from the reportData object
-	Object.keys(reportData).forEach((key) => {
-		if (reportData[key as keyof typeof reportData] === undefined) {
-			delete reportData[key as keyof typeof reportData];
-		}
-	});
-
-	console.log("Final reportData after Object.keys:", reportData);
-
 	let updatedReport;
-	console.log("updatedReport before update:", updatedReport);
+
 	if (gpxKmlFileUrl === null || caltopoUrl === null) {
 		// Create an object to unset fields
 		const unsetFields: any = {};
@@ -260,7 +231,6 @@ async function updateReport(reportId: string, formData: FormData) {
 		await Report.updateOne({ _id: reportId }, { $unset: unsetFields });
 	}
 	if (reportData.images && reportData.images.length === 0) {
-		console.log("reportData.images:", reportData.images);
 		reportData.images = undefined;
 		// If images is an empty array, unset the images field
 		await Report.updateOne({ _id: reportId }, { $unset: { images: 1 } });
@@ -268,7 +238,6 @@ async function updateReport(reportId: string, formData: FormData) {
 	updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {
 		new: true,
 	});
-	console.log("updatedReport after update statement:", updatedReport);
 
 	// Revalidate the cache
 	// NOTE: since reports are pretty much on every page, we can simply
