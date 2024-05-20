@@ -16,11 +16,6 @@ type ImageObject = {
 	originalFilename: string;
 };
 
-type GpxKmlFileObject = {
-	url: string;
-	originalFilename: string;
-};
-
 const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [body, setBody] = useState<string>(report.body || "");
 	const [description, setDescription] = useState<string>(
