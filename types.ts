@@ -11,6 +11,16 @@ export type Location = {
 	objective: string;
 };
 
+export type ImageObject = {
+	url: string;
+	originalFilename: string;
+};
+
+export type GpxKmlFileObject = {
+	url: string;
+	originalFilename: string;
+};
+
 export type Report = {
 	_id: string;
 	owner: string;
@@ -25,9 +35,9 @@ export type Report = {
 	duration: number;
 	startDate: string;
 	endDate: string;
-	images?: string[];
+	images?: ImageObject[];
 	caltopoUrl?: string;
-	gpxKmlFile?: string;
+	gpxKmlFile?: GpxKmlFileObject;
 	isFeatured: boolean;
 	ratings: Rating[];
 	createdAt: string;

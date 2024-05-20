@@ -11,6 +11,16 @@ type ReportEditFormProps = {
 	report: ReportType;
 };
 
+type ImageObject = {
+	url: string;
+	originalFilename: string;
+};
+
+type GpxKmlFileObject = {
+	url: string;
+	originalFilename: string;
+};
+
 const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [body, setBody] = useState<string>(report.body || "");
 	const [description, setDescription] = useState<string>(
@@ -30,7 +40,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [gpxKmlFile, setGpxKmlFile] = useState<File | null>(null);
 	const [removeGpx, setRemoveGpx] = useState<boolean>(false); // Track removal state
 	const [images, setImages] = useState<File[]>([]);
-	const [removeImages, setRemoveImages] = useState<string[]>([]); // Track images marked for removal
+	const [removeImages, setRemoveImages] = useState<ImageObject[]>([]); // Track images marked for removal
 	const maxDescriptionLength = 500;
 
 	const handleBodyChange = (content: string) => {
@@ -89,12 +99,12 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 		}
 	};
 
-	const toggleRemoveImage = (imageUrl: string) => {
+	const toggleRemoveImage = (image: ImageObject) => {
 		setRemoveImages((prevRemoveImages) => {
-			if (prevRemoveImages.includes(imageUrl)) {
-				return prevRemoveImages.filter((url) => url !== imageUrl);
+			if (prevRemoveImages.some((img) => img.url === image.url)) {
+				return prevRemoveImages.filter((img) => img.url !== image.url);
 			} else {
-				return [...prevRemoveImages, imageUrl];
+				return [...prevRemoveImages, image];
 			}
 		});
 	};
@@ -163,11 +173,11 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 
 			// Add the removeImages field to form data if images are marked for removal
 			if (removeImages.length > 0) {
-				removeImages.forEach((imageUrl) => {
+				removeImages.forEach((image) => {
 					const removeImageInput = document.createElement("input");
 					removeImageInput.type = "hidden";
 					removeImageInput.name = "imagesToRemove";
-					removeImageInput.value = imageUrl;
+					removeImageInput.value = image.url;
 					form.appendChild(removeImageInput);
 				});
 			}
@@ -574,12 +584,12 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				{report.gpxKmlFile && (
 					<div className="flex items-center">
 						<a
-							href={report.gpxKmlFile}
+							href={report.gpxKmlFile.url}
 							target="_blank"
 							rel="noopener noreferrer"
 							className={`${removeGpx ? "line-through text-gray-500" : ""}`}
 						>
-							{report.gpxKmlFile.split("/").pop()}
+							{report.gpxKmlFile.originalFilename}
 						</a>
 						{!removeGpx ? (
 							<button
@@ -667,25 +677,25 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				{(report.images ?? []).length > 0 && (
 					<div className="mt-2">
 						<ul>
-							{(report.images ?? []).map((imageUrl) => (
-								<li key={imageUrl} className="flex items-center">
+							{(report.images ?? []).map((image) => (
+								<li key={image.url} className="flex items-center">
 									<a
-										href={imageUrl}
+										href={image.url}
 										target="_blank"
 										rel="noopener noreferrer"
 										className={`${
-											removeImages.includes(imageUrl)
+											removeImages.some((img) => img.url === image.url)
 												? "line-through text-gray-500"
 												: ""
 										}`}
 									>
-										{imageUrl.split("/").pop()}
+										{image.originalFilename}
 									</a>
-									{!removeImages.includes(imageUrl) ? (
+									{!removeImages.some((img) => img.url === image.url) ? (
 										<button
 											className="ml-2 text-red-500"
 											type="button"
-											onClick={() => toggleRemoveImage(imageUrl)}
+											onClick={() => toggleRemoveImage(image)}
 										>
 											Remove
 										</button>
@@ -693,7 +703,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 										<button
 											className="ml-2 text-blue-500"
 											type="button"
-											onClick={() => toggleRemoveImage(imageUrl)}
+											onClick={() => toggleRemoveImage(image)}
 										>
 											Undo
 										</button>
