@@ -24,6 +24,22 @@ const RatingSchema = new Schema(
 
 RatingSchema.index({ user: 1, report: 1 }, { unique: true });
 
+const ImageSchema = new Schema(
+	{
+		url: { type: String, required: true },
+		originalFilename: { type: String, required: true },
+	},
+	{ _id: false }
+);
+
+const GpxKmlFileSchema = new Schema(
+	{
+		url: { type: String, required: true },
+		originalFilename: { type: String, required: true },
+	},
+	{ _id: false }
+);
+
 const ReportSchema = new Schema(
 	{
 		owner: {
@@ -81,9 +97,7 @@ const ReportSchema = new Schema(
 			type: Number,
 			required: true,
 		},
-		gpxKmlFile: {
-			type: String,
-		},
+		gpxKmlFile: GpxKmlFileSchema,
 		caltopoUrl: {
 			type: String,
 		},
@@ -103,11 +117,14 @@ const ReportSchema = new Schema(
 		},
 		// NOTE: Limit the user to a maximum of 5 images
 		images: {
-			type: [String],
-			default: undefined, // Don't send empty array if no images selected
+			type: [ImageSchema],
+			default: undefined,
 			validate: {
-				validator: (v: string[]) => v.length <= 5,
-				message: (props: { value: string[] }) =>
+				validator: (v: Array<{ url: string; originalFilename: string }>) =>
+					v.length <= 5,
+				message: (props: {
+					value: Array<{ url: string; originalFilename: string }>;
+				}) =>
 					`The images array can contain a maximum of 5 images, but has ${props.value.length}`,
 			},
 		},
