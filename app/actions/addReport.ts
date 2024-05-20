@@ -48,8 +48,8 @@ async function addReport(formData: FormData) {
 			duration: FormDataEntryValue | null;
 			startDate: FormDataEntryValue | null;
 			endDate: FormDataEntryValue | null;
-			images?: string[];
-			gpxKmlFile?: string;
+			images?: { url: string; originalFilename: string }[];
+			gpxKmlFile?: { url: string; originalFilename: string };
 			caltopoUrl?: FormDataEntryValue | null;
 			isFeatured: boolean;
 		} = {
@@ -128,7 +128,7 @@ async function addReport(formData: FormData) {
 		if (requiredFieldsValid && numericFieldsValid) {
 			// Handle GPX/KML file upload to Cloudinary
 			const gpxKmlFile = formData.get("gpxKmlFile") as File | null;
-			let gpxKmlFileUrl: string | undefined;
+			let gpxKmlFileUrl: { url: string; originalFilename: string } | undefined;
 
 			if (gpxKmlFile && gpxKmlFile.size > 0) {
 				const fileBuffer = await gpxKmlFile.arrayBuffer();
@@ -139,14 +139,16 @@ async function addReport(formData: FormData) {
 				const fileExtension = gpxKmlFile.name.substring(
 					gpxKmlFile.name.lastIndexOf(".") + 1
 				);
-				const uniqueFileName = `${uuidv4()}.${fileExtension}`;
 
 				const result = await cloudinary.uploader.upload(base64File, {
 					folder: "trip-report/gpx",
 					resource_type: "raw",
-					public_id: uniqueFileName,
+					public_id: `${uuidv4()}.${fileExtension}`,
 				});
-				gpxKmlFileUrl = result.secure_url;
+				gpxKmlFileUrl = {
+					url: result.secure_url,
+					originalFilename: gpxKmlFile.name,
+				};
 			}
 
 			// Conditionally add gpxKmlFile if it has a value
@@ -168,7 +170,7 @@ async function addReport(formData: FormData) {
 
 			// Conditionally add images if they exist
 			if (images.length > 0) {
-				const imageUrls: string[] = [];
+				const imageUrls: { url: string; originalFilename: string }[] = [];
 
 				for (const imageFile of images) {
 					const imageBuffer = await imageFile.arrayBuffer();
@@ -176,18 +178,16 @@ async function addReport(formData: FormData) {
 					const fileMime = imageFile.type;
 					const base64File = `data:${fileMime};base64,${base64}`;
 
-					const fileExtension = imageFile.name.substring(
-						imageFile.name.lastIndexOf(".") + 1
-					);
-					const uniqueFileName = `${uuidv4()}.${fileExtension}`;
-
 					const result = await cloudinary.uploader.upload(base64File, {
 						folder: "trip-report",
 						resource_type: "image",
-						public_id: uniqueFileName,
+						public_id: `${uuidv4()}`,
 					});
 
-					imageUrls.push(result.secure_url);
+					imageUrls.push({
+						url: result.secure_url,
+						originalFilename: imageFile.name,
+					});
 				}
 
 				if (imageUrls.length > 0) {
