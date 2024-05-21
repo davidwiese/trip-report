@@ -126,17 +126,13 @@ const Navbar: React.FC<NavbarProps> = () => {
 					{!session && (
 						<div className="hidden md:block md:ml-6">
 							<div className="flex items-center">
-								{providers &&
-									Object.values(providers).map((provider, index) => (
-										<button
-											onClick={() => signIn(provider.id)}
-											key={index}
-											className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
-										>
-											<FaGoogle className="text-white mr-2" />
-											<span>Login or Register</span>
-										</button>
-									))}
+								<Link
+									href="/auth/signin"
+									className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+								>
+									<FaGoogle className="text-white mr-2" />
+									<span>Login or Register</span>
+								</Link>
 							</div>
 						</div>
 					)}
@@ -170,75 +166,74 @@ const Navbar: React.FC<NavbarProps> = () => {
 							</Link>
 							{/* <!-- Profile dropdown button --> */}
 							<div className="relative ml-3">
+								<button
+									type="button"
+									className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+									id="user-menu-button"
+									aria-expanded={isProfileMenuOpen}
+									aria-haspopup="true"
+									onClick={() => setIsProfileMenuOpen((prev) => !prev)}
+								>
+									<span className="absolute -inset-1.5"></span>
+									<span className="sr-only">Open user menu</span>
+									<Image
+										className="h-8 w-8 rounded-full"
+										src={profileImage || profileDefault}
+										alt="User profile image"
+										width={40}
+										height={40}
+									/>
+								</button>
 								<div>
-									<button
-										type="button"
-										className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-										id="user-menu-button"
-										aria-expanded={isProfileMenuOpen}
-										aria-haspopup="true"
-										onClick={() => setIsProfileMenuOpen((prev) => !prev)}
-									>
-										<span className="absolute -inset-1.5"></span>
-										<span className="sr-only">Open user menu</span>
-										<Image
-											className="h-8 w-8 rounded-full"
-											src={profileImage || profileDefault}
-											alt="User profile image"
-											width={40}
-											height={40}
-										/>
-									</button>
+									{/* <!-- Profile dropdown --> */}
+									{isProfileMenuOpen && (
+										<div
+											id="user-menu"
+											className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+											role="menu"
+											aria-orientation="vertical"
+											aria-labelledby="user-menu-button"
+											tabIndex={-1}
+										>
+											<Link
+												href="/profile"
+												className="block px-4 py-2 text-sm text-gray-700"
+												role="menuitem"
+												tabIndex={-1}
+												id="user-menu-item-0"
+												onClick={() => {
+													setIsProfileMenuOpen(false);
+												}}
+											>
+												Your Profile
+											</Link>
+											<Link
+												href="/reports/saved"
+												className="block px-4 py-2 text-sm text-gray-700"
+												role="menuitem"
+												tabIndex={-1}
+												id="user-menu-item-2"
+												onClick={() => {
+													setIsProfileMenuOpen(false);
+												}}
+											>
+												Saved Reports
+											</Link>
+											<button
+												onClick={() => {
+													setIsProfileMenuOpen(false);
+													signOut();
+												}}
+												className="block px-4 py-2 text-sm text-gray-700"
+												role="menuitem"
+												tabIndex={-1}
+												id="user-menu-item-2"
+											>
+												Sign Out
+											</button>
+										</div>
+									)}
 								</div>
-
-								{/* <!-- Profile dropdown --> */}
-								{isProfileMenuOpen && (
-									<div
-										id="user-menu"
-										className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-										role="menu"
-										aria-orientation="vertical"
-										aria-labelledby="user-menu-button"
-										tabIndex={-1}
-									>
-										<Link
-											href="/profile"
-											className="block px-4 py-2 text-sm text-gray-700"
-											role="menuitem"
-											tabIndex={-1}
-											id="user-menu-item-0"
-											onClick={() => {
-												setIsProfileMenuOpen(false);
-											}}
-										>
-											Your Profile
-										</Link>
-										<Link
-											href="/reports/saved"
-											className="block px-4 py-2 text-sm text-gray-700"
-											role="menuitem"
-											tabIndex={-1}
-											id="user-menu-item-2"
-											onClick={() => {
-												setIsProfileMenuOpen(false);
-											}}
-										>
-											Saved Reports
-										</Link>
-										<button
-											onClick={() => {
-												setIsProfileMenuOpen(false);
-												signOut();
-											}}
-											className="block px-4 py-2 text-sm text-gray-700"
-											role="menuitem"
-											tabIndex={-1}
-											id="user-menu-item-2"
-										>
-											Sign Out
-										</button>
-									</div>
-								)}
 							</div>
 						</div>
 					)}
@@ -276,17 +271,14 @@ const Navbar: React.FC<NavbarProps> = () => {
 							</Link>
 						)}
 
-						{!session &&
-							providers &&
-							Object.values(providers).map((provider, index) => (
-								<button
-									onClick={() => signIn(provider.id)}
-									key={index}
-									className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
-								>
-									<span>Login or Register</span>
-								</button>
-							))}
+						{!session && (
+							<Link
+								href="/auth/signin"
+								className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+							>
+								<span>Login or Register</span>
+							</Link>
+						)}
 					</div>
 				</div>
 			)}

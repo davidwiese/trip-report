@@ -12,6 +12,7 @@
     "@tiptap/pm": "^2.3.0",
     "@tiptap/react": "^2.3.0",
     "@tiptap/starter-kit": "^2.3.0",
+    "bcryptjs": "^2.4.3",
     "cloudinary": "^2.0.3",
     "lucide-react": "^0.376.0",
     "mapbox-gl": "^3.2.0",
@@ -33,6 +34,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
