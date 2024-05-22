@@ -76,8 +76,13 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 
 		// Update the user's reports array and totalReports count
 		await User.findByIdAndUpdate(userId, {
-			$pull: { reports: reportId },
-			$inc: { totalReports: -1 },
+			$pull: { reports: reportId, bookmarks: reportId },
+			$inc: {
+				totalReports: -1,
+				totalDistance: -report.distance,
+				totalElevationGain: -report.elevationGain,
+				totalElevationLoss: -report.elevationLoss,
+			},
 		});
 	} catch (error) {
 		console.error("Error deleting report:", error);

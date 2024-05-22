@@ -37,7 +37,7 @@ const ProfileReports: React.FC<ProfileReportsProps> = ({
 				{report.images && report.images.length > 0 && (
 					<Image
 						className="h-32 w-full rounded-md object-cover"
-						src={report.images[0]}
+						src={report.images[0].url}
 						alt=""
 						width={500}
 						height={100}
@@ -46,7 +46,11 @@ const ProfileReports: React.FC<ProfileReportsProps> = ({
 				)}
 			</Link>
 			<div className="mt-2">
-				<p className="text-lg font-semibold">{report.title}</p>
+				<Link href={`/reports/${report._id}`}>
+					<p className="text-lg font-semibold hover:underline">
+						{report.title}
+					</p>
+				</Link>
 				<p className="text-gray-600">
 					Address: {report.location.country} {report.location.region}
 					{report.location.localArea} {report.location.objective}

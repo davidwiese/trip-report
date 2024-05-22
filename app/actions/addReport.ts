@@ -199,10 +199,20 @@ async function addReport(formData: FormData) {
 			const newReport = new Report(reportData);
 			await newReport.save();
 
-			// Update the user's reports array
+			// Convert distance, elevation gain, and elevation loss to numbers
+			const distance = parseFloat(reportData.distance as string);
+			const elevationGain = parseFloat(reportData.elevationGain as string);
+			const elevationLoss = parseFloat(reportData.elevationLoss as string);
+
+			// Update the user's reports array and totals
 			await User.findByIdAndUpdate(userId, {
 				$push: { reports: newReport._id },
-				$inc: { totalReports: 1 },
+				$inc: {
+					totalReports: 1,
+					totalDistance: distance,
+					totalElevationGain: elevationGain,
+					totalElevationLoss: elevationLoss,
+				},
 			});
 
 			// Set the redirect URL

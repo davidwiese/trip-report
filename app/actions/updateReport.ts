@@ -2,6 +2,7 @@
 
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
+import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -242,6 +243,28 @@ async function updateReport(reportId: string, formData: FormData) {
 		updatedReport = await Report.findByIdAndUpdate(reportId, reportData, {
 			new: true,
 		});
+
+		// Update user's totalDistance, totalElevationGain, and totalElevationLoss
+		const distanceDifference =
+			Number(updatedReport.distance) - Number(existingReport.distance);
+		const elevationGainDifference =
+			Number(updatedReport.elevationGain) -
+			Number(existingReport.elevationGain);
+		const elevationLossDifference =
+			Number(updatedReport.elevationLoss) -
+			Number(existingReport.elevationLoss);
+
+		await User.findByIdAndUpdate(
+			userId,
+			{
+				$inc: {
+					totalDistance: distanceDifference,
+					totalElevationGain: elevationGainDifference,
+					totalElevationLoss: elevationLossDifference,
+				},
+			},
+			{ new: true }
+		);
 	} catch (error) {
 		console.error("Error updating report:", error);
 		throw new Error(
