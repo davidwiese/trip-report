@@ -2,6 +2,7 @@
 
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
+import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import cloudinary from "@/config/cloudinary";
 import { revalidatePath } from "next/cache";
@@ -197,6 +198,12 @@ async function addReport(formData: FormData) {
 
 			const newReport = new Report(reportData);
 			await newReport.save();
+
+			// Update the user's reports array
+			await User.findByIdAndUpdate(userId, {
+				$push: { reports: newReport._id },
+				$inc: { totalReports: 1 },
+			});
 
 			// Set the redirect URL
 			redirectUrl = `/reports/${newReport._id}`;

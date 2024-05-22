@@ -3,6 +3,7 @@
 import cloudinary from "@/config/cloudinary";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
+import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
@@ -72,6 +73,12 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 	// Proceed with report deletion
 	try {
 		await report.deleteOne();
+
+		// Update the user's reports array and totalReports count
+		await User.findByIdAndUpdate(userId, {
+			$pull: { reports: reportId },
+			$inc: { totalReports: -1 },
+		});
 	} catch (error) {
 		console.error("Error deleting report:", error);
 		throw new Error(
