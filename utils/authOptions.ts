@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
 				email: { label: "Email", type: "email", placeholder: "your@email.com" },
 				password: { label: "Password", type: "password" },
 			},
-			async authorize(credentials) {
+			async authorize(credentials, req) {
 				if (!credentials || !credentials.email || !credentials.password) {
 					return null;
 				}
@@ -47,17 +47,11 @@ export const authOptions: NextAuthOptions = {
 					// Find the user in the database
 					let user = await User.findOne({ email: credentials.email });
 
-					// If user exists, check the password
-					if (user) {
-						const isValidPassword = await bcrypt.compare(
-							credentials.password,
-							user.password
-						);
-						if (!isValidPassword) {
-							return null;
+					if (req.body?.isSignUp === "true") {
+						// Handle sign-up process
+						if (user) {
+							throw new Error("User already exists");
 						}
-					} else {
-						// If user does not exist, create a new user
 						const hashedPassword = await bcrypt.hash(credentials.password, 10);
 						user = await User.create({
 							email: credentials.email,
@@ -65,6 +59,16 @@ export const authOptions: NextAuthOptions = {
 							password: hashedPassword,
 							provider: "credentials",
 						});
+					} else {
+						// Handle sign-in process
+						if (
+							user &&
+							(await bcrypt.compare(credentials.password, user.password))
+						) {
+							return user;
+						} else {
+							throw new Error("Invalid email or password");
+						}
 					}
 
 					return user;
@@ -150,5 +154,9 @@ export const authOptions: NextAuthOptions = {
 				throw new Error("Failed to retrieve user session.");
 			}
 		},
+	},
+	pages: {
+		signIn: "/auth/signin",
+		error: "/auth/error", // Redirect to the custom error page
 	},
 };
