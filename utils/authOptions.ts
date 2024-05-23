@@ -37,7 +37,7 @@ export const authOptions: NextAuthOptions = {
 			},
 			async authorize(credentials, req) {
 				if (!credentials || !credentials.email || !credentials.password) {
-					return null;
+					throw new Error("Missing credentials");
 				}
 
 				try {
@@ -47,34 +47,53 @@ export const authOptions: NextAuthOptions = {
 					// Find the user in the database
 					let user = await User.findOne({ email: credentials.email });
 
-					if (req.body?.isSignUp === "true") {
-						// Handle sign-up process
-						if (user) {
-							throw new Error("User already exists");
+					if (user) {
+						if (req.body?.isSignUp === "true") {
+							// If trying to sign up and user already exists, throw an error
+							throw new Error("User already exists. Please sign in.");
+						} else {
+							// If signing in, check for OAuth provider and validate password
+							if (user.provider && user.provider !== "credentials") {
+								throw new Error(
+									"OAuth account found. Please sign in using OAuth."
+								);
+							}
+
+							if (
+								user.password &&
+								(await bcrypt.compare(credentials.password, user.password))
+							) {
+								return user;
+							} else {
+								throw new Error("Invalid email or password");
+							}
 						}
-						const hashedPassword = await bcrypt.hash(credentials.password, 10);
-						user = await User.create({
-							email: credentials.email,
-							username: credentials.email.split("@")[0], // Default username
-							password: hashedPassword,
-							provider: "credentials",
-						});
 					} else {
-						// Handle sign-in process
-						if (
-							user &&
-							(await bcrypt.compare(credentials.password, user.password))
-						) {
-							return user;
+						if (req.body?.isSignUp === "true") {
+							// If signing up and user doesn't exist, create new user
+							const hashedPassword = await bcrypt.hash(
+								credentials.password,
+								10
+							);
+							user = await User.create({
+								email: credentials.email,
+								username: credentials.email.split("@")[0], // Default username
+								password: hashedPassword,
+								provider: "credentials",
+							});
 						} else {
 							throw new Error("Invalid email or password");
 						}
 					}
 
 					return user;
-				} catch (error) {
+				} catch (error: unknown) {
 					console.error("Error during email/password authentication:", error);
-					throw new Error("Failed to authenticate user");
+					if (error instanceof Error) {
+						throw new Error(error.message || "Failed to authenticate user");
+					} else {
+						throw new Error("Failed to authenticate user");
+					}
 				}
 			},
 		}),
@@ -157,6 +176,5 @@ export const authOptions: NextAuthOptions = {
 	},
 	pages: {
 		signIn: "/auth/signin",
-		error: "/auth/error", // Redirect to the custom error page
 	},
 };

@@ -2,6 +2,8 @@
 
 import { getProviders, signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { ClientSafeProvider, LiteralUnion } from "next-auth/react";
 
 // Define the BuiltInProviderType type directly
@@ -24,6 +26,7 @@ export default function SignIn({}: SignInProps) {
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [isSignUp, setIsSignUp] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchProviders = async () => {
@@ -38,17 +41,33 @@ export default function SignIn({}: SignInProps) {
 		e: React.FormEvent<HTMLFormElement>
 	) => {
 		e.preventDefault();
+		setError(null); // Reset error state
+
 		if (isSignUp && password !== confirmPassword) {
-			alert("Passwords do not match");
+			setError("Passwords do not match");
+			toast.error("Passwords do not match");
 			return;
 		}
-		await signIn("credentials", {
+
+		const result = await signIn("credentials", {
+			redirect: false,
 			email,
 			password,
-			redirect: true,
 			callbackUrl: "/",
 			isSignUp: isSignUp.toString(),
 		});
+
+		if (result) {
+			if (result.error) {
+				setError(result.error);
+				toast.error(result.error);
+			} else if (result.url) {
+				window.location.href = result.url;
+			}
+		} else {
+			setError("An unexpected error occurred.");
+			toast.error("An unexpected error occurred.");
+		}
 	};
 
 	return (
@@ -57,6 +76,7 @@ export default function SignIn({}: SignInProps) {
 				<h2 className="text-2xl font-bold mb-4 text-center">
 					{isSignUp ? "Sign Up" : "Sign In"}
 				</h2>
+				{error && <p className="text-red-500 text-center">{error}</p>}
 				{providers &&
 					Object.values(providers).map((provider) => {
 						if (provider.id === "credentials") {
