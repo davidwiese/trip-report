@@ -6,6 +6,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import User from "@/models/User";
 import { sanitizeText } from "@/utils/sanitizeHtml";
+import { ratelimit } from "@/utils/ratelimit";
 
 type FormState = {
 	error: string;
@@ -33,6 +34,12 @@ async function addMessage(
 
 	if (!sessionUser || !sessionUser.user) {
 		return { error: "You must be logged in to send a message" };
+	}
+
+	const { success } = await ratelimit.limit(sessionUser.userId);
+
+	if (!success) {
+		return { error: "Too many messages. Please try again later." };
 	}
 
 	const recipientId = formData.get("recipient");
