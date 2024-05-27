@@ -9,6 +9,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { sanitizeHtmlContent, sanitizeText } from "@/utils/sanitizeHtml";
+import { ratelimit } from "@/utils/ratelimit";
 
 async function addReport(formData: FormData) {
 	let redirectUrl = "";
@@ -25,6 +26,12 @@ async function addReport(formData: FormData) {
 
 		if (!sessionUser || !sessionUser.userId) {
 			throw new Error("User ID is required");
+		}
+
+		const { success } = await ratelimit.limit(sessionUser.userId);
+
+		if (!success) {
+			throw new Error("Too many reports. Please try again later.");
 		}
 
 		const { userId } = sessionUser;
