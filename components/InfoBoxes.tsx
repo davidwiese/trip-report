@@ -22,11 +22,11 @@ const InfoBoxes: React.FC<InfoBoxesProps> = () => {
 					</InfoBox>
 					<InfoBox
 						heading="For Trip Report Authors"
-						backgroundColor="bg-blue-100"
+						backgroundColor="bg-black"
 						buttonInfo={{
 							text: "Add Report",
 							link: "/reports/add",
-							backgroundColor: "bg-blue-500",
+							backgroundColor: "bg-black",
 						}}
 					>
 						Share your trips and inspire other adventurers!

@@ -7,10 +7,10 @@ import {
 	FaMoneyBill,
 	FaMapMarker,
 } from "react-icons/fa";
-import { Report } from "@/types"
+import { Report } from "@/types";
 
 type FeaturedReportCardProps = {
-  report: Report;
+	report: Report;
 };
 
 const FeaturedReportCard: React.FC<FeaturedReportCardProps> = ({ report }) => {
@@ -87,7 +87,7 @@ const FeaturedReportCard: React.FC<FeaturedReportCardProps> = ({ report }) => {
 					</div>
 					<Link
 						href={`/reports/${report._id}`}
-						className="h-[36px] bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-center text-sm"
+						className="h-[36px] bg-black hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-center text-sm"
 					>
 						Details
 					</Link>

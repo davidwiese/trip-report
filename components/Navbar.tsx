@@ -139,7 +139,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 							<Link href="/messages" className="relative group">
 								<button
 									type="button"
-									className="relative flex items-center justify-center h-10 w-10 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+									className="relative flex items-center justify-center h-10 w-10 rounded-full text-white border border-black bg-black p-1 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
 								>
 									<span className="absolute -inset-1.5"></span>
 									<span className="sr-only">View notifications</span>

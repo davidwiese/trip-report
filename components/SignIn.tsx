@@ -122,7 +122,7 @@ export default function SignIn({}: SignInProps) {
 									)}
 									<button
 										type="submit"
-										className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+										className="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-600"
 									>
 										{isSignUp ? "Sign Up" : "Sign In"}
 									</button>
