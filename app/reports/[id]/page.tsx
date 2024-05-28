@@ -56,7 +56,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 				<div className="container m-auto py-6 px-6">
 					<Link
 						href="/reports"
-						className="text-blue-500 hover:text-blue-600 flex items-center"
+						className="text-gray-500 hover:text-gray-600 flex items-center"
 					>
 						<FaArrowLeft className="mr-2" /> Back to Reports
 					</Link>

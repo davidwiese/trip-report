@@ -43,7 +43,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					<div className="text-gray-600">{report.activityType}</div>
 					<h3 className="text-xl font-bold">{report.title}</h3>
 				</div>
-				<h3 className="absolute top-[10px] right-[10px] bg-white px-4 py-2 rounded-lg text-blue-500 font-bold text-right md:text-center lg:text-right">
+				<h3 className="absolute top-[10px] right-[10px] bg-white px-4 py-2 rounded-lg text-gray-500 font-bold text-right md:text-center lg:text-right">
 					{/* ${getRateDisplay()} */}
 				</h3>
 

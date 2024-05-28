@@ -38,7 +38,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report }) => {
 
 			<div className="bg-white p-6 rounded-lg shadow-md mt-6">
 				<h3 className="text-lg font-bold mb-6">Description & Details</h3>
-				<div className="flex justify-center gap-4 text-blue-500 mb-4 text-xl space-x-9">
+				<div className="flex justify-center gap-4 text-gray-500 mb-4 text-xl space-x-9">
 					<p>
 						<FaBed className="inline-block mr-2" /> {report.title}{" "}
 						<span className="hidden sm:inline">Beds</span>
@@ -77,7 +77,7 @@ export default ReportDetails;
 // 		<a
 // 			href={report.gpxKmlFile}
 // 			download
-// 			className="text-blue-500 hover:underline"
+// 			className="text-gray-500 hover:underline"
 // 		>
 // 			Download GPX/KML File
 // 		</a>

@@ -54,13 +54,13 @@ const MessageCard: React.FC<MessageProps> = ({ message }) => {
 
 				<li>
 					<strong>Reply Email: </strong>
-					<a href={`mailto:${message.email}`} className="text-blue-500">
+					<a href={`mailto:${message.email}`} className="text-gray-500">
 						{message.email}
 					</a>
 				</li>
 				<li>
 					<strong>Reply Phone: </strong>
-					<a href={`tel:${message.phone}`} className="text-blue-500">
+					<a href={`tel:${message.phone}`} className="text-gray-500">
 						{message.phone}
 					</a>
 				</li>

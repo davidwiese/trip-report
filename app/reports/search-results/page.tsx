@@ -52,7 +52,7 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 				<div className="container-xl lg:container m-auto px-4 py-6">
 					<Link
 						href="/reports"
-						className="flex items-center text-blue-500 hover:underline mb-3"
+						className="flex items-center text-gray-500 hover:underline mb-3"
 					>
 						<FaArrowAltCircleLeft className="mr-2 mb-1" /> Back To Reports
 					</Link>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logo from "@/assets/images/logo.png";
+import logo from "@/assets/images/logo_fill.png";
 
 type FooterProps = {
 	// Add any props here if needed

@@ -596,7 +596,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							</button>
 						) : (
 							<button
-								className="ml-2 text-blue-500"
+								className="ml-2 text-gray-500"
 								type="button"
 								onClick={toggleRemoveGpxKmlFile}
 							>
@@ -696,7 +696,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 										</button>
 									) : (
 										<button
-											className="ml-2 text-blue-500"
+											className="ml-2 text-gray-500"
 											type="button"
 											onClick={() => toggleRemoveImage(image)}
 										>

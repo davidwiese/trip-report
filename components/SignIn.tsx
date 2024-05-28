@@ -132,7 +132,7 @@ export default function SignIn({}: SignInProps) {
 											: "Don't have an account?"}{" "}
 										<button
 											type="button"
-											className="text-blue-500 hover:underline"
+											className="text-gray-500 hover:underline"
 											onClick={() => setIsSignUp((prev) => !prev)}
 										>
 											{isSignUp ? "Sign In" : "Sign Up"}
