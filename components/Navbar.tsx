@@ -4,9 +4,11 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import logo from "@/assets/images/logo_fill.png";
 import profileDefault from "@/assets/images/profile.png";
 import { FaGoogle } from "react-icons/fa";
+import { IoIosNotificationsOutline } from "react-icons/io";
 import {
 	signIn,
 	signOut,
@@ -137,7 +139,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 							<Link href="/messages" className="relative group">
 								<button
 									type="button"
-									className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+									className="relative flex items-center justify-center h-10 w-10 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
 								>
 									<span className="absolute -inset-1.5"></span>
 									<span className="sr-only">View notifications</span>
@@ -162,7 +164,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 							<div className="relative ml-3">
 								<button
 									type="button"
-									className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+									className="relative flex items-center justify-center h-10 w-10 rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
 									id="user-menu-button"
 									aria-expanded={isProfileMenuOpen}
 									aria-haspopup="true"
@@ -170,13 +172,12 @@ const Navbar: React.FC<NavbarProps> = () => {
 								>
 									<span className="absolute -inset-1.5"></span>
 									<span className="sr-only">Open user menu</span>
-									<Image
-										className="h-8 w-8 rounded-full"
-										src={profileImage || profileDefault}
-										alt="User profile image"
-										width={40}
-										height={40}
-									/>
+									<Avatar>
+										<AvatarImage
+											src={`${profileImage}` || `${profileDefault}`}
+											alt="User profile image"
+										/>
+									</Avatar>
 								</button>
 								<div>
 									{/* <!-- Profile dropdown --> */}
