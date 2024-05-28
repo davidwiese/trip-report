@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/assets/images/logo-white.png";
+import { buttonVariants } from "@/components/ui/button";
+import logo from "@/assets/images/logo_fill.png";
 import profileDefault from "@/assets/images/profile.png";
 import { FaGoogle } from "react-icons/fa";
 import {
@@ -47,8 +48,13 @@ const Navbar: React.FC<NavbarProps> = () => {
 		});
 	}, []);
 
+	const linkClasses = (href: string) => {
+		const isActive = pathname === href;
+		return isActive ? buttonVariants() : buttonVariants({ variant: "ghost" });
+	};
+
 	return (
-		<nav className="bg-blue-700 border-b border-blue-500">
+		<nav className="bg-white border-b border-gray-500">
 			<div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
 				<div className="relative flex h-20 items-center justify-between">
 					<div className="absolute inset-y-0 left-0 flex items-center md:hidden">
@@ -85,35 +91,23 @@ const Navbar: React.FC<NavbarProps> = () => {
 						<Link className="flex flex-shrink-0 items-center" href="/">
 							<Image className="h-10 w-auto" src={logo} alt="Trip Report" />
 
-							<span className="hidden md:block text-white text-2xl font-bold ml-2">
+							<span className="hidden md:block text-black text-2xl font-bold ml-2">
 								Trip Report
 							</span>
 						</Link>
 						{/* <!-- Desktop Menu Hidden below md screens --> */}
 						<div className="hidden md:ml-6 md:block">
 							<div className="flex space-x-2">
-								<Link
-									href="/"
-									className={`${
-										pathname === "/" ? "bg-black" : ""
-									} text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
-								>
+								<Link href="/" className={linkClasses("/")}>
 									Home
 								</Link>
-								<Link
-									href="/reports"
-									className={`${
-										pathname === "/reports" ? "bg-black" : ""
-									} text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
-								>
+								<Link href="/reports" className={linkClasses("/reports")}>
 									Reports
 								</Link>
 								{session && (
 									<Link
 										href="/reports/add"
-										className={`${
-											pathname === "/reports/add" ? "bg-black" : ""
-										} text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+										className={linkClasses("/reports/add")}
 									>
 										Add Report
 									</Link>
@@ -243,30 +237,15 @@ const Navbar: React.FC<NavbarProps> = () => {
 			{/* <!-- Mobile menu, show/hide based on menu state. --> */}
 			{isMobileMenuOpen && (
 				<div id="mobile-menu">
-					<div className="space-y-1 px-2 pb-3 pt-2">
-						<Link
-							href="/"
-							className={`${
-								pathname === "/" ? "bg-black" : ""
-							} text-white block rounded-md px-3 py-2 text-base font-medium`}
-						>
+					<div className="flex flex-col items-stretch space-y-1 px-2 pb-3 pt-2">
+						<Link href="/" className={linkClasses("/")}>
 							Home
 						</Link>
-						<Link
-							href="/reports"
-							className={`${
-								pathname === "/reports" ? "bg-black" : ""
-							} text-white block rounded-md px-3 py-2 text-base font-medium`}
-						>
+						<Link href="/reports" className={linkClasses("/reports")}>
 							Reports
 						</Link>
 						{session && (
-							<Link
-								href="/reports/add"
-								className={`${
-									pathname === "/reports/add" ? "bg-black" : ""
-								} text-white block rounded-md px-3 py-2 text-base font-medium`}
-							>
+							<Link href="/reports/add" className={linkClasses("/reports/add")}>
 								Add Report
 							</Link>
 						)}
