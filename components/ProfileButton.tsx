@@ -24,7 +24,7 @@ const ProfileButton = () => {
 			<DropdownMenuTrigger asChild>
 				<Button
 					type="button"
-					className="h-10 w-10 p-0 rounded-full bg-none relative"
+					className="h-10 w-10 p-0 rounded-full bg-none relative flex items-center justify-center"
 					id="user-menu-button"
 					aria-expanded={isProfileMenuOpen}
 					aria-haspopup="true"

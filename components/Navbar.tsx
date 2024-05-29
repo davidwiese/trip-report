@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import logo from "@/assets/images/logo_fill.png";
 import { FaGoogle } from "react-icons/fa";
 import ProfileButton from "@/components/ProfileButton";
@@ -121,16 +121,18 @@ const Navbar: React.FC<NavbarProps> = () => {
 					</div>
 
 					{/* <!-- Right Side Menu (Logged Out) --> */}
-					{!session && (
+					{!session && pathname !== "/auth/signin" && (
 						<div className="hidden md:block md:ml-6">
 							<div className="flex items-center">
-								<Link
-									href="/auth/signin"
-									className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
-								>
-									<FaGoogle className="text-white mr-2" />
-									<span>Login or Register</span>
-								</Link>
+								<Button asChild variant={"secondary"}>
+									<Link
+										href="/auth/signin"
+										className="flex justify-center items-center px-3 py-2"
+									>
+										<FaGoogle className="mr-2" />
+										<span>Login or Register</span>
+									</Link>
+								</Button>
 							</div>
 						</div>
 					)}
@@ -138,10 +140,10 @@ const Navbar: React.FC<NavbarProps> = () => {
 					{/* <!-- Right Side Menu (Logged In) --> */}
 					{session && (
 						<div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
-							<Link href="/messages" className="relative group">
+							<Link href="/messages" className="relative group rounded-full">
 								<button
 									type="button"
-									className="relative flex items-center justify-center h-10 w-10 rounded-full text-white border border-black bg-black p-1 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+									className="relative flex items-center justify-center h-10 w-10 rounded-full text-white border border-black bg-black p-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
 								>
 									<span className="absolute -inset-1.5"></span>
 									<span className="sr-only">View notifications</span>
@@ -163,7 +165,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 								<UnreadMessageCount />
 							</Link>
 							{/* <!-- Profile dropdown button --> */}
-							<div className="relative ml-3 rounded-full">
+							<div className="relative ml-3 flex items-center rounded-full">
 								<ProfileButton />
 							</div>
 						</div>
@@ -193,14 +195,16 @@ const Navbar: React.FC<NavbarProps> = () => {
 							</Link>
 						)}
 
-						{!session && (
-							<Link
-								href="/auth/signin"
-								className="flex justify-center items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
-							>
-								<FaGoogle className="text-white mr-2" />
-								<span>Login or Register</span>
-							</Link>
+						{!session && pathname !== "/auth/signin" && (
+							<Button asChild variant={"secondary"}>
+								<Link
+									href="/auth/signin"
+									className="flex justify-center items-center px-3 py-2"
+								>
+									<FaGoogle className="mr-2" />
+									<span>Login or Register</span>
+								</Link>
+							</Button>
 						)}
 					</div>
 				</div>

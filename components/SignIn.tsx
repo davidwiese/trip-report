@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ClientSafeProvider, LiteralUnion } from "next-auth/react";
+import { Button } from "@/components/ui/button";
 
 // Define the BuiltInProviderType type directly
 type BuiltInProviderType =
@@ -120,35 +121,36 @@ export default function SignIn({}: SignInProps) {
 											/>
 										</div>
 									)}
-									<button
+									<Button
 										type="submit"
 										className="w-full bg-black text-white py-2 px-4 rounded hover:bg-gray-600"
 									>
 										{isSignUp ? "Sign Up" : "Sign In"}
-									</button>
+									</Button>
 									<p className="text-center mt-4">
 										{isSignUp
 											? "Already have an account?"
 											: "Don't have an account?"}{" "}
-										<button
-											type="button"
-											className="text-gray-500 hover:underline"
+										<Button
+											variant={"ghost"}
+											className="text-gray-700 px-1"
 											onClick={() => setIsSignUp((prev) => !prev)}
 										>
 											{isSignUp ? "Sign In" : "Sign Up"}
-										</button>
+										</Button>
 									</p>
 								</form>
 							);
 						} else {
 							return (
 								<div key={provider.name} className="mt-4 mb-4">
-									<button
+									<Button
 										onClick={() => signIn(provider.id, { callbackUrl: "/" })}
-										className="w-full bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
+										variant={"secondary"}
+										className="w-full"
 									>
 										Sign in with {provider.name}
-									</button>
+									</Button>
 								</div>
 							);
 						}
