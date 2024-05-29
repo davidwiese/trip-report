@@ -21,10 +21,10 @@ const ProfileButton = () => {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger>
+			<DropdownMenuTrigger asChild>
 				<Button
 					type="button"
-					className="h-10 w-10 rounded-full bg-none relative"
+					className="h-10 w-10 p-0 rounded-full bg-none relative"
 					id="user-menu-button"
 					aria-expanded={isProfileMenuOpen}
 					aria-haspopup="true"
@@ -35,7 +35,7 @@ const ProfileButton = () => {
 					<Avatar>
 						<AvatarImage src={`${profileImage}`} alt="User profile image" />
 						<AvatarFallback>
-							<FaUser className="h-5 w-auto" />
+							<FaUser className="h-5 w-auto text-black" />
 						</AvatarFallback>
 					</Avatar>
 				</Button>
