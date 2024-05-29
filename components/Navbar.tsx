@@ -4,9 +4,9 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import logo from "@/assets/images/logo_fill.png";
-import profileDefault from "@/assets/images/profile.png";
+import { FaUser } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import {
 	signIn,
@@ -181,9 +181,12 @@ const Navbar: React.FC<NavbarProps> = () => {
 									<span className="sr-only">Open user menu</span>
 									<Avatar>
 										<AvatarImage
-											src={`${profileImage}` || `${profileDefault}`}
+											src={`${profileImage}`}
 											alt="User profile image"
 										/>
+										<AvatarFallback>
+											<FaUser className="h-5 w-auto" />
+										</AvatarFallback>
 									</Avatar>
 								</button>
 								<div>
