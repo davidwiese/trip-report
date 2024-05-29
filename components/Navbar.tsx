@@ -53,7 +53,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 		<nav className="bg-white border-b border-gray-500">
 			<div className="container mx-auto px-2 sm:px-6 lg:px-8 relative">
 				<div className="relative flex h-20 items-center justify-between">
-					<div className="absolute inset-y-0 left-0 flex items-center md:hidden">
+					<div className="absolute inset-y-0 left-0 flex items-center md:hidden ml-2">
 						{/* <!-- Mobile menu button--> */}
 						<Button
 							onClick={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -156,7 +156,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 									</Button>
 									<UnreadMessageCount />
 								</Link>
-								<div className="relative ml-3 flex items-center rounded-full">
+								<div className="relative mx-2 flex items-center rounded-full">
 									<ProfileButton />
 								</div>
 							</>
