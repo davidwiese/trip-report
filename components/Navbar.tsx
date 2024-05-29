@@ -88,6 +88,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 						<Link
 							className="flex flex-shrink-0 items-center logo-link"
 							href="/"
+							onClick={(e) => e.currentTarget.blur()}
 						>
 							<Image className="h-12 w-auto" src={logo} alt="Trip Report" />
 							<span className="hidden md:block text-black text-2xl font-bold ml-2">
@@ -132,6 +133,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 									className="relative group rounded-full focus:bg-accent focus:text-accent-foreground"
 								>
 									<Button
+										onClick={(e) => e.currentTarget.blur()}
 										type="button"
 										className="relative flex items-center justify-center h-10 w-10 rounded-full text-white border border-black bg-black p-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
 									>
