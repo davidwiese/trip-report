@@ -133,7 +133,7 @@ export default function SignIn({}: SignInProps) {
 											: "Don't have an account?"}{" "}
 										<Button
 											variant={"ghost"}
-											className="text-gray-700 px-1"
+											className="text-gray-700 text-[15px] px-2 underline"
 											onClick={() => setIsSignUp((prev) => !prev)}
 										>
 											{isSignUp ? "Sign In" : "Sign Up"}
@@ -147,7 +147,7 @@ export default function SignIn({}: SignInProps) {
 									<Button
 										onClick={() => signIn(provider.id, { callbackUrl: "/" })}
 										variant={"secondary"}
-										className="w-full"
+										className="w-full hover:bg-slate-200"
 									>
 										Sign in with {provider.name}
 									</Button>
