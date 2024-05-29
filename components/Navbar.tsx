@@ -51,15 +51,16 @@ const Navbar: React.FC<NavbarProps> = () => {
 
 	return (
 		<nav className="bg-white border-b border-gray-500">
-			<div className="container mx-auto px-2 sm:px-6 lg:px-8">
+			<div className="container mx-auto px-2 sm:px-6 lg:px-8 relative">
 				<div className="relative flex h-20 items-center justify-between">
 					<div className="absolute inset-y-0 left-0 flex items-center md:hidden">
 						{/* <!-- Mobile menu button--> */}
-						<button
+						<Button
 							onClick={() => setIsMobileMenuOpen((prev) => !prev)}
 							type="button"
+							variant={"outline"}
 							id="mobile-dropdown-button"
-							className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+							className="relative inline-flex items-center justify-center rounded-md p-2"
 							aria-controls="mobile-menu"
 							aria-expanded={isMobileMenuOpen}
 						>
@@ -79,51 +80,83 @@ const Navbar: React.FC<NavbarProps> = () => {
 									d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
 								/>
 							</svg>
-						</button>
+						</Button>
 					</div>
 
-					<div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
-						{/* <!-- Logo --> */}
+					{/* Centered Logo */}
+					<div className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none md:left-auto flex items-center">
 						<Link className="flex flex-shrink-0 items-center" href="/">
 							<Image className="h-12 w-auto" src={logo} alt="Trip Report" />
-
 							<span className="hidden md:block text-black text-2xl font-bold ml-2">
 								Trip Report
 							</span>
 						</Link>
-						{/* <!-- Desktop Menu Hidden below md screens --> */}
-						<div className="hidden md:flex md:items-center md:ml-6">
-							<div className="flex space-x-2">
-								<Link
-									href="/"
-									className={`${linkClasses("/")} w-28 text-center`}
-								>
-									Home
-								</Link>
-								<Link
-									href="/reports"
-									className={`${linkClasses("/reports")} w-28 text-center`}
-								>
-									Reports
-								</Link>
-								{session && (
-									<Link
-										href="/reports/add"
-										className={`${linkClasses(
-											"/reports/add"
-										)} w-28 text-center`}
-									>
-										Add Report
-									</Link>
-								)}
-							</div>
-						</div>
 					</div>
 
-					{/* <!-- Right Side Menu (Logged Out) --> */}
-					{!session && pathname !== "/auth/signin" && (
-						<div className="hidden md:block md:ml-6">
-							<div className="flex items-center">
+					{/* Centered Navigation Links */}
+					<div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-2">
+						<Link
+							href="/"
+							className={`${linkClasses("/")} w-[105px] text-center`}
+						>
+							Home
+						</Link>
+						<Link
+							href="/reports"
+							className={`${linkClasses("/reports")} w-[105px] text-center`}
+						>
+							Reports
+						</Link>
+						{session && (
+							<Link
+								href="/reports/add"
+								className={`${linkClasses(
+									"/reports/add"
+								)} w-[105px] text-center`}
+							>
+								Add Report
+							</Link>
+						)}
+					</div>
+
+					{/* Right Side Menu */}
+					<div className="flex items-center justify-end flex-1">
+						{session ? (
+							<>
+								<Link
+									tabIndex={-1}
+									href="/messages"
+									className="relative group rounded-full focus:bg-accent focus:text-accent-foreground"
+								>
+									<Button
+										type="button"
+										className="relative flex items-center justify-center h-10 w-10 rounded-full text-white border border-black bg-black p-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+									>
+										<span className="absolute -inset-1.5"></span>
+										<span className="sr-only">View notifications</span>
+										<svg
+											className="h-6 w-6"
+											fill="none"
+											viewBox="0 0 24 24"
+											strokeWidth="1.5"
+											stroke="currentColor"
+											aria-hidden="true"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+											/>
+										</svg>
+									</Button>
+									<UnreadMessageCount />
+								</Link>
+								<div className="relative ml-3 flex items-center rounded-full">
+									<ProfileButton />
+								</div>
+							</>
+						) : (
+							pathname !== "/auth/signin" && (
 								<Button asChild variant={"secondary"}>
 									<Link
 										href="/auth/signin"
@@ -133,47 +166,13 @@ const Navbar: React.FC<NavbarProps> = () => {
 										<span>Login or Register</span>
 									</Link>
 								</Button>
-							</div>
-						</div>
-					)}
-
-					{/* <!-- Right Side Menu (Logged In) --> */}
-					{session && (
-						<div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
-							<Link href="/messages" className="relative group rounded-full">
-								<button
-									type="button"
-									className="relative flex items-center justify-center h-10 w-10 rounded-full text-white border border-black bg-black p-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-								>
-									<span className="absolute -inset-1.5"></span>
-									<span className="sr-only">View notifications</span>
-									<svg
-										className="h-6 w-6"
-										fill="none"
-										viewBox="0 0 24 24"
-										strokeWidth="1.5"
-										stroke="currentColor"
-										aria-hidden="true"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-										/>
-									</svg>
-								</button>
-								<UnreadMessageCount />
-							</Link>
-							{/* <!-- Profile dropdown button --> */}
-							<div className="relative ml-3 flex items-center rounded-full">
-								<ProfileButton />
-							</div>
-						</div>
-					)}
+							)
+						)}
+					</div>
 				</div>
 			</div>
 
-			{/* <!-- Mobile menu, show/hide based on menu state. --> */}
+			{/* Mobile menu, show/hide based on menu state. */}
 			{isMobileMenuOpen && (
 				<div id="mobile-menu">
 					<div className="flex flex-col items-stretch space-y-1 px-2 pb-3 pt-2">
@@ -212,4 +211,5 @@ const Navbar: React.FC<NavbarProps> = () => {
 		</nav>
 	);
 };
+
 export default Navbar;

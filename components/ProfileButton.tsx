@@ -41,12 +41,11 @@ const ProfileButton = () => {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
-				<DropdownMenuItem className="cursor-pointer">
+				<DropdownMenuItem asChild>
 					<Link
 						href="/profile"
 						className="block px-4 py-2 text-sm w-full text-left"
 						role="menuitem"
-						tabIndex={-1}
 						id="user-menu-item-0"
 						onClick={() => {
 							setIsProfileMenuOpen(false);
@@ -55,12 +54,11 @@ const ProfileButton = () => {
 						Profile
 					</Link>
 				</DropdownMenuItem>
-				<DropdownMenuItem className="cursor-pointer">
+				<DropdownMenuItem asChild>
 					<Link
 						href="/reports/saved"
 						className="block px-4 py-2 text-sm w-full text-left"
 						role="menuitem"
-						tabIndex={-1}
 						id="user-menu-item-2"
 						onClick={() => {
 							setIsProfileMenuOpen(false);
@@ -70,7 +68,7 @@ const ProfileButton = () => {
 					</Link>
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
-				<DropdownMenuItem className="cursor-pointer">
+				<DropdownMenuItem asChild>
 					<Button
 						onClick={() => {
 							setIsProfileMenuOpen(false);
@@ -78,7 +76,6 @@ const ProfileButton = () => {
 						}}
 						className="w-full text-center"
 						role="menuitem"
-						tabIndex={-1}
 						id="user-menu-item-2"
 					>
 						Sign Out

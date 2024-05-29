@@ -11,8 +11,6 @@ const HomePage: React.FC<HomePageProps> = () => {
 	return (
 		<>
 			<Hero />
-			<InfoBoxes />
-			<FeaturedReports />
 			<HomeReports />
 		</>
 	);
