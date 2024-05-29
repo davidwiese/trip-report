@@ -8,7 +8,6 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import logo from "@/assets/images/logo_fill.png";
 import profileDefault from "@/assets/images/profile.png";
 import { FaGoogle } from "react-icons/fa";
-import { IoIosNotificationsOutline } from "react-icons/io";
 import {
 	signIn,
 	signOut,
@@ -52,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
 	const linkClasses = (href: string) => {
 		const isActive = pathname === href;
-		return isActive ? buttonVariants() : buttonVariants({ variant: "ghost" });
+		return isActive ? buttonVariants() : buttonVariants({ variant: "outline" });
 	};
 
 	return (
@@ -91,25 +90,33 @@ const Navbar: React.FC<NavbarProps> = () => {
 					<div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
 						{/* <!-- Logo --> */}
 						<Link className="flex flex-shrink-0 items-center" href="/">
-							<Image className="h-10 w-auto" src={logo} alt="Trip Report" />
+							<Image className="h-12 w-auto" src={logo} alt="Trip Report" />
 
 							<span className="hidden md:block text-black text-2xl font-bold ml-2">
 								Trip Report
 							</span>
 						</Link>
 						{/* <!-- Desktop Menu Hidden below md screens --> */}
-						<div className="hidden md:ml-6 md:block">
+						<div className="hidden md:flex md:items-center md:ml-6">
 							<div className="flex space-x-2">
-								<Link href="/" className={linkClasses("/")}>
+								<Link
+									href="/"
+									className={`${linkClasses("/")} w-28 text-center`}
+								>
 									Home
 								</Link>
-								<Link href="/reports" className={linkClasses("/reports")}>
+								<Link
+									href="/reports"
+									className={`${linkClasses("/reports")} w-28 text-center`}
+								>
 									Reports
 								</Link>
 								{session && (
 									<Link
 										href="/reports/add"
-										className={linkClasses("/reports/add")}
+										className={`${linkClasses(
+											"/reports/add"
+										)} w-28 text-center`}
 									>
 										Add Report
 									</Link>
@@ -239,14 +246,20 @@ const Navbar: React.FC<NavbarProps> = () => {
 			{isMobileMenuOpen && (
 				<div id="mobile-menu">
 					<div className="flex flex-col items-stretch space-y-1 px-2 pb-3 pt-2">
-						<Link href="/" className={linkClasses("/")}>
+						<Link href="/" className={`${linkClasses("/")} w-full text-center`}>
 							Home
 						</Link>
-						<Link href="/reports" className={linkClasses("/reports")}>
+						<Link
+							href="/reports"
+							className={`${linkClasses("/reports")} w-full text-center`}
+						>
 							Reports
 						</Link>
 						{session && (
-							<Link href="/reports/add" className={linkClasses("/reports/add")}>
+							<Link
+								href="/reports/add"
+								className={`${linkClasses("/reports/add")} w-full text-center`}
+							>
 								Add Report
 							</Link>
 						)}
