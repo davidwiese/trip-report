@@ -4,14 +4,10 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import logo from "@/assets/images/logo_fill.png";
-import { FaUser } from "react-icons/fa";
 import { FaGoogle } from "react-icons/fa";
 import ProfileButton from "@/components/ProfileButton";
 import {
-	signIn,
-	signOut,
 	useSession,
 	getProviders,
 	LiteralUnion,
@@ -26,10 +22,8 @@ type NavbarProps = {
 
 const Navbar: React.FC<NavbarProps> = () => {
 	const { data: session } = useSession();
-	const profileImage = session?.user?.image;
 
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 	const [providers, setProviders] = useState<Record<
 		LiteralUnion<BuiltInProviderType, string>,
 		ClientSafeProvider
@@ -57,7 +51,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
 	return (
 		<nav className="bg-white border-b border-gray-500">
-			<div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+			<div className="container mx-auto px-2 sm:px-6 lg:px-8">
 				<div className="relative flex h-20 items-center justify-between">
 					<div className="absolute inset-y-0 left-0 flex items-center md:hidden">
 						{/* <!-- Mobile menu button--> */}

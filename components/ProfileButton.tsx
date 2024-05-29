@@ -5,10 +5,10 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
@@ -22,9 +22,9 @@ const ProfileButton = () => {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger>
-				<button
+				<Button
 					type="button"
-					className="relative flex items-center justify-center h-10 w-10 rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+					className="h-10 w-10 rounded-full bg-none relative"
 					id="user-menu-button"
 					aria-expanded={isProfileMenuOpen}
 					aria-haspopup="true"
@@ -38,13 +38,13 @@ const ProfileButton = () => {
 							<FaUser className="h-5 w-auto" />
 						</AvatarFallback>
 					</Avatar>
-				</button>
+				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent>
 				<DropdownMenuItem className="cursor-pointer">
 					<Link
 						href="/profile"
-						className="block px-4 py-2 text-sm text-gray-700"
+						className="block px-4 py-2 text-sm w-full text-left"
 						role="menuitem"
 						tabIndex={-1}
 						id="user-menu-item-0"
@@ -58,7 +58,7 @@ const ProfileButton = () => {
 				<DropdownMenuItem className="cursor-pointer">
 					<Link
 						href="/reports/saved"
-						className="block px-4 py-2 text-sm text-gray-700"
+						className="block px-4 py-2 text-sm w-full text-left"
 						role="menuitem"
 						tabIndex={-1}
 						id="user-menu-item-2"
@@ -71,18 +71,18 @@ const ProfileButton = () => {
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem className="cursor-pointer">
-					<button
+					<Button
 						onClick={() => {
 							setIsProfileMenuOpen(false);
 							signOut();
 						}}
-						className="block px-4 py-2 text-sm text-gray-700"
+						className="w-full text-center"
 						role="menuitem"
 						tabIndex={-1}
 						id="user-menu-item-2"
 					>
 						Sign Out
-					</button>
+					</Button>
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
