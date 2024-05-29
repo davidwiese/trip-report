@@ -90,3 +90,9 @@ body {
 main {
 	flex: 1;
 }
+
+.logo-link:focus {
+	outline: 2px solid black;
+	outline-offset: 2px;
+	border-radius: 4px;
+}

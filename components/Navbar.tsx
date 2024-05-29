@@ -85,7 +85,10 @@ const Navbar: React.FC<NavbarProps> = () => {
 
 					{/* Centered Logo */}
 					<div className="absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none md:left-auto flex items-center">
-						<Link className="flex flex-shrink-0 items-center" href="/">
+						<Link
+							className="flex flex-shrink-0 items-center logo-link"
+							href="/"
+						>
 							<Image className="h-12 w-auto" src={logo} alt="Trip Report" />
 							<span className="hidden md:block text-black text-2xl font-bold ml-2">
 								Trip Report
