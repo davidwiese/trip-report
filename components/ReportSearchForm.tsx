@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 type ReportSearchFormProps = {
 	// Add any props here if needed
@@ -51,22 +52,32 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 					onChange={(e) => setReportType(e.target.value)}
 				>
 					<option value="All">All</option>
-					<option value="Apartment">Apartment</option>
-					<option value="Studio">Studio</option>
-					<option value="Condo">Condo</option>
-					<option value="House">House</option>
-					<option value="Cabin Or Cottage">Cabin or Cottage</option>
-					<option value="Loft">Loft</option>
-					<option value="Room">Room</option>
-					<option value="Other">Other</option>
+					<option value="Hiking">Hiking</option>
+					<option value="Backpacking">Backpacking</option>
+					<option value="Trail Running">Trail Running</option>
+					<option value="Rock Climbing">Rock Climbing</option>
+					<option value="Sport Climbing">Sport Climbing</option>
+					<option value="Trad Climbing">Trad Climbing</option>
+					<option value="Aid Climbing">Aid Climbing</option>
+					<option value="Ice Climbing">Ice Climbing</option>
+					<option value="Mixed Climbing">Mixed Climbing</option>
+					<option value="Mountaineering">Mountaineering</option>
+					<option value="Ski Mountaineering">Ski Mountaineering</option>
+					<option value="Ski Touring">Ski Touring</option>
+					<option value="Canyoneering">Canyoneering</option>
+					<option value="Mountain Biking">Mountain Biking</option>
+					<option value="Cycling">Cycling</option>
+					<option value="Bikepacking">Bikepacking</option>
+					<option value="Kayaking">Kayaking</option>
+					<option value="Packrafting">Packrafting</option>
 				</select>
 			</div>
-			<button
+			<Button
 				type="submit"
-				className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 rounded-lg bg-black text-white hover:bg-gray-600 focus:outline-none focus:ring focus:ring-blue-500"
+				className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3"
 			>
 				Search
-			</button>
+			</Button>
 		</form>
 	);
 };

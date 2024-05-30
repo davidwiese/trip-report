@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import heroImage from "@/assets/images/hero.webp";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import { Button } from "@/components/ui/button";
 
 type HeroProps = {
 	// Add any props here if needed
@@ -16,7 +17,9 @@ const Hero = () => {
 					alt="Outdoor adventure"
 					layout="fill"
 					objectFit="cover"
-					className="opacity-25"
+					className="opacity-25 absolute inset-0 z-0"
+					quality={100}
+					objectPosition="center"
 				/>
 				<div className="absolute inset-0 bg-black opacity-50"></div>
 			</div>
@@ -30,16 +33,12 @@ const Hero = () => {
 					outdoor experiences with our community.
 				</p>
 				<div className="flex justify-center space-x-4">
-					<Link href="/reports/add">
-						<button className="bg-primary-600 text-white px-6 py-3 rounded-lg shadow hover:bg-primary-500 transition">
-							Create a Report
-						</button>
-					</Link>
-					<Link href="/reports">
-						<button className="bg-secondary-600 text-white px-6 py-3 rounded-lg shadow hover:bg-secondary-500 transition">
-							View Reports
-						</button>
-					</Link>
+					<Button asChild>
+						<Link href="/reports/add">Create a Report</Link>
+					</Button>
+					<Button asChild>
+						<Link href="/reports">View Reports</Link>
+					</Button>
 				</div>
 				<ReportSearchForm />
 				<div className="mt-12 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
