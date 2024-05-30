@@ -19,7 +19,6 @@ const Hero = () => {
 					objectFit="cover"
 					className="opacity-25 absolute inset-0 z-0"
 					quality={100}
-					objectPosition="center"
 				/>
 				<div className="absolute inset-0 bg-black opacity-50"></div>
 			</div>
