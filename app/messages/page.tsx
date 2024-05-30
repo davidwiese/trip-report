@@ -32,7 +32,6 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 	const readMessages = await Message.find({ recipient: userId, read: true })
 		.sort({ createdAt: -1 }) // Sort read messages in asc order
 		.populate("sender", "username")
-		.populate("report", "name")
 		.lean();
 
 	const unreadMessages = await Message.find({
@@ -41,7 +40,6 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 	})
 		.sort({ createdAt: -1 }) // Sort read messages in asc order
 		.populate("sender", "username")
-		.populate("report", "name")
 		.lean();
 
 	const messages = [...unreadMessages, ...readMessages].map((message) =>

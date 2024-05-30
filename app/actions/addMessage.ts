@@ -51,7 +51,8 @@ async function addMessage(
 	const newMessage = new Message({
 		sender: userId,
 		recipient,
-		subject: formData.get("subject"),
+		name: formData.get("name"),
+		email: formData.get("email"),
 		body: formData.get("message"),
 	});
 

@@ -12,9 +12,13 @@ const MessageSchema = new Schema(
 			ref: "User",
 			required: true,
 		},
-		subject: {
+		name: {
 			type: String,
-			required: [true, "Subject is required"],
+			required: [true, "Name is required"],
+		},
+		email: {
+			type: String,
+			required: [true, "Email is required"],
 		},
 		body: {
 			type: String,

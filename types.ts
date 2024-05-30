@@ -66,7 +66,8 @@ export type Message = {
 		_id: string;
 		username?: string;
 	};
-	subject: string;
+	name: string;
+	email: string;
 	body: string;
 	read: boolean;
 	createdAt: string;
