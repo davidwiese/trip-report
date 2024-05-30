@@ -408,6 +408,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 						type="number"
 						id="distance"
 						name="distance"
+						step="0.1"
 						className="border rounded w-full py-2 px-3"
 						required
 					/>

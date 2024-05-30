@@ -15,8 +15,8 @@ const Hero = () => {
 				<Image
 					src={heroImage}
 					alt="Outdoor adventure"
-					layout="fill"
-					objectFit="cover"
+					fill
+					style={{ objectFit: "cover" }}
 					className="opacity-25 absolute inset-0 z-0"
 					quality={100}
 				/>

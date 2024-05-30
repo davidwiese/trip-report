@@ -1,9 +1,3 @@
-export type Rating = {
-	user: string;
-	rating: number;
-	report: string;
-};
-
 export type Location = {
 	country: string;
 	region: string;
@@ -39,7 +33,6 @@ export type Report = {
 	caltopoUrl?: string;
 	gpxKmlFile?: GpxKmlFileObject;
 	isFeatured: boolean;
-	ratings: Rating[];
 	createdAt: string;
 	updatedAt: string;
 };
