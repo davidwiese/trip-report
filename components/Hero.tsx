@@ -1,7 +1,7 @@
 import ReportSearchForm from "@/components/ReportSearchForm";
 import Image from "next/image";
 import Link from "next/link";
-import heroImage from "@/assets/images/hero.webp";
+import heroImage from "@/assets/images/hero.jpg";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Button } from "@/components/ui/button";
 
