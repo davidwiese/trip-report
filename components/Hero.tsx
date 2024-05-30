@@ -1,24 +1,102 @@
 import ReportSearchForm from "@/components/ReportSearchForm";
+import Image from "next/image";
+import Link from "next/link";
+import heroImage from "@/assets/images/hero.webp";
 
 type HeroProps = {
 	// Add any props here if needed
 };
-
-const Hero: React.FC<HeroProps> = () => {
+const Hero = () => {
 	return (
-		<section className="bg-black py-20 mb-4">
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
-				<div className="text-center">
-					<h1 className="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl">
-						Find Your Next Adventure
-					</h1>
-					<p className="my-4 text-xl text-white">
-						Discover the perfect objective for your next trip.
-					</p>
+		<section className="relative bg-gray-900 text-white">
+			<div className="absolute inset-0">
+				<Image
+					src={heroImage}
+					alt="Outdoor adventure"
+					layout="fill"
+					objectFit="cover"
+					className="opacity-70"
+				/>
+				<div className="absolute inset-0 bg-black opacity-50"></div>
+			</div>
+			<div className="relative container mx-auto px-4 py-24 text-center">
+				<h1 className="text-4xl font-bold mb-4">
+					Discover and Share Your Outdoor Adventures
+				</h1>
+				<p className="text-lg mb-8">
+					Create detailed trip reports, find trail information, and share your
+					outdoor experiences with our community.
+				</p>
+				<div className="flex justify-center space-x-4">
+					<Link href="/reports/add">
+						<button className="bg-primary-600 text-white px-6 py-3 rounded-lg shadow hover:bg-primary-500 transition">
+							Create a Report
+						</button>
+					</Link>
+					<Link href="/reports">
+						<button className="bg-secondary-600 text-white px-6 py-3 rounded-lg shadow hover:bg-secondary-500 transition">
+							View Reports
+						</button>
+					</Link>
 				</div>
 				<ReportSearchForm />
+				<div className="mt-12 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+					<div className="flex items-center space-x-4">
+						<div className="text-primary-500">
+							{/* Replace with an appropriate icon */}
+							<svg className="h-8 w-8" fill="currentColor" viewBox="0 0 20 20">
+								<path d="M10 12h4v6H6v-6h4zm1-10h2v3h-2V2zm-4 0h2v3H7V2zm-4 0h2v3H3V2zm8 0h2v3h-2V2zm-4 0h2v3H7V2zm-4 0h2v3H3V2z" />
+							</svg>
+						</div>
+						<div>
+							<h3 className="font-bold">Easy Report Creation</h3>
+							<p>
+								Create detailed reports with descriptions, images, and more.
+							</p>
+						</div>
+					</div>
+					<div className="flex items-center space-x-4">
+						<div className="text-primary-500">
+							{/* Replace with an appropriate icon */}
+							<svg className="h-8 w-8" fill="currentColor" viewBox="0 0 20 20">
+								<path d="M10 12h4v6H6v-6h4zm1-10h2v3h-2V2zm-4 0h2v3H7V2zm-4 0h2v3H3V2zm8 0h2v3h-2V2zm-4 0h2v3H7V2zm-4 0h2v3H3V2z" />
+							</svg>
+						</div>
+						<div>
+							<h3 className="font-bold">GPX/KML File Support</h3>
+							<p>
+								Upload and share your GPX/KML files for detailed trip tracking.
+							</p>
+						</div>
+					</div>
+					<div className="flex items-center space-x-4">
+						<div className="text-primary-500">
+							{/* Replace with an appropriate icon */}
+							<svg className="h-8 w-8" fill="currentColor" viewBox="0 0 20 20">
+								<path d="M10 12h4v6H6v-6h4zm1-10h2v3h-2V2zm-4 0h2v3H7V2zm-4 0h2v3H3V2zm8 0h2v3h-2V2zm-4 0h2v3H7V2zm-4 0h2v3H3V2z" />
+							</svg>
+						</div>
+						<div>
+							<h3 className="font-bold">Caltopo Map Integration</h3>
+							<p>Embed Caltopo maps directly into your trip reports.</p>
+						</div>
+					</div>
+					<div className="flex items-center space-x-4">
+						<div className="text-primary-500">
+							{/* Replace with an appropriate icon */}
+							<svg className="h-8 w-8" fill="currentColor" viewBox="0 0 20 20">
+								<path d="M10 12h4v6H6v-6h4zm1-10h2v3h-2V2zm-4 0h2v3H7V2zm-4 0h2v3H3V2zm8 0h2v3h-2V2zm-4 0h2v3H7V2zm-4 0h2v3H3V2z" />
+							</svg>
+						</div>
+						<div>
+							<h3 className="font-bold">Community Insights</h3>
+							<p>Read reports from other users and gain valuable insights.</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</section>
 	);
 };
+
 export default Hero;
