@@ -2,6 +2,7 @@ import ReportSearchForm from "@/components/ReportSearchForm";
 import Image from "next/image";
 import Link from "next/link";
 import heroImage from "@/assets/images/hero.webp";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 
 type HeroProps = {
 	// Add any props here if needed
@@ -15,10 +16,11 @@ const Hero = () => {
 					alt="Outdoor adventure"
 					layout="fill"
 					objectFit="cover"
-					className="opacity-70"
+					className="opacity-25"
 				/>
 				<div className="absolute inset-0 bg-black opacity-50"></div>
 			</div>
+			<BackgroundBeams />
 			<div className="relative container mx-auto px-4 py-24 text-center">
 				<h1 className="text-4xl font-bold mb-4">
 					Discover and Share Your Outdoor Adventures

@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
-import InfoBoxes from "@/components/InfoBoxes";
 import HomeReports from "@/components/HomeReports";
-import FeaturedReports from "@/components/FeaturedReports";
+import HomeStatistics from "@/components/HomeStatistics";
+import CallToAction from "@/components/CallToAction";
 
 type HomePageProps = {
 	// Add any props here if needed
@@ -12,6 +12,8 @@ const HomePage: React.FC<HomePageProps> = () => {
 		<>
 			<Hero />
 			<HomeReports />
+			<HomeStatistics />
+			<CallToAction />
 		</>
 	);
 };
