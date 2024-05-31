@@ -23,19 +23,19 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 	// Match location pattern against database fields
 	let query: any = {
 		$or: [
-			{ name: locationPattern },
+			{ title: locationPattern },
 			{ description: locationPattern },
-			{ "location.street": locationPattern },
-			{ "location.city": locationPattern },
-			{ "location.state": locationPattern },
-			{ "location.zipcode": locationPattern },
+			{ body: locationPattern },
+			{ "location.country": locationPattern },
+			{ "location.region": locationPattern },
+			{ "location.localArea": locationPattern },
+			{ "location.objective": locationPattern },
 		],
 	};
 
-	// Only check for report if its not 'All'
+	// Only check for report type if it's not 'All'
 	if (reportType && reportType !== "All") {
-		const typePattern = new RegExp(reportType, "i");
-		query.type = typePattern;
+		query.activityType = reportType;
 	}
 
 	const reportsQueryResults = await Report.find(query).lean();
@@ -61,7 +61,7 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 						<p>No search results found</p>
 					) : (
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-							{(reports as Report[]).map((report: any) => (
+							{reports.map((report: any) => (
 								<ReportCard key={report._id} report={report} />
 							))}
 						</div>
