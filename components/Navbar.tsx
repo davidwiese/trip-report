@@ -91,9 +91,9 @@ const Navbar: React.FC<NavbarProps> = () => {
 							onClick={(e) => e.currentTarget.blur()}
 						>
 							<Image className="h-12 w-auto" src={logo} alt="Trip Report" />
-							<span className="hidden md:block text-black text-2xl font-bold ml-2">
+							{/* <span className="hidden md:block text-black text-2xl font-bold ml-2">
 								Trip Report
-							</span>
+							</span> */}
 						</Link>
 					</div>
 

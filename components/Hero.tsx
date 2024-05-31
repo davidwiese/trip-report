@@ -24,9 +24,7 @@ const Hero = () => {
 			</div>
 			<BackgroundBeams />
 			<div className="relative container mx-auto px-4 py-24 text-center">
-				<h1 className="text-4xl font-bold mb-4">
-					Discover and Share Your Outdoor Adventures
-				</h1>
+				<h1 className="text-4xl font-bold mb-4">Trip Report</h1>
 				<p className="text-lg mb-8">
 					Create detailed trip reports, find trail information, and share your
 					outdoor experiences with our community.
@@ -94,6 +92,12 @@ const Hero = () => {
 						</div>
 					</div>
 				</div>
+			</div>
+			<div className="w-full absolute left-1/2 transform -translate-x-1/2">
+				<div className="absolute inset-x-0 top-0 bg-gradient-to-r from-transparent via-indigo-900 to-transparent h-[5px] w-full blur-sm"></div>
+				<div className="absolute inset-x-0 top-0 bg-gradient-to-r from-transparent via-indigo-800 to-transparent h-px w-full"></div>
+				<div className="absolute inset-x-0 top-0 bg-gradient-to-r from-transparent via-sky-800 to-transparent h-[5px] w-full blur-sm"></div>
+				<div className="absolute inset-x-0 top-0 bg-gradient-to-r from-transparent via-sky-700 to-transparent h-px w-full"></div>
 			</div>
 		</section>
 	);
