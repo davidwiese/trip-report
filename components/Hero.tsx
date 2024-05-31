@@ -25,13 +25,13 @@ const Hero = () => {
 			</div>
 			<BackgroundBeams />
 			<div className="relative container mx-auto px-4 py-24 text-center">
-				<div className="mb-12">
+				<div className="mb-16">
 					<h1 className="text-6xl font-bold mb-4">Trip Report</h1>
 					<p className="text-lg">
 						Share your trips, find beta, and connect with other adventurers.
 					</p>
 				</div>
-				<div className="flex justify-center space-x-4 mb-12">
+				<div className="flex justify-center space-x-4 mb-16">
 					<Button asChild className="glow-on-hover">
 						<Link className="w-[125px]" href="/reports/add">
 							Create Report

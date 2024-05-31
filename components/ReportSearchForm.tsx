@@ -53,6 +53,7 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 					className="w-full px-4 py-3 rounded-lg bg-black placeholder:text-white"
 					value={location}
 					onChange={(e) => setLocation(e.target.value)}
+					style={{ boxShadow: "0 0 5px 2px rgba(255, 255, 255, 0.5)" }}
 				/>
 			</div>
 			<div className="w-full md:w-2/5 md:pl-2">
@@ -60,7 +61,11 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 					Trip Type
 				</label>
 				<Select value={reportType} onValueChange={handleReportTypeChange}>
-					<SelectTrigger id="report-type" className="w-full bg-black">
+					<SelectTrigger
+						id="report-type"
+						className="w-full bg-black"
+						style={{ boxShadow: "0 0 5px 2px rgba(255, 255, 255, 0.5)" }}
+					>
 						<SelectValue placeholder="Select trip type" />
 					</SelectTrigger>
 					<SelectContent>
@@ -93,7 +98,8 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 			</div>
 			<Button
 				type="submit"
-				className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 glow-on-hover-search"
+				style={{ boxShadow: "0 0 5px 2px rgba(255, 255, 255, 0.5)" }}
+				className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 border border-white focus:outline-none focus:ring-2"
 			>
 				Search
 			</Button>
