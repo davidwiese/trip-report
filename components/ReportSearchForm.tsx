@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { SearchButton } from "@/components/SearchButton";
 import { Input } from "@/components/ui/input";
 import {
 	Select,
@@ -50,10 +50,10 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 					type="text"
 					id="location"
 					placeholder="Enter location or keywords"
-					className="w-full px-4 py-3 rounded-lg bg-black placeholder:text-white"
+					className="w-full px-4 py-3 rounded-lg bg-black placeholder:text-white focus:outline-2 focus:outline-white"
 					value={location}
 					onChange={(e) => setLocation(e.target.value)}
-					style={{ boxShadow: "0 0 5px 2px rgba(255, 255, 255, 0.5)" }}
+					style={{ boxShadow: "0 0 3px 1px rgba(255, 255, 255, 0.5)" }}
 				/>
 			</div>
 			<div className="w-full md:w-2/5 md:pl-2">
@@ -63,8 +63,8 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 				<Select value={reportType} onValueChange={handleReportTypeChange}>
 					<SelectTrigger
 						id="report-type"
-						className="w-full bg-black text-white"
-						style={{ boxShadow: "0 0 5px 2px rgba(255, 255, 255, 0.5)" }}
+						className="w-full bg-black text-white focus:outline-2 focus:outline-white"
+						style={{ boxShadow: "0 0 3px 1px rgba(255, 255, 255, 0.5)" }}
 					>
 						<SelectValue placeholder="Select trip type" />
 					</SelectTrigger>
@@ -96,13 +96,13 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 					</SelectContent>
 				</Select>
 			</div>
-			<Button
+			<SearchButton
 				type="submit"
-				style={{ boxShadow: "0 0 5px 2px rgba(255, 255, 255, 0.5)" }}
-				className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 border border-white focus:outline-none focus:ring-2"
+				style={{ boxShadow: "0 0 3px 1px rgba(255, 255, 255, 0.5)" }}
+				className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 border border-white focus:outline-2 focus:outline-white"
 			>
 				Search
-			</Button>
+			</SearchButton>
 		</form>
 	);
 };
