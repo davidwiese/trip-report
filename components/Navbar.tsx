@@ -101,13 +101,13 @@ const Navbar: React.FC<NavbarProps> = () => {
 					<div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-2">
 						<Link
 							href="/"
-							className={`${linkClasses("/")} w-[105px] text-center`}
+							className={`${linkClasses("/")} w-[110px] text-center`}
 						>
 							Home
 						</Link>
 						<Link
 							href="/reports"
-							className={`${linkClasses("/reports")} w-[105px] text-center`}
+							className={`${linkClasses("/reports")} w-[110px] text-center`}
 						>
 							Reports
 						</Link>
@@ -116,9 +116,9 @@ const Navbar: React.FC<NavbarProps> = () => {
 								href="/reports/add"
 								className={`${linkClasses(
 									"/reports/add"
-								)} w-[105px] text-center`}
+								)} w-[110px] text-center`}
 							>
-								Add Report
+								Create Report
 							</Link>
 						)}
 					</div>

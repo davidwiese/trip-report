@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 @layer base {
 	:root {
 		--background: 0 0% 100%;
@@ -86,14 +88,117 @@ body {
 	flex-direction: column;
 	min-height: 100vh;
 	overflow-y: scroll;
+	font-family: "Roboto", sans-serif;
 }
 
 main {
 	flex: 1;
 }
 
+h1 {
+	letter-spacing: 0.0125em;
+}
+
 .logo-link:focus {
 	outline: 2px solid black;
 	outline-offset: 2px;
 	border-radius: 4px;
+}
+
+.glow-on-hover,
+.glow-on-hover-search {
+	border: none;
+	outline: none;
+	color: #fff;
+	background: #000;
+	cursor: pointer;
+	position: relative;
+	z-index: 0;
+	border-radius: 10px;
+}
+
+.glow-on-hover:before {
+	content: "";
+	background: linear-gradient(
+		45deg,
+		#00ffd5,
+		#002bff,
+		#7a00ff,
+		#002bff,
+		#00ffd5
+	);
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	background-size: 400%;
+	z-index: -1;
+	filter: blur(3px);
+	width: calc(100% + 2px);
+	height: calc(100% + 2px);
+	animation: glowing 20s linear infinite;
+	opacity: 0;
+	border-radius: 10px;
+}
+
+.glow-on-hover-search:before {
+	content: "";
+	background: linear-gradient(
+		45deg,
+		#e9e9e9,
+		#dfe4ff,
+		#a39bad,
+		#dfe4ff,
+		#e9e9e9
+	);
+	position: absolute;
+	top: -1px;
+	left: -1px;
+	background-size: 400%;
+	z-index: -1;
+	filter: blur(3px);
+	width: calc(100% + 1px);
+	height: calc(100% + 1px);
+	animation: glowing 20s linear infinite;
+	opacity: 0;
+	border-radius: 10px;
+}
+
+.glow-on-hover:active,
+.glow-on-hover-search:active {
+	color: #000;
+}
+
+.glow-on-hover:active:after,
+.glow-on-hover-search:active:after {
+	background: transparent;
+}
+
+.glow-on-hover:before,
+.glow-on-hover-search:before {
+	opacity: 1;
+}
+
+.glow-on-hover:after,
+.glow-on-hover-search:after {
+	z-index: -1;
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	left: 0;
+	top: 0;
+	border-radius: 10px;
+}
+
+@keyframes glowing {
+	0% {
+		background-position: 0 0;
+	}
+	50% {
+		background-position: 400% 0;
+	}
+	100% {
+		background-position: 0 0;
+	}
 }

@@ -2,6 +2,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 
 type ReportSearchFormProps = {
 	// Add any props here if needed
@@ -9,7 +19,7 @@ type ReportSearchFormProps = {
 
 const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 	const [location, setLocation] = useState("");
-	const [reportType, setReportType] = useState("All");
+	const [reportType, setReportType] = useState("");
 
 	const router = useRouter();
 
@@ -23,6 +33,10 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 		}
 	};
 
+	const handleReportTypeChange = (value: string) => {
+		setReportType(value);
+	};
+
 	return (
 		<form
 			onSubmit={handleSubmit}
@@ -32,11 +46,11 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 				<label htmlFor="location" className="sr-only">
 					Location
 				</label>
-				<input
+				<Input
 					type="text"
 					id="location"
 					placeholder="Enter location or keywords"
-					className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
+					className="w-full px-4 py-3 rounded-lg bg-black placeholder:text-white"
 					value={location}
 					onChange={(e) => setLocation(e.target.value)}
 				/>
@@ -45,36 +59,41 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 				<label htmlFor="report-type" className="sr-only">
 					Trip Type
 				</label>
-				<select
-					id="report-type"
-					className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
-					value={reportType}
-					onChange={(e) => setReportType(e.target.value)}
-				>
-					<option value="All">All</option>
-					<option value="Hiking">Hiking</option>
-					<option value="Backpacking">Backpacking</option>
-					<option value="Trail Running">Trail Running</option>
-					<option value="Rock Climbing">Rock Climbing</option>
-					<option value="Sport Climbing">Sport Climbing</option>
-					<option value="Trad Climbing">Trad Climbing</option>
-					<option value="Aid Climbing">Aid Climbing</option>
-					<option value="Ice Climbing">Ice Climbing</option>
-					<option value="Mixed Climbing">Mixed Climbing</option>
-					<option value="Mountaineering">Mountaineering</option>
-					<option value="Ski Mountaineering">Ski Mountaineering</option>
-					<option value="Ski Touring">Ski Touring</option>
-					<option value="Canyoneering">Canyoneering</option>
-					<option value="Mountain Biking">Mountain Biking</option>
-					<option value="Cycling">Cycling</option>
-					<option value="Bikepacking">Bikepacking</option>
-					<option value="Kayaking">Kayaking</option>
-					<option value="Packrafting">Packrafting</option>
-				</select>
+				<Select value={reportType} onValueChange={handleReportTypeChange}>
+					<SelectTrigger id="report-type" className="w-full bg-black">
+						<SelectValue placeholder="Select trip type" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectGroup>
+							<SelectLabel>Trip Type</SelectLabel>
+							<SelectItem value="All">All</SelectItem>
+							<SelectItem value="Hiking">Hiking</SelectItem>
+							<SelectItem value="Backpacking">Backpacking</SelectItem>
+							<SelectItem value="Trail Running">Trail Running</SelectItem>
+							<SelectItem value="Rock Climbing">Rock Climbing</SelectItem>
+							<SelectItem value="Sport Climbing">Sport Climbing</SelectItem>
+							<SelectItem value="Trad Climbing">Trad Climbing</SelectItem>
+							<SelectItem value="Aid Climbing">Aid Climbing</SelectItem>
+							<SelectItem value="Ice Climbing">Ice Climbing</SelectItem>
+							<SelectItem value="Mixed Climbing">Mixed Climbing</SelectItem>
+							<SelectItem value="Mountaineering">Mountaineering</SelectItem>
+							<SelectItem value="Ski Mountaineering">
+								Ski Mountaineering
+							</SelectItem>
+							<SelectItem value="Ski Touring">Ski Touring</SelectItem>
+							<SelectItem value="Canyoneering">Canyoneering</SelectItem>
+							<SelectItem value="Mountain Biking">Mountain Biking</SelectItem>
+							<SelectItem value="Cycling">Cycling</SelectItem>
+							<SelectItem value="Bikepacking">Bikepacking</SelectItem>
+							<SelectItem value="Kayaking">Kayaking</SelectItem>
+							<SelectItem value="Packrafting">Packrafting</SelectItem>
+						</SelectGroup>
+					</SelectContent>
+				</Select>
 			</div>
 			<Button
 				type="submit"
-				className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3"
+				className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 glow-on-hover-search"
 			>
 				Search
 			</Button>
