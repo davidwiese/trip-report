@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
 import { v4 as uuidv4 } from "uuid";
 import { sanitizeHtmlContent, sanitizeText } from "@/utils/sanitizeHtml";
+import { ratelimit } from "@/utils/ratelimit";
 
 async function updateReport(reportId: string, formData: FormData) {
 	let updatedReport;
@@ -20,6 +21,12 @@ async function updateReport(reportId: string, formData: FormData) {
 
 		if (!sessionUser || !sessionUser.userId) {
 			throw new Error("User ID is required");
+		}
+
+		const { success } = await ratelimit.limit(sessionUser.userId);
+
+		if (!success) {
+			throw new Error("Too many update requests. Please try again later.");
 		}
 
 		const { userId } = sessionUser;
