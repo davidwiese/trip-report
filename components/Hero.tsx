@@ -5,11 +5,12 @@ import heroImage from "@/assets/images/hero.jpg";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Button } from "@/components/ui/button";
 import { FaChartLine, FaComments, FaMap, FaPenFancy } from "react-icons/fa";
+import HeroCard from "@/components/HeroCard";
 
 type HeroProps = {
 	// Add any props here if needed
 };
-const Hero = () => {
+const Hero: React.FC<HeroProps> = () => {
 	return (
 		<section className="relative bg-gray-900 text-white">
 			<div className="absolute inset-0">
@@ -46,35 +47,28 @@ const Hero = () => {
 				<div className="mb-16">
 					<ReportSearchForm />
 				</div>
+				{/* Cards */}
 				<div className="mt-12 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-					<div className="bg-white dark:bg-zinc-800 text-black dark:text-white p-6 rounded-lg shadow-md flex flex-col items-center">
-						<FaPenFancy className="text-4xl text-primary-500 mb-4" />
-						<h3 className="font-bold text-xl mb-2">Easy Report Creation</h3>
-						<p className="text-center">
-							Create detailed reports with descriptions, images, and more.
-						</p>
-					</div>
-					<div className="bg-white dark:bg-zinc-800 text-black dark:text-white p-6 rounded-lg shadow-md flex flex-col items-center">
-						<FaChartLine className="text-4xl text-primary-500 mb-4" />
-						<h3 className="font-bold text-xl mb-2">Tracked User Statistics</h3>
-						<p className="text-center">
-							View miles hiked, total elevation gain/loss, and more.
-						</p>
-					</div>
-					<div className="bg-white dark:bg-zinc-800 text-black dark:text-white p-6 rounded-lg shadow-md flex flex-col items-center">
-						<FaMap className="text-4xl text-primary-500 mb-4" />
-						<h3 className="font-bold text-xl mb-2">Caltopo Map Integration</h3>
-						<p className="text-center">
-							Embed Caltopo maps directly into your trip reports.
-						</p>
-					</div>
-					<div className="bg-white dark:bg-zinc-800 text-black dark:text-white p-6 rounded-lg shadow-md flex flex-col items-center">
-						<FaComments className="text-4xl text-primary-500 mb-4" />
-						<h3 className="font-bold text-xl mb-2">Community Insights</h3>
-						<p className="text-center">
-							Gain valuable beta and insights from our community.
-						</p>
-					</div>
+					<HeroCard
+						icon={<FaPenFancy />}
+						title="Easy Report Creation"
+						description="Create detailed reports with descriptions, images, and more."
+					/>
+					<HeroCard
+						icon={<FaChartLine />}
+						title="Tracked User Statistics"
+						description="View miles hiked, total elevation gain/loss, and more."
+					/>
+					<HeroCard
+						icon={<FaComments />}
+						title="Community Insights"
+						description="Find new partners and gain valuable trip beta from our community."
+					/>
+					<HeroCard
+						icon={<FaMap />}
+						title="Caltopo Map Integration"
+						description="Embed Caltopo maps directly into your trip reports."
+					/>
 				</div>
 			</div>
 			<div className="w-full absolute left-1/2 transform -translate-x-1/2">
