@@ -9,7 +9,7 @@ type ReportCardProps = {
 
 const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 	return (
-		<div className="rounded-xl shadow-md relative">
+		<div className="bg-white rounded-xl shadow-md relative z-10">
 			{report.images &&
 				report.images.length > 0 &&
 				typeof report.images[0] === "string" && (
