@@ -2,55 +2,84 @@ import { Report } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { FaMapMarker } from "react-icons/fa";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 type ReportCardProps = {
 	report: Report;
 };
 
 const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
+	const placeholderImage = "/images/placeholder-image.png";
+	const thumbnailImage =
+		report.images && report.images.length > 0
+			? report.images[0].url
+			: placeholderImage;
+
 	return (
-		<div className="bg-white rounded-xl shadow-md relative z-10">
-			{report.images &&
-				report.images.length > 0 &&
-				typeof report.images[0] === "string" && (
-					<Image
-						src={report.images[0]}
-						alt=""
-						sizes="100vw"
-						height={0}
-						width={0}
-						className="w-full h-auto rounded-t-xl"
-					/>
-				)}
-			<div className="p-4">
-				<div className="text-left md:text-center lg:text-left mb-6">
-					<div className="text-gray-600">{report.activityType}</div>
-					<h3 className="text-xl font-bold">{report.title}</h3>
-				</div>
-				<h3 className="absolute top-[10px] right-[10px] bg-white px-4 py-2 rounded-lg text-gray-500 font-bold text-right md:text-center lg:text-right">
-					{/* ${getRateDisplay()} */}
-				</h3>
-
-				<div className="border border-gray-100 mb-5"></div>
-
-				<div className="flex flex-col lg:flex-row justify-between mb-4">
-					<div className="flex align-middle gap-2 mb-4 lg:mb-0">
-						<FaMapMarker className="text-orange-700 mt-1" />
+		<Card className="bg-white rounded-xl shadow-md relative z-10 flex flex-col h-full">
+			<div className="relative h-48 w-full">
+				<Image
+					src={thumbnailImage}
+					alt={report.title}
+					layout="fill"
+					objectFit="cover"
+					className="rounded-t-xl"
+					objectPosition="center"
+				/>
+			</div>
+			<div className="flex flex-col flex-grow p-4">
+				<CardHeader className="flex-grow">
+					<CardTitle className="text-xl font-bold">{report.title}</CardTitle>
+					<CardDescription className="text-gray-600">
+						{report.activityType.join(", ")}
+					</CardDescription>
+				</CardHeader>
+				<CardContent className="flex-grow">
+					<div className="flex items-center gap-2 mb-4">
+						<FaMapMarker className="text-orange-700" />
 						<span className="text-orange-700">
-							{" "}
-							{report.location.country} {report.location.region}{" "}
-							{report.location.localArea}{" "}
+							{report.location.region} {report.location.objective}
 						</span>
 					</div>
+					<div className="mb-4">
+						<p className="text-sm text-gray-500">
+							Distance: {report.distance} km
+						</p>
+						<p className="text-sm text-gray-500">
+							Elevation Gain: {report.elevationGain} m
+						</p>
+						<p className="text-sm text-gray-500">
+							Elevation Loss: {report.elevationLoss} m
+						</p>
+					</div>
+					{report.description && (
+						<p className="text-sm text-gray-700 line-clamp-3">
+							{report.description}
+						</p>
+					)}
+				</CardContent>
+				<CardFooter className="mt-auto flex justify-between items-center pt-4">
 					<Link
-						href={`/reports/${report._id}`}
-						className="h-[36px] bg-black hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-center text-sm"
+						href={`/profile/${report.owner}`}
+						className="text-sm text-blue-500"
 					>
-						Details
+						View Profile
 					</Link>
-				</div>
+					<Button asChild>
+						<Link href={`/reports/${report._id}`}>Details</Link>
+					</Button>
+				</CardFooter>
 			</div>
-		</div>
+		</Card>
 	);
 };
+
 export default ReportCard;
