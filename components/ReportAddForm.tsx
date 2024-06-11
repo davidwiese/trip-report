@@ -465,6 +465,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					id="duration"
 					name="duration"
 					className="border rounded w-full py-2 px-3"
+					step="0.1"
 					required
 				/>
 			</div>
