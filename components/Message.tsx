@@ -41,29 +41,16 @@ const MessageCard: React.FC<MessageProps> = ({ message }) => {
 					New
 				</div>
 			) : null}
-			<h2 className="text-xl mb-4">
-				<span className="font-bold">Trip Report Inquiry: </span>
-				{message.report.name}
-			</h2>
 			<p className="text-gray-700">{message.body}</p>
 
 			<ul className="mt-4">
 				<li>
 					<strong>Name:</strong> {message.sender.username}
 				</li>
+				<li>
+					<strong>Email:</strong> {message.email}
+				</li>
 
-				<li>
-					<strong>Reply Email: </strong>
-					<a href={`mailto:${message.email}`} className="text-blue-500">
-						{message.email}
-					</a>
-				</li>
-				<li>
-					<strong>Reply Phone: </strong>
-					<a href={`tel:${message.phone}`} className="text-blue-500">
-						{message.phone}
-					</a>
-				</li>
 				<li>
 					<strong>Received: </strong>
 					{new Date(message.createdAt).toLocaleString()}
@@ -72,7 +59,7 @@ const MessageCard: React.FC<MessageProps> = ({ message }) => {
 			<button
 				onClick={handleReadClick}
 				className={`mt-4 mr-3 ${
-					isRead ? "bg-gray-300" : "bg-blue-500 text-white"
+					isRead ? "bg-gray-300" : "bg-black text-white"
 				} py-1 px-3 rounded-md`}
 			>
 				{isRead ? "Mark As New" : "Mark As Read"}

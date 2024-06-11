@@ -3,6 +3,7 @@
 import cloudinary from "@/config/cloudinary";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
+import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
@@ -28,27 +29,67 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 		throw new Error("Unauthorized");
 	}
 
-	// extract public id's from image url in DB
-	const publicIds = report.images.map((imageUrl: string) => {
-		const parts = imageUrl.split("/");
-		const lastPart = parts.at(-1);
-		return lastPart ? lastPart.split(".").at(0) : undefined;
-	});
-
-	// Filter out any undefined publicIds
-	const validPublicIds = publicIds.filter(
-		(publicId: string): publicId is string => publicId !== undefined
-	);
-
 	// Delete images from Cloudinary
-	if (validPublicIds.length > 0) {
-		for (let publicId of validPublicIds) {
-			await cloudinary.uploader.destroy("trip-report/" + publicId);
+	if (report.images && report.images.length > 0) {
+		for (const image of report.images) {
+			const fileName = image.url.split("/").pop()?.split(".")[0];
+			if (fileName) {
+				try {
+					const result = await cloudinary.uploader.destroy(
+						`trip-report/${fileName}`
+					);
+					console.log(`Deleted image: ${fileName}`, result);
+				} catch (error) {
+					console.error(
+						`Error deleting image with file name ${fileName}:`,
+						error
+					);
+				}
+			}
+		}
+	}
+
+	// Delete GPX/KML file from Cloudinary (if any)
+	if (report.gpxKmlFile) {
+		const publicId = report.gpxKmlFile.url.split("/").pop();
+		if (publicId) {
+			try {
+				const result = await cloudinary.uploader.destroy(
+					`trip-report/gpx/${publicId}`,
+					{
+						resource_type: "raw",
+					}
+				);
+				console.log(`Deleted GPX/KML file: ${publicId}`, result);
+			} catch (error) {
+				console.error(
+					`Error deleting GPX/KML file with public ID ${publicId}:`,
+					error
+				);
+			}
 		}
 	}
 
 	// Proceed with report deletion
-	await report.deleteOne();
+	try {
+		await report.deleteOne();
+
+		// Update the user's reports array and totalReports count
+		await User.findByIdAndUpdate(userId, {
+			$pull: { reports: reportId, bookmarks: reportId },
+			$inc: {
+				totalReports: -1,
+				totalDistance: -report.distance,
+				totalElevationGain: -report.elevationGain,
+				totalElevationLoss: -report.elevationLoss,
+			},
+		});
+	} catch (error) {
+		console.error("Error deleting report:", error);
+		throw new Error(
+			"An error occurred while deleting the report. Please try again."
+		);
+	}
 
 	// Revalidate the cache
 	// NOTE: since properties are pretty much on every page, we can simply

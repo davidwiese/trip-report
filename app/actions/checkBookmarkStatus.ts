@@ -1,8 +1,8 @@
 "use server";
 
-const { default: connectDB } = require("@/config/database");
-const { default: User } = require("@/models/User");
-const { getSessionUser } = require("@/utils/getSessionUser");
+import connectDB from "@/config/database";
+import User from "@/models/User";
+import { getSessionUser } from "@/utils/getSessionUser";
 import mongoose from "mongoose";
 
 async function checkBookmarkStatus(reportId: string | mongoose.Types.ObjectId) {

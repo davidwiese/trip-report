@@ -4,6 +4,7 @@ import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
+import User from "@/models/User";
 
 type FormState = {
 	error: string;
@@ -33,6 +34,12 @@ async function addMessage(
 		return { error: "You must be logged in to send a message" };
 	}
 
+	const recipientId = formData.get("recipient");
+	const recipientExists = await User.findById(recipientId);
+	if (!recipientExists) {
+		return { error: "Recipient does not exist" };
+	}
+
 	const { userId } = sessionUser;
 
 	const recipient = formData.get("recipient");
@@ -44,10 +51,8 @@ async function addMessage(
 	const newMessage = new Message({
 		sender: userId,
 		recipient,
-		report: formData.get("report"),
 		name: formData.get("name"),
 		email: formData.get("email"),
-		phone: formData.get("phone"),
 		body: formData.get("message"),
 	});
 
