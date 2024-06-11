@@ -1,11 +1,5 @@
-import {
-	FaBed,
-	FaBath,
-	FaRulerCombined,
-	FaTimes,
-	FaCheck,
-	FaMapMarker,
-} from "react-icons/fa";
+import { FaRulerCombined, FaCheck, FaMapMarker } from "react-icons/fa";
+import { LuMoveUpRight, LuMoveDownRight } from "react-icons/lu";
 import { Report } from "@/types";
 
 type ReportDetailsProps = {
@@ -16,8 +10,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report }) => {
 	return (
 		<main>
 			<div className="bg-white p-6 rounded-lg shadow-md text-center md:text-left">
-				<div className="text-gray-500 mb-4">{report.title}</div>
-				<h1 className="text-3xl font-bold mb-4">{report.description}</h1>
+				<h1 className="text-3xl font-bold mb-4">{report.title}</h1>
 				<div className="text-gray-500 mb-4 flex align-middle justify-center md:justify-start">
 					<FaMapMarker className="text-lg text-orange-700 mr-2" />
 					<p className="text-orange-700">
@@ -26,37 +19,40 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report }) => {
 					</p>
 				</div>
 
-				<h3 className="text-lg font-bold my-6 bg-gray-800 text-white p-2">
-					Something
+				<h3 className="text-lg font-bold my-6 bg-gray-800 text-white p-2 text-center">
+					Description
 				</h3>
 				<div className="flex flex-col md:flex-row justify-around">
 					<div className="flex items-center justify-center mb-4 border-b border-gray-200 md:border-b-0 pb-4 md:pb-0">
-						<div className="text-gray-500 mr-2 font-bold">Nightly</div>
+						<div className="text-gray-500 mr-2 font-bold">
+							{report.description}
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div className="bg-white p-6 rounded-lg shadow-md mt-6">
-				<h3 className="text-lg font-bold mb-6">Description & Details</h3>
+				<h3 className="text-lg font-bold mb-6">Trip Stats</h3>
 				<div className="flex justify-center gap-4 text-gray-500 mb-4 text-xl space-x-9">
 					<p>
-						<FaBed className="inline-block mr-2" /> {report.title}{" "}
-						<span className="hidden sm:inline">Beds</span>
+						<LuMoveUpRight className="inline-block mr-2" />{" "}
+						{report.elevationGain}&apos;{" "}
+						<span className="hidden sm:inline"> Elevation Gain</span>
 					</p>
 					<p>
-						<FaBath className="inline-block mr-2" /> {report.title}{" "}
-						<span className="hidden sm:inline">Baths</span>
+						<LuMoveDownRight className="inline-block mr-2" />{" "}
+						{report.elevationGain}&apos;{" "}
+						<span className="hidden sm:inline"> Elevation Loss</span>
 					</p>
 					<p>
-						<FaRulerCombined className="inline-block mr-2" /> {report.title}{" "}
-						<span className="hidden sm:inline">sqft</span>
+						<FaRulerCombined className="inline-block mr-2" /> {report.distance}{" "}
+						<span className="hidden sm:inline">miles</span>
 					</p>
 				</div>
-				<p className="text-gray-500 mb-4 text-center">{report.description}</p>
 			</div>
 
 			<div className="bg-white p-6 rounded-lg shadow-md mt-6">
-				<h3 className="text-lg font-bold mb-6">Amenities</h3>
+				<h3 className="text-lg font-bold mb-6">Activity Type</h3>
 
 				<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 list-none space-y-2">
 					{report.activityType.map((amenity: string, index: number) => (
@@ -65,6 +61,13 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report }) => {
 						</li>
 					))}
 				</ul>
+			</div>
+			<div className="bg-white p-6 rounded-lg shadow-md mt-6">
+				<h3 className="text-lg font-bold mb-6">Report</h3>
+				<div
+					className="prose max-w-none"
+					dangerouslySetInnerHTML={{ __html: report.body }}
+				/>
 			</div>
 		</main>
 	);
