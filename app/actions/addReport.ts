@@ -2,133 +2,267 @@
 
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
+import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import cloudinary from "@/config/cloudinary";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
 async function addReport(formData: FormData) {
-	await connectDB();
+	let redirectUrl = "";
+	let reportData: any = {};
 
-	const sessionUser = await getSessionUser();
+	try {
+		await connectDB();
 
-	// NOTE: throwing an Error from our server actions will be caught by our
-	// error.jsx ErrorBoundary component and show the user an Error page with
-	// message of the thrown error.
+		const sessionUser = await getSessionUser();
 
-	if (!sessionUser || !sessionUser.userId) {
-		throw new Error("User ID is required");
-	}
+		// NOTE: throwing an Error from our server actions will be caught by our
+		// error.jsx ErrorBoundary component and show the user an Error page with
+		// message of the thrown error.
 
-	const { userId } = sessionUser;
+		if (!sessionUser || !sessionUser.userId) {
+			throw new Error("User ID is required");
+		}
 
-	// Access all values from amenities and images
-	const amenities = formData
-		.getAll("amenities")
-		.map((amenity) => amenity.toString());
+		const { userId } = sessionUser;
 
-	const images = formData
-		.getAll("images")
-		.filter((image) => (image as File).name !== "");
-
-	// Create reportData object for database
-	const reportData: {
-		type: FormDataEntryValue | null;
-		name: FormDataEntryValue | null;
-		description: FormDataEntryValue | null;
-		location: {
-			street: FormDataEntryValue | null;
-			city: FormDataEntryValue | null;
-			state: FormDataEntryValue | null;
-			zipcode: FormDataEntryValue | null;
+		type LocationType = {
+			country: FormDataEntryValue;
+			region: FormDataEntryValue;
+			localArea: FormDataEntryValue;
+			objective: FormDataEntryValue;
 		};
-		beds: FormDataEntryValue | null;
-		baths: FormDataEntryValue | null;
-		square_feet: FormDataEntryValue | null;
-		amenities: string[];
-		rates: {
-			weekly: FormDataEntryValue | null;
-			monthly: FormDataEntryValue | null;
-			nightly: FormDataEntryValue | null;
+
+		// Create reportData object for database
+		const reportData: {
+			owner: string;
+			title: FormDataEntryValue | null;
+			activityType: string[];
+			description: FormDataEntryValue | null;
+			body: FormDataEntryValue | null;
+			location: LocationType;
+			distance: FormDataEntryValue | null;
+			elevationGain: FormDataEntryValue | null;
+			elevationLoss: FormDataEntryValue | null;
+			duration: FormDataEntryValue | null;
+			startDate: FormDataEntryValue | null;
+			endDate: FormDataEntryValue | null;
+			images?: { url: string; originalFilename: string }[];
+			gpxKmlFile?: { url: string; originalFilename: string };
+			caltopoUrl?: FormDataEntryValue | null;
+			isFeatured: boolean;
+		} = {
+			owner: userId,
+			title: formData.get("title"),
+			activityType: formData.getAll("activityType") as string[],
+			description: formData.get("description"),
+			body: formData.get("body"),
+			location: {
+				country: formData.get("location.country")!,
+				region: formData.get("location.region")!,
+				localArea: formData.get("location.localArea")!,
+				objective: formData.get("location.objective")!,
+			},
+			distance: formData.get("distance"),
+			elevationGain: formData.get("elevationGain"),
+			elevationLoss: formData.get("elevationLoss"),
+			duration: formData.get("duration"),
+			startDate: formData.get("startDate"),
+			endDate: formData.get("endDate"),
+			isFeatured: false,
 		};
-		seller_info: {
-			name: FormDataEntryValue | null;
-			email: FormDataEntryValue | null;
-			phone: FormDataEntryValue | null;
-		};
-		owner: string;
-		images: string[]; // Update the type to string[]
-	} = {
-		type: formData.get("type"),
-		name: formData.get("name"),
-		description: formData.get("description"),
-		location: {
-			street: formData.get("location.street"),
-			city: formData.get("location.city"),
-			state: formData.get("location.state"),
-			zipcode: formData.get("location.zipcode"),
-		},
-		beds: formData.get("beds"),
-		baths: formData.get("baths"),
-		square_feet: formData.get("square_feet"),
-		amenities,
-		rates: {
-			weekly: formData.get("rates.weekly"),
-			monthly: formData.get("rates.monthly"),
-			nightly: formData.get("rates.nightly"),
-		},
-		seller_info: {
-			name: formData.get("seller_info.name"),
-			email: formData.get("seller_info.email"),
-			phone: formData.get("seller_info.phone"),
-		},
-		owner: userId,
-		images: [], // Initialize as an empty array of type string[]
-	};
 
-	// Upload image(s) to Cloudinary
-	// NOTE: this will be an array of strings, not a array of Promises
-	// So imageUploadPromises has been changed to imageUrls to more
-	// declaratively represent its type.
-	const imageUrls = [];
+		// Validation for required fields
+		const requiredFields = [
+			"title",
+			"activityType",
+			"description",
+			"location.country",
+			"location.region",
+			"location.localArea",
+			"location.objective",
+			"distance",
+			"elevationGain",
+			"elevationLoss",
+			"duration",
+			"body",
+			"startDate",
+			"endDate",
+		];
 
-	for (const imageFile of images) {
-		const imageBuffer = await (imageFile as File).arrayBuffer();
-		const imageArray = Array.from(new Uint8Array(imageBuffer));
-		const imageData = Buffer.from(imageArray);
-
-		// Convert the image data to base64
-		const imageBase64 = imageData.toString("base64");
-
-		// Make request to upload to Cloudinary
-		const result = await cloudinary.uploader.upload(
-			`data:image/png;base64,${imageBase64}`,
-			{
-				folder: "trip-report",
+		let requiredFieldsValid = true;
+		for (const field of requiredFields) {
+			if (field === "activityType") {
+				if (!formData.getAll(field).length) {
+					requiredFieldsValid = false;
+					break;
+				}
+			} else if (field === "body") {
+				const bodyValue = formData.get(field);
+				if (typeof bodyValue === "string" && bodyValue.trim() === "") {
+					reportData.body =
+						"<h2>Type your Trip Report here...</h2><p>Format it with the menu bar above.</p>";
+				}
+			} else if (!formData.get(field)) {
+				requiredFieldsValid = false;
+				break;
 			}
+		}
+
+		const numericFields = [
+			"distance",
+			"elevationGain",
+			"elevationLoss",
+			"duration",
+		];
+		let numericFieldsValid = true;
+		numericFields.forEach((field) => {
+			const value = formData.get(field);
+			if (value && isNaN(Number(value))) {
+				numericFieldsValid = false;
+			}
+		});
+
+		// If validation passes, proceed with file uploads and saving the report
+		if (requiredFieldsValid && numericFieldsValid) {
+			// Handle GPX/KML file upload to Cloudinary
+			const gpxKmlFile = formData.get("gpxKmlFile") as File | null;
+			let gpxKmlFileUrl: { url: string; originalFilename: string } | undefined;
+
+			if (gpxKmlFile && gpxKmlFile.size > 0) {
+				const fileBuffer = await gpxKmlFile.arrayBuffer();
+				const base64 = Buffer.from(fileBuffer).toString("base64");
+				const fileMime = gpxKmlFile.type;
+				const base64File = `data:${fileMime};base64,${base64}`;
+
+				const fileExtension = gpxKmlFile.name.substring(
+					gpxKmlFile.name.lastIndexOf(".") + 1
+				);
+
+				const result = await cloudinary.uploader.upload(base64File, {
+					folder: "trip-report/gpx",
+					resource_type: "raw",
+					public_id: `${uuidv4()}.${fileExtension}`,
+				});
+				gpxKmlFileUrl = {
+					url: result.secure_url,
+					originalFilename: gpxKmlFile.name,
+				};
+			}
+
+			// Conditionally add gpxKmlFile if it has a value
+			if (gpxKmlFileUrl) {
+				reportData.gpxKmlFile = gpxKmlFileUrl;
+			}
+
+			// Conditionally add caltopoUrl if it has a value
+			const caltopoUrl = formData.get("caltopoUrl");
+			if (caltopoUrl) {
+				reportData.caltopoUrl = caltopoUrl;
+			}
+
+			// Handle image(s) upload to Cloudinary
+			const images = formData.getAll("images").filter((image) => {
+				const file = image as File;
+				return file && file.size > 0 && file.name !== "undefined";
+			}) as File[];
+
+			// Conditionally add images if they exist
+			if (images.length > 0) {
+				const imageUrls: { url: string; originalFilename: string }[] = [];
+
+				for (const imageFile of images) {
+					const imageBuffer = await imageFile.arrayBuffer();
+					const base64 = Buffer.from(imageBuffer).toString("base64");
+					const fileMime = imageFile.type;
+					const base64File = `data:${fileMime};base64,${base64}`;
+
+					const result = await cloudinary.uploader.upload(base64File, {
+						folder: "trip-report",
+						resource_type: "image",
+						public_id: `${uuidv4()}`,
+					});
+
+					imageUrls.push({
+						url: result.secure_url,
+						originalFilename: imageFile.name,
+					});
+				}
+
+				if (imageUrls.length > 0) {
+					reportData.images = imageUrls;
+				}
+			}
+
+			const newReport = new Report(reportData);
+			await newReport.save();
+
+			// Convert distance, elevation gain, and elevation loss to numbers
+			const distance = parseFloat(reportData.distance as string);
+			const elevationGain = parseFloat(reportData.elevationGain as string);
+			const elevationLoss = parseFloat(reportData.elevationLoss as string);
+
+			// Update the user's reports array and totals
+			await User.findByIdAndUpdate(userId, {
+				$push: { reports: newReport._id },
+				$inc: {
+					totalReports: 1,
+					totalDistance: distance,
+					totalElevationGain: elevationGain,
+					totalElevationLoss: elevationLoss,
+				},
+			});
+
+			// Set the redirect URL
+			redirectUrl = `/reports/${newReport._id}`;
+		} else {
+			throw new Error("Validation failed. Please check the required fields.");
+		}
+	} catch (error) {
+		console.error("Error adding report:", error);
+
+		// Rollback: Delete uploaded images if an error occurs
+		if (reportData.images && reportData.images.length > 0) {
+			for (const imageUrl of reportData.images) {
+				const publicId = imageUrl.split("/").pop()?.split(".")[0];
+				if (publicId) {
+					try {
+						await cloudinary.uploader.destroy(`trip-report/${publicId}`);
+					} catch (error) {
+						console.error("Error deleting image:", error);
+					}
+				}
+			}
+		}
+
+		// Rollback: Delete uploaded GPX/KML file if an error occurs
+		if (reportData.gpxKmlFile) {
+			const publicId = reportData.gpxKmlFile.split("/").pop()?.split(".")[0];
+			if (publicId) {
+				try {
+					await cloudinary.uploader.destroy(`trip-report/gpx/${publicId}`, {
+						resource_type: "raw",
+					});
+				} catch (error) {
+					console.error("Error deleting GPX/KML file:", error);
+				}
+			}
+		}
+
+		throw new Error(
+			"An error occurred while adding the report. Please try again."
 		);
-
-		imageUrls.push(result.secure_url);
-
-		// Add uploaded images to the reportData object
-		reportData.images = imageUrls;
 	}
-
-	// NOTE: here there is no need to await the resolution of
-	// imageUploadPromises as it's not a array of Promises it's an array of
-	// strings, additionally we should not await on every iteration of our loop.
-
-	reportData.images = imageUrls;
-
-	const newReport = new Report(reportData);
-	await newReport.save();
-
 	// Revalidate the cache
-	// NOTE: since properties are pretty much on every page, we can simply
+	// NOTE: since reports are pretty much on every page, we can simply
 	// revalidate everything that uses our top level layout
 	revalidatePath("/", "layout");
 
-	redirect(`/reports/${newReport._id}`);
+	if (redirectUrl) {
+		redirect(redirectUrl);
+	}
 }
 
 export default addReport;
