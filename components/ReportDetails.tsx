@@ -27,7 +27,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report }) => {
 				</div>
 
 				<h3 className="text-lg font-bold my-6 bg-gray-800 text-white p-2">
-					Rates & Options
+					Something
 				</h3>
 				<div className="flex flex-col md:flex-row justify-around">
 					<div className="flex items-center justify-center mb-4 border-b border-gray-200 md:border-b-0 pb-4 md:pb-0">
