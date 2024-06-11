@@ -10,16 +10,16 @@
  * and handles nested structures.
  */
 
-export function convertToSerializableObject(
-	leanDocument: Record<string, any>
-): Record<string, any> {
+export function convertToSerializableObject<T>(leanDocument: T): T {
 	if (Array.isArray(leanDocument)) {
-		return leanDocument.map((item) => convertToSerializableObject(item));
+		return leanDocument.map((item) =>
+			convertToSerializableObject(item)
+		) as unknown as T;
 	} else if (leanDocument !== null && typeof leanDocument === "object") {
 		const convertedDocument: Record<string, any> = {};
 		for (const key in leanDocument) {
 			if (leanDocument.hasOwnProperty(key)) {
-				const value = leanDocument[key];
+				const value = (leanDocument as Record<string, any>)[key];
 				if (
 					value &&
 					typeof value === "object" &&
@@ -31,7 +31,7 @@ export function convertToSerializableObject(
 				}
 			}
 		}
-		return convertedDocument;
+		return convertedDocument as T;
 	}
 	return leanDocument;
 }

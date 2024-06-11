@@ -1,5 +1,21 @@
 import { Schema, model, models } from "mongoose";
 
+const ImageSchema = new Schema(
+	{
+		url: { type: String, required: true },
+		originalFilename: { type: String, required: true },
+	},
+	{ _id: false }
+);
+
+const GpxKmlFileSchema = new Schema(
+	{
+		url: { type: String, required: true },
+		originalFilename: { type: String, required: true },
+	},
+	{ _id: false }
+);
+
 const ReportSchema = new Schema(
 	{
 		owner: {
@@ -7,81 +23,85 @@ const ReportSchema = new Schema(
 			ref: "User",
 			required: true,
 		},
-		name: {
+		title: {
 			type: String,
 			required: true,
 		},
-		type: {
-			type: String,
+		activityType: {
+			type: [String],
 			required: true,
 		},
 		description: {
 			type: String,
 			required: true,
 		},
+		body: {
+			type: String,
+			required: true,
+		},
 		location: {
-			street: {
-				type: String,
-			},
-			city: {
+			country: {
 				type: String,
 				required: true,
 			},
-			state: {
+			region: {
 				type: String,
 				required: true,
 			},
-			zipcode: {
-				type: String,
-			},
-		},
-		beds: {
-			type: Number,
-			required: true,
-		},
-		baths: {
-			type: Number,
-			required: true,
-		},
-		square_feet: {
-			type: Number,
-			required: true,
-		},
-		amenities: [
-			{
-				type: String,
-			},
-		],
-		rates: {
-			nightly: {
-				type: Number,
-			},
-			weekly: {
-				type: Number,
-			},
-			monthly: {
-				type: Number,
-			},
-		},
-		seller_info: {
-			name: {
-				type: String,
-			},
-			email: {
+			localArea: {
 				type: String,
 				required: true,
 			},
-			phone: {
+			objective: {
 				type: String,
+				required: true,
 			},
 		},
-		// NOTE: Limit the user to a maximum of 4 images
-		images: {
-			type: [String],
+		distance: {
+			type: Number,
+			required: true,
+		},
+		elevationGain: {
+			type: Number,
+			required: true,
+		},
+		elevationLoss: {
+			type: Number,
+			required: true,
+		},
+		duration: {
+			type: Number,
+			required: true,
+		},
+		gpxKmlFile: GpxKmlFileSchema,
+		caltopoUrl: {
+			type: String,
+		},
+		startDate: {
+			type: Date,
+			required: true,
+		},
+		endDate: {
+			type: Date,
+			required: true,
 			validate: {
-				validator: (v: string[]) => v.length <= 4,
-				message: (props: { value: string[] }) =>
-					`The images array can contain a maximum of 4 images, but has ${props.value.length}`,
+				validator: function (this: any, value: Date): boolean {
+					return this.startDate <= value;
+				},
+				message: "End date must be equal to or later than the start date.",
+			},
+		},
+		// NOTE: Limit the user to a maximum of 5 images
+		images: {
+			type: [ImageSchema],
+			default: undefined,
+			validate: {
+				validator: (v: Array<{ url: string; originalFilename: string }>) =>
+					v.length <= 5,
+				message: (props: {
+					value: Array<{ url: string; originalFilename: string }>;
+				}) =>
+					`The images array can contain a maximum of 5 images, but has ${props.value.length}`,
 			},
 		},
 		isFeatured: {
@@ -93,6 +113,12 @@ const ReportSchema = new Schema(
 		timestamps: true,
 	}
 );
+
+ReportSchema.index({ owner: 1 });
+ReportSchema.index({ activityType: 1 });
+ReportSchema.index({ location: "text" });
+ReportSchema.index({ startDate: 1 });
+ReportSchema.index({ endDate: 1 });
 
 // Prevent creation of multiple instances of the same model
 const Report = models.Report || model("Report", ReportSchema);

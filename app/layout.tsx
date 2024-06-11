@@ -13,9 +13,9 @@ interface MainLayoutProps {
 
 export const metadata = {
 	title: "Trip Report",
-	description: "Create trip reports, find beta, or blog your thru-hike",
+	description: "Create trip reports, find beta, or blog your entire thru-hike",
 	keywords:
-		"trip report, trip reports, hiking, hikes, backpacking, climbing, mountaineering, alpinism, skimo, skiing, ski mountaineering, beta, info, information, thru-hike, thru-hiking, blog",
+		"trip report, trip reports, hiking, hikes, backpacking, climbing, mountaineering, alpinism, skimo, skiing, ski mountaineering, beta, info, information, thru-hike, thru-hiking, blog, thruhiking, thruhike, thru hike, thru hiking",
 };
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
