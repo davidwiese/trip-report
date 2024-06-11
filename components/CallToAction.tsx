@@ -25,7 +25,11 @@ const CallToAction: React.FC<CallToActionProps> = () => {
 					Become a part of our growing community of outdoor enthusiasts. Share
 					your adventures and discover new ones.
 				</p>
-				<Button asChild className="px-6 py-3 rounded-lg border border-gray-500">
+				<Button
+					asChild
+					className="px-6 py-3 rounded-lg"
+					style={{ boxShadow: "0 0 3px 1px rgba(255, 255, 255, 0.5)" }}
+				>
 					<Link href="/auth/signin">Get Started</Link>
 				</Button>
 			</div>
