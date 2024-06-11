@@ -23,19 +23,19 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 	// Match location pattern against database fields
 	let query: any = {
 		$or: [
-			{ name: locationPattern },
+			{ title: locationPattern },
 			{ description: locationPattern },
-			{ "location.street": locationPattern },
-			{ "location.city": locationPattern },
-			{ "location.state": locationPattern },
-			{ "location.zipcode": locationPattern },
+			{ body: locationPattern },
+			{ "location.country": locationPattern },
+			{ "location.region": locationPattern },
+			{ "location.localArea": locationPattern },
+			{ "location.objective": locationPattern },
 		],
 	};
 
-	// Only check for report if its not 'All'
+	// Only check for report type if it's not 'All'
 	if (reportType && reportType !== "All") {
-		const typePattern = new RegExp(reportType, "i");
-		query.type = typePattern;
+		query.activityType = reportType;
 	}
 
 	const reportsQueryResults = await Report.find(query).lean();
@@ -43,7 +43,7 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 
 	return (
 		<>
-			<section className="bg-blue-700 py-4">
+			<section className="bg-black py-4">
 				<div className="max-w-7xl mx-auto px-4 flex flex-col items-start sm:px-6 lg:px-8">
 					<ReportSearchForm />
 				</div>
@@ -52,7 +52,7 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 				<div className="container-xl lg:container m-auto px-4 py-6">
 					<Link
 						href="/reports"
-						className="flex items-center text-blue-500 hover:underline mb-3"
+						className="flex items-center text-gray-500 hover:underline mb-3"
 					>
 						<FaArrowAltCircleLeft className="mr-2 mb-1" /> Back To Reports
 					</Link>
@@ -61,7 +61,7 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 						<p>No search results found</p>
 					) : (
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-							{(reports as Report[]).map((report: any) => (
+							{reports.map((report: any) => (
 								<ReportCard key={report._id} report={report} />
 							))}
 						</div>
