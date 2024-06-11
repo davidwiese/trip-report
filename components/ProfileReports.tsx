@@ -4,10 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import deleteReport from "@/app/actions/deleteReport";
-import { Report as ReportType } from "@/types"
+import { Report as ReportType } from "@/types";
 
 type ProfileReportsProps = {
-  reports: ReportType[];
+	reports: ReportType[];
 };
 
 const ProfileReports: React.FC<ProfileReportsProps> = ({
@@ -34,26 +34,32 @@ const ProfileReports: React.FC<ProfileReportsProps> = ({
 	return reports.map((report) => (
 		<div key={report._id} className="mb-10">
 			<Link href={`/reports/${report._id}`}>
-				<Image
-					className="h-32 w-full rounded-md object-cover"
-					src={report.images[0]}
-					alt=""
-					width={500}
-					height={100}
-					priority={true}
-				/>
+				{report.images && report.images.length > 0 && (
+					<Image
+						className="h-32 w-full rounded-md object-cover"
+						src={report.images[0].url}
+						alt=""
+						width={500}
+						height={100}
+						priority={true}
+					/>
+				)}
 			</Link>
 			<div className="mt-2">
-				<p className="text-lg font-semibold">{report.name}</p>
+				<Link href={`/reports/${report._id}`}>
+					<p className="text-lg font-semibold hover:underline">
+						{report.title}
+					</p>
+				</Link>
 				<p className="text-gray-600">
-					Address: {report.location.street} {report.location.city}{" "}
-					{report.location.state}
+					Address: {report.location.country} {report.location.region}
+					{report.location.localArea} {report.location.objective}
 				</p>
 			</div>
 			<div className="mt-2">
 				<Link
 					href={`/reports/${report._id}/edit`}
-					className="bg-blue-500 text-white px-3 py-3 rounded-md mr-2 hover:bg-blue-600"
+					className="bg-black text-white px-3 py-3 rounded-md mr-2 hover:bg-gray-600"
 				>
 					Edit
 				</Link>
