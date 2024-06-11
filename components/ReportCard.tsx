@@ -29,10 +29,9 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 				<Image
 					src={thumbnailImage}
 					alt={report.title}
-					layout="fill"
-					objectFit="cover"
+					fill
+					style={{ objectFit: "cover", objectPosition: "center" }}
 					className="rounded-t-xl"
-					objectPosition="center"
 				/>
 			</div>
 			<div className="flex flex-col flex-grow p-4">
