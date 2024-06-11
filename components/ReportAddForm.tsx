@@ -5,8 +5,6 @@ import { toast } from "react-toastify";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
-import imageCompression from "browser-image-compression";
-import { uploadImageToCloudinary } from "@/utils/uploadImage";
 
 type ReportAddFormProps = {
 	// Add any props here if needed
@@ -20,9 +18,6 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [errors, setErrors] = useState<string[]>([]);
 	const [gpxKmlFile, setGpxKmlFile] = useState<File | null>(null);
 	const [images, setImages] = useState<File[]>([]);
-	const [imageUrls, setImageUrls] = useState<
-		{ url: string; originalFilename: string }[]
-	>([]);
 	const maxDescriptionLength = 500;
 
 	const handleBodyChange = (content: string) => {
@@ -70,59 +65,28 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		}
 	};
 
-	const handleImageUpload = async (files: FileList) => {
-		const maxFileSize = 5 * 1024 * 1024; // 5 MB
-		const selectedFiles = Array.from(files);
-		const totalImages = images.length + selectedFiles.length;
+	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files) {
+			const selectedFiles = Array.from(e.target.files);
+			const totalImages = images.length + selectedFiles.length;
+			const maxFileSize = 5 * 1024 * 1024; // 5 MB
 
-		if (totalImages > 5) {
-			toast.error("You can select up to 5 images");
-			return;
-		}
-
-		const compressedImages = await Promise.all(
-			selectedFiles.map(async (file) => {
+			for (const file of selectedFiles) {
 				if (file.size > maxFileSize) {
 					toast.error(`${file.name} is too large. Maximum size is 5MB.`);
-					return null;
+					return;
 				}
-				const compressedFile = await imageCompression(file, { maxSizeMB: 1 });
-				const uploadedImage = await uploadImageToCloudinary(compressedFile);
-				return uploadedImage;
-			})
-		);
+			}
 
-		setImageUrls((prevUrls) => [
-			...prevUrls,
-			...compressedImages.filter(
-				(image): image is { url: string; originalFilename: string } =>
-					image !== null
-			),
-		]);
+			if (totalImages > 5) {
+				toast.error("You can select up to 5 images");
+				setImages([]); // Clear the previously selected images
+				e.target.value = ""; // Clear the file input
+			} else {
+				setImages(selectedFiles);
+			}
+		}
 	};
-
-	// const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-	// 	if (e.target.files) {
-	// 		const selectedFiles = Array.from(e.target.files);
-	// 		const totalImages = images.length + selectedFiles.length;
-	// 		const maxFileSize = 5 * 1024 * 1024; // 5 MB
-
-	// 		for (const file of selectedFiles) {
-	// 			if (file.size > maxFileSize) {
-	// 				toast.error(`${file.name} is too large. Maximum size is 5MB.`);
-	// 				return;
-	// 			}
-	// 		}
-
-	// 		if (totalImages > 5) {
-	// 			toast.error("You can select up to 5 images");
-	// 			setImages([]); // Clear the previously selected images
-	// 			e.target.value = ""; // Clear the file input
-	// 		} else {
-	// 			setImages(selectedFiles);
-	// 		}
-	// 	}
-	// };
 
 	const removeImage = (index: number) => {
 		const newImages = images.filter((_, i) => i !== index);
@@ -161,26 +125,17 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		return newErrors.length === 0;
 	};
 
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
 		if (!validateForm()) {
 			e.preventDefault();
 		} else {
-			e.preventDefault();
+			// Add hidden body field to form data
 			const form = e.currentTarget;
 			const bodyInput = document.createElement("input");
 			bodyInput.type = "hidden";
 			bodyInput.name = "body";
 			bodyInput.value = body;
 			form.appendChild(bodyInput);
-
-			const imageUrlsInput = document.createElement("input");
-			imageUrlsInput.type = "hidden";
-			imageUrlsInput.name = "imageUrls";
-			imageUrlsInput.value = JSON.stringify(imageUrls);
-			form.appendChild(imageUrlsInput);
-
-			// Submit the form
-			await form.submit();
 		}
 	};
 
@@ -624,7 +579,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					className="border rounded w-full py-2 px-3"
 					accept="image/*"
 					multiple
-					onChange={(e) => handleImageUpload(e.target.files!)}
+					onChange={handleImageChange}
 				/>
 				{images.length > 0 && (
 					<div className="mt-2">

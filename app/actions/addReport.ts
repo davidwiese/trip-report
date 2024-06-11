@@ -29,8 +29,6 @@ async function addReport(formData: FormData) {
 
 		const { userId } = sessionUser;
 
-		const imageUrls = JSON.parse(formData.get("imageUrls") as string);
-
 		type LocationType = {
 			country: FormDataEntryValue;
 			region: FormDataEntryValue;
@@ -74,7 +72,6 @@ async function addReport(formData: FormData) {
 			duration: formData.get("duration"),
 			startDate: formData.get("startDate"),
 			endDate: formData.get("endDate"),
-			images: imageUrls,
 			isFeatured: false,
 		};
 
@@ -167,38 +164,38 @@ async function addReport(formData: FormData) {
 				reportData.caltopoUrl = caltopoUrl;
 			}
 
-			// // Handle image(s) upload to Cloudinary
-			// const images = formData.getAll("images").filter((image) => {
-			// 	const file = image as File;
-			// 	return file && file.size > 0 && file.name !== "undefined";
-			// }) as File[];
+			// Handle image(s) upload to Cloudinary
+			const images = formData.getAll("images").filter((image) => {
+				const file = image as File;
+				return file && file.size > 0 && file.name !== "undefined";
+			}) as File[];
 
-			// // Conditionally add images if they exist
-			// if (images.length > 0) {
-			// 	const imageUrls: { url: string; originalFilename: string }[] = [];
+			// Conditionally add images if they exist
+			if (images.length > 0) {
+				const imageUrls: { url: string; originalFilename: string }[] = [];
 
-			// 	for (const imageFile of images) {
-			// 		const imageBuffer = await imageFile.arrayBuffer();
-			// 		const base64 = Buffer.from(imageBuffer).toString("base64");
-			// 		const fileMime = imageFile.type;
-			// 		const base64File = `data:${fileMime};base64,${base64}`;
+				for (const imageFile of images) {
+					const imageBuffer = await imageFile.arrayBuffer();
+					const base64 = Buffer.from(imageBuffer).toString("base64");
+					const fileMime = imageFile.type;
+					const base64File = `data:${fileMime};base64,${base64}`;
 
-			// 		const result = await cloudinary.uploader.upload(base64File, {
-			// 			folder: "trip-report",
-			// 			resource_type: "image",
-			// 			public_id: `${uuidv4()}`,
-			// 		});
+					const result = await cloudinary.uploader.upload(base64File, {
+						folder: "trip-report",
+						resource_type: "image",
+						public_id: `${uuidv4()}`,
+					});
 
-			// 		imageUrls.push({
-			// 			url: result.secure_url,
-			// 			originalFilename: imageFile.name,
-			// 		});
-			// 	}
+					imageUrls.push({
+						url: result.secure_url,
+						originalFilename: imageFile.name,
+					});
+				}
 
-			// 	if (imageUrls.length > 0) {
-			// 		reportData.images = imageUrls;
-			// 	}
-			// }
+				if (imageUrls.length > 0) {
+					reportData.images = imageUrls;
+				}
+			}
 
 			const newReport = new Report(reportData);
 			await newReport.save();
