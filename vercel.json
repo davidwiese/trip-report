@@ -1,8 +1,0 @@
-{
-	"functions": {
-		"api/*": {
-			"maxDuration": 10,
-			"maxLambdaSize": "50mb"
-		}
-	}
-}
