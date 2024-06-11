@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
-import imageCompression from "browser-image-compression";
 
 type ReportAddFormProps = {
 	// Add any props here if needed
@@ -66,38 +65,26 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		}
 	};
 
-	const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const selectedFiles = Array.from(e.target.files);
 			const totalImages = images.length + selectedFiles.length;
+			const maxFileSize = 5 * 1024 * 1024; // 5 MB
+
+			for (const file of selectedFiles) {
+				if (file.size > maxFileSize) {
+					toast.error(`${file.name} is too large. Maximum size is 5MB.`);
+					return;
+				}
+			}
 
 			if (totalImages > 5) {
 				toast.error("You can select up to 5 images");
 				setImages([]); // Clear the previously selected images
 				e.target.value = ""; // Clear the file input
 			} else {
-				// Compress the images before adding them to the state
-				const compressedImages = await Promise.all(
-					selectedFiles.map((file) => compressImage(file))
-				);
-				setImages(compressedImages);
+				setImages(selectedFiles);
 			}
-		}
-	};
-
-	const compressImage = async (image: File): Promise<File> => {
-		const options = {
-			maxSizeMB: 1, // Maximum size in MB
-			maxWidthOrHeight: 1920, // Max width or height
-			useWebWorker: true, // Use Web Worker for better performance
-		};
-
-		try {
-			const compressedImage = await imageCompression(image, options);
-			return compressedImage;
-		} catch (error) {
-			console.error("Error compressing image:", error);
-			return image; // Return original image if compression fails
 		}
 	};
 
