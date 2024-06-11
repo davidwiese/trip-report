@@ -20,8 +20,8 @@ const HomeReports: React.FC<HomeReportsProps> = async () => {
 
 	return (
 		<>
-			<div className="relative bg-gradient-to-b from-white via-blue-100 to-white -z-10">
-				<div className="absolute inset-0 w-full h-full -z-10">
+			<div className="relative bg-gradient-to-b from-white via-blue-100 to-white">
+				<div className="absolute inset-0 w-full h-full pointer-events-none z-0">
 					<SparklesCore
 						background="transparent"
 						minSize={0.3}
@@ -32,7 +32,7 @@ const HomeReports: React.FC<HomeReportsProps> = async () => {
 						speed={1}
 					/>
 				</div>
-				<section className="px-4 py-6 mt-4">
+				<section className="relative z-10 px-4 py-6 mt-4">
 					<div className="container-xl lg:container m-auto">
 						<h2 className="text-4xl font-bold text-black mb-8 text-center">
 							Recent Reports
@@ -48,7 +48,7 @@ const HomeReports: React.FC<HomeReportsProps> = async () => {
 						</div>
 					</div>
 				</section>
-				<section className="m-auto max-w-lg my-10 px-6">
+				<section className="relative z-10 m-auto max-w-lg my-10 px-6">
 					<Button asChild className="w-full">
 						<Link href="/reports">View All Reports</Link>
 					</Button>

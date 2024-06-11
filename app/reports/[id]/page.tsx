@@ -9,7 +9,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { convertToSerializableObject } from "@/utils/convertToObject";
-import { Report as ReportType } from "@/types";
+import { Report as ReportType, ImageObject } from "@/types";
 
 type ReportPageProps = {
 	params: {
@@ -18,7 +18,7 @@ type ReportPageProps = {
 };
 
 const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
-	// NOTE: here we can check if we are running in in production on vercel and get
+	// NOTE: here we can check if we are running in production on vercel and get
 	// the public URL at build time for the ShareButtons, or fall back to localhost in development.
 
 	const PUBLIC_DOMAIN = process.env.VERCEL_URL
@@ -37,8 +37,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		);
 	}
 
-	// Convert the document to a plain js object so we can pass to client
-	// components
+	// Convert the document to a plain js object so we can pass to client components
 	const report = convertToSerializableObject(reportDoc) as ReportType;
 
 	if (!report) {
@@ -81,4 +80,5 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		</>
 	);
 };
+
 export default ReportPage;

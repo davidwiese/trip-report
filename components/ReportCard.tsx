@@ -24,7 +24,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 			: placeholderImage;
 
 	return (
-		<Card className="bg-white rounded-xl shadow-md relative z-10 flex flex-col h-full">
+		<Card className="bg-white rounded-xl shadow-md relative z-20 flex flex-col h-full">
 			<div className="relative h-48 w-full">
 				<Image
 					src={thumbnailImage}
@@ -69,12 +69,14 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 				<CardFooter className="mt-auto flex justify-between items-center pt-4">
 					<Link
 						href={`/profile/${report.owner}`}
-						className="text-sm text-blue-500"
+						className="text-sm text-blue-500 z-30 hover:underline cursor-pointer"
 					>
 						View Profile
 					</Link>
-					<Button asChild>
-						<Link href={`/reports/${report._id}`}>Details</Link>
+					<Button asChild className="z-30">
+						<Link href={`/reports/${report._id}`} className="cursor-pointer">
+							Details
+						</Link>
 					</Button>
 				</CardFooter>
 			</div>
