@@ -6,7 +6,6 @@ import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
 import imageCompression from "browser-image-compression";
-import { uploadImageToCloudinary } from "@/utils/uploadImage";
 
 type ReportAddFormProps = {
 	// Add any props here if needed
@@ -139,42 +138,18 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		return newErrors.length === 0;
 	};
 
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		if (!validateForm()) return;
-
-		const form = e.currentTarget;
-		const bodyInput = document.createElement("input");
-		bodyInput.type = "hidden";
-		bodyInput.name = "body";
-		bodyInput.value = body;
-		form.appendChild(bodyInput);
-
-		// Upload images separately and collect URLs and filenames
-		const imageFiles = images;
-		const uploadedImages = await Promise.all(
-			imageFiles.map(async (file) => {
-				const url = await uploadImageToCloudinary(file);
-				return { url, originalFilename: file.name };
-			})
-		);
-
-		// Add image URLs and original filenames to form data
-		uploadedImages.forEach((image, index) => {
-			const urlInput = document.createElement("input");
-			urlInput.type = "hidden";
-			urlInput.name = `imageUrls[${index}].url`;
-			urlInput.value = image.url;
-			form.appendChild(urlInput);
-
-			const filenameInput = document.createElement("input");
-			filenameInput.type = "hidden";
-			filenameInput.name = `imageUrls[${index}].originalFilename`;
-			filenameInput.value = image.originalFilename;
-			form.appendChild(filenameInput);
-		});
-
-		form.submit();
+	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+		if (!validateForm()) {
+			e.preventDefault();
+		} else {
+			// Add hidden body field to form data
+			const form = e.currentTarget;
+			const bodyInput = document.createElement("input");
+			bodyInput.type = "hidden";
+			bodyInput.name = "body";
+			bodyInput.value = body;
+			form.appendChild(bodyInput);
+		}
 	};
 
 	return (
