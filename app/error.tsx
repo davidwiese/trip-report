@@ -34,7 +34,7 @@ const ErrorPage = ({ error, reset }: ErrorPageProps) => {
 						<p className="text-gray-500 text-xl my-5">Or back to home...</p>
 						<Link
 							href="/"
-							className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-4 px-6 rounded inline-block"
+							className="bg-black hover:bg-gray-800 text-white font-bold py-4 px-6 rounded inline-block"
 						>
 							Go Home
 						</Link>

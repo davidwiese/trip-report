@@ -9,7 +9,7 @@ const Footer: React.FC<FooterProps> = () => {
 	const currentYear = new Date().getFullYear();
 
 	return (
-		<footer className="bg-gray-200 py-4">
+		<footer className="bg-gray-200 py-4 mt-0">
 			<div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-2 sm:px-6 lg:px-8">
 				<div className="mb-4 md:mb-0">
 					<Image src={logo} alt="Logo" className="h-8 w-auto ml-0.5" />

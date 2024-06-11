@@ -13,7 +13,7 @@ const override = {
 const Spinner: React.FC<SpinnerProps> = () => {
 	return (
 		<ClipLoader
-			color="#3b82f6"
+			color="#000"
 			cssOverride={override}
 			size={150}
 			aria-label="Loading spinner"

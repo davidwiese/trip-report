@@ -52,7 +52,11 @@ export const SparklesCore = (props: ParticlesProps) => {
 	};
 
 	return (
-		<motion.div animate={controls} className={cn("opacity-0", className)}>
+		<motion.div
+			animate={controls}
+			className={cn("opacity-0", className)}
+			style={{ pointerEvents: "none" }}
+		>
 			{init && (
 				<Particles
 					id={id || "tsparticles"}
@@ -66,7 +70,7 @@ export const SparklesCore = (props: ParticlesProps) => {
 						},
 						fullScreen: {
 							enable: false,
-							zIndex: 1,
+							zIndex: 0,
 						},
 
 						fpsLimit: 120,

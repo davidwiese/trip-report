@@ -46,13 +46,11 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		);
 	}
 
-	const imageUrls = report.images
-		? report.images.map((img: ImageObject) => img.url)
-		: [];
-
 	return (
 		<>
-			{imageUrls.length > 0 && <ReportHeaderImage image={imageUrls[0]} />}
+			{report.images && report.images.length > 0 && (
+				<ReportHeaderImage image={report.images[0]} />
+			)}
 			<section>
 				<div className="container m-auto py-6 px-6">
 					<Link
@@ -76,7 +74,9 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 					</div>
 				</div>
 			</section>
-			{imageUrls.length > 0 && <ReportImages images={imageUrls} />}
+			{report.images && report.images.length > 0 && (
+				<ReportImages images={report.images} />
+			)}
 		</>
 	);
 };

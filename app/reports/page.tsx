@@ -2,13 +2,13 @@ import Reports from "@/components/Reports";
 import ReportSearchForm from "@/components/ReportSearchForm";
 import Report from "@/models/Report";
 import connectDB from "@/config/database";
+import { convertToSerializableObject } from "@/utils/convertToObject";
+import { Report as ReportType } from "@/types";
 
 type ReportsPageProps = {
 	searchParams: {
 		pageSize: string;
 		page: string;
-		reports: Report[];
-		total: number;
 	};
 };
 
@@ -23,17 +23,23 @@ const ReportsPage: React.FC<ReportsPageProps> = async ({
 	const skip = (validPage - 1) * validPageSize;
 
 	const total = await Report.countDocuments({});
-	const reports = await Report.find({}).skip(skip).limit(validPageSize);
+	const reports = (await Report.find({})
+		.skip(skip)
+		.limit(validPageSize)
+		.lean()) as ReportType[];
+
+	// Convert the reports to serializable objects
+	const serializedReports = convertToSerializableObject<ReportType[]>(reports);
 
 	return (
 		<>
-			<section className="bg-blue-700 py-4">
+			<section className="bg-black py-4">
 				<div className="max-w-7xl mx-auto px-4 flex flex-col items-start sm:px-6 lg:px-8">
 					<ReportSearchForm />
 				</div>
 			</section>
 			<Reports
-				reports={reports}
+				reports={serializedReports}
 				total={total}
 				page={validPage}
 				pageSize={validPageSize}

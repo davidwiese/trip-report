@@ -2,8 +2,13 @@
 import Image from "next/image";
 import { Gallery, Item } from "react-photoswipe-gallery";
 
+type ImageObject = {
+	url: string;
+	originalFilename: string;
+};
+
 type ReportImagesProps = {
-	images: string[];
+	images: ImageObject[];
 };
 
 const ReportImages: React.FC<ReportImagesProps> = ({ images }) => {
@@ -13,8 +18,8 @@ const ReportImages: React.FC<ReportImagesProps> = ({ images }) => {
 				<div className="container mx-auto">
 					{images.length === 1 ? (
 						<Item
-							original={images[0]}
-							thumbnail={images[0]}
+							original={images[0].url}
+							thumbnail={images[0].url}
 							width="1000"
 							height="600"
 						>
@@ -22,7 +27,7 @@ const ReportImages: React.FC<ReportImagesProps> = ({ images }) => {
 								<Image
 									ref={ref}
 									onClick={open}
-									src={images[0]}
+									src={images[0].url}
 									alt=""
 									className="object-cover h-[400px] mx-auto rounded-xl"
 									width={1800}
@@ -45,8 +50,8 @@ const ReportImages: React.FC<ReportImagesProps> = ({ images }) => {
                 `}
 								>
 									<Item
-										original={image}
-										thumbnail={image}
+										original={image.url}
+										thumbnail={image.url}
 										width="1000"
 										height="600"
 									>
@@ -54,7 +59,7 @@ const ReportImages: React.FC<ReportImagesProps> = ({ images }) => {
 											<Image
 												ref={ref}
 												onClick={open}
-												src={image}
+												src={image.url}
 												alt=""
 												className="object-cover h-[400px] w-full rounded-xl"
 												width={0}

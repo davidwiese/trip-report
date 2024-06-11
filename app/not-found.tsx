@@ -20,7 +20,7 @@ const NotFoundPage: React.FC<NotFoundPageProps> = () => {
 						</p>
 						<Link
 							href="/"
-							className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-4 px-6 rounded"
+							className="bg-black hover:bg-gray-800 text-white font-bold py-4 px-6 rounded"
 						>
 							Go Home
 						</Link>
