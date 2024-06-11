@@ -8,6 +8,7 @@ import cloudinary from "@/config/cloudinary";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
+import { sanitizeHtmlContent } from "@/utils/sanitizeHtml";
 
 async function addReport(formData: FormData) {
 	let redirectUrl = "";
@@ -58,7 +59,7 @@ async function addReport(formData: FormData) {
 			title: formData.get("title"),
 			activityType: formData.getAll("activityType") as string[],
 			description: formData.get("description"),
-			body: formData.get("body"),
+			body: sanitizeHtmlContent(formData.get("body") as string),
 			location: {
 				country: formData.get("location.country")!,
 				region: formData.get("location.region")!,

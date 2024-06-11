@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
 import { v4 as uuidv4 } from "uuid";
+import { sanitizeHtmlContent } from "@/utils/sanitizeHtml";
 
 async function updateReport(reportId: string, formData: FormData) {
 	let updatedReport;
@@ -204,7 +205,7 @@ async function updateReport(reportId: string, formData: FormData) {
 			title: formData.get("title"),
 			activityType: formData.getAll("activityType") as string[],
 			description: formData.get("description"),
-			body: formData.get("body"),
+			body: sanitizeHtmlContent(formData.get("body") as string),
 			location: {
 				country: formData.get("location.country"),
 				region: formData.get("location.region"),
