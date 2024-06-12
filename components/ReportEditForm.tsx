@@ -36,6 +36,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [removeGpx, setRemoveGpx] = useState<boolean>(false); // Track removal state
 	const [images, setImages] = useState<File[]>([]);
 	const [removeImages, setRemoveImages] = useState<ImageObject[]>([]); // Track images marked for removal
+	const [isSubmitting, setIsSubmitting] = useState(false);
 	const maxDescriptionLength = 500;
 
 	const handleBodyChange = (content: string) => {
@@ -133,10 +134,10 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	};
 
 	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-		console.log("removeGpx before submit:", removeGpx);
 		if (!validateForm()) {
 			e.preventDefault();
 		} else {
+			setIsSubmitting(true);
 			const form = e.currentTarget;
 
 			// Add hidden body field to form data
@@ -152,8 +153,6 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			removeGpxInput.name = "removeGpxKmlFile";
 			removeGpxInput.value = removeGpx.toString();
 			form.appendChild(removeGpxInput);
-
-			console.log("removeGpxKmlFile field value:", removeGpxInput.value);
 
 			// Add the gpxKmlFile field to form data only if a new file is selected
 			if (gpxKmlFile && !removeGpx) {
@@ -711,7 +710,11 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div>
-				<SubmitButton text="Update Report" pendingText="Updating Report..." />
+				<SubmitButton
+					isSubmitting={isSubmitting}
+					text="Update Report"
+					pendingText="Updating Report..."
+				/>
 			</div>
 			{errors.length > 0 && (
 				<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded my-4">

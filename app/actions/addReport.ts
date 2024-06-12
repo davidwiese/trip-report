@@ -164,36 +164,16 @@ async function addReport(formData: FormData) {
 				reportData.caltopoUrl = caltopoUrl;
 			}
 
-			// Handle image(s) upload to Cloudinary
-			const images = formData.getAll("images").filter((image) => {
-				const file = image as File;
-				return file && file.size > 0 && file.name !== "undefined";
-			}) as File[];
+			// Add image URLs and filenames to reportData
+			const imageUrls = JSON.parse(formData.get("imageUrls") as string);
+			if (imageUrls.length > 0) {
+				const validImages = imageUrls.filter(
+					(image: { url: string; originalFilename: string }) =>
+						image.url && image.originalFilename
+				);
 
-			// Conditionally add images if they exist
-			if (images.length > 0) {
-				const imageUrls: { url: string; originalFilename: string }[] = [];
-
-				for (const imageFile of images) {
-					const imageBuffer = await imageFile.arrayBuffer();
-					const base64 = Buffer.from(imageBuffer).toString("base64");
-					const fileMime = imageFile.type;
-					const base64File = `data:${fileMime};base64,${base64}`;
-
-					const result = await cloudinary.uploader.upload(base64File, {
-						folder: "trip-report",
-						resource_type: "image",
-						public_id: `${uuidv4()}`,
-					});
-
-					imageUrls.push({
-						url: result.secure_url,
-						originalFilename: imageFile.name,
-					});
-				}
-
-				if (imageUrls.length > 0) {
-					reportData.images = imageUrls;
+				if (validImages.length > 0) {
+					reportData.images = validImages;
 				}
 			}
 

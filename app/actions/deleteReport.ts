@@ -38,7 +38,6 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 					const result = await cloudinary.uploader.destroy(
 						`trip-report/${fileName}`
 					);
-					console.log(`Deleted image: ${fileName}`, result);
 				} catch (error) {
 					console.error(
 						`Error deleting image with file name ${fileName}:`,
@@ -60,7 +59,6 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 						resource_type: "raw",
 					}
 				);
-				console.log(`Deleted GPX/KML file: ${publicId}`, result);
 			} catch (error) {
 				console.error(
 					`Error deleting GPX/KML file with public ID ${publicId}:`,

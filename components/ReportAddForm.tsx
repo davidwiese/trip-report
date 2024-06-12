@@ -1,6 +1,7 @@
 "use client";
 import addReport from "@/app/actions/addReport";
 import { ChangeEvent, useState, FormEvent } from "react";
+import { uploadImage } from "@/utils/cloudinaryUploader";
 import { toast } from "react-toastify";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
@@ -18,6 +19,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [errors, setErrors] = useState<string[]>([]);
 	const [gpxKmlFile, setGpxKmlFile] = useState<File | null>(null);
 	const [images, setImages] = useState<File[]>([]);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 	const maxDescriptionLength = 500;
 
 	const handleBodyChange = (content: string) => {
@@ -65,7 +67,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		}
 	};
 
-	const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			const selectedFiles = Array.from(e.target.files);
 			const totalImages = images.length + selectedFiles.length;
@@ -74,6 +76,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			for (const file of selectedFiles) {
 				if (file.size > maxFileSize) {
 					toast.error(`${file.name} is too large. Maximum size is 5MB.`);
+					setImages([]); // Clear the previously selected images
+					e.target.value = ""; // Clear the file input
 					return;
 				}
 			}
@@ -89,15 +93,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	};
 
 	const removeImage = (index: number) => {
-		const newImages = images.filter((_, i) => i !== index);
-		setImages(newImages);
-		const imageInput = document.getElementById("images") as HTMLInputElement;
-
-		if (imageInput) {
-			const dt = new DataTransfer();
-			newImages.forEach((file) => dt.items.add(file));
-			imageInput.files = dt.files;
-		}
+		setImages((prevImages) => prevImages.filter((_, i) => i !== index));
 	};
 
 	const validateForm = () => {
@@ -125,22 +121,115 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		return newErrors.length === 0;
 	};
 
-	const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+
 		if (!validateForm()) {
-			e.preventDefault();
-		} else {
-			// Add hidden body field to form data
-			const form = e.currentTarget;
-			const bodyInput = document.createElement("input");
-			bodyInput.type = "hidden";
-			bodyInput.name = "body";
-			bodyInput.value = body;
-			form.appendChild(bodyInput);
+			return;
+		}
+
+		setIsSubmitting(true);
+
+		try {
+			// Upload images and get their URLs
+			const uploadedImages = await Promise.all(
+				images.map(async (image) => {
+					const { url, originalFilename } = await uploadImage(image);
+					return { url, originalFilename };
+				})
+			);
+
+			// Create form data manually
+			const formData = new FormData();
+			const fields = [
+				{ id: "body", value: body },
+				{ id: "description", value: description },
+				{ id: "location.country", value: country },
+				{ id: "location.region", value: region },
+				{
+					id: "location.localArea",
+					value: (document.getElementById("localArea") as HTMLInputElement)
+						.value,
+				},
+				{
+					id: "location.objective",
+					value: (document.getElementById("objective") as HTMLInputElement)
+						.value,
+				},
+				{
+					id: "distance",
+					value: (document.getElementById("distance") as HTMLInputElement)
+						.value,
+				},
+				{
+					id: "elevationGain",
+					value: (document.getElementById("elevationGain") as HTMLInputElement)
+						.value,
+				},
+				{
+					id: "elevationLoss",
+					value: (document.getElementById("elevationLoss") as HTMLInputElement)
+						.value,
+				},
+				{
+					id: "duration",
+					value: (document.getElementById("duration") as HTMLInputElement)
+						.value,
+				},
+				{
+					id: "startDate",
+					value: (document.getElementById("startDate") as HTMLInputElement)
+						.value,
+				},
+				{
+					id: "endDate",
+					value: (document.getElementById("endDate") as HTMLInputElement).value,
+				},
+				{
+					id: "title",
+					value: (document.getElementById("title") as HTMLInputElement).value,
+				},
+			];
+
+			fields.forEach((field) => formData.append(field.id, field.value));
+
+			formData.append("imageUrls", JSON.stringify(uploadedImages));
+
+			const activityTypes = Array.from(
+				document.querySelectorAll("input[name='activityType']:checked")
+			).map((input) => (input as HTMLInputElement).value);
+			activityTypes.forEach((type) => formData.append("activityType", type));
+
+			if (gpxKmlFile) {
+				formData.append("gpxKmlFile", gpxKmlFile);
+			}
+
+			const caltopoUrl = (
+				document.getElementById("caltopoUrl") as HTMLInputElement
+			).value;
+			if (caltopoUrl) {
+				formData.append("caltopoUrl", caltopoUrl);
+			}
+
+			// Submit form data to the server action
+			await addReport(formData);
+
+			// Handle success
+			toast.success("Report added successfully!");
+		} catch (error) {
+			// Handle error
+			toast.error(
+				`Error adding report. Please try again. ${
+					error instanceof Error ? error.message : ""
+				}`
+			);
+		} finally {
+			setIsSubmitting(false);
 		}
 	};
 
 	return (
-		<form onSubmit={handleSubmit} action={addReport}>
+		<form onSubmit={handleSubmit}>
 			<h2 className="text-3xl text-center font-semibold mb-6">
 				Add Trip Report
 			</h2>
@@ -602,7 +691,11 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			</div>
 
 			<div>
-				<SubmitButton />
+				<SubmitButton
+					isSubmitting={isSubmitting}
+					text="Add Report"
+					pendingText="Adding Report..."
+				/>
 			</div>
 			{errors.length > 0 && (
 				<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded my-4">

@@ -1,23 +1,23 @@
 "use client";
-import { useFormStatus } from "react-dom";
 
 type SubmitButtonProps = {
-	pendingText?: string;
-	text?: string;
+	isSubmitting: boolean;
+	pendingText: string;
+	text: string;
 };
 
 const SubmitButton: React.FC<SubmitButtonProps> = ({
-	pendingText = "Adding Report...",
-	text = "Add Report",
+	isSubmitting,
+	pendingText,
+	text,
 }) => {
-	const status = useFormStatus();
 	return (
 		<button
 			className="bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
 			type="submit"
-			disabled={status.pending}
+			disabled={isSubmitting}
 		>
-			{status.pending ? pendingText : text}
+			{isSubmitting ? pendingText : text}
 		</button>
 	);
 };
