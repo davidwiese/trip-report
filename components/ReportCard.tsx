@@ -50,13 +50,13 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					</div>
 					<div className="mb-4">
 						<p className="text-sm text-gray-500">
-							Distance: {report.distance} km
+							Distance: {report.distance} miles
 						</p>
 						<p className="text-sm text-gray-500">
-							Elevation Gain: {report.elevationGain} m
+							Elevation Gain: {report.elevationGain} ft
 						</p>
 						<p className="text-sm text-gray-500">
-							Elevation Loss: {report.elevationLoss} m
+							Elevation Loss: {report.elevationLoss} ft
 						</p>
 					</div>
 					{report.description && (
