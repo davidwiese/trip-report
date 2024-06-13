@@ -52,7 +52,7 @@ async function updateReport(reportId: string, formData: FormData) {
 		}
 
 		// Handle new images
-		const newImages = [];
+		const newImages = JSON.parse(formData.get("imageUrls") as string);
 		const files = formData
 			.getAll("images")
 			.filter((file: any) => file instanceof File && file.size > 0); // Filter out empty files
@@ -64,28 +64,6 @@ async function updateReport(reportId: string, formData: FormData) {
 
 		if (totalImages > 5) {
 			throw new Error("You can have a maximum of 5 images in total.");
-		}
-
-		for (const file of files) {
-			if (file instanceof File && file.size > 0) {
-				// Convert the file to a base64 string
-				const fileBuffer = await file.arrayBuffer();
-				const base64 = Buffer.from(fileBuffer).toString("base64");
-				const fileMime = file.type;
-				const base64File = `data:${fileMime};base64,${base64}`;
-
-				// Upload to Cloudinary
-				const result = await cloudinary.uploader.upload(base64File, {
-					folder: "trip-report",
-					resource_type: "image",
-					public_id: `${uuidv4()}`,
-				});
-
-				newImages.push({
-					url: result.secure_url,
-					originalFilename: file.name,
-				});
-			}
 		}
 
 		// Merge new images with existing images and filter out any images marked for removal
