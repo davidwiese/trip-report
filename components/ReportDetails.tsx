@@ -77,11 +77,11 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 						].map((stat, index) => (
 							<Card
 								key={index}
-								className="flex items-center p-2 min-w-[120px] sm:min-w-[180px]"
+								className="flex items-center justify-center text-center p-2 min-w-[100px] sm:min-w-[140px]"
 							>
-								<div className="flex items-center space-x-2 w-full">
+								<div className="flex items-center space-x-2 w-full justify-center">
 									{stat.icon}
-									<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full">
+									<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full justify-center">
 										<span className="font-medium text-sm hidden sm:block">
 											{stat.label}:
 										</span>
@@ -91,10 +91,10 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 							</Card>
 						))}
 						{isSameDate ? (
-							<Card className="flex items-center p-2 min-w-[120px] sm:min-w-[180px]">
-								<div className="flex items-center space-x-2 w-full">
+							<Card className="flex items-center justify-center text-center p-2 min-w-[100px] sm:min-w-[140px]">
+								<div className="flex items-center space-x-2 w-full justify-center">
 									<TbCalendarSmile className="inline-block text-2xl" />
-									<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full">
+									<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full justify-center">
 										<span className="font-medium text-sm hidden sm:block">
 											Date:
 										</span>
@@ -106,10 +106,10 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 							</Card>
 						) : (
 							<>
-								<Card className="flex items-center p-2">
-									<div className="flex items-center space-x-2 w-full">
+								<Card className="flex items-center justify-center text-center p-2 min-w-[100px] sm:min-w-[140px]">
+									<div className="flex items-center space-x-2 w-full justify-center">
 										<TbCalendarSmile className="inline-block text-2xl" />
-										<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full">
+										<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full justify-center">
 											<span className="font-medium text-sm hidden sm:block">
 												Start Date:
 											</span>
@@ -119,10 +119,10 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 										</div>
 									</div>
 								</Card>
-								<Card className="flex items-center p-2">
-									<div className="flex items-center space-x-2 w-full">
+								<Card className="flex items-center justify-center text-center p-2 min-w-[100px] sm:min-w-[140px]">
+									<div className="flex items-center space-x-2 w-full justify-center">
 										<TbCalendarSmile className="inline-block text-2xl" />
-										<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full">
+										<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full justify-center">
 											<span className="font-medium text-sm hidden sm:block">
 												End Date:
 											</span>
