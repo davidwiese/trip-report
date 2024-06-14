@@ -1,6 +1,7 @@
 import { FaRulerCombined, FaCheck, FaMapMarker } from "react-icons/fa";
 import { LuMoveUpRight, LuMoveDownRight } from "react-icons/lu";
 import { Report } from "@/types";
+import { montserrat } from "@/app/fonts";
 
 type ReportDetailsProps = {
 	report: Report;
@@ -10,7 +11,9 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report }) => {
 	return (
 		<main>
 			<div className="bg-white p-6 rounded-lg shadow-md text-center md:text-left">
-				<h1 className="text-3xl font-bold mb-4">{report.title}</h1>
+				<h1 className={`text-3xl font-bold mb-4 ${montserrat.className}`}>
+					{report.title}
+				</h1>
 				<div className="text-gray-500 mb-4 flex align-middle justify-center md:justify-start">
 					<FaMapMarker className="text-lg text-orange-700 mr-2" />
 					<p className="text-orange-700">

@@ -11,6 +11,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { montserrat } from "@/app/fonts";
 
 type ReportCardProps = {
 	report: Report;
@@ -36,7 +37,9 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 			</div>
 			<div className="flex flex-col flex-grow p-4">
 				<CardHeader className="flex-grow">
-					<CardTitle className="text-xl font-bold">{report.title}</CardTitle>
+					<CardTitle className={`text-xl font-bold ${montserrat.className}`}>
+						{report.title}
+					</CardTitle>
 					<CardDescription className="text-gray-600">
 						{report.activityType.join(", ")}
 					</CardDescription>
