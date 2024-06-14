@@ -55,7 +55,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					<div className="flex items-center gap-2 mb-4 text-gray-600">
 						<FaMapMarker className="text-gray-400" />
 						<span className="font-medium">
-							{report.location.region}, {report.location.objective}
+							{report.location.objective}, {report.location.region}
 						</span>
 					</div>
 					<div className="mb-4 text-sm text-gray-600">

@@ -8,8 +8,10 @@ import ShareButtons from "@/components/ShareButtons";
 import { FaArrowLeft } from "react-icons/fa";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
+import User from "@/models/User";
 import { convertToSerializableObject } from "@/utils/convertToObject";
-import { Report as ReportType, ImageObject } from "@/types";
+import { Report as ReportType, User as UserType } from "@/types";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type ReportPageProps = {
 	params: {
@@ -40,6 +42,19 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	// Convert the document to a plain js object so we can pass to client components
 	const report = convertToSerializableObject(reportDoc) as ReportType;
 
+	const userDoc = await User.findById(report.owner).lean().exec();
+	if (!userDoc) {
+		return (
+			<h1 className="text-center text-2xl font-bold mt-10">User Not Found</h1>
+		);
+	}
+	const user = convertToSerializableObject(userDoc) as UserType;
+
+	const author = {
+		name: user.username,
+		id: user._id.toString(),
+	};
+
 	if (!report) {
 		return (
 			<h1 className="text-center text-2xl font-bold mt-10">Report Not Found</h1>
@@ -51,8 +66,8 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 			{report.images && report.images.length > 0 && (
 				<ReportHeaderImage image={report.images[0]} />
 			)}
-			<section>
-				<div className="container m-auto py-6 px-6">
+			<section className="bg-gray-50 py-6">
+				<div className="container mx-auto px-6">
 					<Link
 						href="/reports"
 						className="text-gray-500 hover:text-gray-600 flex items-center"
@@ -61,15 +76,21 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 					</Link>
 				</div>
 			</section>
-			<section className="bg-blue-50">
-				<div className="container m-auto py-10 px-6">
-					<div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
-						<ReportDetails report={report} />
-
+			<section className="bg-white py-10">
+				<div className="container mx-auto px-6">
+					<div className="grid grid-cols-1 md:grid-cols-70/30 gap-6">
+						<ReportDetails report={report} author={author} />
 						<aside className="space-y-4">
-							<BookmarkButton report={report} />
-							<ShareButtons report={report} PUBLIC_DOMAIN={PUBLIC_DOMAIN} />
-							<ReportContactForm report={report} />
+							<Card>
+								<CardHeader>
+									<CardTitle>Actions</CardTitle>
+								</CardHeader>
+								<CardContent className="space-y-4">
+									<BookmarkButton report={report} />
+									<ShareButtons report={report} PUBLIC_DOMAIN={PUBLIC_DOMAIN} />
+									<ReportContactForm report={report} />
+								</CardContent>
+							</Card>
 						</aside>
 					</div>
 				</div>
