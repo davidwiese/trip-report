@@ -38,7 +38,9 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 			</div>
 			<div className="flex flex-col flex-grow p-4">
 				<CardHeader className="flex-grow">
-					<CardTitle className={`text-xl font-bold ${montserrat.className}`}>
+					<CardTitle
+						className={`text-xl font-bold mb-2 ${montserrat.className}`}
+					>
 						{report.title}
 					</CardTitle>
 					<CardDescription className="">
@@ -50,22 +52,16 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="flex-grow">
-					<div className="flex items-center gap-2 mb-4">
-						<FaMapMarker className="text-orange-700" />
-						<span className="text-orange-700">
-							{report.location.region} {report.location.objective}
+					<div className="flex items-center gap-2 mb-4 text-gray-600">
+						<FaMapMarker className="text-gray-400" />
+						<span className="font-medium">
+							{report.location.region}, {report.location.objective}
 						</span>
 					</div>
-					<div className="mb-4">
-						<p className="text-sm text-gray-500">
-							Distance: {report.distance} miles
-						</p>
-						<p className="text-sm text-gray-500">
-							Elevation Gain: {report.elevationGain} ft
-						</p>
-						<p className="text-sm text-gray-500">
-							Elevation Loss: {report.elevationLoss} ft
-						</p>
+					<div className="mb-4 text-sm text-gray-600">
+						<p>Distance: {report.distance} miles</p>
+						<p>Elevation Gain: {report.elevationGain} ft</p>
+						<p>Elevation Loss: {report.elevationLoss} ft</p>
 					</div>
 					{report.description && (
 						<p className="text-sm text-gray-700 line-clamp-3">
@@ -74,15 +70,12 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					)}
 				</CardContent>
 				<CardFooter className="mt-auto flex justify-between items-center pt-4">
-					<Link
-						href={`/profile/${report.owner}`}
-						className="text-sm text-blue-500 z-30 hover:underline cursor-pointer"
-					>
-						View Profile
-					</Link>
+					<Button asChild variant="outline">
+						<Link href={`/profile/${report.owner}`}>View Profile</Link>
+					</Button>
 					<Button asChild className="z-30">
 						<Link href={`/reports/${report._id}`} className="cursor-pointer">
-							Details
+							Report Details
 						</Link>
 					</Button>
 				</CardFooter>
