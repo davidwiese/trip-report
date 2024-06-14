@@ -11,6 +11,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { montserrat } from "@/app/fonts";
 
 type ReportCardProps = {
@@ -40,8 +41,12 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					<CardTitle className={`text-xl font-bold ${montserrat.className}`}>
 						{report.title}
 					</CardTitle>
-					<CardDescription className="text-gray-600">
-						{report.activityType.join(", ")}
+					<CardDescription className="">
+						{report.activityType.map((type) => (
+							<Badge key={type} variant="outline" className="mr-1 mb-1">
+								{type}
+							</Badge>
+						))}
 					</CardDescription>
 				</CardHeader>
 				<CardContent className="flex-grow">

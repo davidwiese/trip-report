@@ -468,7 +468,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							className="mr-2"
 							defaultChecked={report.activityType?.includes("Bikepacking")}
 						/>
-						<label htmlFor="activityType_canoeing">Bikepacking</label>
+						<label htmlFor="activityType_bikepacking">Bikepacking</label>
 					</div>
 					<div>
 						<input
