@@ -5,6 +5,7 @@ import heroImage from "@/assets/images/hero.jpg";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Button } from "@/components/ui/button";
 import { FaChartLine, FaComments, FaMap, FaPenFancy } from "react-icons/fa";
+import { montserrat } from "@/app/fonts";
 import HeroCard from "@/components/HeroCard";
 
 type HeroProps = {
@@ -26,7 +27,7 @@ const Hero: React.FC<HeroProps> = () => {
 			</div>
 			<BackgroundBeams />
 			<div className="relative container mx-auto px-4 py-24 text-center">
-				<div className="mb-16">
+				<div className={`mb-16 ${montserrat.className}`}>
 					<h1 className="text-6xl font-bold mb-4">Trip Report</h1>
 					<p className="text-lg">
 						Share your trips, find beta, and connect with other adventurers.

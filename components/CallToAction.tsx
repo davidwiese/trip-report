@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Spotlight } from "@/components/ui/Spotlight";
+import { montserrat } from "@/app/fonts";
 
 type CallToActionProps = {
 	// Add any props here if needed
@@ -18,8 +19,10 @@ const CallToAction: React.FC<CallToActionProps> = () => {
 				<div className="h-1/3 bg-gradient-to-b from-gray-600 to-gray-200"></div>
 			</div>
 			<div className="container mx-auto px-4 text-center relative z-10">
-				<h2 className="text-3xl text-white font-bold mb-4">
-					Join Our Community
+				<h2
+					className={`text-3xl text-white font-bold mb-4 ${montserrat.className}`}
+				>
+					Join The Community
 				</h2>
 				<p className="text-gray-200 mb-8">
 					Become a part of our growing community of outdoor enthusiasts. Share

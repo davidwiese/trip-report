@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
 import { ToastContainer } from "react-toastify";
 import { GlobalProvider } from "@/context/GlobalContext";
+import { robotoFlex } from "./fonts";
 import "@/assets/styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import "photoswipe/dist/photoswipe.css";
@@ -22,7 +23,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 	return (
 		<AuthProvider>
 			<GlobalProvider>
-				<html lang="en">
+				<html lang="en" className={robotoFlex.className}>
 					<body>
 						<Navbar />
 						<main>{children}</main>

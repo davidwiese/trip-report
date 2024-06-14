@@ -1,3 +1,5 @@
+import { montserrat } from "@/app/fonts";
+
 type HomeStatisticsProps = {
 	// Add any props here if needed
 };
@@ -7,7 +9,9 @@ const HomeStatistics: React.FC<HomeStatisticsProps> = () => {
 		<div className="h-[30rem] w-full dark:bg-black bg-white dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative flex items-center justify-center">
 			<section className="py-12">
 				<div className="container mx-auto px-4 text-center">
-					<h2 className="text-3xl font-bold mb-8">Community Stats</h2>
+					<h2 className={`text-3xl font-bold mb-8 ${montserrat.className}`}>
+						Community Stats
+					</h2>
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 						<div>
 							<h3 className="text-4xl font-bold text-primary-600">1,234</h3>

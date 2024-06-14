@@ -5,6 +5,7 @@ import { Report as ReportType } from "@/types";
 import Report from "@/models/Report";
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
+import { montserrat } from "@/app/fonts";
 
 type HomeReportsProps = {
 	// Add any props here if needed
@@ -34,7 +35,9 @@ const HomeReports: React.FC<HomeReportsProps> = async () => {
 				</div>
 				<section className="relative z-10 px-4 py-6 mt-4">
 					<div className="container-xl lg:container m-auto">
-						<h2 className="text-4xl font-bold text-black mb-8 text-center">
+						<h2
+							className={`text-4xl font-bold text-black mb-8 text-center ${montserrat.className}`}
+						>
 							Recent Reports
 						</h2>
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
