@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { FaRulerCombined, FaCheck, FaMapMarker } from "react-icons/fa";
-import { LuMoveUpRight, LuMoveDownRight } from "react-icons/lu";
+import { LuMoveUpRight, LuMoveDownRight, LuClock4 } from "react-icons/lu";
+import { RxRulerHorizontal } from "react-icons/rx";
+import { TbCalendarSmile } from "react-icons/tb";
 import { Report } from "@/types";
 import { montserrat } from "@/app/fonts";
 import {
@@ -18,9 +20,13 @@ type ReportDetailsProps = {
 };
 
 const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
+	const isSameDate =
+		new Date(report.startDate).toLocaleDateString() ===
+		new Date(report.endDate).toLocaleDateString();
+
 	return (
 		<main className="space-y-6">
-			<Card className="bg-white rounded-xl shadow-md max-w-6xl mx-auto">
+			<Card className="bg-white rounded-xl shadow-md max-w-7xl mx-auto">
 				<CardHeader className="pb-2">
 					<CardTitle
 						className={`text-3xl font-bold mb-1 ${montserrat.className}`}
@@ -46,34 +52,88 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<div className="flex flex-wrap justify-between text-gray-500 text-base mb-4">
-						<p className="flex items-center mb-2">
-							<LuMoveUpRight className="inline-block mr-1" />
-							<span className="font-medium">Elevation Gain: </span>{" "}
-							{report.elevationGain} ft
-						</p>
-						<p className="flex items-center mb-2">
-							<LuMoveDownRight className="inline-block mr-1" />
-							<span className="font-medium">Elevation Loss: </span>{" "}
-							{report.elevationLoss} ft
-						</p>
-						<p className="flex items-center mb-2">
-							<FaRulerCombined className="inline-block mr-1" />
-							<span className="font-medium">Distance: </span> {report.distance}{" "}
-							miles
-						</p>
-						<p className="flex items-center mb-2">
-							<span className="font-medium">Start Date: </span>{" "}
-							{new Date(report.startDate).toLocaleDateString()}
-						</p>
-						<p className="flex items-center mb-2">
-							<span className="font-medium">End Date: </span>{" "}
-							{new Date(report.endDate).toLocaleDateString()}
-						</p>
-						<p className="flex items-center mb-2">
-							<span className="font-medium">Duration:</span> {report.duration}{" "}
-							hours
-						</p>
+					<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-gray-500 text-base mb-4">
+						{[
+							{
+								icon: <LuMoveUpRight className="inline-block text-2xl" />,
+								label: "Elevation Gain",
+								value: `${report.elevationGain} ft`,
+							},
+							{
+								icon: <LuMoveDownRight className="inline-block text-2xl" />,
+								label: "Elevation Loss",
+								value: `${report.elevationLoss} ft`,
+							},
+							{
+								icon: <RxRulerHorizontal className="inline-block text-2xl" />,
+								label: "Distance",
+								value: `${report.distance} miles`,
+							},
+							{
+								icon: <LuClock4 className="inline-block text-xl" />,
+								label: "Duration",
+								value: `${report.duration} hours`,
+							},
+						].map((stat, index) => (
+							<Card
+								key={index}
+								className="flex items-center p-2 min-w-[120px] sm:min-w-[180px]"
+							>
+								<div className="flex items-center space-x-2 w-full">
+									{stat.icon}
+									<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full">
+										<span className="font-medium text-sm hidden sm:block">
+											{stat.label}:
+										</span>
+										<span>{stat.value}</span>
+									</div>
+								</div>
+							</Card>
+						))}
+						{isSameDate ? (
+							<Card className="flex items-center p-2 min-w-[120px] sm:min-w-[180px]">
+								<div className="flex items-center space-x-2 w-full">
+									<TbCalendarSmile className="inline-block text-2xl" />
+									<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full">
+										<span className="font-medium text-sm hidden sm:block">
+											Date:
+										</span>
+										<span>
+											{new Date(report.startDate).toLocaleDateString()}
+										</span>
+									</div>
+								</div>
+							</Card>
+						) : (
+							<>
+								<Card className="flex items-center p-2">
+									<div className="flex items-center space-x-2 w-full">
+										<TbCalendarSmile className="inline-block text-2xl" />
+										<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full">
+											<span className="font-medium text-sm hidden sm:block">
+												Start Date:
+											</span>
+											<span>
+												{new Date(report.startDate).toLocaleDateString()}
+											</span>
+										</div>
+									</div>
+								</Card>
+								<Card className="flex items-center p-2">
+									<div className="flex items-center space-x-2 w-full">
+										<TbCalendarSmile className="inline-block text-2xl" />
+										<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full">
+											<span className="font-medium text-sm hidden sm:block">
+												End Date:
+											</span>
+											<span>
+												{new Date(report.endDate).toLocaleDateString()}
+											</span>
+										</div>
+									</div>
+								</Card>
+							</>
+						)}
 					</div>
 					<div className="text-gray-500 mb-4">
 						<h3 className="text-lg font-bold mb-2">Description</h3>
