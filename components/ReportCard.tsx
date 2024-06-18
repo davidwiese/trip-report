@@ -5,7 +5,6 @@ import { FaMapMarker } from "react-icons/fa";
 import {
 	Card,
 	CardContent,
-	CardDescription,
 	CardFooter,
 	CardHeader,
 	CardTitle,
@@ -32,6 +31,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					src={thumbnailImage}
 					alt={report.title}
 					fill
+					sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 					style={{ objectFit: "cover", objectPosition: "center" }}
 					className="rounded-t-xl"
 				/>
@@ -43,13 +43,13 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					>
 						{report.title}
 					</CardTitle>
-					<CardDescription className="">
+					<div className="flex flex-wrap gap-1">
 						{report.activityType.map((type) => (
 							<Badge key={type} variant="outline" className="mr-1 mb-1">
 								{type}
 							</Badge>
 						))}
-					</CardDescription>
+					</div>
 				</CardHeader>
 				<CardContent className="flex-grow">
 					<div className="flex items-center gap-2 mb-4 text-gray-600">

@@ -5,13 +5,7 @@ import { RxRulerHorizontal } from "react-icons/rx";
 import { TbCalendarSmile } from "react-icons/tb";
 import { Report } from "@/types";
 import { montserrat } from "@/app/fonts";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-	CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 type ReportDetailsProps = {
@@ -24,6 +18,14 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 		new Date(report.startDate).toLocaleDateString() ===
 		new Date(report.endDate).toLocaleDateString();
 
+	const formatDate = (date: string) => {
+		return new Date(date).toLocaleDateString(undefined, {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		});
+	};
+
 	return (
 		<main className="space-y-6">
 			<Card className="bg-white rounded-xl shadow-md max-w-7xl mx-auto">
@@ -33,7 +35,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 					>
 						{report.title}
 					</CardTitle>
-					<CardDescription className="text-gray-500 flex flex-col gap-1 mt-2">
+					<div className="text-gray-500 flex flex-col gap-1 mt-2">
 						<div className="flex items-center text-lg">
 							<FaMapMarker className="text-gray-400" />
 							<span className="ml-1">
@@ -49,7 +51,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 								{author.name}
 							</Link>
 						</div>
-					</CardDescription>
+					</div>
 				</CardHeader>
 				<CardContent>
 					<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-gray-500 text-base mb-4">
@@ -98,9 +100,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 										<span className="font-medium text-sm hidden sm:block">
 											Date:
 										</span>
-										<span>
-											{new Date(report.startDate).toLocaleDateString()}
-										</span>
+										<span>{formatDate(report.startDate)}</span>
 									</div>
 								</div>
 							</Card>
@@ -113,9 +113,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 											<span className="font-medium text-sm hidden sm:block">
 												Start Date:
 											</span>
-											<span>
-												{new Date(report.startDate).toLocaleDateString()}
-											</span>
+											<span>{formatDate(report.startDate)}</span>
 										</div>
 									</div>
 								</Card>
@@ -126,9 +124,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 											<span className="font-medium text-sm hidden sm:block">
 												End Date:
 											</span>
-											<span>
-												{new Date(report.endDate).toLocaleDateString()}
-											</span>
+											<span>{formatDate(report.endDate)}</span>
 										</div>
 									</div>
 								</Card>
