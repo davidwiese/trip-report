@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaRulerCombined, FaCheck, FaMapMarker } from "react-icons/fa";
+import Image from "next/image";
 import { LuMoveUpRight, LuMoveDownRight, LuClock4 } from "react-icons/lu";
 import { RxRulerHorizontal } from "react-icons/rx";
 import { TbCalendarSmile } from "react-icons/tb";
@@ -7,6 +7,7 @@ import { Report } from "@/types";
 import { montserrat } from "@/app/fonts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { TbMap2 } from "react-icons/tb";
 
 type ReportDetailsProps = {
 	report: Report;
@@ -35,14 +36,14 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 					>
 						{report.title}
 					</CardTitle>
-					<div className="text-gray-500 flex flex-col gap-1 mt-2">
+					<div className="text-gray-700 flex flex-col gap-1 mt-2">
 						<div className="flex items-center text-lg">
-							<FaMapMarker className="text-gray-400" />
+							<TbMap2 className="inline-block text-2xl mr-1" />
 							<span className="ml-1">
 								{report.location.objective}, {report.location.region}
 							</span>
 						</div>
-						<div className="ml-1 mb-2">
+						<div className="ml-1 mb-4">
 							<span className="font-medium">Author:</span>{" "}
 							<Link
 								href={`/profile/${author.id}`}
@@ -54,7 +55,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 					</div>
 				</CardHeader>
 				<CardContent>
-					<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 text-gray-500 text-base mb-4">
+					<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 text-base mb-6">
 						{[
 							{
 								icon: <LuMoveUpRight className="inline-block text-2xl" />,
@@ -131,13 +132,13 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 							</>
 						)}
 					</div>
-					<div className="text-gray-500 mb-4">
+					<div className="text-gray-700 mb-6">
 						<h3 className="text-lg font-bold mb-2">Description</h3>
 						<p>{report.description}</p>
 					</div>
-					<div className="text-gray-500 mb-4">
-						<h3 className="text-lg font-bold mb-2">Activity Type</h3>
-						<div className="flex flex-wrap gap-2">
+					<div className="text-gray-700 mb-4">
+						<h3 className="text-lg font-bold mb-2">Trip Type</h3>
+						<div className="flex flex-wrap gap-1">
 							{report.activityType.map((type) => (
 								<Badge key={type} variant="outline" className="mr-1">
 									{type}
@@ -149,8 +150,8 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 			</Card>
 
 			<div className="bg-white rounded-xl shadow-md max-w-3xl mx-auto p-6">
-				<h2 className={`text-2xl font-bold mb-4 ${montserrat.className}`}>
-					Trip Report
+				<h2 className={`text-4xl font-bold mb-10 ${montserrat.className}`}>
+					{report.title}
 				</h2>
 				<div
 					className="prose max-w-none"

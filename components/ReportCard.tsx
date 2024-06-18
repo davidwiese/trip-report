@@ -1,7 +1,9 @@
 import { Report } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import { FaMapMarker } from "react-icons/fa";
+import { LuMoveUpRight, LuMoveDownRight } from "react-icons/lu";
+import { RxRulerHorizontal } from "react-icons/rx";
+import { TbMap2 } from "react-icons/tb";
 import {
 	Card,
 	CardContent,
@@ -25,7 +27,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 			: placeholderImage;
 
 	return (
-		<Card className="bg-white rounded-xl shadow-md relative z-20 flex flex-col h-full">
+		<Card className="bg-white rounded-xl shadow-md relative z-20 flex flex-col h-full  min-w-[288px]">
 			<div className="relative h-48 w-full">
 				<Image
 					src={thumbnailImage}
@@ -37,40 +39,50 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					priority
 				/>
 			</div>
-			<div className="flex flex-col flex-grow p-4">
-				<CardHeader className="flex-grow">
+			<div className="flex flex-col flex-grow p-1">
+				<CardHeader>
 					<CardTitle
-						className={`text-xl font-bold mb-2 ${montserrat.className}`}
+						className={`text-xl font-bold ${montserrat.className} line-clamp-1`}
 					>
 						{report.title}
 					</CardTitle>
-					<div className="flex flex-wrap gap-1">
-						{report.activityType.map((type) => (
-							<Badge key={type} variant="outline" className="mr-1 mb-1">
-								{type}
-							</Badge>
-						))}
-					</div>
 				</CardHeader>
 				<CardContent className="flex-grow">
-					<div className="flex items-center gap-2 mb-4 text-gray-600">
-						<FaMapMarker className="text-gray-400" />
+					<div className="flex items-center gap-2 mb-4 text-gray-700">
+						<TbMap2 className="inline-block text-2xl" />
 						<span className="font-medium">
 							{report.location.objective}, {report.location.region}
 						</span>
 					</div>
-					<div className="mb-4 text-sm text-gray-600">
-						<p>Distance: {report.distance} miles</p>
-						<p>Elevation Gain: {report.elevationGain} ft</p>
-						<p>Elevation Loss: {report.elevationLoss} ft</p>
+					<div className="mb-4 text-sm text-gray-700">
+						<p className="flex items-center gap-1">
+							<RxRulerHorizontal className="text-xl mr-2" />
+							<span>Distance: {report.distance} miles</span>
+						</p>
+						<p className="flex items-center gap-1">
+							<LuMoveUpRight className="text-xl mr-2" />
+							<span>Elevation Gain: {report.elevationGain} ft</span>
+						</p>
+						<p className="flex items-center gap-1">
+							<LuMoveDownRight className="text-xl mr-2" />
+							<span>Elevation Loss: {report.elevationLoss} ft</span>
+						</p>
 					</div>
 					{report.description && (
-						<p className="text-sm text-gray-700 line-clamp-3">
+						<p className="text-sm text-gray-700 line-clamp-3 mb-6">
 							{report.description}
 						</p>
 					)}
+					<div className="flex flex-wrap gap-1">
+						{report.activityType.map((type) => (
+							<Badge key={type} variant="outline" className="">
+								{type}
+							</Badge>
+						))}
+					</div>
 				</CardContent>
-				<CardFooter className="mt-auto flex justify-between items-center pt-4">
+				<div className="flex-grow" />
+				<CardFooter className="mt-4 flex justify-between items-center pt-4">
 					<Button asChild variant="outline">
 						<Link href={`/profile/${report.owner}`}>View Profile</Link>
 					</Button>

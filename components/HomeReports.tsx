@@ -40,7 +40,7 @@ const HomeReports: React.FC<HomeReportsProps> = async () => {
 						>
 							Recent Reports
 						</h2>
-						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+						<div className="grid grid-cols-1 custom-md:grid-cols-3 gap-6">
 							{recentReports.length === 0 ? (
 								<p>No reports found</p>
 							) : (

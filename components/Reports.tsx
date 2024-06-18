@@ -21,7 +21,7 @@ const Reports: React.FC<ReportsProps> = ({
 				{reports.length === 0 ? (
 					<p>No reports found</p>
 				) : (
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<div className="grid grid-cols-1 custom-lg:grid-cols-3 gap-6">
 						{(reports as Report[]).map((report) => (
 							<ReportCard key={report._id} report={report} />
 						))}
