@@ -7,6 +7,7 @@ import { Report } from "@/types";
 import { montserrat } from "@/app/fonts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BookmarkButton from "@/components/BookmarkButton";
+import DownloadButton from "@/components/DownloadButton";
 import { Badge } from "@/components/ui/badge";
 import { TbMap2 } from "react-icons/tb";
 
@@ -149,7 +150,12 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 							</div>
 						</div>
 						<div className="self-end">
-							<BookmarkButton report={report} />
+							<div className="mb-1">
+								<DownloadButton report={report} />
+							</div>
+							<div>
+								<BookmarkButton report={report} />
+							</div>
 						</div>
 					</div>
 				</CardContent>

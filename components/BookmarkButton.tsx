@@ -60,7 +60,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ report }) => {
 		return (
 			<Button
 				variant="outline"
-				className="flex items-center justify-center"
+				className="flex items-center justify-center w-[183px]"
 				disabled
 			>
 				<LuBookmark className="mr-2 text-xl" /> Loading...
@@ -72,7 +72,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ report }) => {
 		<Button
 			onClick={handleClick}
 			variant="default"
-			className="flex items-center justify-center"
+			className="flex items-center justify-center w-[183px]"
 		>
 			<LuBookmarkMinus className="mr-2 text-xl" /> Remove Bookmark
 		</Button>
@@ -80,7 +80,7 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ report }) => {
 		<Button
 			onClick={handleClick}
 			variant="outline"
-			className="flex items-center justify-center"
+			className="flex items-center justify-center w-[183px]"
 		>
 			<LuBookmarkPlus className="mr-2 text-xl" /> Bookmark Report
 		</Button>
