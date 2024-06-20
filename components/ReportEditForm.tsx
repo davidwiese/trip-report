@@ -578,6 +578,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						type="number"
 						id="distance"
 						name="distance"
+						step="0.1"
 						className="border rounded w-full py-2 px-3"
 						required
 						defaultValue={report.distance}
@@ -629,6 +630,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					id="duration"
 					name="duration"
 					className="border rounded w-full py-2 px-3"
+					step="0.1"
 					required
 					defaultValue={report.duration}
 				/>

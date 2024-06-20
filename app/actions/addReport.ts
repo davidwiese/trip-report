@@ -8,7 +8,7 @@ import cloudinary from "@/config/cloudinary";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import { sanitizeHtmlContent } from "@/utils/sanitizeHtml";
+import { sanitizeHtmlContent, sanitizeText } from "@/utils/sanitizeHtml";
 
 async function addReport(formData: FormData) {
 	let redirectUrl = "";
@@ -36,7 +36,7 @@ async function addReport(formData: FormData) {
 			objective: FormDataEntryValue;
 		};
 
-		// Create reportData object for database
+		// Sanitize and collect reportData object for database
 		const reportData: {
 			owner: string;
 			title: FormDataEntryValue | null;
@@ -56,22 +56,24 @@ async function addReport(formData: FormData) {
 			isFeatured: boolean;
 		} = {
 			owner: userId,
-			title: formData.get("title"),
-			activityType: formData.getAll("activityType") as string[],
-			description: formData.get("description"),
+			title: sanitizeText(formData.get("title") as string),
+			activityType: formData
+				.getAll("activityType")
+				.map((type) => sanitizeText(type as string)) as string[],
+			description: sanitizeText(formData.get("description") as string),
 			body: sanitizeHtmlContent(formData.get("body") as string),
 			location: {
-				country: formData.get("location.country")!,
-				region: formData.get("location.region")!,
-				localArea: formData.get("location.localArea")!,
-				objective: formData.get("location.objective")!,
+				country: sanitizeText(formData.get("location.country") as string)!,
+				region: sanitizeText(formData.get("location.region") as string)!,
+				localArea: sanitizeText(formData.get("location.localArea") as string)!,
+				objective: sanitizeText(formData.get("location.objective") as string)!,
 			},
-			distance: formData.get("distance"),
-			elevationGain: formData.get("elevationGain"),
-			elevationLoss: formData.get("elevationLoss"),
-			duration: formData.get("duration"),
-			startDate: formData.get("startDate"),
-			endDate: formData.get("endDate"),
+			distance: sanitizeText(formData.get("distance") as string),
+			elevationGain: sanitizeText(formData.get("elevationGain") as string),
+			elevationLoss: sanitizeText(formData.get("elevationLoss") as string),
+			duration: sanitizeText(formData.get("duration") as string),
+			startDate: sanitizeText(formData.get("startDate") as string),
+			endDate: sanitizeText(formData.get("endDate") as string),
 			isFeatured: false,
 		};
 
@@ -161,7 +163,7 @@ async function addReport(formData: FormData) {
 			// Conditionally add caltopoUrl if it has a value
 			const caltopoUrl = formData.get("caltopoUrl");
 			if (caltopoUrl) {
-				reportData.caltopoUrl = caltopoUrl;
+				reportData.caltopoUrl = sanitizeText(caltopoUrl as string);
 			}
 
 			// Add image URLs and filenames to reportData

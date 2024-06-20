@@ -23,3 +23,11 @@ export function sanitizeHtmlContent(html: string): string {
 		// Customize additional options as needed
 	});
 }
+
+export function sanitizeText(input: string | null): string {
+	if (!input) return "";
+	return sanitizeHtml(input, {
+		allowedTags: [],
+		allowedAttributes: {},
+	});
+}
