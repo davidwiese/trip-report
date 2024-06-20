@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
 import { v4 as uuidv4 } from "uuid";
-import { sanitizeHtmlContent } from "@/utils/sanitizeHtml";
+import { sanitizeHtmlContent, sanitizeText } from "@/utils/sanitizeHtml";
 
 async function updateReport(reportId: string, formData: FormData) {
 	let updatedReport;
@@ -153,7 +153,9 @@ async function updateReport(reportId: string, formData: FormData) {
 		}
 
 		// Handle Caltopo URL
-		let caltopoUrl = formData.get("caltopoUrl") as FormDataEntryValue | null;
+		let caltopoUrl: string | null = sanitizeText(
+			formData.get("caltopoUrl") as string
+		);
 		if (caltopoUrl === "e.g. https://caltopo.com/m/EH41" || caltopoUrl === "") {
 			caltopoUrl = null; // Set Caltopo URL to null if it's the placeholder or empty
 		}
@@ -180,22 +182,34 @@ async function updateReport(reportId: string, formData: FormData) {
 			gpxKmlFile?: { url: string; originalFilename: string } | undefined | null;
 			images?: { url: string; originalFilename: string }[];
 		} = {
-			title: formData.get("title"),
-			activityType: formData.getAll("activityType") as string[],
+			title: sanitizeText(formData.get("title") as string | null),
+			activityType: formData
+				.getAll("activityType")
+				.map((type) => sanitizeText(type as string)) as string[],
 			description: formData.get("description"),
 			body: sanitizeHtmlContent(formData.get("body") as string),
 			location: {
-				country: formData.get("location.country"),
-				region: formData.get("location.region"),
-				localArea: formData.get("location.localArea"),
-				objective: formData.get("location.objective"),
+				country: sanitizeText(
+					formData.get("location.country") as string | null
+				),
+				region: sanitizeText(formData.get("location.region") as string | null),
+				localArea: sanitizeText(
+					formData.get("location.localArea") as string | null
+				),
+				objective: sanitizeText(
+					formData.get("location.objective") as string | null
+				),
 			},
-			distance: formData.get("distance"),
-			elevationGain: formData.get("elevationGain"),
-			elevationLoss: formData.get("elevationLoss"),
-			duration: formData.get("duration"),
-			startDate: formData.get("startDate"),
-			endDate: formData.get("endDate"),
+			distance: sanitizeText(formData.get("distance") as string | null),
+			elevationGain: sanitizeText(
+				formData.get("elevationGain") as string | null
+			),
+			elevationLoss: sanitizeText(
+				formData.get("elevationLoss") as string | null
+			),
+			duration: sanitizeText(formData.get("duration") as string | null),
+			startDate: sanitizeText(formData.get("startDate") as string | null),
+			endDate: sanitizeText(formData.get("endDate") as string | null),
 			caltopoUrl: caltopoUrl, // Conditionally add the Caltopo URL
 			gpxKmlFile: gpxKmlFileUrl, // Conditionally add the gpxKmlFile URL
 			images: finalImages, // Conditionally add the images array
