@@ -6,6 +6,7 @@ import { TbCalendarSmile } from "react-icons/tb";
 import { Report } from "@/types";
 import { montserrat } from "@/app/fonts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import BookmarkButton from "@/components/BookmarkButton";
 import { Badge } from "@/components/ui/badge";
 import { TbMap2 } from "react-icons/tb";
 
@@ -29,7 +30,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 
 	return (
 		<main className="space-y-6">
-			<Card className="bg-white rounded-xl shadow-md max-w-7xl mx-auto mb-20">
+			<Card className="bg-white rounded-xl shadow-md max-w-7xl mx-auto mb-16">
 				<CardHeader className="pb-2">
 					<CardTitle
 						className={`text-3xl font-bold mb-1 ${montserrat.className}`}
@@ -136,20 +137,25 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 						<h3 className="text-lg font-bold mb-2">Description</h3>
 						<p>{report.description}</p>
 					</div>
-					<div className="text-gray-700 mb-4">
-						<h3 className="text-lg font-bold mb-2">Trip Type</h3>
-						<div className="flex flex-wrap gap-1">
-							{report.activityType.map((type) => (
-								<Badge key={type} variant="outline" className="mr-1">
-									{type}
-								</Badge>
-							))}
+					<div className="text-gray-700 mb-4 flex justify-between items-center">
+						<div>
+							<h3 className="text-lg font-bold mb-2">Trip Type</h3>
+							<div className="flex flex-wrap gap-1">
+								{report.activityType.map((type) => (
+									<Badge key={type} variant="outline" className="mr-1">
+										{type}
+									</Badge>
+								))}
+							</div>
+						</div>
+						<div className="self-end">
+							<BookmarkButton report={report} />
 						</div>
 					</div>
 				</CardContent>
 			</Card>
 
-			<div className="bg-white rounded-xl max-w-3xl mx-auto p-6">
+			<div className="bg-white rounded-xl max-w-[45rem] mx-auto p-6">
 				<h2 className={`text-4xl font-bold mb-10 ${montserrat.className}`}>
 					{report.title}
 				</h2>

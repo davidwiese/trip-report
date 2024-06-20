@@ -30,7 +30,9 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({
 
 	return (
 		<>
-			<h3 className="text-xl font-bold text-center pt-2">Share This Report:</h3>
+			<h3 className="text-xl font-bold text-center pt-2 mb-2">
+				Share This Report:
+			</h3>
 			<div className="flex gap-3 justify-center pb-5">
 				<FacebookShareButton url={shareUrl} hashtag={`#${report.activityType}`}>
 					<FacebookIcon size={40} round={true}></FacebookIcon>

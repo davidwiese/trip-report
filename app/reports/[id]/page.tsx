@@ -2,10 +2,8 @@ import Link from "next/link";
 import ReportHeaderImage from "@/components/ReportHeaderImage";
 import ReportDetails from "@/components/ReportDetails";
 import ReportImages from "@/components/ReportImages";
-import BookmarkButton from "@/components/BookmarkButton";
 import ReportContactForm from "@/components/ReportContactForm";
 import ShareButtons from "@/components/ShareButtons";
-import { FaArrowLeft } from "react-icons/fa";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import User from "@/models/User";
@@ -66,38 +64,21 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 			{report.images && report.images.length > 0 && (
 				<ReportHeaderImage image={report.images[0]} />
 			)}
-			<section className="bg-gray-50 py-6">
-				<div className="container mx-auto px-6">
-					<Link
-						href="/reports"
-						className="text-gray-500 hover:text-gray-600 flex items-center"
-					>
-						<FaArrowLeft className="mr-2" /> Back to Reports
-					</Link>
-				</div>
-			</section>
 			<section className="bg-white py-10">
 				<div className="container mx-auto px-6">
-					<div className="grid grid-cols-1 md:grid-cols-70/30 gap-6">
+					<div className="grid grid-cols-1 gap-6">
 						<ReportDetails report={report} author={author} />
-						<section className="space-y-4">
-							<Card>
-								<CardHeader>
-									<CardTitle>Actions</CardTitle>
-								</CardHeader>
-								<CardContent className="space-y-4">
-									<BookmarkButton report={report} />
-									<ShareButtons report={report} PUBLIC_DOMAIN={PUBLIC_DOMAIN} />
-									<ReportContactForm report={report} />
-								</CardContent>
-							</Card>
-						</section>
 					</div>
 				</div>
 			</section>
-			{report.images && report.images.length > 0 && (
-				<ReportImages images={report.images} />
-			)}
+			<section className="mb-10">
+				{report.images && report.images.length > 0 && (
+					<ReportImages images={report.images} />
+				)}
+			</section>
+			<section className="mb-10">
+				<ShareButtons report={report} PUBLIC_DOMAIN={PUBLIC_DOMAIN} />
+			</section>
 		</>
 	);
 };

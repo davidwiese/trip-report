@@ -1,11 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import { FaBookmark } from "react-icons/fa";
 import { Report as ReportType } from "@/types";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
+import { LuBookmark, LuBookmarkPlus, LuBookmarkMinus } from "react-icons/lu";
 import checkBookmarkStatus from "@/app/actions/checkBookmarkStatus";
 import bookmarkReport from "@/app/actions/bookmarkReport";
+import { Button } from "@/components/ui/bookmark-button";
 
 type BookmarkButtonProps = {
 	report: ReportType;
@@ -57,26 +58,32 @@ const BookmarkButton: React.FC<BookmarkButtonProps> = ({ report }) => {
 
 	if (loading) {
 		return (
-			<button className="bg-gray-500 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center">
-				<FaBookmark className="mr-2" /> Loading...
-			</button>
+			<Button
+				variant="outline"
+				className="flex items-center justify-center"
+				disabled
+			>
+				<LuBookmark className="mr-2 text-xl" /> Loading...
+			</Button>
 		);
 	}
 
 	return isBookmarked ? (
-		<button
+		<Button
 			onClick={handleClick}
-			className="bg-red-500 hover:bg-red-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
+			variant="default"
+			className="flex items-center justify-center"
 		>
-			<FaBookmark className="mr-2" /> Remove Bookmark
-		</button>
+			<LuBookmarkMinus className="mr-2 text-xl" /> Remove Bookmark
+		</Button>
 	) : (
-		<button
+		<Button
 			onClick={handleClick}
-			className="bg-black hover:bg-gray-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
+			variant="outline"
+			className="flex items-center justify-center"
 		>
-			<FaBookmark className="mr-2" /> Bookmark Report
-		</button>
+			<LuBookmarkPlus className="mr-2 text-xl" /> Bookmark Report
+		</Button>
 	);
 };
 export default BookmarkButton;
