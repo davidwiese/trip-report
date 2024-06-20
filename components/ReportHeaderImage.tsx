@@ -21,7 +21,7 @@ const ReportHeaderImage: React.FC<ReportHeaderImageProps> = ({ image }) => {
 						width={0}
 						height={0}
 						sizes="100vw"
-						priority={true}
+						priority
 					/>
 				</div>
 			</div>
