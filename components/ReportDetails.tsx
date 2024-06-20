@@ -29,7 +29,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 
 	return (
 		<main className="space-y-6">
-			<Card className="bg-white rounded-xl shadow-md max-w-7xl mx-auto">
+			<Card className="bg-white rounded-xl shadow-md max-w-7xl mx-auto mb-20">
 				<CardHeader className="pb-2">
 					<CardTitle
 						className={`text-3xl font-bold mb-1 ${montserrat.className}`}
@@ -149,7 +149,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 				</CardContent>
 			</Card>
 
-			<div className="bg-white rounded-xl shadow-md max-w-3xl mx-auto p-6">
+			<div className="bg-white rounded-xl max-w-3xl mx-auto p-6">
 				<h2 className={`text-4xl font-bold mb-10 ${montserrat.className}`}>
 					{report.title}
 				</h2>

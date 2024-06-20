@@ -80,7 +80,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 				<div className="container mx-auto px-6">
 					<div className="grid grid-cols-1 md:grid-cols-70/30 gap-6">
 						<ReportDetails report={report} author={author} />
-						<aside className="space-y-4">
+						<section className="space-y-4">
 							<Card>
 								<CardHeader>
 									<CardTitle>Actions</CardTitle>
@@ -91,7 +91,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 									<ReportContactForm report={report} />
 								</CardContent>
 							</Card>
-						</aside>
+						</section>
 					</div>
 				</div>
 			</section>
