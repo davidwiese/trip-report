@@ -16,8 +16,9 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ report }) => {
 	return (
 		<Button asChild variant="outline">
 			<a
-				href={report.gpxKmlFile.url}
-				download={originalFilename}
+				href={`/api/download?url=${encodeURIComponent(
+					report.gpxKmlFile.url
+				)}&filename=${encodeURIComponent(originalFilename)}`}
 				className="flex items-center"
 			>
 				<FaDownload className="mr-2" />
