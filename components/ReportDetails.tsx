@@ -188,19 +188,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 
 export default ReportDetails;
 
-// Download link for GPX/KML file and Caltopo map embed:
-// {
-// 	report.gpxKmlFile && (
-// 		<a
-// 			href={report.gpxKmlFile}
-// 			download
-// 			className="text-gray-500 hover:underline"
-// 		>
-// 			Download GPX/KML File
-// 		</a>
-// 	);
-// }
-
+// Caltopo map embed:
 // {
 // 	report.caltopoUrl && (
 // 		<iframe

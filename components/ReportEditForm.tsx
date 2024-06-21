@@ -33,7 +33,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 		report.endDate ? new Date(report.endDate).toISOString().split("T")[0] : ""
 	);
 	const [errors, setErrors] = useState<string[]>([]);
-	const [gpxKmlFile, setGpxKmlFile] = useState<File | null>(null);
+	const [gpxFile, setGpxFile] = useState<File | null>(null);
 	const [removeGpx, setRemoveGpx] = useState<boolean>(false); // Track removal state
 	const [images, setImages] = useState<File[]>([]);
 	const [removeImages, setRemoveImages] = useState<ImageObject[]>([]); // Track images marked for removal
@@ -68,14 +68,14 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 		}
 	};
 
-	const handleGpxKmlFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleGpxFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
-			setGpxKmlFile(e.target.files[0]);
+			setGpxFile(e.target.files[0]);
 			setRemoveGpx(false); // Un-mark removal if a new file is selected
 		}
 	};
 
-	const toggleRemoveGpxKmlFile = () => {
+	const toggleRemoveGpxFile = () => {
 		setRemoveGpx((prev) => !prev);
 	};
 
@@ -239,12 +239,12 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				formData.append("activityType", type);
 			});
 
-			// Add the removeGpxKmlFile field to form data
-			formData.append("removeGpxKmlFile", removeGpx.toString());
+			// Add the removeGpxFile field to form data
+			formData.append("removeGpxFile", removeGpx.toString());
 
-			// Add the gpxKmlFile field to form data only if a new file is selected
-			if (gpxKmlFile && !removeGpx) {
-				formData.append("gpxKmlFile", gpxKmlFile);
+			// Add the gpxFile field to form data only if a new file is selected
+			if (gpxFile && !removeGpx) {
+				formData.append("gpxFile", gpxFile);
 			}
 
 			// Add the removeImages field to form data if images are marked for removal
@@ -670,27 +670,24 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div className="mb-4">
-				<label
-					htmlFor="gpxKmlFile"
-					className="block text-gray-700 font-bold mb-2"
-				>
-					Upload GPX/KML File (optional)
+				<label htmlFor="gpxFile" className="block text-gray-700 font-bold mb-2">
+					Upload GPX File (optional)
 				</label>
-				{report.gpxKmlFile && (
+				{report.gpxFile && (
 					<div className="flex items-center">
 						<a
-							href={report.gpxKmlFile.url}
+							href={report.gpxFile.url}
 							target="_blank"
 							rel="noopener noreferrer"
 							className={`${removeGpx ? "line-through text-gray-500" : ""}`}
 						>
-							{report.gpxKmlFile.originalFilename}
+							{report.gpxFile.originalFilename}
 						</a>
 						{!removeGpx ? (
 							<button
 								className="ml-2 text-red-500"
 								type="button"
-								onClick={toggleRemoveGpxKmlFile}
+								onClick={toggleRemoveGpxFile}
 							>
 								Remove File
 							</button>
@@ -698,7 +695,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							<button
 								className="ml-2 text-gray-500"
 								type="button"
-								onClick={toggleRemoveGpxKmlFile}
+								onClick={toggleRemoveGpxFile}
 							>
 								Undo
 							</button>
@@ -707,9 +704,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				)}
 				<input
 					type="file"
-					id="gpxKmlFile"
-					name="gpxKmlFile"
-					onChange={handleGpxKmlFileChange}
+					id="gpxFile"
+					name="gpxFile"
+					onChange={handleGpxFileChange}
 					className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 				/>
 			</div>

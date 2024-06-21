@@ -51,7 +51,7 @@ async function addReport(formData: FormData) {
 			startDate: FormDataEntryValue | null;
 			endDate: FormDataEntryValue | null;
 			images?: { url: string; originalFilename: string }[];
-			gpxKmlFile?: { url: string; originalFilename: string };
+			gpxFile?: { url: string; originalFilename: string };
 			caltopoUrl?: FormDataEntryValue | null;
 			isFeatured: boolean;
 		} = {
@@ -130,18 +130,18 @@ async function addReport(formData: FormData) {
 
 		// If validation passes, proceed with file uploads and saving the report
 		if (requiredFieldsValid && numericFieldsValid) {
-			// Handle GPX/KML file upload to Cloudinary
-			const gpxKmlFile = formData.get("gpxKmlFile") as File | null;
-			let gpxKmlFileUrl: { url: string; originalFilename: string } | undefined;
+			// Handle GPX file upload to Cloudinary
+			const gpxFile = formData.get("gpxFile") as File | null;
+			let gpxFileUrl: { url: string; originalFilename: string } | undefined;
 
-			if (gpxKmlFile && gpxKmlFile.size > 0) {
-				const fileBuffer = await gpxKmlFile.arrayBuffer();
+			if (gpxFile && gpxFile.size > 0) {
+				const fileBuffer = await gpxFile.arrayBuffer();
 				const base64 = Buffer.from(fileBuffer).toString("base64");
-				const fileMime = gpxKmlFile.type;
+				const fileMime = gpxFile.type;
 				const base64File = `data:${fileMime};base64,${base64}`;
 
-				const fileExtension = gpxKmlFile.name.substring(
-					gpxKmlFile.name.lastIndexOf(".") + 1
+				const fileExtension = gpxFile.name.substring(
+					gpxFile.name.lastIndexOf(".") + 1
 				);
 
 				const result = await cloudinary.uploader.upload(base64File, {
@@ -149,15 +149,15 @@ async function addReport(formData: FormData) {
 					resource_type: "raw",
 					public_id: `${uuidv4()}.${fileExtension}`,
 				});
-				gpxKmlFileUrl = {
+				gpxFileUrl = {
 					url: result.secure_url,
-					originalFilename: gpxKmlFile.name,
+					originalFilename: gpxFile.name,
 				};
 			}
 
-			// Conditionally add gpxKmlFile if it has a value
-			if (gpxKmlFileUrl) {
-				reportData.gpxKmlFile = gpxKmlFileUrl;
+			// Conditionally add gpxFile if it has a value
+			if (gpxFileUrl) {
+				reportData.gpxFile = gpxFileUrl;
 			}
 
 			// Conditionally add caltopoUrl if it has a value
@@ -220,16 +220,16 @@ async function addReport(formData: FormData) {
 			}
 		}
 
-		// Rollback: Delete uploaded GPX/KML file if an error occurs
-		if (reportData.gpxKmlFile) {
-			const publicId = reportData.gpxKmlFile.split("/").pop()?.split(".")[0];
+		// Rollback: Delete uploaded GPX file if an error occurs
+		if (reportData.gpxFile) {
+			const publicId = reportData.gpxFile.split("/").pop()?.split(".")[0];
 			if (publicId) {
 				try {
 					await cloudinary.uploader.destroy(`trip-report/gpx/${publicId}`, {
 						resource_type: "raw",
 					});
 				} catch (error) {
-					console.error("Error deleting GPX/KML file:", error);
+					console.error("Error deleting GPX file:", error);
 				}
 			}
 		}

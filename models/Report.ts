@@ -8,7 +8,7 @@ const ImageSchema = new Schema(
 	{ _id: false }
 );
 
-const GpxKmlFileSchema = new Schema(
+const GpxFileSchema = new Schema(
 	{
 		url: { type: String, required: true },
 		originalFilename: { type: String, required: true },
@@ -73,7 +73,7 @@ const ReportSchema = new Schema(
 			type: Number,
 			required: true,
 		},
-		gpxKmlFile: GpxKmlFileSchema,
+		gpxFile: GpxFileSchema,
 		caltopoUrl: {
 			type: String,
 		},

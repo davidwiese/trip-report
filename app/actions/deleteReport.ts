@@ -48,9 +48,9 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 		}
 	}
 
-	// Delete GPX/KML file from Cloudinary (if any)
-	if (report.gpxKmlFile) {
-		const publicId = report.gpxKmlFile.url.split("/").pop();
+	// Delete GPX file from Cloudinary (if any)
+	if (report.gpxFile) {
+		const publicId = report.gpxFile.url.split("/").pop();
 		if (publicId) {
 			try {
 				const result = await cloudinary.uploader.destroy(
@@ -61,7 +61,7 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 				);
 			} catch (error) {
 				console.error(
-					`Error deleting GPX/KML file with public ID ${publicId}:`,
+					`Error deleting GPX file with public ID ${publicId}:`,
 					error
 				);
 			}

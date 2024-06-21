@@ -10,7 +10,7 @@ export type ImageObject = {
 	originalFilename: string;
 };
 
-export type GpxKmlFileObject = {
+export type GpxFileObject = {
 	url: string;
 	originalFilename: string;
 };
@@ -31,7 +31,7 @@ export type Report = {
 	endDate: string;
 	images?: ImageObject[];
 	caltopoUrl?: string;
-	gpxKmlFile?: GpxKmlFileObject;
+	gpxFile?: GpxFileObject;
 	isFeatured: boolean;
 	createdAt: string;
 	updatedAt: string;

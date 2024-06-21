@@ -74,17 +74,38 @@ async function updateReport(reportId: string, formData: FormData) {
 			...newImages,
 		];
 
-		// Update the GPX/KML file
-		let gpxKmlFileUrl:
+		// Update the GPX file
+		let gpxFileUrl:
 			| { url: string; originalFilename: string }
 			| undefined
-			| null = existingReport.gpxKmlFile;
-		const gpxKmlFile = formData.get("gpxKmlFile");
-		const removeGpxKmlFile = formData.get("removeGpxKmlFile");
+			| null = existingReport.gpxFile;
+		const gpxFile = formData.get("gpxFile");
+		const removeGpxFile = formData.get("removeGpxFile");
 
-		if (removeGpxKmlFile === "true") {
-			if (existingReport.gpxKmlFile) {
-				const publicId = existingReport.gpxKmlFile.url.split("/").pop();
+		if (removeGpxFile === "true") {
+			if (existingReport.gpxFile) {
+				const publicId = existingReport.gpxFile.url.split("/").pop();
+				if (publicId) {
+					try {
+						const result = await cloudinary.uploader.destroy(
+							`trip-report/gpx/${publicId}`,
+							{
+								resource_type: "raw",
+							}
+						);
+						if (result.result !== "ok") {
+							throw new Error(`Failed to remove GPX file: ${result.result}`);
+						}
+					} catch (error) {
+						console.error("Error removing GPX file from Cloudinary:", error);
+						throw new Error("Failed to remove GPX file from Cloudinary");
+					}
+				}
+			}
+			gpxFileUrl = null; // Set the URL to null if the file is removed
+		} else if (gpxFile instanceof File && gpxFile.size > 0) {
+			if (existingReport.gpxFile) {
+				const publicId = existingReport.gpxFile.url.split("/").pop();
 				if (publicId) {
 					try {
 						const result = await cloudinary.uploader.destroy(
@@ -95,50 +116,22 @@ async function updateReport(reportId: string, formData: FormData) {
 						);
 						if (result.result !== "ok") {
 							throw new Error(
-								`Failed to remove GPX/KML file: ${result.result}`
+								`Failed to remove old GPX file: ${result.result}`
 							);
 						}
 					} catch (error) {
 						console.error(
-							"Error removing GPX/KML file from Cloudinary:",
+							"Error removing old GPX file from Cloudinary:",
 							error
 						);
-						throw new Error("Failed to remove GPX/KML file from Cloudinary");
-					}
-				}
-			}
-			gpxKmlFileUrl = null; // Set the URL to null if the file is removed
-		} else if (gpxKmlFile instanceof File && gpxKmlFile.size > 0) {
-			if (existingReport.gpxKmlFile) {
-				const publicId = existingReport.gpxKmlFile.url.split("/").pop();
-				if (publicId) {
-					try {
-						const result = await cloudinary.uploader.destroy(
-							`trip-report/gpx/${publicId}`,
-							{
-								resource_type: "raw",
-							}
-						);
-						if (result.result !== "ok") {
-							throw new Error(
-								`Failed to remove old GPX/KML file: ${result.result}`
-							);
-						}
-					} catch (error) {
-						console.error(
-							"Error removing old GPX/KML file from Cloudinary:",
-							error
-						);
-						throw new Error(
-							"Failed to remove old GPX/KML file from Cloudinary"
-						);
+						throw new Error("Failed to remove old GPX file from Cloudinary");
 					}
 				}
 			}
 
-			const fileBuffer = await gpxKmlFile.arrayBuffer();
+			const fileBuffer = await gpxFile.arrayBuffer();
 			const base64 = Buffer.from(fileBuffer).toString("base64");
-			const fileMime = gpxKmlFile.type;
+			const fileMime = gpxFile.type;
 			const base64File = `data:${fileMime};base64,${base64}`;
 
 			const result = await cloudinary.uploader.upload(base64File, {
@@ -146,9 +139,9 @@ async function updateReport(reportId: string, formData: FormData) {
 				resource_type: "raw",
 				public_id: `${uuidv4()}`,
 			});
-			gpxKmlFileUrl = {
+			gpxFileUrl = {
 				url: result.secure_url,
-				originalFilename: gpxKmlFile.name,
+				originalFilename: gpxFile.name,
 			};
 		}
 
@@ -179,7 +172,7 @@ async function updateReport(reportId: string, formData: FormData) {
 			startDate: FormDataEntryValue | null;
 			endDate: FormDataEntryValue | null;
 			caltopoUrl?: FormDataEntryValue | null;
-			gpxKmlFile?: { url: string; originalFilename: string } | undefined | null;
+			gpxFile?: { url: string; originalFilename: string } | undefined | null;
 			images?: { url: string; originalFilename: string }[];
 		} = {
 			title: sanitizeText(formData.get("title") as string | null),
@@ -211,16 +204,16 @@ async function updateReport(reportId: string, formData: FormData) {
 			startDate: sanitizeText(formData.get("startDate") as string | null),
 			endDate: sanitizeText(formData.get("endDate") as string | null),
 			caltopoUrl: caltopoUrl, // Conditionally add the Caltopo URL
-			gpxKmlFile: gpxKmlFileUrl, // Conditionally add the gpxKmlFile URL
+			gpxFile: gpxFileUrl, // Conditionally add the gpxFile URL
 			images: finalImages, // Conditionally add the images array
 		};
 
-		if (gpxKmlFileUrl === null || caltopoUrl === null) {
+		if (gpxFileUrl === null || caltopoUrl === null) {
 			// Create an object to unset fields
 			const unsetFields: any = {};
-			if (gpxKmlFileUrl === null) {
-				unsetFields.gpxKmlFile = 1;
-				reportData.gpxKmlFile = undefined;
+			if (gpxFileUrl === null) {
+				unsetFields.gpxFile = 1;
+				reportData.gpxFile = undefined;
 			}
 			if (caltopoUrl === null) {
 				unsetFields.caltopoUrl = 1;

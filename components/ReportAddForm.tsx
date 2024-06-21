@@ -17,7 +17,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [country, setCountry] = useState("");
 	const [region, setRegion] = useState("");
 	const [errors, setErrors] = useState<string[]>([]);
-	const [gpxKmlFile, setGpxKmlFile] = useState<File | null>(null);
+	const [gpxFile, setGpxFile] = useState<File | null>(null);
 	const [images, setImages] = useState<File[]>([]);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const maxDescriptionLength = 500;
@@ -52,15 +52,15 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		}
 	};
 
-	const handleGpxKmlFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+	const handleGpxFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
-			setGpxKmlFile(e.target.files[0]);
+			setGpxFile(e.target.files[0]);
 		}
 	};
 
-	const removeGpxKmlFile = () => {
-		setGpxKmlFile(null);
-		const gpxInput = document.getElementById("gpxKmlFile") as HTMLInputElement;
+	const removeGpxFile = () => {
+		setGpxFile(null);
+		const gpxInput = document.getElementById("gpxFile") as HTMLInputElement;
 
 		if (gpxInput) {
 			gpxInput.value = "";
@@ -200,8 +200,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			).map((input) => (input as HTMLInputElement).value);
 			activityTypes.forEach((type) => formData.append("activityType", type));
 
-			if (gpxKmlFile) {
-				formData.append("gpxKmlFile", gpxKmlFile);
+			if (gpxFile) {
+				formData.append("gpxFile", gpxFile);
 			}
 
 			const caltopoUrl = (
@@ -589,27 +589,24 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			</div>
 
 			<div className="mb-4">
-				<label
-					htmlFor="gpxKmlFile"
-					className="block text-gray-700 font-bold mb-2"
-				>
-					Upload GPX/KML File (optional)
+				<label htmlFor="gpxFile" className="block text-gray-700 font-bold mb-2">
+					Upload GPX File (optional)
 				</label>
 				<input
 					type="file"
-					id="gpxKmlFile"
-					name="gpxKmlFile"
+					id="gpxFile"
+					name="gpxFile"
 					className="border rounded w-full py-2 px-3"
-					accept=".gpx,.kml"
-					onChange={handleGpxKmlFileChange}
+					accept=".gpx"
+					onChange={handleGpxFileChange}
 				/>
-				{gpxKmlFile && (
+				{gpxFile && (
 					<div className="mt-2">
-						<span>{gpxKmlFile.name}</span>
+						<span>{gpxFile.name}</span>
 						<button
 							type="button"
 							className="ml-2 text-red-500"
-							onClick={removeGpxKmlFile}
+							onClick={removeGpxFile}
 						>
 							Remove
 						</button>
