@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import logo from "@/assets/images/logo_fill.png";
-import { FaGoogle } from "react-icons/fa";
 import ProfileButton from "@/components/ProfileButton";
 import {
 	useSession,
@@ -167,7 +166,6 @@ const Navbar: React.FC<NavbarProps> = () => {
 										href="/auth/signin"
 										className="flex justify-center items-center px-3 py-2"
 									>
-										<FaGoogle className="mr-2" />
 										<span>Login or Register</span>
 									</Link>
 								</Button>
@@ -205,7 +203,6 @@ const Navbar: React.FC<NavbarProps> = () => {
 									href="/auth/signin"
 									className="flex justify-center items-center px-3 py-2"
 								>
-									<FaGoogle className="mr-2" />
 									<span>Login or Register</span>
 								</Link>
 							</Button>
