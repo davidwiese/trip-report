@@ -1,4 +1,4 @@
-import { FaDownload } from "react-icons/fa";
+import { RxDownload } from "react-icons/rx";
 import { Button } from "@/components/ui/download-button";
 import { Report as ReportType } from "@/types";
 
@@ -21,8 +21,8 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ report }) => {
 				)}&filename=${encodeURIComponent(originalFilename)}`}
 				className="flex items-center"
 			>
-				<FaDownload className="mr-2" />
-				Download GPX/KML
+				<RxDownload className="mr-2 text-xl" />
+				Download GPX File
 			</a>
 		</Button>
 	);

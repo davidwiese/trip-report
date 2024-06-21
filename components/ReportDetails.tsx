@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { LuMoveUpRight, LuMoveDownRight, LuClock4 } from "react-icons/lu";
 import { RxRulerHorizontal } from "react-icons/rx";
 import { TbCalendarSmile } from "react-icons/tb";
