@@ -1,7 +1,13 @@
 import Link from "next/link";
-import { LuMoveUpRight, LuMoveDownRight, LuClock4 } from "react-icons/lu";
+import {
+	LuMoveUpRight,
+	LuMoveDownRight,
+	LuClock4,
+	LuGlobe2,
+} from "react-icons/lu";
 import { RxRulerHorizontal } from "react-icons/rx";
 import { TbCalendarSmile } from "react-icons/tb";
+import { PiPersonSimpleHikeBold } from "react-icons/pi";
 import { Report } from "@/types";
 import { montserrat } from "@/app/fonts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,33 +36,40 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 
 	return (
 		<main className="space-y-6">
-			<Card className="bg-white rounded-xl shadow-md max-w-7xl mx-auto mb-16">
-				<CardHeader className="pb-2">
-					<CardTitle
-						className={`text-3xl font-bold mb-1 ${montserrat.className}`}
-					>
-						{report.title}
+			<Card className="bg-white rounded-xl shadow-md max-w-6xl mx-auto mb-16">
+				<CardHeader>
+					<CardTitle className={`mb-1 ${montserrat.className}`}>
+						<div className="text-gray-700 flex flex-col md:flex-row justify-between items-start mt-2">
+							<div className="flex flex-col text-lg flex-shrink">
+								<div className="mb-1">
+									<TbMap2 className="inline-block text-2xl mr-1" />
+									<span className="ml-1">
+										{report.location.objective}, {report.location.localArea}
+									</span>
+								</div>
+								<div>
+									<LuGlobe2 className="inline-block text-2xl mr-1" />
+									<span className="ml-1">
+										{report.location.region}, {report.location.country}
+									</span>
+								</div>
+							</div>
+							<div className="text-right mt-4 md:mt-0">
+								<div>
+									<PiPersonSimpleHikeBold className="inline-block mr-1" />
+									<Link
+										href={`/profile/${author.id}`}
+										className="text-gray-600 text-sm underline ml-1"
+									>
+										{author.name}
+									</Link>
+								</div>
+							</div>
+						</div>
 					</CardTitle>
-					<div className="text-gray-700 flex flex-col gap-1 mt-2">
-						<div className="flex items-center text-lg">
-							<TbMap2 className="inline-block text-2xl mr-1" />
-							<span className="ml-1">
-								{report.location.objective}, {report.location.region}
-							</span>
-						</div>
-						<div className="ml-1 mb-4">
-							<span className="font-medium">Author:</span>{" "}
-							<Link
-								href={`/profile/${author.id}`}
-								className="text-blue-500 hover:underline"
-							>
-								{author.name}
-							</Link>
-						</div>
-					</div>
 				</CardHeader>
 				<CardContent>
-					<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 text-base mb-6">
+					<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-1 text-base mb-6">
 						{[
 							{
 								icon: <LuMoveUpRight className="inline-block text-2xl" />,
