@@ -1,15 +1,12 @@
-import Link from "next/link";
 import ReportHeaderImage from "@/components/ReportHeaderImage";
 import ReportDetails from "@/components/ReportDetails";
 import ReportImages from "@/components/ReportImages";
-import ReportContactForm from "@/components/ReportContactForm";
 import ShareButtons from "@/components/ShareButtons";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import User from "@/models/User";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type ReportPageProps = {
 	params: {
@@ -71,6 +68,22 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 					</div>
 				</div>
 			</section>
+			{report.caltopoUrl && (
+				<section className="mb-10">
+					<div className="container mx-auto max-w-6xl px-6">
+						<div className="rounded-xl shadow-xl overflow-hidden bg-gray-100">
+							<iframe
+								src={report.caltopoUrl}
+								width="100%"
+								height="500"
+								style={{ border: 0 }}
+								allowFullScreen
+								className="rounded-xl"
+							></iframe>
+						</div>
+					</div>
+				</section>
+			)}
 			<section className="mb-10">
 				{report.images && report.images.length > 0 && (
 					<ReportImages images={report.images} />
