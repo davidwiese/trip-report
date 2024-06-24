@@ -3,6 +3,7 @@
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import { getSessionUser } from "@/utils/getSessionUser";
+import { ratelimit } from "@/utils/ratelimit";
 
 async function getUnreadMessageCount() {
 	await connectDB();
@@ -11,6 +12,11 @@ async function getUnreadMessageCount() {
 
 	if (!sessionUser || !sessionUser.user) {
 		return { error: "User ID is required" };
+	}
+
+	const { success } = await ratelimit.limit(sessionUser.userId);
+	if (!success) {
+		return { error: "Too many requests. Please try again later." };
 	}
 
 	const { userId } = sessionUser;
