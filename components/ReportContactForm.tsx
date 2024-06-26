@@ -5,10 +5,9 @@ import { toast } from "react-toastify";
 import addMessage from "@/app/actions/addMessage";
 import { useFormStatus, useFormState } from "react-dom";
 import { useEffect, useRef } from "react";
-import { Report } from "@/types";
 
 type ReportContactFormProps = {
-	report: Report;
+	recipientId: string;
 };
 
 // NOTE: Using a separate component for our submit button allows us to use the
@@ -32,7 +31,9 @@ function SubmitMessageButton() {
 // NOTE: This component has been changed to use server actions to send a message
 // to another user.
 
-const ReportContactForm: React.FC<ReportContactFormProps> = ({ report }) => {
+const ReportContactForm: React.FC<ReportContactFormProps> = ({
+	recipientId,
+}) => {
 	const { data: session } = useSession();
 	// NOTE: use the useFormState hook to know when form has submitted.
 	// https://react.dev/reference/react-dom/hooks/useFormState
@@ -60,7 +61,7 @@ const ReportContactForm: React.FC<ReportContactFormProps> = ({ report }) => {
 
 	return (
 		<div className="bg-white p-6 rounded-lg shadow-md">
-			<h3 className="text-xl font-bold mb-6">Contact Report Author</h3>
+			<h3 className="text-xl font-bold mb-6">Contact User</h3>
 			{!session ? (
 				<p>You must be logged in to send a message</p>
 			) : submitState.submitted ? (
@@ -69,18 +70,12 @@ const ReportContactForm: React.FC<ReportContactFormProps> = ({ report }) => {
 				</p>
 			) : (
 				<form ref={formRef} action={formAction}>
-					{/* NOTE: Here we have two hidden inputs to add the report id and the owner to our FormData submission */}
-					<input
-						type="hidden"
-						id="report"
-						name="report"
-						defaultValue={report._id}
-					/>
+					{/* Hidden input to add the recipient to our FormData submission */}
 					<input
 						type="hidden"
 						id="recipient"
 						name="recipient"
-						defaultValue={report.owner}
+						defaultValue={recipientId}
 					/>
 					<div className="mb-4">
 						<label

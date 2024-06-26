@@ -12,14 +12,15 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { montserrat } from "@/app/fonts";
 
-type ReportCardProps = {
+type PublicProfileReportCardProps = {
 	report: Report;
 };
 
-const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
+const PublicProfileReportCard: React.FC<PublicProfileReportCardProps> = ({
+	report,
+}) => {
 	const placeholderImage = "/images/placeholder-image.png";
 	const thumbnailImage =
 		report.images && report.images.length > 0
@@ -27,7 +28,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 			: placeholderImage;
 
 	return (
-		<Card className="bg-white rounded-xl shadow-md relative z-20 flex flex-col h-full  min-w-[288px]">
+		<Card className="bg-white rounded-xl shadow-md relative z-20 flex flex-col h-full min-w-[288px]">
 			<div className="relative h-48 w-full">
 				<Image
 					src={thumbnailImage}
@@ -68,25 +69,10 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 							<span>Elevation Loss: {report.elevationLoss.toFixed(0)} ft</span>
 						</p>
 					</div>
-					{report.description && (
-						<p className="text-sm text-gray-700 line-clamp-3 mb-6">
-							{report.description}
-						</p>
-					)}
-					<div className="flex flex-wrap gap-1">
-						{report.activityType.map((type) => (
-							<Badge key={type} variant="outline" className="">
-								{type}
-							</Badge>
-						))}
-					</div>
 				</CardContent>
 				<div className="flex-grow" />
 				<CardFooter className="mt-4 flex justify-between items-center pt-4">
-					<Button asChild variant="outline">
-						<Link href={`/profile/${report.owner}`}>View Profile</Link>
-					</Button>
-					<Button asChild className="z-30">
+					<Button asChild className="z-30 w-full">
 						<Link href={`/reports/${report._id}`} className="cursor-pointer">
 							Report Details
 						</Link>
@@ -97,4 +83,4 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 	);
 };
 
-export default ReportCard;
+export default PublicProfileReportCard;

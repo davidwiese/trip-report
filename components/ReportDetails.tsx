@@ -74,17 +74,17 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 							{
 								icon: <LuMoveUpRight className="inline-block text-2xl" />,
 								label: "Elevation Gain",
-								value: `${report.elevationGain} ft`,
+								value: `${report.elevationGain.toFixed(0)} ft`,
 							},
 							{
 								icon: <LuMoveDownRight className="inline-block text-2xl" />,
 								label: "Elevation Loss",
-								value: `${report.elevationLoss} ft`,
+								value: `${report.elevationLoss.toFixed(0)} ft`,
 							},
 							{
 								icon: <RxRulerHorizontal className="inline-block text-2xl" />,
 								label: "Distance",
-								value: `${report.distance} miles`,
+								value: `${report.distance.toFixed(2)} miles`,
 							},
 							{
 								icon: <LuClock4 className="inline-block text-xl" />,
