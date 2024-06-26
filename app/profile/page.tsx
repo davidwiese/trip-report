@@ -1,11 +1,11 @@
-import Image from "next/image";
-import profileDefault from "@/assets/images/profile.png";
-import ProfileReports from "@/components/ProfileReports";
+import ProfileReportCard from "@/components/ProfileReportCard";
 import connectDB from "@/config/database";
 import { getSessionUser } from "@/utils/getSessionUser";
-import { convertToSerializableObject } from "@/utils/convertToObject";
+import User from "@/models/User";
 import Report from "@/models/Report";
-import { Report as ReportType } from "@/types";
+import { convertToSerializableObject } from "@/utils/convertToObject";
+import { Report as ReportType, User as UserType } from "@/types";
+import UserStatsCard from "@/components/UserStatsCard";
 
 async function loader() {
 	await connectDB();
@@ -14,66 +14,59 @@ async function loader() {
 	if (!sessionUser || !sessionUser.userId) {
 		return {
 			reports: [],
-			sessionUser: null,
+			user: null,
 		};
 	}
 
-	const { userId } = sessionUser;
+	const userDoc = await User.findById(sessionUser.userId).lean();
+	const user = userDoc
+		? (convertToSerializableObject(userDoc) as UserType)
+		: null;
 
-	const reportsDocs = await Report.find({ owner: userId }).lean();
+	if (!user) {
+		return {
+			reports: [],
+			user: null,
+		};
+	}
+
+	const reportsDocs = await Report.find({ owner: sessionUser.userId }).lean();
 	const reports = reportsDocs.map(convertToSerializableObject) as ReportType[];
 
 	return {
 		reports,
-		sessionUser,
+		user,
 	};
 }
 
 const ProfilePage: React.FC = async () => {
-	const { reports, sessionUser } = await loader();
+	const { reports, user } = await loader();
 
-	if (!sessionUser) {
+	if (!user) {
 		return <p>You must be logged in to view this page.</p>;
 	}
 
 	return (
-		<section className="bg-blue-50">
-			<div className="container m-auto py-24">
-				<div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
-					<h1 className="text-3xl font-bold mb-4">Your Profile</h1>
-					<div className="flex flex-col md:flex-row">
-						<div className="md:w-1/4 mx-20 mt-10">
-							<div className="mb-4">
-								<Image
-									className="h-32 w-32 md:h-48 md:w-48 rounded-full mx-auto md:mx-0"
-									src={sessionUser.user.image || profileDefault}
-									alt="User"
-									width={200}
-									height={200}
-								/>
-							</div>
-							<h2 className="text-2xl mb-4">
-								<span className="font-bold block">Name: </span>{" "}
-								{sessionUser.user.name}
-							</h2>
-							<h2 className="text-2xl">
-								<span className="font-bold block">Email: </span>{" "}
-								{sessionUser.user.email}
-							</h2>
-						</div>
-
-						<div className="md:w-3/4 md:pl-4">
-							<h2 className="text-xl font-semibold mb-4">Your Reports</h2>
-							{reports.length === 0 ? (
-								<p>You have no trip reports</p>
-							) : (
-								<ProfileReports reports={reports} />
-							)}
-						</div>
+		<>
+			<section className="bg-white py-10">
+				<div className="container mx-auto px-6">
+					<UserStatsCard user={user} />
+				</div>
+			</section>
+			<section className="bg-white py-10">
+				<div className="container mx-auto px-6">
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+						{reports.length === 0 ? (
+							<p className="text-center text-gray-600">
+								You have no trip reports
+							</p>
+						) : (
+							<ProfileReportCard reports={reports} />
+						)}
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		</>
 	);
 };
 

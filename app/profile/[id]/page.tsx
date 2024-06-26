@@ -1,6 +1,4 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import profileDefault from "@/assets/images/profile.png";
 import PublicProfileReportCard from "@/components/PublicProfileReportCard";
 import ReportContactForm from "@/components/ReportContactForm";
 import connectDB from "@/config/database";

@@ -70,8 +70,7 @@ const PublicProfileReportCard: React.FC<PublicProfileReportCardProps> = ({
 						</p>
 					</div>
 				</CardContent>
-				<div className="flex-grow" />
-				<CardFooter className="mt-4 flex justify-between items-center pt-4">
+				<CardFooter className="flex justify-between items-center">
 					<Button asChild className="z-30 w-full">
 						<Link href={`/reports/${report._id}`} className="cursor-pointer">
 							Report Details
