@@ -16,22 +16,40 @@ const SelectTrigger = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Trigger>,
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => {
-	const [touchStart, setTouchStart] = React.useState(0);
+	const [touchStart, setTouchStart] = React.useState<{
+		x: number;
+		y: number;
+	} | null>(null);
+	const [isTouchMove, setIsTouchMove] = React.useState(false);
 
 	const handleTouchStart = (event: React.TouchEvent<HTMLButtonElement>) => {
-		setTouchStart(event.touches[0].clientY);
+		setTouchStart({
+			x: event.touches[0].clientX,
+			y: event.touches[0].clientY,
+		});
+		setIsTouchMove(false);
+	};
+
+	const handleTouchMove = (event: React.TouchEvent<HTMLButtonElement>) => {
+		if (!touchStart) return;
+
+		const xDiff = Math.abs(event.touches[0].clientX - touchStart.x);
+		const yDiff = Math.abs(event.touches[0].clientY - touchStart.y);
+
+		if (xDiff > 5 || yDiff > 5) {
+			setIsTouchMove(true);
+		}
 	};
 
 	const handleTouchEnd = (event: React.TouchEvent<HTMLButtonElement>) => {
-		const touchEnd = event.changedTouches[0].clientY;
-		const touchDelta = Math.abs(touchStart - touchEnd);
-
-		// If the touch delta is greater than a threshold (e.g., 10px), consider it a scroll
-		if (touchDelta < 10) {
-			// Only trigger the select dropdown if it was not a scroll
+		if (isTouchMove) {
+			event.preventDefault();
+		} else {
 			props.onClick &&
 				props.onClick(event as unknown as React.MouseEvent<HTMLButtonElement>);
 		}
+		setTouchStart(null);
+		setIsTouchMove(false);
 	};
 
 	return (
@@ -43,6 +61,7 @@ const SelectTrigger = React.forwardRef<
 			)}
 			{...props}
 			onTouchStart={handleTouchStart}
+			onTouchMove={handleTouchMove}
 			onTouchEnd={handleTouchEnd}
 		>
 			{children}
