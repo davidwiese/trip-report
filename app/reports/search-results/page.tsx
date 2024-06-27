@@ -5,16 +5,20 @@ import Report from "@/models/Report";
 import ReportSearchForm from "@/components/ReportSearchForm";
 import connectDB from "@/config/database";
 import { convertToSerializableObject } from "@/utils/convertToObject";
+import { Report as ReportType } from "@/types";
+import Pagination from "@/components/Pagination";
 
 type SearchResultsPageProps = {
 	searchParams: {
 		location: string;
 		reportType: string;
+		pageSize?: string;
+		page?: string;
 	};
 };
 
 const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
-	searchParams: { location, reportType },
+	searchParams: { location, reportType, pageSize = "6", page = "1" },
 }) => {
 	await connectDB();
 
@@ -38,7 +42,15 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 		query.activityType = reportType;
 	}
 
-	const reportsQueryResults = await Report.find(query).lean();
+	const validPage = parseInt(page, 10) || 1;
+	const validPageSize = parseInt(pageSize, 10) || 6;
+	const skip = (validPage - 1) * validPageSize;
+
+	const totalReports = await Report.countDocuments(query);
+	const reportsQueryResults = await Report.find(query)
+		.skip(skip)
+		.limit(validPageSize)
+		.lean();
 	const reports = convertToSerializableObject(reportsQueryResults);
 
 	return (
@@ -66,6 +78,12 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 							))}
 						</div>
 					)}
+					<Pagination
+						page={validPage}
+						pageSize={validPageSize}
+						totalItems={totalReports}
+						basePath="/reports/search-results"
+					/>
 				</div>
 			</section>
 		</>

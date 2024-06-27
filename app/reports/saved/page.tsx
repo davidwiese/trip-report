@@ -3,12 +3,55 @@ import connectDB from "@/config/database";
 import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { Report as ReportType, User as UserType } from "@/types";
+import Pagination from "@/components/Pagination";
+
+async function loader(pageSize: number, page: number) {
+	await connectDB();
+	const sessionUser = await getSessionUser();
+
+	if (!sessionUser || !sessionUser.userId) {
+		return {
+			savedReports: [],
+			totalReports: 0,
+		};
+	}
+
+	const { userId } = sessionUser;
+
+	const user: UserType | null = await User.findById(userId)
+		.populate("bookmarks")
+		.lean();
+
+	if (!user || !user.bookmarks) {
+		return {
+			savedReports: [],
+			totalReports: 0,
+		};
+	}
+
+	const totalReports = user.bookmarks.length;
+	const skip = (page - 1) * pageSize;
+	const savedReports: ReportType[] = user.bookmarks.slice(
+		skip,
+		skip + pageSize
+	);
+
+	return {
+		savedReports,
+		totalReports,
+	};
+}
 
 type SavedReportsPageProps = {
-	// Add any props here if needed
+	searchParams: {
+		pageSize?: string;
+		page?: string;
+	};
 };
 
-const SavedReportsPage: React.FC<SavedReportsPageProps> = async () => {
+const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
+	searchParams: { pageSize = "6", page = "1" },
+}) => {
 	await connectDB();
 
 	const sessionUser = await getSessionUser();
@@ -41,7 +84,10 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async () => {
 		);
 	}
 
-	const savedReports: ReportType[] = user.bookmarks;
+	const validPage = parseInt(page, 10) || 1;
+	const validPageSize = parseInt(pageSize, 10) || 6;
+
+	const { savedReports, totalReports } = await loader(validPageSize, validPage);
 
 	return (
 		<section className="px-4 py-6">
@@ -56,6 +102,12 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async () => {
 						))}
 					</div>
 				)}
+				<Pagination
+					page={validPage}
+					pageSize={validPageSize}
+					totalItems={totalReports}
+					basePath="/reports/saved"
+				/>
 			</div>
 		</section>
 	);
