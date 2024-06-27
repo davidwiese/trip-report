@@ -8,6 +8,14 @@ import { Report as ReportType, User as UserType } from "@/types";
 import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
 
+// Utility function to determine page size based on screen width
+const getPageSize = () => {
+	if (typeof window !== "undefined") {
+		return window.innerWidth < 768 ? 3 : 6;
+	}
+	return 6; // default to 6 for SSR
+};
+
 async function loader(pageSize: number, page: number) {
 	await connectDB();
 	const sessionUser = await getSessionUser();
@@ -60,7 +68,8 @@ const ProfilePage: React.FC<ProfilePageProps> = async ({
 	searchParams: { pageSize = "4", page = "1" },
 }) => {
 	const validPage = parseInt(page, 10) || 1;
-	const validPageSize = parseInt(pageSize, 10) || 6;
+	const pageSizeValue = getPageSize(); // Determine pageSize based on screen size
+	const validPageSize = parseInt(pageSize, 10) || pageSizeValue;
 
 	const { reports, user, totalReports } = await loader(
 		validPageSize,
