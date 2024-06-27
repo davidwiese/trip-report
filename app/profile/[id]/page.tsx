@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import PublicProfileReportCard from "@/components/PublicProfileReportCard";
-import ReportContactForm from "@/components/ReportContactForm";
+import ProfileContactForm from "@/components/ProfileContactForm";
 import connectDB from "@/config/database";
 import User from "@/models/User";
 import Report from "@/models/Report";
@@ -72,7 +72,7 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 			</section>
 			<section className="bg-white py-10">
 				<div className="container mx-auto px-6">
-					<ReportContactForm recipientId={user._id.toString()} />
+					<ProfileContactForm recipientId={user._id.toString()} />
 				</div>
 			</section>
 		</>

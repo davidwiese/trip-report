@@ -6,7 +6,7 @@ import addMessage from "@/app/actions/addMessage";
 import { useFormStatus, useFormState } from "react-dom";
 import { useEffect, useRef } from "react";
 
-type ReportContactFormProps = {
+type ProfileContactFormProps = {
 	recipientId: string;
 };
 
@@ -31,7 +31,7 @@ function SubmitMessageButton() {
 // NOTE: This component has been changed to use server actions to send a message
 // to another user.
 
-const ReportContactForm: React.FC<ReportContactFormProps> = ({
+const ProfileContactForm: React.FC<ProfileContactFormProps> = ({
 	recipientId,
 }) => {
 	const { data: session } = useSession();
@@ -132,4 +132,4 @@ const ReportContactForm: React.FC<ReportContactFormProps> = ({
 		</div>
 	);
 };
-export default ReportContactForm;
+export default ProfileContactForm;
