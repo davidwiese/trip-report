@@ -78,12 +78,14 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 							))}
 						</div>
 					)}
-					<Pagination
-						page={validPage}
-						pageSize={validPageSize}
-						totalItems={totalReports}
-						basePath="/reports/search-results"
-					/>
+					{reports.length > 0 && (
+						<Pagination
+							page={validPage}
+							pageSize={validPageSize}
+							totalItems={totalReports}
+							basePath="/reports/search-results"
+						/>
+					)}
 				</div>
 			</section>
 		</>

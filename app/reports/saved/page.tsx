@@ -91,7 +91,7 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 
 	return (
 		<section className="px-4 py-6">
-			<h1 className="text-2xl mb-4">Saved Reports</h1>
+			<h1 className="text-2xl text-center mb-4">Saved Reports</h1>
 			<div className="container-xl lg:container m-auto px-4 py-6">
 				{savedReports.length === 0 ? (
 					<p>No saved reports</p>
@@ -102,12 +102,14 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 						))}
 					</div>
 				)}
-				<Pagination
-					page={validPage}
-					pageSize={validPageSize}
-					totalItems={totalReports}
-					basePath="/reports/saved"
-				/>
+				{savedReports.length > 0 && (
+					<Pagination
+						page={validPage}
+						pageSize={validPageSize}
+						totalItems={totalReports}
+						basePath="/reports/saved"
+					/>
+				)}
 			</div>
 		</section>
 	);

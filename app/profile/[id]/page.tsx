@@ -88,12 +88,14 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 							))
 						)}
 					</div>
-					<Pagination
-						page={validPage}
-						pageSize={validPageSize}
-						totalItems={totalReports}
-						basePath={`/profile/${params.id}`}
-					/>
+					{reports.length > 0 && (
+						<Pagination
+							page={validPage}
+							pageSize={validPageSize}
+							totalItems={totalReports}
+							basePath={`/profile/${params.id}`}
+						/>
+					)}
 				</div>
 			</section>
 			<section className="bg-white py-10">

@@ -27,12 +27,14 @@ const Reports: React.FC<ReportsProps> = ({
 						))}
 					</div>
 				)}
-				<Pagination
-					page={page}
-					pageSize={pageSize}
-					totalItems={total}
-					basePath="/reports"
-				/>
+				{reports.length > 0 && (
+					<Pagination
+						page={page}
+						pageSize={pageSize}
+						totalItems={total}
+						basePath="/reports"
+					/>
+				)}
 			</div>
 		</section>
 	);
