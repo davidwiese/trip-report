@@ -5,6 +5,7 @@ import Message from "@/models/Message";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import User from "@/models/User";
+import { sanitizeText } from "@/utils/sanitizeHtml";
 
 type FormState = {
 	error: string;
@@ -51,9 +52,9 @@ async function addMessage(
 	const newMessage = new Message({
 		sender: userId,
 		recipient,
-		name: formData.get("name"),
-		email: formData.get("email"),
-		body: formData.get("message"),
+		name: sanitizeText(formData.get("name") as string),
+		email: sanitizeText(formData.get("email") as string),
+		body: sanitizeText(formData.get("message") as string),
 	});
 
 	await newMessage.save();
