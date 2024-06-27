@@ -63,14 +63,11 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 				<SelectWithTrigger
 					value={reportType}
 					onValueChange={handleReportTypeChange}
+					id="report-type"
+					className="w-full bg-black text-white focus:outline-2 focus:outline-white"
+					style={{ boxShadow: "0 0 3px 1px rgba(255, 255, 255, 0.5)" }}
 				>
-					<SelectTrigger
-						id="report-type"
-						className="w-full bg-black text-white focus:outline-2 focus:outline-white"
-						style={{ boxShadow: "0 0 3px 1px rgba(255, 255, 255, 0.5)" }}
-					>
-						<SelectValue placeholder="Select trip type" />
-					</SelectTrigger>
+					<SelectValue placeholder="Select trip type" />
 					<SelectContent>
 						<SelectGroup>
 							<SelectLabel>Trip Type</SelectLabel>
