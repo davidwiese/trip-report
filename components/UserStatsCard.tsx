@@ -12,7 +12,7 @@ type UserStatsCardProps = {
 
 const UserStatsCard: React.FC<UserStatsCardProps> = ({ user }) => {
 	return (
-		<Card className="bg-white rounded-lg shadow-md p-6 mx-auto max-w-3xl">
+		<Card className="bg-white rounded-lg shadow-md p-6 mx-auto max-w-2xl">
 			<CardContent>
 				<div className="flex flex-col items-center">
 					<Image
