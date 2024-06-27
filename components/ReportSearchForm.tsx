@@ -4,13 +4,13 @@ import { useRouter } from "next/navigation";
 import { SearchButton } from "@/components/SearchButton";
 import { Input } from "@/components/ui/input";
 import {
-	Select,
 	SelectContent,
 	SelectGroup,
 	SelectItem,
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
+	SelectWithTrigger,
 } from "@/components/ui/select";
 
 type ReportSearchFormProps = {
@@ -60,7 +60,10 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 				<label htmlFor="report-type" className="sr-only">
 					Trip Type
 				</label>
-				<Select value={reportType} onValueChange={handleReportTypeChange}>
+				<SelectWithTrigger
+					value={reportType}
+					onValueChange={handleReportTypeChange}
+				>
 					<SelectTrigger
 						id="report-type"
 						className="w-full bg-black text-white focus:outline-2 focus:outline-white"
@@ -94,7 +97,7 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 							<SelectItem value="Packrafting">Packrafting</SelectItem>
 						</SelectGroup>
 					</SelectContent>
-				</Select>
+				</SelectWithTrigger>
 			</div>
 			<SearchButton
 				type="submit"

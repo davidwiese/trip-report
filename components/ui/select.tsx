@@ -15,62 +15,21 @@ const SelectValue = SelectPrimitive.Value;
 const SelectTrigger = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Trigger>,
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ className, children, ...props }, ref) => {
-	const [touchStart, setTouchStart] = React.useState<{
-		x: number;
-		y: number;
-	} | null>(null);
-	const [isTouchMove, setIsTouchMove] = React.useState(false);
-
-	const handleTouchStart = (event: React.TouchEvent<HTMLButtonElement>) => {
-		setTouchStart({
-			x: event.touches[0].clientX,
-			y: event.touches[0].clientY,
-		});
-		setIsTouchMove(false);
-	};
-
-	const handleTouchMove = (event: React.TouchEvent<HTMLButtonElement>) => {
-		if (!touchStart) return;
-
-		const xDiff = Math.abs(event.touches[0].clientX - touchStart.x);
-		const yDiff = Math.abs(event.touches[0].clientY - touchStart.y);
-
-		if (xDiff > 5 || yDiff > 5) {
-			setIsTouchMove(true);
-		}
-	};
-
-	const handleTouchEnd = (event: React.TouchEvent<HTMLButtonElement>) => {
-		if (isTouchMove) {
-			event.preventDefault();
-		} else {
-			props.onClick &&
-				props.onClick(event as unknown as React.MouseEvent<HTMLButtonElement>);
-		}
-		setTouchStart(null);
-		setIsTouchMove(false);
-	};
-
-	return (
-		<SelectPrimitive.Trigger
-			ref={ref}
-			className={cn(
-				"flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
-				className
-			)}
-			{...props}
-			onTouchStart={handleTouchStart}
-			onTouchMove={handleTouchMove}
-			onTouchEnd={handleTouchEnd}
-		>
-			{children}
-			<SelectPrimitive.Icon asChild>
-				<ChevronDown className="h-4 w-4 opacity-50" />
-			</SelectPrimitive.Icon>
-		</SelectPrimitive.Trigger>
-	);
-});
+>(({ className, children, ...props }, ref) => (
+	<SelectPrimitive.Trigger
+		ref={ref}
+		className={cn(
+			"flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+			className
+		)}
+		{...props}
+	>
+		{children}
+		<SelectPrimitive.Icon asChild>
+			<ChevronDown className="h-4 w-4 opacity-50" />
+		</SelectPrimitive.Icon>
+	</SelectPrimitive.Trigger>
+));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
 const SelectScrollUpButton = React.forwardRef<
@@ -187,6 +146,45 @@ const SelectSeparator = React.forwardRef<
 ));
 SelectSeparator.displayName = SelectPrimitive.Separator.displayName;
 
+const SelectWithTrigger = React.forwardRef<
+	React.ElementRef<typeof SelectPrimitive.Trigger>,
+	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>
+>(({ children, ...props }, ref) => {
+	const [isOpen, setIsOpen] = React.useState(false);
+
+	const isTouchDevice = () => {
+		return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+	};
+
+	return (
+		<SelectPrimitive.Root open={isOpen} onOpenChange={setIsOpen} {...props}>
+			<SelectPrimitive.Trigger
+				onPointerDown={(e) => {
+					if (isTouchDevice()) {
+						e.preventDefault();
+					}
+				}}
+				onClick={() => {
+					if (isTouchDevice()) {
+						setIsOpen((state) => !state);
+					}
+				}}
+				ref={ref}
+				className={cn(
+					"flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1"
+				)}
+			>
+				{children}
+				<SelectPrimitive.Icon asChild>
+					<ChevronDown className="h-4 w-4 opacity-50" />
+				</SelectPrimitive.Icon>
+			</SelectPrimitive.Trigger>
+		</SelectPrimitive.Root>
+	);
+});
+
+SelectWithTrigger.displayName = "SelectWithTrigger";
+
 export {
 	Select,
 	SelectGroup,
@@ -198,4 +196,5 @@ export {
 	SelectSeparator,
 	SelectScrollUpButton,
 	SelectScrollDownButton,
+	SelectWithTrigger,
 };
