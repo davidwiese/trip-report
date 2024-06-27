@@ -57,7 +57,7 @@ type ProfilePageProps = {
 };
 
 const ProfilePage: React.FC<ProfilePageProps> = async ({
-	searchParams: { pageSize = "6", page = "1" },
+	searchParams: { pageSize = "4", page = "1" },
 }) => {
 	const validPage = parseInt(page, 10) || 1;
 	const validPageSize = parseInt(pageSize, 10) || 6;
