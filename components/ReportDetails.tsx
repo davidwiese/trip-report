@@ -187,16 +187,3 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 };
 
 export default ReportDetails;
-
-// Caltopo map embed:
-// {
-// 	report.caltopoUrl && (
-// 		<iframe
-// 			src={report.caltopoUrl}
-// 			width="100%"
-// 			height="500"
-// 			style={{ border: 0 }}
-// 			allowFullScreen
-// 		></iframe>
-// 	);
-// }
