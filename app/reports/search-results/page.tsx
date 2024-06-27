@@ -43,7 +43,7 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 
 	return (
 		<>
-			<section className="bg-black py-4">
+			<section className="bg-black text-white py-4">
 				<div className="max-w-7xl mx-auto px-4 flex flex-col items-start sm:px-6 lg:px-8">
 					<ReportSearchForm />
 				</div>
