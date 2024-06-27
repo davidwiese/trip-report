@@ -4,12 +4,14 @@ type PaginationProps = {
 	page: number;
 	pageSize: number;
 	totalItems: number;
+	basePath: string;
 };
 
 const Pagination: React.FC<PaginationProps> = ({
 	page,
 	pageSize,
 	totalItems,
+	basePath,
 }) => {
 	const totalPages = Math.ceil(totalItems / pageSize);
 
@@ -23,7 +25,7 @@ const Pagination: React.FC<PaginationProps> = ({
 			{page > 1 ? (
 				<Link
 					className="mr-2 px-2 py-1 border border-gray-300 rounded"
-					href={`/reports?page=${page - 1}&pageSize=${pageSize}`}
+					href={`${basePath}?page=${page - 1}&pageSize=${pageSize}`}
 				>
 					Previous
 				</Link>
@@ -34,7 +36,7 @@ const Pagination: React.FC<PaginationProps> = ({
 			{page < totalPages ? (
 				<Link
 					className="ml-2 px-2 py-1 border border-gray-300 rounded"
-					href={`/reports?page=${page + 1}&pageSize=${pageSize}`}
+					href={`${basePath}?page=${page + 1}&pageSize=${pageSize}`}
 				>
 					Next
 				</Link>

@@ -6,8 +6,9 @@ import Report from "@/models/Report";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
 import UserStatsCard from "@/components/UserStatsCard";
+import Pagination from "@/components/Pagination";
 
-async function loader() {
+async function loader(pageSize: number, page: number) {
 	await connectDB();
 	const sessionUser = await getSessionUser();
 
@@ -15,10 +16,12 @@ async function loader() {
 		return {
 			reports: [],
 			user: null,
+			totalReports: 0,
 		};
 	}
 
-	const userDoc = await User.findById(sessionUser.userId).lean();
+	const { userId } = sessionUser;
+	const userDoc = await User.findById(userId).lean();
 	const user = userDoc
 		? (convertToSerializableObject(userDoc) as UserType)
 		: null;
@@ -27,20 +30,42 @@ async function loader() {
 		return {
 			reports: [],
 			user: null,
+			totalReports: 0,
 		};
 	}
 
-	const reportsDocs = await Report.find({ owner: sessionUser.userId }).lean();
+	const skip = (page - 1) * pageSize;
+	const totalReports = await Report.countDocuments({ owner: userId });
+	const reportsDocs = await Report.find({ owner: userId })
+		.skip(skip)
+		.limit(pageSize)
+		.lean();
 	const reports = reportsDocs.map(convertToSerializableObject) as ReportType[];
 
 	return {
 		reports,
 		user,
+		totalReports,
 	};
 }
 
-const ProfilePage: React.FC = async () => {
-	const { reports, user } = await loader();
+type ProfilePageProps = {
+	searchParams: {
+		pageSize?: string;
+		page?: string;
+	};
+};
+
+const ProfilePage: React.FC<ProfilePageProps> = async ({
+	searchParams: { pageSize = "6", page = "1" },
+}) => {
+	const validPage = parseInt(page, 10) || 1;
+	const validPageSize = parseInt(pageSize, 10) || 6;
+
+	const { reports, user, totalReports } = await loader(
+		validPageSize,
+		validPage
+	);
 
 	if (!user) {
 		return <p>You must be logged in to view this page.</p>;
@@ -61,9 +86,17 @@ const ProfilePage: React.FC = async () => {
 								You have no trip reports
 							</p>
 						) : (
-							<ProfileReportCard reports={reports} />
+							reports.map((report) => (
+								<ProfileReportCard key={report._id} report={report} />
+							))
 						)}
 					</div>
+					<Pagination
+						page={validPage}
+						pageSize={validPageSize}
+						totalItems={totalReports}
+						basePath="/profile"
+					/>
 				</div>
 			</section>
 		</>

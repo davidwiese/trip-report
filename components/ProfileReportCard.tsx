@@ -20,13 +20,11 @@ import { Button } from "@/components/ui/button";
 import { montserrat } from "@/app/fonts";
 
 type ProfileReportCardProps = {
-	reports: ReportType[];
+	report: ReportType;
 };
 
-const ProfileReportCard: React.FC<ProfileReportCardProps> = ({
-	reports: initialReports,
-}) => {
-	const [reports, setReports] = useState(initialReports);
+const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
+	const [reports, setReports] = useState<ReportType[]>([report]);
 
 	const handleDeleteReport = async (reportId: string) => {
 		const confirmed = window.confirm(
@@ -102,6 +100,7 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({
 								</p>
 							</div>
 						</CardContent>
+						<div className="flex-grow" />
 						<CardFooter className="flex justify-between items-center">
 							<Button asChild variant="default" className="z-30 w-full mr-2">
 								<Link href={`/reports/${report._id}/edit`}>Edit</Link>

@@ -7,14 +7,19 @@ import Report from "@/models/Report";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
 import UserStatsCard from "@/components/UserStatsCard";
+import Pagination from "@/components/Pagination";
 
 type PublicProfilePageProps = {
 	params: {
 		id: string;
 	};
+	searchParams: {
+		pageSize?: string;
+		page?: string;
+	};
 };
 
-async function loader(userId: string) {
+async function loader(userId: string, pageSize: number, page: number) {
 	await connectDB();
 
 	const userDoc = await User.findById(userId).lean();
@@ -26,22 +31,37 @@ async function loader(userId: string) {
 		return {
 			reports: [],
 			user: null,
+			totalReports: 0,
 		};
 	}
 
-	const reportsDocs = await Report.find({ owner: userId }).lean();
+	const skip = (page - 1) * pageSize;
+	const totalReports = await Report.countDocuments({ owner: userId });
+	const reportsDocs = await Report.find({ owner: userId })
+		.skip(skip)
+		.limit(pageSize)
+		.lean();
 	const reports = reportsDocs.map(convertToSerializableObject) as ReportType[];
 
 	return {
 		reports,
 		user,
+		totalReports,
 	};
 }
 
 const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 	params,
+	searchParams: { pageSize = "6", page = "1" },
 }) => {
-	const { reports, user } = await loader(params.id);
+	const validPage = parseInt(page, 10) || 1;
+	const validPageSize = parseInt(pageSize, 10) || 6;
+
+	const { reports, user, totalReports } = await loader(
+		params.id,
+		validPageSize,
+		validPage
+	);
 
 	if (!user) {
 		notFound();
@@ -68,6 +88,12 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 							))
 						)}
 					</div>
+					<Pagination
+						page={validPage}
+						pageSize={validPageSize}
+						totalItems={totalReports}
+						basePath={`/profile/${params.id}`}
+					/>
 				</div>
 			</section>
 			<section className="bg-white py-10">
