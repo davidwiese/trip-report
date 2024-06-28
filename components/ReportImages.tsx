@@ -20,8 +20,8 @@ const ReportImages: React.FC<ReportImagesProps> = ({ images }) => {
 						<Item
 							original={images[0].url}
 							thumbnail={images[0].url}
-							width="1000"
-							height="600"
+							width="auto"
+							height="auto"
 						>
 							{({ ref, open }) => (
 								<Image
@@ -37,23 +37,23 @@ const ReportImages: React.FC<ReportImagesProps> = ({ images }) => {
 							)}
 						</Item>
 					) : (
-						<div className="grid grid-cols-2 gap-4">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 							{images.map((image, index) => (
 								<div
 									key={index}
 									className={`
                   ${
 										images.length === 3 && index === 2
-											? "col-span-2"
-											: "col-span-1"
+											? "md:col-span-2"
+											: "md:col-span-1"
 									}
                 `}
 								>
 									<Item
 										original={image.url}
 										thumbnail={image.url}
-										width="1000"
-										height="600"
+										width="auto"
+										height="auto"
 									>
 										{({ ref, open }) => (
 											<Image
