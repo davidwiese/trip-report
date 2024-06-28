@@ -4,7 +4,10 @@ import Link from "next/link";
 import heroImage from "@/assets/images/hero.jpg";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Button } from "@/components/ui/button";
-import { FaChartLine, FaComments, FaMap, FaPenFancy } from "react-icons/fa";
+import { RiImageEditFill } from "react-icons/ri";
+import { PiChartLineUpBold } from "react-icons/pi";
+import { GoCommentDiscussion } from "react-icons/go";
+import { TbMap2 } from "react-icons/tb";
 import { montserrat } from "@/app/fonts";
 import HeroCard from "@/components/HeroCard";
 
@@ -49,24 +52,24 @@ const Hero: React.FC<HeroProps> = () => {
 					<ReportSearchForm />
 				</div>
 				{/* Cards */}
-				<div className="mt-12 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+				<div className="mt-12 mx-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 					<HeroCard
-						icon={<FaPenFancy />}
+						icon={<RiImageEditFill />}
 						title="Easy Report Creation"
-						description="Create detailed reports with descriptions, images, and more."
+						description="Create and share beautiful trip reports in minutes."
 					/>
 					<HeroCard
-						icon={<FaChartLine />}
+						icon={<PiChartLineUpBold />}
 						title="Tracked User Statistics"
-						description="View miles hiked, total elevation gain/loss, and more."
+						description="Keep track of your hard-earned miles and climbs."
 					/>
 					<HeroCard
-						icon={<FaComments />}
+						icon={<GoCommentDiscussion />}
 						title="Community Insights"
-						description="Find new partners and gain valuable trip beta from our community."
+						description="Find new trips, partners, and gain valuable beta from our community."
 					/>
 					<HeroCard
-						icon={<FaMap />}
+						icon={<TbMap2 />}
 						title="Caltopo Map Integration"
 						description="Embed Caltopo maps directly into your trip reports."
 					/>

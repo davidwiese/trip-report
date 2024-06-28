@@ -19,8 +19,8 @@ const HeroCard: React.FC<HeroCardProps> = ({ icon, title, description }) => {
 			style={{ boxShadow: "0 0 3px 1px rgba(255, 255, 255, 0.5)" }}
 		>
 			<CardHeader className="flex flex-col items-center">
-				<div className="text-4xl mb-1">{icon}</div>
-				<CardTitle className="font-bold text-xl mb-2">{title}</CardTitle>
+				<div className="text-4xl">{icon}</div>
+				<CardTitle className="font-bold text-xl">{title}</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<CardDescription className="text-gray-300">
