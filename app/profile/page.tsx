@@ -71,11 +71,14 @@ const ProfilePage: React.FC<ProfilePageProps> = async ({
 		return <p>You must be logged in to view this page.</p>;
 	}
 
+	const sessionUser = await getSessionUser();
+	const isOwnProfile = sessionUser?.userId === user._id.toString();
+
 	return (
 		<>
 			<section className="bg-white py-10">
 				<div className="container mx-auto px-6">
-					<UserStatsCard user={user} />
+					<UserStatsCard user={user} isOwnProfile={isOwnProfile} />
 				</div>
 			</section>
 			<section className="bg-white py-10">

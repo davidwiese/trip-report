@@ -1,3 +1,5 @@
+"use client";
+
 import { User as UserType } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
@@ -5,12 +7,37 @@ import profileDefault from "@/assets/images/profile.png";
 import { LuMoveUpRight, LuMoveDownRight } from "react-icons/lu";
 import { RxRulerHorizontal } from "react-icons/rx";
 import tripReportLogo from "@/assets/images/logo_fill.png";
+import { useState } from "react";
+import updateBio from "@/app/actions/updateBio";
+import { TbEdit } from "react-icons/tb";
 
 type UserStatsCardProps = {
 	user: UserType;
+	isOwnProfile: boolean;
 };
 
-const UserStatsCard: React.FC<UserStatsCardProps> = ({ user }) => {
+const UserStatsCard: React.FC<UserStatsCardProps> = ({
+	user,
+	isOwnProfile,
+}) => {
+	const [isEditing, setIsEditing] = useState(false);
+	const [bio, setBio] = useState(user.bio || "");
+	const [error, setError] = useState("");
+
+	const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setBio(e.target.value);
+	};
+
+	const handleBioSubmit = async () => {
+		const result = await updateBio(bio);
+		if (result.error) {
+			setError(result.error);
+		} else {
+			setIsEditing(false);
+			setError("");
+		}
+	};
+
 	return (
 		<Card className="bg-white rounded-lg shadow-md p-6 mx-auto max-w-2xl">
 			<CardContent>
@@ -28,7 +55,51 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({ user }) => {
 					<p className="text-gray-600 mb-4">
 						<span className="font-bold">Email:</span> {user.email}
 					</p>
-					{user.bio && <p className="text-gray-600 mb-4">{user.bio}</p>}
+					<div className="relative w-full mb-4">
+						{isEditing ? (
+							<div className="w-full">
+								<textarea
+									value={bio}
+									onChange={handleBioChange}
+									className="w-full p-2 border rounded"
+									rows={4}
+									maxLength={330}
+								/>
+								<div className="flex justify-end mt-2">
+									<button
+										onClick={() => setIsEditing(false)}
+										className="mr-2 px-3 py-1 bg-gray-200 rounded"
+									>
+										Cancel
+									</button>
+									<button
+										onClick={handleBioSubmit}
+										className="px-3 py-1 bg-blue-500 text-white rounded"
+									>
+										Save
+									</button>
+								</div>
+							</div>
+						) : (
+							<div className="relative pb-8">
+								{" "}
+								<p className="text-gray-600 whitespace-pre-wrap px-[2px] pb-1">
+									{bio || "No bio yet."}
+								</p>
+								{isOwnProfile && (
+									<button
+										onClick={() => setIsEditing(true)}
+										className="absolute bottom-0 left-0 text-gray-600 flex items-center"
+										aria-label="Edit bio"
+									>
+										<TbEdit className="text-2xl mr-1" />
+										<span className="underline">Add/Edit</span>
+									</button>
+								)}
+							</div>
+						)}
+					</div>
+					{error && <p className="text-red-500 mb-4">{error}</p>}
 					<div className="w-full mt-2 grid sm:grid-cols-2 gap-4 items-center">
 						{[
 							{
