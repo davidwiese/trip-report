@@ -481,6 +481,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					name="location.localArea"
 					className="border rounded w-full py-2 px-3 mb-2"
 					placeholder="Local area (mountain range, park, etc.)"
+					maxLength={50}
 					required
 				/>
 				<input
@@ -489,6 +490,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					name="location.objective"
 					className="border rounded w-full py-2 px-3"
 					placeholder="Objective (specific trail, peak, or climb, etc.)"
+					maxLength={50}
 					required
 				/>
 			</div>
@@ -507,6 +509,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 						name="distance"
 						step="0.1"
 						className="border rounded w-full py-2 px-3"
+						max={10000}
 						required
 					/>
 				</div>
@@ -522,6 +525,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 						id="elevationGain"
 						name="elevationGain"
 						className="border rounded w-full py-2 px-3"
+						max={99999}
 						required
 					/>
 				</div>
@@ -537,6 +541,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 						id="elevationLoss"
 						name="elevationLoss"
 						className="border rounded w-full py-2 px-3"
+						max={99999}
 						required
 					/>
 				</div>
@@ -555,6 +560,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					name="duration"
 					className="border rounded w-full py-2 px-3"
 					step="0.1"
+					max={1000}
 					required
 				/>
 			</div>
@@ -627,6 +633,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					name="caltopoUrl"
 					className="border rounded w-full py-2 px-3"
 					placeholder="e.g. https://caltopo.com/m/EH41"
+					maxLength={100}
 				/>
 			</div>
 
@@ -640,6 +647,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					name="title"
 					className="border rounded w-full py-2 px-3 mb-2"
 					placeholder="Enter a title for your trip report"
+					maxLength={75}
 					required
 				/>
 			</div>

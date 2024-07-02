@@ -552,6 +552,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="location.localArea"
 					className="border rounded w-full py-2 px-3 mb-2"
 					placeholder="Local area (mountain range, park, etc.)"
+					maxLength={50}
 					required
 					defaultValue={report.location.localArea}
 				/>
@@ -561,6 +562,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="location.objective"
 					className="border rounded w-full py-2 px-3"
 					placeholder="Objective (specific trail, peak, or climb, etc.)"
+					maxLength={50}
 					required
 					defaultValue={report.location.objective}
 				/>
@@ -580,6 +582,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						name="distance"
 						step="0.1"
 						className="border rounded w-full py-2 px-3"
+						max={10000}
 						required
 						defaultValue={report.distance}
 					/>
@@ -596,6 +599,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						id="elevationGain"
 						name="elevationGain"
 						className="border rounded w-full py-2 px-3"
+						max={99999}
 						required
 						defaultValue={report.elevationGain}
 					/>
@@ -612,6 +616,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						id="elevationLoss"
 						name="elevationLoss"
 						className="border rounded w-full py-2 px-3"
+						max={99999}
 						required
 						defaultValue={report.elevationLoss}
 					/>
@@ -631,6 +636,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="duration"
 					className="border rounded w-full py-2 px-3"
 					step="0.1"
+					max={1000}
 					required
 					defaultValue={report.duration}
 				/>
@@ -724,6 +730,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="caltopoUrl"
 					className="border rounded w-full py-2 px-3"
 					placeholder="e.g. https://caltopo.com/m/EH41"
+					maxLength={100}
 					defaultValue={report.caltopoUrl || ""}
 				/>
 			</div>
@@ -738,6 +745,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					name="title"
 					className="border rounded w-full py-2 px-3 mb-2"
 					placeholder="Enter a title for your trip report"
+					maxLength={75}
 					required
 					defaultValue={report.title}
 				/>
