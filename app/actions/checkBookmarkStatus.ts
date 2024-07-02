@@ -4,7 +4,7 @@ import connectDB from "@/config/database";
 import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import mongoose from "mongoose";
-import { ratelimit } from "@/utils/ratelimit";
+import { readRateLimit } from "@/utils/ratelimit";
 
 async function checkBookmarkStatus(reportId: string | mongoose.Types.ObjectId) {
 	await connectDB();
@@ -15,7 +15,7 @@ async function checkBookmarkStatus(reportId: string | mongoose.Types.ObjectId) {
 		return { error: "User ID is required" };
 	}
 
-	const { success } = await ratelimit.limit(sessionUser.userId);
+	const { success } = await readRateLimit.limit(sessionUser.userId);
 	if (!success) {
 		return { error: "Too many requests. Please try again later." };
 	}

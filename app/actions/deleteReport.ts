@@ -7,7 +7,7 @@ import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
-import { ratelimit } from "@/utils/ratelimit";
+import { reportRateLimit } from "@/utils/ratelimit";
 
 async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 	const sessionUser = await getSessionUser();
@@ -17,7 +17,7 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 		throw new Error("User ID is required");
 	}
 
-	const { success } = await ratelimit.limit(sessionUser.userId);
+	const { success } = await reportRateLimit.limit(sessionUser.userId);
 	if (!success) {
 		throw new Error("Too many requests. Please try again later.");
 	}

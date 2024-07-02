@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-import { ratelimit } from "@/utils/ratelimit";
+import { standardRateLimit } from "@/utils/ratelimit";
 
 export async function GET(request: NextRequest) {
 	const ip = request.ip ?? "127.0.0.1";
-	const { success } = await ratelimit.limit(ip);
+	const { success } = await standardRateLimit.limit(ip);
 
 	if (!success) {
 		return NextResponse.json(

@@ -10,6 +10,7 @@ import {
 } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { standardRateLimit } from "@/utils/ratelimit";
 
 // Create a custom type that extends the Profile type
 interface GoogleProfile extends Profile {
@@ -38,6 +39,12 @@ export const authOptions: NextAuthOptions = {
 			async authorize(credentials, req) {
 				if (!credentials || !credentials.email || !credentials.password) {
 					throw new Error("Missing credentials");
+				}
+
+				const ip = req.headers?.["x-forwarded-for"] ?? "127.0.0.1";
+				const { success } = await standardRateLimit.limit(ip);
+				if (!success) {
+					throw new Error("Too many requests. Please try again later.");
 				}
 
 				try {
@@ -126,6 +133,13 @@ export const authOptions: NextAuthOptions = {
 
 				if (!userEmail) {
 					return false;
+				}
+
+				// Implement rate limiting based on the user's email
+				const { success } = await standardRateLimit.limit(userEmail);
+				if (!success) {
+					console.error("Rate limit exceeded for:", userEmail);
+					throw new Error("Too many sign-in attempts. Please try again later.");
 				}
 
 				let userExists = await User.findOne({ email: userEmail });

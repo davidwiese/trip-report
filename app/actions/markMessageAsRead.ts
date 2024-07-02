@@ -4,7 +4,7 @@ import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
-import { ratelimit } from "@/utils/ratelimit";
+import { standardRateLimit } from "@/utils/ratelimit";
 
 async function markMessageAsRead(messageId: string) {
 	await connectDB();
@@ -13,7 +13,7 @@ async function markMessageAsRead(messageId: string) {
 		throw new Error("User ID is required");
 	}
 
-	const { success } = await ratelimit.limit(sessionUser.userId);
+	const { success } = await standardRateLimit.limit(sessionUser.userId);
 	if (!success) {
 		throw new Error("Too many requests. Please try again later.");
 	}

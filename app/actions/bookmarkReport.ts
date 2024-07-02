@@ -5,7 +5,7 @@ import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
-import { ratelimit } from "@/utils/ratelimit";
+import { standardRateLimit } from "@/utils/ratelimit";
 
 async function bookmarkReport(reportId: string | mongoose.Types.ObjectId) {
 	await connectDB();
@@ -16,7 +16,7 @@ async function bookmarkReport(reportId: string | mongoose.Types.ObjectId) {
 		return { error: "User ID is required" };
 	}
 
-	const { success } = await ratelimit.limit(sessionUser.userId);
+	const { success } = await standardRateLimit.limit(sessionUser.userId);
 	if (!success) {
 		return { error: "Too many requests. Please try again later." };
 	}
