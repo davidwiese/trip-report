@@ -8,6 +8,7 @@ import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
 import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
+import { getSessionUser } from "@/utils/getSessionUser";
 
 type PublicProfilePageProps = {
 	params: {
@@ -68,11 +69,14 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 		return null;
 	}
 
+	const sessionUser = await getSessionUser();
+	const isOwnProfile = sessionUser?.userId === params.id;
+
 	return (
 		<>
 			<section className="bg-white py-10">
 				<div className="container mx-auto px-6">
-					<UserStatsCard user={user} />
+					<UserStatsCard user={user} isOwnProfile={isOwnProfile} />
 				</div>
 			</section>
 			<section className="bg-white py-10">
@@ -98,11 +102,13 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 					)}
 				</div>
 			</section>
-			<section className="bg-white py-10">
-				<div className="container mx-auto px-6">
-					<ProfileContactForm recipientId={user._id.toString()} />
-				</div>
-			</section>
+			{!isOwnProfile && (
+				<section className="bg-white py-10">
+					<div className="container mx-auto px-6">
+						<ProfileContactForm recipientId={user._id.toString()} />
+					</div>
+				</section>
+			)}
 		</>
 	);
 };
