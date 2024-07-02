@@ -1,17 +1,18 @@
 # Trip Report
 
-Find beta on hikes and climbs, create your own reports, or even blog your entire thru hike!
+Share your trips, find beta, and connect with other adventurers!
 
-**Link to project:** Deploying Q2 2024
+**Link to project:** Deploying Q3 2024
 
 ## How It's Made
 
-**Tech used:** Next.js, React, Typescript, Tailwind CSS, MongoDB, Mongoose, NextAuth.js, Next Server Actions, Cloudinary
+**Tech used:** Next.js, React, Typescript, Tailwind CSS, MongoDB, Mongoose, NextAuth.js, Next Server Actions, Cloudinary, Clerk, Upstash, PostHog, Sentry
 
-Trip Report is a full-stack web app designed to be the one-stop-shop for finding everything you need to know about a hike or climb. Built using Next.js, it provides users with a seamless experience to search through reports or create their own, and find the necessary beta to complete their objective. It is built using Next API Routes to create serverless RESTFUL endpoints. The frontend is crafted with TypeScript and styled with Tailwind CSS for a cohesive and responsive design. Google OAuth handles the authentication (more options coming) while MongoDB serves as a robust database solution.
+Trip Report is a full-stack web app designed to be the one-stop-shop for finding everything you need to know about a hike or climb. Built using Next.js, it provides users with a seamless experience to search through reports or create their own, and find the necessary beta to complete their objective. It is built primarily using Next.js Server Actions. The frontend is crafted with TypeScript and styled with Tailwind CSS for a cohesive and responsive design. Clerk handles the authentication while MongoDB serves as a robust database solution. Upstash ensures rate limiting, PostHog provides analyticsm, and Sentry manages errors.
 
 ## Optimizations In Progress
 
 - Accessibility features
-- Convert client components to server components where applicable
 - Add comments to reports
+- Rebuild messaging system with replies
+- Dark mode
