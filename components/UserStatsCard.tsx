@@ -10,6 +10,7 @@ import tripReportLogo from "@/assets/images/logo_fill.png";
 import { useState } from "react";
 import updateBio from "@/app/actions/updateBio";
 import { TbEdit } from "react-icons/tb";
+import { Button } from "@/components/ui/button";
 
 type UserStatsCardProps = {
 	user: UserType;
@@ -66,18 +67,19 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({
 									maxLength={330}
 								/>
 								<div className="flex justify-end mt-2">
-									<button
+									<Button
+										variant="outline"
 										onClick={() => setIsEditing(false)}
-										className="mr-2 px-3 py-1 bg-gray-200 rounded"
+										className="mr-2 px-3 py-1 min-w-28"
 									>
 										Cancel
-									</button>
-									<button
+									</Button>
+									<Button
 										onClick={handleBioSubmit}
-										className="px-3 py-1 bg-blue-500 text-white rounded"
+										className="px-3 py-1 min-w-28"
 									>
 										Save
-									</button>
+									</Button>
 								</div>
 							</div>
 						) : (
