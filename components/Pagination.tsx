@@ -15,6 +15,11 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
 	const totalPages = Math.ceil(totalItems / pageSize);
 
+	// If there are no items, don't render pagination
+	if (totalItems === 0) {
+		return null;
+	}
+
 	// Check if page or pageSize is invalid
 	if (isNaN(page) || isNaN(pageSize) || pageSize <= 0) {
 		return <div>Invalid search parameters</div>;

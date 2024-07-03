@@ -17,6 +17,7 @@ async function loader(pageSize: number, page: number) {
 			reports: [],
 			user: null,
 			totalReports: 0,
+			currentPage: 1,
 		};
 	}
 
@@ -31,11 +32,20 @@ async function loader(pageSize: number, page: number) {
 			reports: [],
 			user: null,
 			totalReports: 0,
+			currentPage: 1,
 		};
 	}
 
-	const skip = (page - 1) * pageSize;
 	const totalReports = await Report.countDocuments({ owner: userId });
+	const totalPages = Math.ceil(totalReports / pageSize);
+
+	// Ensure the page is within valid range
+	let currentPage = page;
+	if (currentPage < 1 || currentPage > totalPages) {
+		currentPage = 1;
+	}
+
+	const skip = (currentPage - 1) * pageSize;
 	const reportsDocs = await Report.find({ owner: userId })
 		.skip(skip)
 		.limit(pageSize)
@@ -46,6 +56,7 @@ async function loader(pageSize: number, page: number) {
 		reports,
 		user,
 		totalReports,
+		currentPage,
 	};
 }
 
@@ -62,7 +73,7 @@ const ProfilePage: React.FC<ProfilePageProps> = async ({
 	const validPage = parseInt(page, 10) || 1;
 	const validPageSize = parseInt(pageSize, 10) || 6;
 
-	const { reports, user, totalReports } = await loader(
+	const { reports, user, totalReports, currentPage } = await loader(
 		validPageSize,
 		validPage
 	);
@@ -94,9 +105,9 @@ const ProfilePage: React.FC<ProfilePageProps> = async ({
 							))
 						)}
 					</div>
-					{reports.length > 0 && (
+					{totalReports > 0 && (
 						<Pagination
-							page={validPage}
+							page={currentPage}
 							pageSize={validPageSize}
 							totalItems={totalReports}
 							basePath="/profile"
