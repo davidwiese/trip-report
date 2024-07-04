@@ -16,3 +16,4 @@ Trip Report is a full-stack web app designed to be the one-stop-shop for finding
 - Add comments to reports
 - Rebuild messaging system with replies
 - Dark mode
+- Native iOS and Android apps
