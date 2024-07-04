@@ -17,3 +17,4 @@ Trip Report is a full-stack web app designed to be the one-stop-shop for finding
 - Rebuild messaging system with replies
 - Dark mode
 - Native iOS and Android apps
+- Automatically import stats from gpx files
