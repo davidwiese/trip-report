@@ -13,6 +13,7 @@ async function loader(pageSize: number, page: number) {
 		return {
 			savedReports: [],
 			totalReports: 0,
+			currentPage: 1,
 		};
 	}
 
@@ -26,11 +27,20 @@ async function loader(pageSize: number, page: number) {
 		return {
 			savedReports: [],
 			totalReports: 0,
+			currentPage: 1,
 		};
 	}
 
 	const totalReports = user.bookmarks.length;
-	const skip = (page - 1) * pageSize;
+	const totalPages = Math.ceil(totalReports / pageSize);
+
+	// Ensure the page is within valid range
+	let currentPage = page;
+	if (currentPage < 1 || currentPage > totalPages) {
+		currentPage = 1;
+	}
+
+	const skip = (currentPage - 1) * pageSize;
 	const savedReports: ReportType[] = user.bookmarks.slice(
 		skip,
 		skip + pageSize
@@ -39,6 +49,7 @@ async function loader(pageSize: number, page: number) {
 	return {
 		savedReports,
 		totalReports,
+		currentPage,
 	};
 }
 
@@ -87,7 +98,10 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 	const validPage = parseInt(page, 10) || 1;
 	const validPageSize = parseInt(pageSize, 10) || 6;
 
-	const { savedReports, totalReports } = await loader(validPageSize, validPage);
+	const { savedReports, totalReports, currentPage } = await loader(
+		validPageSize,
+		validPage
+	);
 
 	return (
 		<section className="px-4 py-6">
@@ -102,9 +116,9 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 						))}
 					</div>
 				)}
-				{savedReports.length > 0 && (
+				{totalReports > 0 && (
 					<Pagination
-						page={validPage}
+						page={currentPage}
 						pageSize={validPageSize}
 						totalItems={totalReports}
 						basePath="/reports/saved"
