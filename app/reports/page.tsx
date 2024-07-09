@@ -7,29 +7,49 @@ import { Report as ReportType } from "@/types";
 
 type ReportsPageProps = {
 	searchParams: {
-		pageSize: string;
-		page: string;
+		pageSize?: string;
+		page?: string;
 	};
 };
 
-const ReportsPage: React.FC<ReportsPageProps> = async ({
-	searchParams: { pageSize = "6", page = "1" },
-}) => {
+async function fetchReports(page: number, pageSize: number) {
 	await connectDB();
 
-	const validPage = parseInt(page, 10) || 1;
-	const validPageSize = parseInt(pageSize, 10) || 6;
+	const totalReports = await Report.countDocuments({});
+	const totalPages = Math.ceil(totalReports / pageSize);
 
-	const skip = (validPage - 1) * validPageSize;
+	let currentPage = page;
+	if (currentPage < 1 || currentPage > totalPages) {
+		currentPage = 1;
+	}
 
-	const total = await Report.countDocuments({});
+	const skip = (currentPage - 1) * pageSize;
 	const reports = (await Report.find({})
 		.skip(skip)
-		.limit(validPageSize)
+		.limit(pageSize)
 		.lean()) as ReportType[];
 
 	// Convert the reports to serializable objects
 	const serializedReports = convertToSerializableObject<ReportType[]>(reports);
+
+	return {
+		reports: serializedReports,
+		total: totalReports,
+		currentPage,
+		itemsPerPage: pageSize,
+	};
+}
+
+const ReportsPage: React.FC<ReportsPageProps> = async ({
+	searchParams: { pageSize = "6", page = "1" },
+}) => {
+	const validPage = parseInt(page, 10) || 1;
+	const validPageSize = parseInt(pageSize, 10) || 6;
+
+	const { reports, total, currentPage, itemsPerPage } = await fetchReports(
+		validPage,
+		validPageSize
+	);
 
 	return (
 		<>
@@ -39,12 +59,13 @@ const ReportsPage: React.FC<ReportsPageProps> = async ({
 				</div>
 			</section>
 			<Reports
-				reports={serializedReports}
+				reports={reports}
 				total={total}
-				page={validPage}
-				pageSize={validPageSize}
+				currentPage={currentPage}
+				pageSize={itemsPerPage}
 			/>
 		</>
 	);
 };
+
 export default ReportsPage;

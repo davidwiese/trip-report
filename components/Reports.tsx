@@ -5,14 +5,14 @@ import Pagination from "@/components/Pagination";
 type ReportsProps = {
 	reports: Report[];
 	total: number;
-	page: number;
+	currentPage: number;
 	pageSize: number;
 };
 
 const Reports: React.FC<ReportsProps> = ({
 	reports,
 	total,
-	page,
+	currentPage,
 	pageSize,
 }) => {
 	return (
@@ -22,14 +22,14 @@ const Reports: React.FC<ReportsProps> = ({
 					<p>No reports found</p>
 				) : (
 					<div className="grid grid-cols-1 custom-lg:grid-cols-3 gap-6">
-						{(reports as Report[]).map((report) => (
+						{reports.map((report) => (
 							<ReportCard key={report._id} report={report} />
 						))}
 					</div>
 				)}
-				{reports.length > 0 && (
+				{total > 0 && (
 					<Pagination
-						page={page}
+						page={currentPage}
 						pageSize={pageSize}
 						totalItems={total}
 						basePath="/reports"
