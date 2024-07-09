@@ -17,14 +17,16 @@ type SearchResultsPageProps = {
 	};
 };
 
-const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
-	searchParams: { location, reportType, pageSize = "6", page = "1" },
-}) => {
+async function loader(
+	location: string,
+	reportType: string,
+	pageSize: number,
+	page: number
+) {
 	await connectDB();
 
 	const locationPattern = new RegExp(location, "i");
 
-	// Match location pattern against database fields
 	let query: any = {
 		$or: [
 			{ title: locationPattern },
@@ -37,21 +39,46 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 		],
 	};
 
-	// Only check for report type if it's not 'All'
 	if (reportType && reportType !== "All") {
 		query.activityType = reportType;
 	}
 
-	const validPage = parseInt(page, 10) || 1;
-	const validPageSize = parseInt(pageSize, 10) || 6;
-	const skip = (validPage - 1) * validPageSize;
-
 	const totalReports = await Report.countDocuments(query);
+	const totalPages = Math.ceil(totalReports / pageSize);
+
+	// Ensure the page is within valid range
+	let currentPage = page;
+	if (currentPage < 1 || currentPage > totalPages) {
+		currentPage = 1;
+	}
+
+	const skip = (currentPage - 1) * pageSize;
+
 	const reportsQueryResults = await Report.find(query)
 		.skip(skip)
-		.limit(validPageSize)
+		.limit(pageSize)
 		.lean();
 	const reports = convertToSerializableObject(reportsQueryResults);
+
+	return {
+		reports,
+		totalReports,
+		currentPage,
+	};
+}
+
+const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
+	searchParams: { location, reportType, pageSize = "6", page = "1" },
+}) => {
+	const validPage = parseInt(page, 10) || 1;
+	const validPageSize = parseInt(pageSize, 10) || 6;
+
+	const { reports, totalReports, currentPage } = await loader(
+		location,
+		reportType,
+		validPageSize,
+		validPage
+	);
 
 	return (
 		<>
@@ -78,12 +105,14 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 							))}
 						</div>
 					)}
-					{reports.length > 0 && (
+					{totalReports > 0 && (
 						<Pagination
-							page={validPage}
+							page={currentPage}
 							pageSize={validPageSize}
 							totalItems={totalReports}
-							basePath="/reports/search-results"
+							basePath={`/reports/search-results?location=${encodeURIComponent(
+								location
+							)}&reportType=${encodeURIComponent(reportType)}`}
 						/>
 					)}
 				</div>
