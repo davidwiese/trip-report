@@ -5,7 +5,7 @@ export const config = {
 		// NOTE: editing a report should be a private route
 		"/reports/:id/edit",
 		"/profile",
-		"/reports/saved",
+		"/reports/bookmarks",
 		"/messages",
 	],
 };

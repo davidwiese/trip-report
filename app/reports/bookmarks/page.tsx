@@ -105,10 +105,10 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 
 	return (
 		<section className="px-4 py-6">
-			<h1 className="text-2xl text-center mb-4">Saved Reports</h1>
+			<h1 className="text-2xl text-center mb-4">Bookmarked Reports</h1>
 			<div className="container-xl lg:container m-auto px-4 py-6">
 				{savedReports.length === 0 ? (
-					<p>No saved reports</p>
+					<p>No bookmarked reports</p>
 				) : (
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 						{savedReports.map((report: ReportType) => (
@@ -121,7 +121,7 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 						page={currentPage}
 						pageSize={validPageSize}
 						totalItems={totalReports}
-						basePath="/reports/saved"
+						basePath="/reports/bookmarks"
 					/>
 				)}
 			</div>

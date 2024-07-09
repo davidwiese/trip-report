@@ -56,7 +56,7 @@ const ProfileButton = () => {
 				</DropdownMenuItem>
 				<DropdownMenuItem asChild>
 					<Link
-						href="/reports/saved"
+						href="/reports/bookmarks"
 						className="block px-4 py-2 text-sm w-full text-left"
 						role="menuitem"
 						id="user-menu-item-2"
@@ -64,7 +64,7 @@ const ProfileButton = () => {
 							setIsProfileMenuOpen(false);
 						}}
 					>
-						Saved Reports
+						Bookmarks
 					</Link>
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />

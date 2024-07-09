@@ -46,13 +46,7 @@ async function bookmarkReport(reportId: string | mongoose.Types.ObjectId) {
 	await user.save();
 
 	// Revalidate the cache
-	revalidatePath("/reports/saved", "page");
-	// NOTE: A nice demonstration of NextJS caching can be done here by first
-	// commenting out the above line, then bookmark or un-bookmark a report for
-	// a user then visit /properties/saved (either via link or going back in the
-	// browser) and you will see the old results until
-	// you refresh the page. If you then add back in the above line and repeat,
-	// you will see the users saved properties are up to date.
+	revalidatePath("/reports/bookmarks", "page");
 
 	return { message, isBookmarked };
 }
