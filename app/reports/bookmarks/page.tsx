@@ -11,7 +11,7 @@ async function loader(pageSize: number, page: number) {
 
 	if (!sessionUser || !sessionUser.userId) {
 		return {
-			savedReports: [],
+			bookmarkedReports: [],
 			totalReports: 0,
 			currentPage: 1,
 		};
@@ -25,7 +25,7 @@ async function loader(pageSize: number, page: number) {
 
 	if (!user || !user.bookmarks) {
 		return {
-			savedReports: [],
+			bookmarkedReports: [],
 			totalReports: 0,
 			currentPage: 1,
 		};
@@ -41,26 +41,26 @@ async function loader(pageSize: number, page: number) {
 	}
 
 	const skip = (currentPage - 1) * pageSize;
-	const savedReports: ReportType[] = user.bookmarks.slice(
+	const bookmarkedReports: ReportType[] = user.bookmarks.slice(
 		skip,
 		skip + pageSize
 	);
 
 	return {
-		savedReports,
+		bookmarkedReports,
 		totalReports,
 		currentPage,
 	};
 }
 
-type SavedReportsPageProps = {
+type BookmarkedReportsPageProps = {
 	searchParams: {
 		pageSize?: string;
 		page?: string;
 	};
 };
 
-const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
+const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({
 	searchParams: { pageSize = "6", page = "1" },
 }) => {
 	await connectDB();
@@ -70,9 +70,9 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 	if (!sessionUser || !sessionUser.userId) {
 		return (
 			<section className="px-4 py-6">
-				<h1 className="text-2xl mb-4">Saved Reports</h1>
+				<h1 className="text-2xl mb-4">Bookmarked Reports</h1>
 				<div className="container-xl lg:container m-auto px-4 py-6">
-					<p>Must be logged in to view saved reports</p>
+					<p>Must be logged in to view bookmarked reports</p>
 				</div>
 			</section>
 		);
@@ -87,9 +87,9 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 	if (!user || !user.bookmarks) {
 		return (
 			<section className="px-4 py-6">
-				<h1 className="text-2xl mb-4">Saved Reports</h1>
+				<h1 className="text-2xl mb-4">Bookmarked Reports</h1>
 				<div className="container-xl lg:container m-auto px-4 py-6">
-					<p>No saved reports</p>
+					<p>No bookmarked reports</p>
 				</div>
 			</section>
 		);
@@ -98,7 +98,7 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 	const validPage = parseInt(page, 10) || 1;
 	const validPageSize = parseInt(pageSize, 10) || 6;
 
-	const { savedReports, totalReports, currentPage } = await loader(
+	const { bookmarkedReports, totalReports, currentPage } = await loader(
 		validPageSize,
 		validPage
 	);
@@ -107,11 +107,11 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 		<section className="px-4 py-6">
 			<h1 className="text-2xl text-center mb-4">Bookmarked Reports</h1>
 			<div className="container-xl lg:container m-auto px-4 py-6">
-				{savedReports.length === 0 ? (
+				{bookmarkedReports.length === 0 ? (
 					<p>No bookmarked reports</p>
 				) : (
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-						{savedReports.map((report: ReportType) => (
+						{bookmarkedReports.map((report: ReportType) => (
 							<ReportCard key={report._id} report={report} />
 						))}
 					</div>
@@ -128,4 +128,4 @@ const SavedReportsPage: React.FC<SavedReportsPageProps> = async ({
 		</section>
 	);
 };
-export default SavedReportsPage;
+export default BookmarkedReportsPage;
