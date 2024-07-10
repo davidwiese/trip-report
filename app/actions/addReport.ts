@@ -8,7 +8,11 @@ import cloudinary from "@/config/cloudinary";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import { sanitizeHtmlContent, sanitizeText } from "@/utils/sanitizeHtml";
+import {
+	sanitizeHtmlContent,
+	sanitizeText,
+	sanitizeDescription,
+} from "@/utils/sanitizeHtml";
 import { reportRateLimit } from "@/utils/ratelimit";
 
 async function addReport(formData: FormData) {
@@ -67,7 +71,7 @@ async function addReport(formData: FormData) {
 			activityType: formData
 				.getAll("activityType")
 				.map((type) => sanitizeText(type as string)) as string[],
-			description: sanitizeText(formData.get("description") as string),
+			description: sanitizeDescription(formData.get("description") as string),
 			body: sanitizeHtmlContent(formData.get("body") as string),
 			location: {
 				country: sanitizeText(formData.get("location.country") as string)!,
