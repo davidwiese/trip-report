@@ -13,15 +13,22 @@ import { montserrat } from "@/app/fonts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BookmarkButton from "@/components/BookmarkButton";
 import DownloadButton from "@/components/DownloadButton";
+import EditButton from "@/components/EditButton";
 import { Badge } from "@/components/ui/badge";
 import { TbMap2 } from "react-icons/tb";
+import { Button } from "@/components/ui/button";
 
 type ReportDetailsProps = {
 	report: Report;
 	author: { name: string; id: string };
+	isAuthor: boolean;
 };
 
-const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
+const ReportDetails: React.FC<ReportDetailsProps> = ({
+	report,
+	author,
+	isAuthor,
+}) => {
 	const isSameDate =
 		new Date(report.startDate).toLocaleDateString() ===
 		new Date(report.endDate).toLocaleDateString();
@@ -169,8 +176,13 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 								))}
 							</div>
 						</div>
-						<div className="self-end">
-							<div className="mb-1">
+						<div className="self-end space-y-1">
+							{isAuthor && (
+								<div>
+									<EditButton report={report} />
+								</div>
+							)}
+							<div>
 								<DownloadButton report={report} />
 							</div>
 							<div>

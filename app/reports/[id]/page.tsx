@@ -7,6 +7,7 @@ import Report from "@/models/Report";
 import User from "@/models/User";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
+import { getSessionUser } from "@/utils/getSessionUser";
 
 type ReportPageProps = {
 	params: {
@@ -50,6 +51,12 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		id: user._id.toString(),
 	};
 
+	// Get the current user from the session
+	const sessionUser = await getSessionUser();
+
+	// Check if the current user is the author of the report
+	const isAuthor = sessionUser?.userId === report.owner.toString();
+
 	if (!report) {
 		return (
 			<h1 className="text-center text-2xl font-bold mt-10">Report Not Found</h1>
@@ -64,7 +71,11 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 			<section className="bg-white py-10">
 				<div className="container mx-auto px-6">
 					<div className="grid grid-cols-1 gap-6">
-						<ReportDetails report={report} author={author} />
+						<ReportDetails
+							report={report}
+							author={author}
+							isAuthor={isAuthor}
+						/>
 					</div>
 				</div>
 			</section>

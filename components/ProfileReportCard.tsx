@@ -51,7 +51,10 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
 					key={report._id}
 					className="bg-white rounded-xl shadow-md relative z-20 flex flex-col h-full min-w-[288px] mb-10"
 				>
-					<div className="relative h-48 w-full">
+					<Link
+						href={`/reports/${report._id}`}
+						className="relative h-48 w-full block"
+					>
 						<Image
 							src={
 								report.images && report.images.length > 0
@@ -65,13 +68,13 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
 							className="rounded-t-xl"
 							priority
 						/>
-					</div>
+					</Link>
 					<div className="flex flex-col flex-grow p-1">
 						<CardHeader>
 							<CardTitle
 								className={`text-xl font-bold ${montserrat.className} line-clamp-1`}
 							>
-								{report.title}
+								<Link href={`/reports/${report._id}`}>{report.title}</Link>
 							</CardTitle>
 						</CardHeader>
 						<CardContent className="flex-grow">
