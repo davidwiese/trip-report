@@ -186,7 +186,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 					{report.title}
 				</h2>
 				<div
-					className="prose max-w-none"
+					className="prose max-w-none report-body"
 					dangerouslySetInnerHTML={{ __html: report.body }}
 				/>
 			</div>

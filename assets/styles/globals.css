@@ -75,6 +75,37 @@
 	}
 }
 
+@layer components {
+	.report-body {
+		& > * {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		& > * + * {
+			margin-top: 1em; /* This adds space between elements */
+		}
+		& p {
+			margin-top: 0;
+			margin-bottom: 0;
+			min-height: 1em; /* This ensures empty paragraphs take up space */
+		}
+		& ul,
+		& ol {
+			padding-left: 1.5em; /* Adjust as needed */
+		}
+		& li {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		& li > p {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		/* Preserve whitespace */
+		white-space: pre-wrap;
+	}
+}
+
 html,
 body {
 	height: 100%;
