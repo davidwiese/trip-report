@@ -1,4 +1,4 @@
-import ReportCard from "@/components/ReportCard";
+import BookmarkReportCard from "@/components/ReportCard";
 import connectDB from "@/config/database";
 import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
@@ -110,9 +110,9 @@ const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({
 				{bookmarkedReports.length === 0 ? (
 					<p>No bookmarked reports</p>
 				) : (
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<div className="grid grid-cols-1 custom-lg:grid-cols-3 gap-6">
 						{bookmarkedReports.map((report: ReportType) => (
-							<ReportCard key={report._id} report={report} />
+							<BookmarkReportCard key={report._id} report={report} />
 						))}
 					</div>
 				)}

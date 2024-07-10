@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { montserrat } from "@/app/fonts";
+import EditButton from "@/components/EditButton";
+import DeleteButton from "@/components/DeleteButton";
 
 type ProfileReportCardProps = {
 	report: ReportType;
@@ -105,16 +107,8 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
 						</CardContent>
 						<div className="flex-grow" />
 						<CardFooter className="flex justify-between items-center">
-							<Button asChild variant="default" className="z-30 w-full mr-2">
-								<Link href={`/reports/${report._id}/edit`}>Edit</Link>
-							</Button>
-							<Button
-								onClick={() => handleDeleteReport(report._id)}
-								variant="destructive"
-								className="z-30 w-full"
-							>
-								Delete
-							</Button>
+							<EditButton report={report} />
+							<DeleteButton report={report} />
 						</CardFooter>
 					</div>
 				</Card>
