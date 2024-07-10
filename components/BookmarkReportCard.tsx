@@ -81,7 +81,7 @@ const BookmarkReportCard: React.FC<BookmarkReportCardProps> = ({ report }) => {
 							{report.description}
 						</p>
 					)}
-					<div className="flex flex-wrap gap-1">
+					<div className="flex flex-wrap gap-1 mb-2">
 						{report.activityType.map((type) => (
 							<Badge key={type} variant="outline" className="">
 								{type}
@@ -89,9 +89,6 @@ const BookmarkReportCard: React.FC<BookmarkReportCardProps> = ({ report }) => {
 						))}
 					</div>
 				</CardContent>
-				<div className="m-auto">
-					<BookmarkButton report={report} />
-				</div>
 				<div className="flex-grow" />
 				<CardFooter className="mt-4 flex justify-between items-center pt-4">
 					<Button asChild variant="outline">
@@ -103,6 +100,9 @@ const BookmarkReportCard: React.FC<BookmarkReportCardProps> = ({ report }) => {
 						</Link>
 					</Button>
 				</CardFooter>
+				<div className="m-auto mb-4">
+					<BookmarkButton report={report} />
+				</div>
 			</div>
 		</Card>
 	);
