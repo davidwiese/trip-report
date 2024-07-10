@@ -60,7 +60,14 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 						</p>
 					</div>
 					{report.description && (
-						<p className="text-sm text-gray-700 line-clamp-3">
+						<p
+							className="text-sm text-gray-700 line-clamp-3"
+							style={{
+								whiteSpace: "pre-wrap",
+								wordWrap: "break-word",
+								overflowWrap: "break-word",
+							}}
+						>
 							{report.description}
 						</p>
 					)}

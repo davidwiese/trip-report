@@ -148,7 +148,15 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({ report, author }) => {
 					</div>
 					<div className="text-gray-700 mb-6">
 						<h3 className="text-lg font-bold mb-2">Description</h3>
-						<p>{report.description}</p>
+						<p
+							style={{
+								whiteSpace: "pre-wrap",
+								wordWrap: "break-word",
+								overflowWrap: "break-word",
+							}}
+						>
+							{report.description}
+						</p>
 					</div>
 					<div className="text-gray-700 mb-4 flex justify-between items-center">
 						<div>
