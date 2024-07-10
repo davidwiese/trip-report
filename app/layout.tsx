@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AuthProvider from "@/components/AuthProvider";
+import { CSPostHogProvider } from "@/app/_analytics/provider";
 import { ToastContainer } from "react-toastify";
 import { GlobalProvider } from "@/context/GlobalContext";
 import { GeistSans } from "geist/font/sans";
@@ -22,16 +23,18 @@ export const metadata = {
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 	return (
 		<AuthProvider>
-			<GlobalProvider>
-				<html lang="en" className={GeistSans.className}>
-					<body>
-						<Navbar />
-						<main>{children}</main>
-						<Footer />
-						<ToastContainer />
-					</body>
-				</html>
-			</GlobalProvider>
+			<CSPostHogProvider>
+				<GlobalProvider>
+					<html lang="en" className={GeistSans.className}>
+						<body>
+							<Navbar />
+							<main>{children}</main>
+							<Footer />
+							<ToastContainer />
+						</body>
+					</html>
+				</GlobalProvider>
+			</CSPostHogProvider>
 		</AuthProvider>
 	);
 };
