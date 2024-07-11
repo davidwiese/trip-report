@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 export default function ContactForm() {
 	const [name, setName] = useState("");
@@ -16,15 +18,13 @@ export default function ContactForm() {
 		setIsSubmitting(true);
 
 		try {
-			const response = await fetch("/api/send", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ name, email, message }),
+			const response = await axios.post("/api/send", {
+				name,
+				email,
+				message,
 			});
 
-			if (response.ok) {
+			if (response.status === 200) {
 				toast.success("Message sent successfully!");
 				setName("");
 				setEmail("");
@@ -79,15 +79,12 @@ export default function ContactForm() {
 					required
 					className="w-full px-3 py-2 border rounded"
 					rows={4}
+					maxLength={4000}
 				></textarea>
 			</div>
-			<button
-				type="submit"
-				disabled={isSubmitting}
-				className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
-			>
+			<Button type="submit" disabled={isSubmitting}>
 				{isSubmitting ? "Sending..." : "Send Message"}
-			</button>
+			</Button>
 		</form>
 	);
 }
