@@ -19,21 +19,21 @@ const Footer: React.FC<FooterProps> = () => {
 							href="/privacy-policy"
 							className="text-sm text-gray-600 hover:text-gray-800 hover:underline"
 						>
-							Privacy Policy
+							Privacy
 						</Link>
-						<span className="mx-2 text-gray-600">|</span>
+						<span className="mx-2 text-gray-600">·</span>
 						<Link
 							href="/terms"
 							className="text-sm text-gray-600 hover:text-gray-800 hover:underline"
 						>
-							Terms of Service
+							Terms
 						</Link>
-						<span className="mx-2 text-gray-600">|</span>
+						<span className="mx-2 text-gray-600">·</span>
 						<Link
 							href="/contact"
 							className="text-sm text-gray-600 hover:text-gray-800 hover:underline"
 						>
-							Contact Us
+							Contact
 						</Link>
 					</div>
 				</div>
