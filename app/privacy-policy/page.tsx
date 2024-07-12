@@ -1,6 +1,6 @@
 const PrivacyPolicy: React.FC = () => {
 	return (
-		<div className="container mx-auto px-4 py-8">
+		<div className="container mx-auto p-12">
 			<div
 				dangerouslySetInnerHTML={{
 					__html: `
