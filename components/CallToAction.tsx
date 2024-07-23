@@ -33,7 +33,7 @@ const CallToAction: React.FC<CallToActionProps> = () => {
 					className="px-6 py-3 rounded-lg"
 					style={{ boxShadow: "0 0 3px 1px rgba(255, 255, 255, 0.5)" }}
 				>
-					<Link href="/auth/signin">Get Started</Link>
+					<Link href="/auth/signin">Sign Up</Link>
 				</Button>
 			</div>
 		</section>
