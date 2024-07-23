@@ -568,8 +568,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				/>
 			</div>
 
-			<div className="mb-4 flex flex-wrap">
-				<div className="w-full sm:w-1/3 pr-2">
+			<div className="mb-4 flex flex-wrap -mx-2">
+				<div className="w-full sm:w-1/3 px-2 mb-4 sm:mb-0">
 					<label
 						htmlFor="distance"
 						className="block text-gray-700 font-bold mb-2"
@@ -587,7 +587,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						defaultValue={report.distance}
 					/>
 				</div>
-				<div className="w-full sm:w-1/3 px-2">
+				<div className="w-full sm:w-1/3 px-2 mb-4 sm:mb-0">
 					<label
 						htmlFor="elevationGain"
 						className="block text-gray-700 font-bold mb-2"
@@ -604,7 +604,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						defaultValue={report.elevationGain}
 					/>
 				</div>
-				<div className="w-full sm:w-1/3 pl-2">
+				<div className="w-full sm:w-1/3 px-2">
 					<label
 						htmlFor="elevationLoss"
 						className="block text-gray-700 font-bold mb-2"

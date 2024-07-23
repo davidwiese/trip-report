@@ -16,7 +16,8 @@ import DownloadButton from "@/components/DownloadButton";
 import EditButton from "@/components/EditButton";
 import { Badge } from "@/components/ui/badge";
 import { TbMap2 } from "react-icons/tb";
-import { Button } from "@/components/ui/button";
+import DateCard from "@/components/DateCard";
+import StatCard from "@/components/StatCard";
 
 type ReportDetailsProps = {
 	report: Report;
@@ -77,79 +78,56 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({
 				</CardHeader>
 				<CardContent>
 					<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-1 text-base mb-6">
-						{[
-							{
-								icon: <LuMoveUpRight className="inline-block text-2xl" />,
-								label: "Elevation Gain",
-								value: `${report.elevationGain.toFixed(0)} ft`,
-							},
-							{
-								icon: <LuMoveDownRight className="inline-block text-2xl" />,
-								label: "Elevation Loss",
-								value: `${report.elevationLoss.toFixed(0)} ft`,
-							},
-							{
-								icon: <RxRulerHorizontal className="inline-block text-2xl" />,
-								label: "Distance",
-								value: `${report.distance.toFixed(2)} miles`,
-							},
-							{
-								icon: <LuClock4 className="inline-block text-xl" />,
-								label: "Duration",
-								value: `${report.duration} hours`,
-							},
-						].map((stat, index) => (
-							<Card
-								key={index}
-								className="flex items-center justify-center text-center p-2 min-w-[100px] sm:min-w-[140px]"
-							>
-								<div className="flex items-center space-x-2 w-full justify-center">
-									{stat.icon}
-									<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full justify-center">
-										<span className="font-medium text-sm hidden sm:block">
-											{stat.label}:
-										</span>
-										<span>{stat.value}</span>
-									</div>
-								</div>
-							</Card>
-						))}
+						<StatCard
+							icon={
+								<LuMoveUpRight className="inline-block text-2xl flex-shrink-0" />
+							}
+							label="Elevation Gain"
+							value={`${report.elevationGain.toFixed(0)} ft`}
+						/>
+						<StatCard
+							icon={
+								<LuMoveDownRight className="inline-block text-2xl flex-shrink-0" />
+							}
+							label="Elevation Loss"
+							value={`${report.elevationLoss.toFixed(0)} ft`}
+						/>
+						<StatCard
+							icon={
+								<RxRulerHorizontal className="inline-block text-2xl flex-shrink-0" />
+							}
+							label="Distance"
+							value={`${report.distance.toFixed(2)} miles`}
+						/>
+						<StatCard
+							icon={<LuClock4 className="inline-block text-xl flex-shrink-0" />}
+							label="Duration"
+							value={`${report.duration} hours`}
+						/>
 						{isSameDate ? (
-							<Card className="flex items-center justify-center text-center p-2 min-w-[100px] sm:min-w-[140px]">
-								<div className="flex items-center space-x-2 w-full justify-center">
-									<TbCalendarSmile className="inline-block text-2xl" />
-									<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full justify-center">
-										<span className="font-medium text-sm hidden sm:block">
-											Date:
-										</span>
-										<span>{formatDate(report.startDate)}</span>
-									</div>
-								</div>
-							</Card>
+							<DateCard
+								icon={
+									<TbCalendarSmile className="inline-block text-2xl flex-shrink-0" />
+								}
+								label="Date"
+								date={formatDate(report.startDate)}
+							/>
 						) : (
 							<>
-								<Card className="flex items-center justify-center text-center p-2 min-w-[100px] sm:min-w-[140px]">
-									<div className="flex items-center space-x-2 w-full justify-center">
-										<TbCalendarSmile className="inline-block text-2xl" />
-										<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full justify-center">
-											<span className="font-medium text-sm hidden sm:block">
-												Start Date:
-											</span>
-											<span>{formatDate(report.startDate)}</span>
-										</div>
-									</div>
-								</Card>
-								<Card className="flex items-center justify-center text-center p-2 min-w-[100px] sm:min-w-[140px]">
-									<div className="flex items-center space-x-2 w-full justify-center">
-										<TbCalendarSmile className="inline-block text-2xl" />
-										<div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 w-full justify-center">
-											<span className="font-medium text-sm hidden sm:block">
-												End Date:
-											</span>
-											<span>{formatDate(report.endDate)}</span>
-										</div>
-									</div>
-								</Card>
+								<DateCard
+									icon={
+										<TbCalendarSmile className="inline-block text-2xl flex-shrink-0" />
+									}
+									label="Start Date"
+									date={formatDate(report.startDate)}
+								/>
+								<DateCard
+									icon={
+										<TbCalendarSmile className="inline-block text-2xl flex-shrink-0" />
+									}
+									label="End Date"
+									date={formatDate(report.endDate)}
+								/>
 							</>
 						)}
 					</div>
