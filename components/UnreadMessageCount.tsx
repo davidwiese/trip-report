@@ -1,4 +1,5 @@
 "use client";
+
 import { Session } from "next-auth";
 import { useGlobalContext } from "@/context/GlobalContext";
 

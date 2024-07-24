@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import { toast } from "react-toastify";
 import deleteReport from "@/app/actions/deleteReport";
 import { Report as ReportType } from "@/types";

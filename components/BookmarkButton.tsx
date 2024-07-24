@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { Report as ReportType } from "@/types";
 import { useSession } from "next-auth/react";

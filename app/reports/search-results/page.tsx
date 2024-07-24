@@ -5,7 +5,6 @@ import Report from "@/models/Report";
 import ReportSearchForm from "@/components/ReportSearchForm";
 import connectDB from "@/config/database";
 import { convertToSerializableObject } from "@/utils/convertToObject";
-import { Report as ReportType } from "@/types";
 import Pagination from "@/components/Pagination";
 
 type SearchResultsPageProps = {
