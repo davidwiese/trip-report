@@ -4,6 +4,7 @@ import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { Report as ReportType, User as UserType } from "@/types";
 import Pagination from "@/components/Pagination";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 
 async function loader(pageSize: number, page: number) {
 	await connectDB();
@@ -41,10 +42,9 @@ async function loader(pageSize: number, page: number) {
 	}
 
 	const skip = (currentPage - 1) * pageSize;
-	const bookmarkedReports: ReportType[] = user.bookmarks.slice(
-		skip,
-		skip + pageSize
-	);
+	const bookmarkedReports: ReportType[] = user.bookmarks
+		.slice(skip, skip + pageSize)
+		.map((report) => convertToSerializableObject(report));
 
 	return {
 		bookmarkedReports,
@@ -78,23 +78,6 @@ const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({
 		);
 	}
 
-	const { userId } = sessionUser;
-
-	const user: UserType | null = await User.findById(userId)
-		.populate("bookmarks")
-		.lean();
-
-	if (!user || !user.bookmarks) {
-		return (
-			<section className="px-4 py-6">
-				<h1 className="text-2xl mb-4">Bookmarked Reports</h1>
-				<div className="container-xl lg:container m-auto px-4 py-6">
-					<p>No bookmarked reports</p>
-				</div>
-			</section>
-		);
-	}
-
 	const validPage = parseInt(page, 10) || 1;
 	const validPageSize = parseInt(pageSize, 10) || 6;
 
@@ -103,24 +86,31 @@ const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({
 		validPage
 	);
 
+	// Convert the entire result to serializable objects
+	const serializableResult = convertToSerializableObject({
+		bookmarkedReports,
+		totalReports,
+		currentPage,
+	});
+
 	return (
 		<section className="px-4 py-6">
 			<h1 className="text-2xl text-center mb-4">Bookmarked Reports</h1>
 			<div className="container-xl lg:container m-auto px-4 py-6">
-				{bookmarkedReports.length === 0 ? (
+				{serializableResult.bookmarkedReports.length === 0 ? (
 					<p>No bookmarked reports</p>
 				) : (
 					<div className="grid grid-cols-1 custom-lg:grid-cols-3 gap-6">
-						{bookmarkedReports.map((report: ReportType) => (
+						{serializableResult.bookmarkedReports.map((report: ReportType) => (
 							<BookmarkReportCard key={report._id} report={report} />
 						))}
 					</div>
 				)}
-				{totalReports > 0 && (
+				{serializableResult.totalReports > 0 && (
 					<Pagination
-						page={currentPage}
+						page={serializableResult.currentPage}
 						pageSize={validPageSize}
-						totalItems={totalReports}
+						totalItems={serializableResult.totalReports}
 						basePath="/reports/bookmarks"
 					/>
 				)}
@@ -128,4 +118,5 @@ const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({
 		</section>
 	);
 };
+
 export default BookmarkedReportsPage;
