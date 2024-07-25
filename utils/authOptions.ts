@@ -8,8 +8,14 @@ import {
 	User as NextAuthUser,
 	NextAuthOptions,
 } from "next-auth";
+import { JWT } from "next-auth/jwt";
+import { AdapterUser } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+interface CustomUser extends NextAuthUser {
+	id: string;
+}
 
 // Create a custom type that extends the Profile type
 interface GoogleProfile extends Profile {
@@ -98,6 +104,9 @@ export const authOptions: NextAuthOptions = {
 			},
 		}),
 	],
+	session: {
+		strategy: "jwt", // Use JWT for better performance
+	},
 	callbacks: {
 		async signIn({
 			user,
@@ -156,20 +165,31 @@ export const authOptions: NextAuthOptions = {
 
 				return true;
 			} catch (error) {
-				console.error("Error signing in:", error);
+				console.error("Error in signIn callback:", error);
 				return false;
 			}
 		},
 
-		async session({ session }: { session: Session }) {
+		async jwt({
+			token,
+			user,
+		}: {
+			token: JWT;
+			user?: CustomUser | AdapterUser;
+		}) {
+			if (user) {
+				token.id = user.id;
+			}
+			return token;
+		},
+		async session({ session, token }: { session: Session; token: JWT }) {
 			try {
-				const user = await User.findOne({ email: session.user?.email });
-				if (user && session.user) {
-					(session.user as unknown as any).id = user._id.toString();
+				if (session.user) {
+					(session.user as CustomUser).id = token.id as string;
 				}
 				return session;
 			} catch (error) {
-				console.error("Error retrieving user in session callback:", error);
+				console.error("Error in session callback:", error);
 				throw new Error("Failed to retrieve user session.");
 			}
 		},

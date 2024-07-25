@@ -5,6 +5,8 @@ import Message from "@/models/Message";
 
 const options = {
 	bufferCommands: false, // Disable mongoose buffering
+	serverSelectionTimeoutMS: 5000, // Timeout after 5s
+	socketTimeoutMS: 45000, // Close sockets after 45s
 };
 
 const connectDB = async () => {
