@@ -1,15 +1,14 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/utils/authOptions";
+import { auth } from "@clerk/nextjs/server";
 
 export const getSessionUser = async () => {
-	const session = await getServerSession(authOptions);
+	const { userId } = auth();
 
-	if (!session || !session.user) {
+	if (!userId) {
 		return null;
 	}
 
 	return {
-		user: session.user,
-		userId: (session.user as { id: string }).id,
+		user: { id: userId },
+		userId,
 	};
 };
