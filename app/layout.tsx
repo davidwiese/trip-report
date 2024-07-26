@@ -22,7 +22,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<ClerkProvider>
+		<ClerkProvider afterSignOutUrl={"/"}>
 			<CSPostHogProvider>
 				<GlobalProvider>
 					<html lang="en" className={GeistSans.className}>

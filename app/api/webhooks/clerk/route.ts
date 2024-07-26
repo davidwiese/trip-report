@@ -53,6 +53,7 @@ export async function POST(req: Request) {
 	const eventType = evt.type;
 
 	if (eventType === "user.created" || eventType === "user.updated") {
+		console.log(`Webhook received: ${eventType}`); // Log the event type
 		const { id, email_addresses, username, image_url } = evt.data;
 
 		const userEmail = email_addresses[0]?.email_address;
@@ -70,10 +71,15 @@ export async function POST(req: Request) {
 			image: image_url,
 		};
 
-		await User.findOneAndUpdate({ clerkId: id }, userData, {
+		const updatedUser = await User.findOneAndUpdate({ clerkId: id }, userData, {
 			upsert: true,
 			new: true,
 		});
+
+		console.log(
+			`User ${eventType === "user.created" ? "created" : "updated"}:`,
+			updatedUser
+		); // Log the updated user
 
 		return new Response("User created or updated", { status: 200 });
 	}

@@ -2,6 +2,7 @@
 
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
+import User from "@/models/User";
 import { auth } from "@clerk/nextjs/server";
 import { readRateLimit } from "@/utils/ratelimit";
 
@@ -19,8 +20,15 @@ async function getUnreadMessageCount() {
 		return { error: "Too many requests. Please try again later." };
 	}
 
+	// Find the MongoDB user document using the Clerk ID
+	const user = await User.findOne({ clerkId: userId });
+
+	if (!user) {
+		return { error: "User not found in database" };
+	}
+
 	const count = await Message.countDocuments({
-		recipient: userId,
+		recipient: user._id,
 		read: false,
 	});
 

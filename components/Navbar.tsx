@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import logo from "@/public/images/logo_fill.png";
 import ProfileButton from "@/components/ProfileButton";
-import { useUser } from "@clerk/nextjs";
+import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import UnreadMessageCount from "@/components/UnreadMessageCount";
 
 type NavbarProps = {
@@ -141,19 +141,14 @@ const Navbar: React.FC<NavbarProps> = () => {
 									<UnreadMessageCount />
 								</Link>
 								<div className="relative mx-2 flex items-center rounded-full">
-									<ProfileButton />
+									<UserButton />
 								</div>
 							</>
 						) : (
 							pathname !== "/auth/signin" && (
-								<Button asChild variant={"secondary"}>
-									<Link
-										href="/auth/signin"
-										className="flex justify-center items-center px-3 py-2"
-									>
-										<span>Login or Register</span>
-									</Link>
-								</Button>
+								<SignInButton mode="modal">
+									<Button variant="secondary">Login or Register</Button>
+								</SignInButton>
 							)
 						)}
 					</div>
