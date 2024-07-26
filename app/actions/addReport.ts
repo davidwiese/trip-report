@@ -3,7 +3,7 @@
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import User from "@/models/User";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import cloudinary from "@/config/cloudinary";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -22,23 +22,21 @@ async function addReport(formData: FormData) {
 	try {
 		await connectDB();
 
-		const sessionUser = await getSessionUser();
+		const { userId } = auth();
 
 		// NOTE: throwing an Error from our server actions will be caught by our
 		// error.jsx ErrorBoundary component and show the user an Error page with
 		// message of the thrown error.
 
-		if (!sessionUser || !sessionUser.userId) {
+		if (!userId) {
 			throw new Error("User ID is required");
 		}
 
-		const { success } = await reportRateLimit.limit(sessionUser.userId);
+		const { success } = await reportRateLimit.limit(userId);
 
 		if (!success) {
 			throw new Error("Too many reports. Please try again later.");
 		}
-
-		const { userId } = sessionUser;
 
 		type LocationType = {
 			country: FormDataEntryValue;

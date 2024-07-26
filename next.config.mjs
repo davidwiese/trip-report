@@ -1,14 +1,4 @@
-const isProd = process.env.NODE_ENV === "production";
-
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-	env: {
-		// NOTE: Use VERCEL_URL to dynamically set NEXTAUTH_URL for Vercel deployments,
-		// falling back to localhost for local development.
-		NEXTAUTH_URL: isProd
-			? `https://${process.env.VERCEL_URL}`
-			: "http://localhost:3000",
-	},
 	images: {
 		remotePatterns: [
 			{
@@ -19,6 +9,11 @@ const nextConfig = {
 			{
 				protocol: "https",
 				hostname: "res.cloudinary.com",
+				pathname: "**",
+			},
+			{
+				protocol: "https",
+				hostname: "img.clerk.com",
 				pathname: "**",
 			},
 		],

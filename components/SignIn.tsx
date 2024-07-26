@@ -2,6 +2,6 @@
 
 import { SignIn } from "@clerk/nextjs";
 
-export default function SignInPage() {
+export default function SignInComponent() {
 	return <SignIn />;
 }

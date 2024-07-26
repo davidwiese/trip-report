@@ -2,7 +2,7 @@
 
 import connectDB from "@/config/database";
 import User from "@/models/User";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
 import { standardRateLimit } from "@/utils/ratelimit";
@@ -10,18 +10,16 @@ import { standardRateLimit } from "@/utils/ratelimit";
 async function bookmarkReport(reportId: string | mongoose.Types.ObjectId) {
 	await connectDB();
 
-	const sessionUser = await getSessionUser();
+	const { userId } = auth();
 
-	if (!sessionUser || !sessionUser.userId) {
+	if (!userId) {
 		return { error: "User ID is required" };
 	}
 
-	const { success } = await standardRateLimit.limit(sessionUser.userId);
+	const { success } = await standardRateLimit.limit(userId);
 	if (!success) {
 		return { error: "Too many requests. Please try again later." };
 	}
-
-	const { userId } = sessionUser;
 
 	// Find user in database
 	const user = await User.findById(userId);
