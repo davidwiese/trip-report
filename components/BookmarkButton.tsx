@@ -13,13 +13,6 @@ type BookmarkButtonProps = {
 	report: ReportType;
 };
 
-type SessionUser = {
-	id?: string;
-	name?: string | null;
-	email?: string | null;
-	image?: string | null;
-};
-
 const BookmarkButton: React.FC<BookmarkButtonProps> = ({ report }) => {
 	const { isSignedIn, user } = useUser();
 	const userId = user?.id;
