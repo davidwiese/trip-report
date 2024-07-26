@@ -1,14 +1,14 @@
 import ReportSearchForm from "@/components/ReportSearchForm";
 import Image from "next/image";
 import Link from "next/link";
-import heroImage from "@/assets/images/hero.jpg";
+import heroImage from "@/public/images/hero.jpg";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { Button } from "@/components/ui/button";
 import { RiImageEditFill } from "react-icons/ri";
 import { PiChartLineUpBold } from "react-icons/pi";
 import { GoCommentDiscussion } from "react-icons/go";
 import { TbMap2 } from "react-icons/tb";
-import { montserrat } from "@/app/fonts";
+import { montserrat } from "@/app/ui/fonts";
 import HeroCard from "@/components/HeroCard";
 
 type HeroProps = {

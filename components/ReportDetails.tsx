@@ -9,7 +9,7 @@ import { RxRulerHorizontal } from "react-icons/rx";
 import { TbCalendarSmile } from "react-icons/tb";
 import { PiPersonSimpleHikeBold } from "react-icons/pi";
 import { Report } from "@/types";
-import { montserrat } from "@/app/fonts";
+import { montserrat } from "@/app/ui/fonts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BookmarkButton from "@/components/BookmarkButton";
 import DownloadButton from "@/components/DownloadButton";

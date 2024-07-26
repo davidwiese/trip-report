@@ -12,7 +12,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { montserrat } from "@/app/fonts";
+import { montserrat } from "@/app/ui/fonts";
 
 type PublicProfileReportCardProps = {
 	report: Report;

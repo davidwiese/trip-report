@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import logo from "@/assets/images/logo_fill.png";
+import logo from "@/public/images/logo_fill.png";
 
 type FooterProps = {
 	// Add any props here if needed

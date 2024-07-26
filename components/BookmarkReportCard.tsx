@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { montserrat } from "@/app/fonts";
+import { montserrat } from "@/app/ui/fonts";
 import BookmarkButton from "@/components/BookmarkButton";
 
 type BookmarkReportCardProps = {

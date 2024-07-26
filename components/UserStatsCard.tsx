@@ -3,10 +3,10 @@
 import { User as UserType } from "@/types";
 import { Card, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-import profileDefault from "@/assets/images/profile.png";
+import profileDefault from "@/public/images/profile.png";
 import { LuMoveUpRight, LuMoveDownRight } from "react-icons/lu";
 import { RxRulerHorizontal } from "react-icons/rx";
-import tripReportLogo from "@/assets/images/logo_fill.png";
+import tripReportLogo from "@/public/images/logo_fill.png";
 import { useState } from "react";
 import updateBio from "@/app/actions/updateBio";
 import { TbEdit } from "react-icons/tb";

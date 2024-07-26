@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import logo from "@/assets/images/logo_fill.png";
+import logo from "@/public/images/logo_fill.png";
 import ProfileButton from "@/components/ProfileButton";
 import {
 	useSession,

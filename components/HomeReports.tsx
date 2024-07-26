@@ -5,7 +5,7 @@ import { Report as ReportType } from "@/types";
 import Report from "@/models/Report";
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
-import { montserrat } from "@/app/fonts";
+import { montserrat } from "@/app/ui/fonts";
 
 type HomeReportsProps = {
 	// Add any props here if needed
