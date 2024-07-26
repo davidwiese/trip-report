@@ -1,7 +1,7 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
+import { useUser, useClerk } from "@clerk/nextjs";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,8 +15,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
 
 const ProfileButton = () => {
-	const { data: session } = useSession();
-	const profileImage = session?.user?.image;
+	const { user } = useUser();
+	const { signOut } = useClerk();
+	const profileImage = user?.imageUrl;
 
 	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
 

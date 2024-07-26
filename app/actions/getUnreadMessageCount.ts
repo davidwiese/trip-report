@@ -2,24 +2,22 @@
 
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import { readRateLimit } from "@/utils/ratelimit";
 
 async function getUnreadMessageCount() {
 	await connectDB();
 
-	const sessionUser = await getSessionUser();
+	const { userId } = auth();
 
-	if (!sessionUser || !sessionUser.user) {
+	if (!userId) {
 		return { error: "User ID is required" };
 	}
 
-	const { success } = await readRateLimit.limit(sessionUser.userId);
+	const { success } = await readRateLimit.limit(userId);
 	if (!success) {
 		return { error: "Too many requests. Please try again later." };
 	}
-
-	const { userId } = sessionUser;
 
 	const count = await Message.countDocuments({
 		recipient: userId,
