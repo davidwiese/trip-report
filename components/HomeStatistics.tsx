@@ -1,18 +1,9 @@
 import { montserrat } from "@/app/fonts";
+import { getHomeStatistics } from "@/app/actions/getHomeStatistics";
 
-type HomeStatisticsProps = {
-	totalReports: number;
-	totalDistance: number;
-	totalElevationGain: number;
-	totalUsers: number;
-};
+const HomeStatistics: React.FC = async () => {
+	const statistics = await getHomeStatistics();
 
-const HomeStatistics: React.FC<HomeStatisticsProps> = ({
-	totalReports,
-	totalDistance,
-	totalElevationGain,
-	totalUsers,
-}) => {
 	return (
 		<div className="h-auto min-h-[30rem] w-full dark:bg-black bg-white dark:bg-grid-small-white/[0.2] bg-grid-small-black/[0.2] relative flex items-center justify-center">
 			<section className="py-12 relative z-10">
@@ -23,25 +14,25 @@ const HomeStatistics: React.FC<HomeStatisticsProps> = ({
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
 						<div>
 							<h3 className="text-4xl font-bold text-primary-600">
-								{totalReports}
+								{statistics.totalReports}
 							</h3>
 							<p className="text-gray-600">Reports Created</p>
 						</div>
 						<div>
 							<h3 className="text-4xl font-bold text-primary-600">
-								{totalDistance}
+								{statistics.totalDistance}
 							</h3>
 							<p className="text-gray-600">Miles Hiked</p>
 						</div>
 						<div>
 							<h3 className="text-4xl font-bold text-primary-600">
-								{totalElevationGain}
+								{statistics.totalElevationGain}
 							</h3>
 							<p className="text-gray-600">Feet Climbed</p>
 						</div>
 						<div>
 							<h3 className="text-4xl font-bold text-primary-600">
-								{totalUsers}
+								{statistics.totalUsers}
 							</h3>
 							<p className="text-gray-600">Users Joined</p>
 						</div>
