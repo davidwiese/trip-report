@@ -7,13 +7,7 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import logo from "@/public/images/logo_fill.png";
 import ProfileButton from "@/components/ProfileButton";
-import {
-	useSession,
-	getProviders,
-	LiteralUnion,
-	ClientSafeProvider,
-} from "next-auth/react";
-import { BuiltInProviderType } from "next-auth/providers/index";
+import { useUser } from "@clerk/nextjs";
 import UnreadMessageCount from "@/components/UnreadMessageCount";
 
 type NavbarProps = {
@@ -21,23 +15,13 @@ type NavbarProps = {
 };
 
 const Navbar: React.FC<NavbarProps> = () => {
-	const { data: session } = useSession();
+	const { isSignedIn, user } = useUser();
 
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-	const [providers, setProviders] = useState<Record<
-		LiteralUnion<BuiltInProviderType, string>,
-		ClientSafeProvider
-	> | null>(null);
 
 	const pathname = usePathname();
 
 	useEffect(() => {
-		const setAuthProviders = async () => {
-			const res = await getProviders();
-			setProviders(res);
-		};
-
-		setAuthProviders();
 		// Close mobile menu if viewport size is changed
 		window.addEventListener("resize", () => {
 			setIsMobileMenuOpen(false);
@@ -111,7 +95,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 						>
 							Reports
 						</Link>
-						{session && (
+						{isSignedIn && (
 							<Link
 								href="/reports/add"
 								className={`${linkClasses(
@@ -125,7 +109,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
 					{/* Right Side Menu */}
 					<div className="flex items-center justify-end flex-1">
-						{session ? (
+						{isSignedIn ? (
 							<>
 								<Link
 									tabIndex={-1}
@@ -189,7 +173,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 						>
 							Reports
 						</Link>
-						{session && (
+						{isSignedIn && (
 							<Link
 								href="/reports/add"
 								className={`${linkClasses("/reports/add")} w-full text-center`}
@@ -198,7 +182,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 							</Link>
 						)}
 
-						{!session && pathname !== "/auth/signin" && (
+						{!isSignedIn && pathname !== "/auth/signin" && (
 							<Button asChild variant={"secondary"}>
 								<Link
 									href="/auth/signin"
