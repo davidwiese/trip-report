@@ -1,13 +1,10 @@
 import Link from "next/link";
 import { FaExclamationTriangle } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 
-type NotFoundPageProps = {
-	// Add any props here if needed
-};
-
-const NotFoundPage: React.FC<NotFoundPageProps> = () => {
+const NotFoundPage: React.FC = () => {
 	return (
-		<section className="bg-blue-50 min-h-screen flex-grow">
+		<section className="min-h-screen flex-grow">
 			<div className="container m-auto max-w-2xl py-24">
 				<div className="bg-white px-6 py-24 mb-4 shadow-md rounded-md border m-4 md:m-0">
 					<div className="flex justify-center">
@@ -18,12 +15,13 @@ const NotFoundPage: React.FC<NotFoundPageProps> = () => {
 						<p className="text-gray-500 text-xl mb-10">
 							The page you are looking for does not exist.
 						</p>
-						<Link
-							href="/"
-							className="bg-black hover:bg-gray-800 text-white font-bold py-4 px-6 rounded"
+						<Button
+							asChild
+							variant="secondary"
+							className="bg-black hover:bg-gray-800 text-white w-1/3"
 						>
-							Go Home
-						</Link>
+							<Link href="/">Go Home</Link>
+						</Button>
 					</div>
 				</div>
 			</div>
@@ -31,4 +29,5 @@ const NotFoundPage: React.FC<NotFoundPageProps> = () => {
 		</section>
 	);
 };
+
 export default NotFoundPage;

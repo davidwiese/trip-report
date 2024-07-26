@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { FaExclamationTriangle } from "react-icons/fa";
+import { FaExclamationTriangle, FaCopy } from "react-icons/fa";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 interface ErrorPageProps {
 	error: Error;
@@ -9,41 +11,69 @@ interface ErrorPageProps {
 }
 
 const ErrorPage = ({ error, reset }: ErrorPageProps) => {
+	const [copied, setCopied] = useState(false);
+
+	const copyError = () => {
+		navigator.clipboard.writeText(error.message);
+		setCopied(true);
+		setTimeout(() => setCopied(false), 2000);
+	};
+
 	return (
-		<section className="bg-blue-50 min-h-screen flex-grow">
+		<section className="min-h-screen flex-grow">
 			<div className="container m-auto max-w-2xl py-24">
 				<div className="bg-white px-6 py-24 mb-4 shadow-md rounded-md border m-4 md:m-0">
 					<div className="flex justify-center">
-						<FaExclamationTriangle className="fas fa-exclamation-triangle fa-5x text-8xl text-red-400"></FaExclamationTriangle>
+						<FaExclamationTriangle className="text-8xl text-red-500" />
 					</div>
 					<div className="text-center">
 						<h1 className="text-3xl font-bold mt-4 mb-2">
 							Something went wrong!
 						</h1>
-						<h2 className="text-2xl font-bold my-2 text-red-400">
-							{error.message}
-						</h2>
-						<p className="text-gray-500 text-xl my-5">
-							Shall we try again? ...
+						<div className="bg-gray-100 p-4 rounded-lg my-4">
+							<h2 className="text-xl font-bold text-red-500 break-all">
+								{error.message}
+							</h2>
+							<Button
+								onClick={copyError}
+								variant="ghost"
+								className="mt-2 text-gray-600 hover:text-gray-800 flex items-center justify-center mx-auto"
+							>
+								<FaCopy className="mr-2" />
+								{copied ? "Copied!" : "Copy error message"}
+							</Button>
+						</div>
+						<p className="text-gray-500 text-xl mb-5">
+							Please try again or report this error to us.
 						</p>
-						<button
-							onClick={() => reset()}
-							className="bg-yellow-500 hover:bg-yellow-600 font-bold py-4 px-6 rounded"
-						>
-							Try again
-						</button>
-						<p className="text-gray-500 text-xl my-5">Or back to home...</p>
-						<Link
-							href="/"
-							className="bg-black hover:bg-gray-800 text-white font-bold py-4 px-6 rounded inline-block"
-						>
-							Go Home
-						</Link>
+						<div className="space-y-4">
+							<Button
+								onClick={() => reset()}
+								variant="default"
+								className="w-full bg-yellow-500 hover:bg-yellow-600"
+							>
+								Try again
+							</Button>
+							<Button asChild variant="destructive" className="w-full">
+								<Link
+									href={`/contact?error=${encodeURIComponent(error.message)}`}
+								>
+									Report this error
+								</Link>
+							</Button>
+							<Button
+								asChild
+								variant="secondary"
+								className="bg-black hover:bg-gray-800 text-white w-full"
+							>
+								<Link href="/">Go Home</Link>
+							</Button>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div className="flex-grow"></div>
 		</section>
 	);
 };
+
 export default ErrorPage;

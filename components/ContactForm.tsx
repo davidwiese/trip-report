@@ -1,17 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 
-export default function ContactForm() {
+interface ContactFormProps {
+	initialErrorMessage?: string | null;
+}
+
+export default function ContactForm({ initialErrorMessage }: ContactFormProps) {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const router = useRouter();
+
+	useEffect(() => {
+		console.log("Initial error message:", initialErrorMessage); // Debug log
+		if (initialErrorMessage) {
+			setMessage(
+				`Error encountered: ${initialErrorMessage}\n\nPlease provide any additional details about what you were doing when this error occurred:`
+			);
+		}
+	}, [initialErrorMessage]);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -78,7 +91,7 @@ export default function ContactForm() {
 					onChange={(e) => setMessage(e.target.value)}
 					required
 					className="w-full px-3 py-2 border rounded"
-					rows={4}
+					rows={6}
 					maxLength={4000}
 				></textarea>
 			</div>
