@@ -74,7 +74,12 @@ const Navbar: React.FC<NavbarProps> = () => {
 							href="/"
 							onClick={(e) => e.currentTarget.blur()}
 						>
-							<Image className="h-12 w-auto" src={logo} alt="Trip Report" />
+							<Image
+								className="h-12 w-auto"
+								src={logo}
+								alt="Trip Report"
+								priority
+							/>
 							{/* <span className="hidden md:block text-black text-2xl font-bold ml-2">
 								Trip Report
 							</span> */}
