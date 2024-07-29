@@ -5,6 +5,7 @@ import connectDB from "@/config/database";
 import User from "@/models/User";
 
 export async function POST(req: Request) {
+	console.log("Webhook received"); // Log when the webhook is hit
 	const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
 	if (!WEBHOOK_SECRET) {
@@ -51,37 +52,45 @@ export async function POST(req: Request) {
 
 	// Handle the webhook
 	const eventType = evt.type;
+	console.log(`Event type: ${eventType}`); // Log the event type
 
 	if (eventType === "user.created" || eventType === "user.updated") {
-		console.log(`Webhook received: ${eventType}`); // Log the event type
 		const { id, email_addresses, username, image_url } = evt.data;
 
 		const userEmail = email_addresses[0]?.email_address;
 
 		if (!userEmail) {
+			console.error("No email found for user");
 			return new Response("No email found", { status: 400 });
 		}
 
-		await connectDB();
+		try {
+			await connectDB();
+			console.log("Connected to database (webhook)");
 
-		const userData = {
-			clerkId: id,
-			email: userEmail,
-			username: username || userEmail.split("@")[0],
-			image: image_url,
-		};
+			const userData = {
+				clerkId: id,
+				email: userEmail,
+				username: username || userEmail.split("@")[0],
+				image: image_url,
+			};
 
-		const updatedUser = await User.findOneAndUpdate({ clerkId: id }, userData, {
-			upsert: true,
-			new: true,
-		});
+			console.log("User data to be saved:", userData);
 
-		console.log(
-			`User ${eventType === "user.created" ? "created" : "updated"}:`,
-			updatedUser
-		); // Log the updated user
+			const result = await User.findOneAndUpdate({ clerkId: id }, userData, {
+				upsert: true,
+				new: true,
+			});
 
-		return new Response("User created or updated", { status: 200 });
+			console.log("User created/updated in database:", result);
+
+			return new Response("User created or updated", { status: 200 });
+		} catch (error) {
+			console.error("Error creating/updating user:", error);
+			return new Response("Error occurred while processing user", {
+				status: 500,
+			});
+		}
 	}
 
 	return new Response("Webhook received", { status: 200 });
