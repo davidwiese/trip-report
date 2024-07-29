@@ -6,12 +6,14 @@ import Report from "@/models/Report";
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { montserrat } from "@/app/ui/fonts";
+import { unstable_noStore as noStore } from "next/cache";
 
 type HomeReportsProps = {
 	// Add any props here if needed
 };
 
 const HomeReports: React.FC<HomeReportsProps> = async () => {
+	noStore();
 	await connectDB();
 
 	const recentReports: ReportType[] = await Report.find({})
