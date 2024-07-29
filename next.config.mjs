@@ -1,18 +1,17 @@
 const cspHeader = `
-    default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' https://clerk.accounts.dev https://*.clerk.accounts.dev https://cdn.jsdelivr.net https://js.sentry-cdn.com https://browser.sentry-cdn.com https://*.ingest.sentry.io https://challenges.cloudflare.com https://scdn.clerk.com https://segapi.clerk.com https://app.posthog.com;
-    style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net;
-    img-src 'self' https: data: blob:;
-    font-src 'self' https: data:;
-    object-src 'none';
-    base-uri 'self';
-    form-action 'self';
-    frame-ancestors 'none';
-    frame-src 'self' https://*.clerk.accounts.dev https://app.posthog.com;
-    connect-src 'self' https://*.clerk.accounts.dev https://*.ingest.sentry.io https://app.posthog.com https://api.cloudinary.com https://api.resend.com;
-    media-src 'self' https://res.cloudinary.com;
-    worker-src 'self' blob:;
-    upgrade-insecure-requests;
+  default-src 'self';
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https: http:;
+  style-src 'self' 'unsafe-inline' https: http:;
+  img-src 'self' data: https: http:;
+  font-src 'self' data: https: http:;
+  object-src 'none';
+  base-uri 'self';
+  form-action 'self';
+  frame-ancestors 'none';
+  frame-src 'self' https: http:;
+  connect-src 'self' https: http:;
+  media-src 'self' https: http:;
+  worker-src 'self' blob:;
 `;
 
 const nextConfig = {
