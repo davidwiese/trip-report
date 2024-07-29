@@ -7,7 +7,7 @@ import Report from "@/models/Report";
 import User from "@/models/User";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 
 type ReportPageProps = {
 	params: {
@@ -51,11 +51,11 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		id: user._id.toString(),
 	};
 
-	// Get the current user from the session
-	const sessionUser = await getSessionUser();
+	// Get the current user from the Clerk auth
+	const { userId } = auth();
 
 	// Check if the current user is the author of the report
-	const isAuthor = sessionUser?.userId === report.owner.toString();
+	const isAuthor = userId === report.owner.toString();
 
 	if (!report) {
 		return (

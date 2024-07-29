@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useUser } from "@clerk/nextjs";
 import { FaPaperPlane } from "react-icons/fa";
 import { toast } from "react-toastify";
 import addMessage from "@/app/actions/addMessage";
@@ -29,13 +29,10 @@ function SubmitMessageButton() {
 	);
 }
 
-// NOTE: This component has been changed to use server actions to send a message
-// to another user.
-
 const ProfileContactForm: React.FC<ProfileContactFormProps> = ({
 	recipientId,
 }) => {
-	const { data: session } = useSession();
+	const { isSignedIn, user } = useUser();
 	// NOTE: use the useFormState hook to know when form has submitted.
 	// https://react.dev/reference/react-dom/hooks/useFormState
 	const [submitState, formAction] = useFormState(addMessage, {
@@ -63,7 +60,7 @@ const ProfileContactForm: React.FC<ProfileContactFormProps> = ({
 	return (
 		<div className="bg-white p-6 rounded-lg shadow-md">
 			<h3 className="text-xl font-bold mb-6">Contact User</h3>
-			{!session ? (
+			{!isSignedIn ? (
 				<p>You must be logged in to send a message</p>
 			) : submitState.submitted ? (
 				<p className="text-green-500 mb-4">

@@ -7,13 +7,7 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import logo from "@/public/images/logo_fill.png";
 import ProfileButton from "@/components/ProfileButton";
-import {
-	useSession,
-	getProviders,
-	LiteralUnion,
-	ClientSafeProvider,
-} from "next-auth/react";
-import { BuiltInProviderType } from "next-auth/providers/index";
+import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
 import UnreadMessageCount from "@/components/UnreadMessageCount";
 
 type NavbarProps = {
@@ -21,23 +15,13 @@ type NavbarProps = {
 };
 
 const Navbar: React.FC<NavbarProps> = () => {
-	const { data: session } = useSession();
+	const { isSignedIn, user } = useUser();
 
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-	const [providers, setProviders] = useState<Record<
-		LiteralUnion<BuiltInProviderType, string>,
-		ClientSafeProvider
-	> | null>(null);
 
 	const pathname = usePathname();
 
 	useEffect(() => {
-		const setAuthProviders = async () => {
-			const res = await getProviders();
-			setProviders(res);
-		};
-
-		setAuthProviders();
 		// Close mobile menu if viewport size is changed
 		window.addEventListener("resize", () => {
 			setIsMobileMenuOpen(false);
@@ -90,7 +74,12 @@ const Navbar: React.FC<NavbarProps> = () => {
 							href="/"
 							onClick={(e) => e.currentTarget.blur()}
 						>
-							<Image className="h-12 w-auto" src={logo} alt="Trip Report" />
+							<Image
+								className="h-12 w-auto"
+								src={logo}
+								alt="Trip Report"
+								priority
+							/>
 							{/* <span className="hidden md:block text-black text-2xl font-bold ml-2">
 								Trip Report
 							</span> */}
@@ -111,7 +100,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 						>
 							Reports
 						</Link>
-						{session && (
+						{isSignedIn && (
 							<Link
 								href="/reports/add"
 								className={`${linkClasses(
@@ -125,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
 					{/* Right Side Menu */}
 					<div className="flex items-center justify-end flex-1">
-						{session ? (
+						{isSignedIn ? (
 							<>
 								<Link
 									tabIndex={-1}
@@ -157,19 +146,14 @@ const Navbar: React.FC<NavbarProps> = () => {
 									<UnreadMessageCount />
 								</Link>
 								<div className="relative mx-2 flex items-center rounded-full">
-									<ProfileButton />
+									<UserButton />
 								</div>
 							</>
 						) : (
 							pathname !== "/auth/signin" && (
-								<Button asChild variant={"secondary"}>
-									<Link
-										href="/auth/signin"
-										className="flex justify-center items-center px-3 py-2"
-									>
-										<span>Login or Register</span>
-									</Link>
-								</Button>
+								<SignInButton mode="modal">
+									<Button variant="secondary">Login or Register</Button>
+								</SignInButton>
 							)
 						)}
 					</div>
@@ -189,7 +173,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 						>
 							Reports
 						</Link>
-						{session && (
+						{isSignedIn && (
 							<Link
 								href="/reports/add"
 								className={`${linkClasses("/reports/add")} w-full text-center`}
@@ -198,7 +182,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 							</Link>
 						)}
 
-						{!session && pathname !== "/auth/signin" && (
+						{!isSignedIn && pathname !== "/auth/signin" && (
 							<Button asChild variant={"secondary"}>
 								<Link
 									href="/auth/signin"

@@ -1,17 +1,13 @@
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import AuthProvider from "@/components/AuthProvider";
-import { CSPostHogProvider } from "@/app/_analytics/provider";
-import { ToastContainer } from "react-toastify";
-import { GlobalProvider } from "@/context/GlobalContext";
+import { ClerkProvider } from "@clerk/nextjs";
 import { GeistSans } from "geist/font/sans";
 import "@/assets/styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import "photoswipe/dist/photoswipe.css";
-
-interface MainLayoutProps {
-	children: React.ReactNode;
-}
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { CSPostHogProvider } from "@/app/_analytics/provider";
+import { ToastContainer } from "react-toastify";
+import { GlobalProvider } from "@/context/GlobalContext";
 
 export const metadata = {
 	title: "Trip Report",
@@ -20,9 +16,13 @@ export const metadata = {
 		"trip report, trip reports, hiking, hikes, backpacking, climbing, mountaineering, alpinism, skimo, skiing, ski mountaineering, beta, info, information, thru-hike, thru-hiking, blog, thruhiking, thruhike, thru hike, thru hiking",
 };
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+export default function RootLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
 	return (
-		<AuthProvider>
+		<ClerkProvider afterSignOutUrl={"/"}>
 			<CSPostHogProvider>
 				<GlobalProvider>
 					<html lang="en" className={GeistSans.className}>
@@ -35,7 +35,6 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 					</html>
 				</GlobalProvider>
 			</CSPostHogProvider>
-		</AuthProvider>
+		</ClerkProvider>
 	);
-};
-export default MainLayout;
+}

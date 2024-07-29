@@ -4,25 +4,23 @@ import cloudinary from "@/config/cloudinary";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import User from "@/models/User";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
 import { reportRateLimit } from "@/utils/ratelimit";
 
 async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
-	const sessionUser = await getSessionUser();
+	const { userId } = auth();
 
 	// Check for session
-	if (!sessionUser || !sessionUser.userId) {
+	if (!userId) {
 		throw new Error("User ID is required");
 	}
 
-	const { success } = await reportRateLimit.limit(sessionUser.userId);
+	const { success } = await reportRateLimit.limit(userId);
 	if (!success) {
 		throw new Error("Too many requests. Please try again later.");
 	}
-
-	const { userId } = sessionUser;
 
 	await connectDB();
 
@@ -41,9 +39,7 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 			const fileName = image.url.split("/").pop()?.split(".")[0];
 			if (fileName) {
 				try {
-					const result = await cloudinary.uploader.destroy(
-						`trip-report/${fileName}`
-					);
+					await cloudinary.uploader.destroy(`trip-report/${fileName}`);
 				} catch (error) {
 					console.error(
 						`Error deleting image with file name ${fileName}:`,
@@ -59,12 +55,9 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 		const publicId = report.gpxFile.url.split("/").pop();
 		if (publicId) {
 			try {
-				const result = await cloudinary.uploader.destroy(
-					`trip-report/gpx/${publicId}`,
-					{
-						resource_type: "raw",
-					}
-				);
+				await cloudinary.uploader.destroy(`trip-report/gpx/${publicId}`, {
+					resource_type: "raw",
+				});
 			} catch (error) {
 				console.error(
 					`Error deleting GPX file with public ID ${publicId}:`,
