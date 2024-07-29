@@ -2,25 +2,23 @@
 
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { standardRateLimit } from "@/utils/ratelimit";
 
 async function deleteMessage(messageId: string) {
 	await connectDB();
 
-	const sessionUser = await getSessionUser();
+	const { userId } = auth();
 
-	if (!sessionUser || !sessionUser.user) {
+	if (!userId) {
 		throw new Error("User ID is required");
 	}
 
-	const { success } = await standardRateLimit.limit(sessionUser.userId);
+	const { success } = await standardRateLimit.limit(userId);
 	if (!success) {
 		throw new Error("Too many delete requests. Please try again later.");
 	}
-
-	const { userId } = sessionUser;
 
 	const message = await Message.findById(messageId);
 

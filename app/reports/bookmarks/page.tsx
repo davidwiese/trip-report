@@ -1,24 +1,22 @@
 import BookmarkReportCard from "@/components/BookmarkReportCard";
 import connectDB from "@/config/database";
 import User from "@/models/User";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import { Report as ReportType, User as UserType } from "@/types";
 import Pagination from "@/components/Pagination";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 
 async function loader(pageSize: number, page: number) {
 	await connectDB();
-	const sessionUser = await getSessionUser();
+	const { userId } = auth();
 
-	if (!sessionUser || !sessionUser.userId) {
+	if (!userId) {
 		return {
 			bookmarkedReports: [],
 			totalReports: 0,
 			currentPage: 1,
 		};
 	}
-
-	const { userId } = sessionUser;
 
 	const user: UserType | null = await User.findById(userId)
 		.populate("bookmarks")
@@ -65,9 +63,9 @@ const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({
 }) => {
 	await connectDB();
 
-	const sessionUser = await getSessionUser();
+	const { userId } = auth();
 
-	if (!sessionUser || !sessionUser.userId) {
+	if (!userId) {
 		return (
 			<section className="px-4 py-6">
 				<h1 className="text-2xl mb-4">Bookmarked Reports</h1>

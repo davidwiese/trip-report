@@ -2,26 +2,24 @@
 
 import connectDB from "@/config/database";
 import User from "@/models/User";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { standardRateLimit } from "@/utils/ratelimit";
 
 async function updateBio(bio: string) {
 	await connectDB();
 
-	const sessionUser = await getSessionUser();
+	const { userId } = auth();
 
-	if (!sessionUser || !sessionUser.userId) {
+	if (!userId) {
 		return { error: "User not authenticated" };
 	}
 
-	const { success } = await standardRateLimit.limit(sessionUser.userId);
+	const { success } = await standardRateLimit.limit(userId);
 
 	if (!success) {
 		return { error: "Too many requests. Please try again later." };
 	}
-
-	const { userId } = sessionUser;
 
 	try {
 		const updateUser = await User.findByIdAndUpdate(
@@ -34,10 +32,10 @@ async function updateBio(bio: string) {
 			return { error: "User not found" };
 		}
 
-		return { bio: updateUser.bio };
-
 		// Revalidate the cache
 		revalidatePath("/profile", "layout");
+
+		return { bio: updateUser.bio };
 	} catch (error) {
 		console.error("Error updating bio:", error);
 		return {

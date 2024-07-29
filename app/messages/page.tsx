@@ -1,7 +1,7 @@
 import MessageCard from "@/components/Message";
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import { Message as MessageType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 
@@ -12,9 +12,9 @@ type MessagesPageProps = {
 const MessagePage: React.FC<MessagesPageProps> = async () => {
 	await connectDB();
 
-	const sessionUser = await getSessionUser();
+	const { userId } = auth();
 
-	if (!sessionUser) {
+	if (!userId) {
 		return (
 			<section className="bg-blue-50">
 				<div className="container m-auto py-24 max-w-6xl">
@@ -26,8 +26,6 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 			</section>
 		);
 	}
-
-	const { userId } = sessionUser;
 
 	const readMessages = await Message.find({ recipient: userId, read: true })
 		.sort({ createdAt: -1 }) // Sort read messages in asc order

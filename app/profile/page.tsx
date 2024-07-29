@@ -1,6 +1,6 @@
 import ProfileReportCard from "@/components/ProfileReportCard";
 import connectDB from "@/config/database";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import User from "@/models/User";
 import Report from "@/models/Report";
 import { convertToSerializableObject } from "@/utils/convertToObject";
@@ -10,9 +10,9 @@ import Pagination from "@/components/Pagination";
 
 async function loader(pageSize: number, page: number) {
 	await connectDB();
-	const sessionUser = await getSessionUser();
+	const { userId } = auth();
 
-	if (!sessionUser || !sessionUser.userId) {
+	if (!userId) {
 		return {
 			reports: [],
 			user: null,
@@ -21,7 +21,6 @@ async function loader(pageSize: number, page: number) {
 		};
 	}
 
-	const { userId } = sessionUser;
 	const userDoc = await User.findById(userId).lean();
 	const user = userDoc
 		? (convertToSerializableObject(userDoc) as UserType)
@@ -82,8 +81,8 @@ const ProfilePage: React.FC<ProfilePageProps> = async ({
 		return <p>You must be logged in to view this page.</p>;
 	}
 
-	const sessionUser = await getSessionUser();
-	const isOwnProfile = sessionUser?.userId === user._id.toString();
+	const { userId } = auth();
+	const isOwnProfile = userId === user._id.toString();
 
 	return (
 		<>

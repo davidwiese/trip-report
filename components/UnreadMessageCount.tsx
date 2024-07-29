@@ -1,6 +1,5 @@
 "use client";
 
-import { Session } from "next-auth";
 import { useGlobalContext } from "@/context/GlobalContext";
 
 // NOTE: here the logic for getting the unread message count has been moved to

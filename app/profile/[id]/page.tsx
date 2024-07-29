@@ -8,7 +8,7 @@ import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
 import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 
 type PublicProfilePageProps = {
 	params: {
@@ -79,8 +79,8 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 		return null;
 	}
 
-	const sessionUser = await getSessionUser();
-	const isOwnProfile = sessionUser?.userId === params.id;
+	const { userId } = auth();
+	const isOwnProfile = userId === params.id;
 
 	return (
 		<>

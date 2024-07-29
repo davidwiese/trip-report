@@ -2,7 +2,7 @@
 
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import User from "@/models/User";
 import { sanitizeText } from "@/utils/sanitizeHtml";
@@ -19,7 +19,7 @@ async function addMessage(
 ): Promise<FormState> {
 	await connectDB();
 
-	const sessionUser = await getSessionUser();
+	const { userId } = auth();
 
 	// NOTE: Here we return an { error } object back which we can use to then show
 	// the user a toast message.
@@ -27,11 +27,11 @@ async function addMessage(
 	// then be 'caught' by our error.jsx ErrorBoundary component and show the user
 	// our Error page.
 
-	if (!sessionUser || !sessionUser.user) {
+	if (!userId) {
 		return { error: "You must be logged in to send a message" };
 	}
 
-	const { success } = await standardRateLimit.limit(sessionUser.userId);
+	const { success } = await standardRateLimit.limit(userId);
 
 	if (!success) {
 		return { error: "Too many messages. Please try again later." };
@@ -42,8 +42,6 @@ async function addMessage(
 	if (!recipientExists) {
 		return { error: "Recipient does not exist" };
 	}
-
-	const { userId } = sessionUser;
 
 	const recipient = formData.get("recipient");
 

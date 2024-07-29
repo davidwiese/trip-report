@@ -2,6 +2,11 @@ import { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema(
 	{
+		clerkId: {
+			type: String,
+			unique: true,
+			required: true,
+		},
 		email: {
 			type: String,
 			unique: [true, "Email already exists"],
@@ -65,7 +70,7 @@ const UserSchema = new Schema(
 );
 
 UserSchema.index({ username: 1 });
-UserSchema.index({ provider: 1, providerId: 1 });
+UserSchema.index({ clerkId: 1 });
 
 // Prevent creation of multiple instances of the same model
 const User = models.User || model("User", UserSchema);

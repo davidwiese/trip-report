@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useUser } from "@clerk/nextjs";
 import { Report as ReportType } from "@/types";
 import Link from "next/link";
 import { TbEdit } from "react-icons/tb";
@@ -10,16 +10,9 @@ type EditButtonProps = {
 	report: ReportType;
 };
 
-type SessionUser = {
-	id?: string;
-	name?: string | null;
-	email?: string | null;
-	image?: string | null;
-};
-
 const EditButton: React.FC<EditButtonProps> = ({ report }) => {
-	const { data: session } = useSession();
-	const userId = (session?.user as SessionUser)?.id;
+	const { user } = useUser();
+	const userId = user?.id;
 
 	if (userId !== report.owner.toString()) {
 		return null;

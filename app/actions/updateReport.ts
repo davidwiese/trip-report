@@ -3,7 +3,7 @@
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import User from "@/models/User";
-import { getSessionUser } from "@/utils/getSessionUser";
+import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import cloudinary from "@/config/cloudinary";
@@ -21,19 +21,17 @@ async function updateReport(reportId: string, formData: FormData) {
 	try {
 		await connectDB();
 
-		const sessionUser = await getSessionUser();
+		const { userId } = auth();
 
-		if (!sessionUser || !sessionUser.userId) {
+		if (!userId) {
 			throw new Error("User ID is required");
 		}
 
-		const { success } = await reportRateLimit.limit(sessionUser.userId);
+		const { success } = await reportRateLimit.limit(userId);
 
 		if (!success) {
 			throw new Error("Too many update requests. Please try again later.");
 		}
-
-		const { userId } = sessionUser;
 
 		const existingReport = await Report.findById(reportId);
 
