@@ -9,6 +9,7 @@ export async function POST(req: Request) {
 	const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
 	if (!WEBHOOK_SECRET) {
+		console.error("WEBHOOK_SECRET is not set");
 		throw new Error(
 			"Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
 		);
@@ -20,8 +21,11 @@ export async function POST(req: Request) {
 	const svix_timestamp = headerPayload.get("svix-timestamp");
 	const svix_signature = headerPayload.get("svix-signature");
 
+	console.log("Svix headers:", { svix_id, svix_timestamp, svix_signature });
+
 	// If there are no headers, error out
 	if (!svix_id || !svix_timestamp || !svix_signature) {
+		console.error("Missing Svix headers");
 		return new Response("Error occurred -- no svix headers", {
 			status: 400,
 		});
@@ -30,6 +34,7 @@ export async function POST(req: Request) {
 	// Get the body
 	const payload = await req.json();
 	const body = JSON.stringify(payload);
+	console.log("Webhook payload:", body);
 
 	// Create a new Svix instance with your secret.
 	const wh = new Webhook(WEBHOOK_SECRET);
@@ -43,19 +48,26 @@ export async function POST(req: Request) {
 			"svix-timestamp": svix_timestamp,
 			"svix-signature": svix_signature,
 		}) as WebhookEvent;
+		console.log("Webhook verified successfully");
 	} catch (err) {
 		console.error("Error verifying webhook:", err);
-		return new Response("Error occurred", {
+		return new Response("Error occurred during verification", {
 			status: 400,
 		});
 	}
 
 	// Handle the webhook
 	const eventType = evt.type;
-	console.log(`Event type: ${eventType}`); // Log the event type
+	console.log(`Event type: ${eventType}`);
 
 	if (eventType === "user.created" || eventType === "user.updated") {
 		const { id, email_addresses, username, image_url } = evt.data;
+		console.log("User data received:", {
+			id,
+			email_addresses,
+			username,
+			image_url,
+		});
 
 		const userEmail = email_addresses[0]?.email_address;
 
@@ -87,11 +99,17 @@ export async function POST(req: Request) {
 			return new Response("User created or updated", { status: 200 });
 		} catch (error) {
 			console.error("Error creating/updating user:", error);
-			return new Response("Error occurred while processing user", {
+			if (error instanceof Error) {
+				console.error("Error details:", error.message);
+				console.error("Error stack:", error.stack);
+			}
+			return new Response(`Error occurred while processing user: ${error}`, {
 				status: 500,
 			});
 		}
+	} else {
+		console.log(`Unhandled event type: ${eventType}`);
 	}
 
-	return new Response("Webhook received", { status: 200 });
+	return new Response("Webhook processed", { status: 200 });
 }
