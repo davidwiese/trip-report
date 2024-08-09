@@ -111,5 +111,5 @@ export async function POST(req: Request) {
 		console.log(`Unhandled event type: ${eventType}`);
 	}
 
-	return new Response("Webhook processed", { status: 200 });
+	return Response.json({ message: "Received" });
 }

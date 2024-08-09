@@ -9,11 +9,12 @@ const isProtectedRoute = createRouteMatcher([
 	"/messages",
 ]);
 
-export default clerkMiddleware((auth, req) => {
-	if (isProtectedRoute(req)) {
-		auth().protect();
-	}
-});
+export default clerkMiddleware(
+	(auth, req) => {
+		if (isProtectedRoute(req)) auth().protect();
+	},
+	{ debug: true }
+);
 
 export const config = {
 	matcher: [
