@@ -7,18 +7,17 @@ import User from "@/models/User";
 export async function POST(req: Request) {
 	console.log("Webhook received"); // Log when the webhook is hit
 
-	// Add CORS headers
-	const response = new Response();
-	response.headers.set("Access-Control-Allow-Origin", "*");
-	response.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
-	response.headers.set(
-		"Access-Control-Allow-Headers",
-		"Content-Type, Authorization, svix-id, svix-signature, svix-timestamp"
-	);
+	// Handle CORS
+	const corsHeaders = {
+		"Access-Control-Allow-Origin": "*",
+		"Access-Control-Allow-Methods": "POST, OPTIONS",
+		"Access-Control-Allow-Headers":
+			"Content-Type, Authorization, svix-id, svix-signature, svix-timestamp",
+	};
 
 	// Handle preflight request
 	if (req.method === "OPTIONS") {
-		return response;
+		return new Response(null, { headers: corsHeaders });
 	}
 
 	const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
@@ -126,5 +125,8 @@ export async function POST(req: Request) {
 		console.log(`Unhandled event type: ${eventType}`);
 	}
 
-	return new Response("Webhook processed", { status: 200 });
+	return new Response("Webhook processed", {
+		status: 200,
+		headers: corsHeaders,
+	});
 }
