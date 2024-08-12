@@ -2,6 +2,7 @@
 
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
+import User from "@/models/User";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { standardRateLimit } from "@/utils/ratelimit";
@@ -9,23 +10,29 @@ import { standardRateLimit } from "@/utils/ratelimit";
 async function markMessageAsRead(messageId: string) {
 	await connectDB();
 
-	const { userId } = auth();
+	const { userId: clerkUserId } = auth();
 
-	if (!userId) {
+	if (!clerkUserId) {
 		throw new Error("User ID is required");
 	}
 
-	const { success } = await standardRateLimit.limit(userId);
+	const { success } = await standardRateLimit.limit(clerkUserId);
 	if (!success) {
 		throw new Error("Too many requests. Please try again later.");
+	}
+
+	// Find the MongoDB user document using the Clerk user ID
+	const user = await User.findOne({ clerkId: clerkUserId });
+	if (!user) {
+		throw new Error("User not found");
 	}
 
 	const message = await Message.findById(messageId);
 
 	if (!message) throw new Error("Message not found");
 
-	// Verify ownership
-	if (message.recipient.toString() !== userId) {
+	// Verify ownership using MongoDB user ID
+	if (message.recipient.toString() !== user._id.toString()) {
 		throw new Error("Unauthorized");
 	}
 

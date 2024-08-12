@@ -26,7 +26,9 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	await connectDB();
 
 	// Query the report in the DB
-	const reportDoc = await Report.findById(params.id).lean();
+	const reportDoc = (await Report.findById(
+		params.id
+	).lean()) as ReportType | null;
 
 	// Null check
 	if (!reportDoc) {
@@ -38,9 +40,10 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	// Convert the document to a plain js object so we can pass to client components
 	const report = convertToSerializableObject(reportDoc) as ReportType;
 
-	const userDoc = (await User.findById(report.owner)
-		.lean()
-		.exec()) as UserType | null;
+	// Find the user by their Clerk ID instead of MongoDB ID
+	const userDoc = (await User.findOne({
+		clerkId: report.owner,
+	}).lean()) as UserType | null;
 	if (!userDoc) {
 		return (
 			<h1 className="text-center text-2xl font-bold mt-10">User Not Found</h1>
@@ -50,7 +53,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 
 	const author = {
 		name: user.username,
-		id: user._id.toString(),
+		id: user.clerkId, // Use clerkId instead of _id
 	};
 
 	// Get the current user from the Clerk auth

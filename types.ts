@@ -39,6 +39,7 @@ export type Report = {
 
 export type User = {
 	_id: string;
+	clerkId: string;
 	email: string;
 	username: string;
 	password?: string;
