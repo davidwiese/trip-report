@@ -18,7 +18,11 @@ const nextConfig = {
 					{ key: "Access-Control-Allow-Credentials", value: "true" },
 					{
 						key: "Access-Control-Allow-Origin",
-						value: "https://www.tripreport.co",
+						value: [
+							"https://www.tripreport.co",
+							"https://tripreport.co",
+							"https://accounts.tripreport.co",
+						],
 					},
 					{
 						key: "Access-Control-Allow-Methods",
