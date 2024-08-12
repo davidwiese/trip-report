@@ -19,7 +19,7 @@ async function addMessage(
 ): Promise<FormState> {
 	await connectDB();
 
-	const { userId } = auth();
+	const { userId: clerkUserId } = auth();
 
 	// NOTE: Here we return an { error } object back which we can use to then show
 	// the user a toast message.
@@ -27,31 +27,35 @@ async function addMessage(
 	// then be 'caught' by our error.jsx ErrorBoundary component and show the user
 	// our Error page.
 
-	if (!userId) {
+	if (!clerkUserId) {
 		return { error: "You must be logged in to send a message" };
 	}
 
-	const { success } = await standardRateLimit.limit(userId);
+	const { success } = await standardRateLimit.limit(clerkUserId);
 
 	if (!success) {
 		return { error: "Too many messages. Please try again later." };
 	}
 
+	// Find the sender (current user) in the database
+	const sender = await User.findOne({ clerkId: clerkUserId });
+	if (!sender) {
+		return { error: "Sender not found in the database" };
+	}
+
 	const recipientId = formData.get("recipient");
-	const recipientExists = await User.findById(recipientId);
-	if (!recipientExists) {
+	const recipient = await User.findById(recipientId);
+	if (!recipient) {
 		return { error: "Recipient does not exist" };
 	}
 
-	const recipient = formData.get("recipient");
-
-	if (userId === recipient) {
+	if (sender._id.toString() === recipient._id.toString()) {
 		return { error: "You can not send a message to yourself" };
 	}
 
 	const newMessage = new Message({
-		sender: userId,
-		recipient,
+		sender: sender._id,
+		recipient: recipient._id,
 		name: sanitizeText(formData.get("name") as string),
 		email: sanitizeText(formData.get("email") as string),
 		body: sanitizeText(formData.get("message") as string),

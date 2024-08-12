@@ -38,7 +38,9 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	// Convert the document to a plain js object so we can pass to client components
 	const report = convertToSerializableObject(reportDoc) as ReportType;
 
-	const userDoc = await User.findById(report.owner).lean().exec();
+	const userDoc = (await User.findById(report.owner)
+		.lean()
+		.exec()) as UserType | null;
 	if (!userDoc) {
 		return (
 			<h1 className="text-center text-2xl font-bold mt-10">User Not Found</h1>
@@ -52,10 +54,17 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	};
 
 	// Get the current user from the Clerk auth
-	const { userId } = auth();
+	const { userId: clerkUserId } = auth();
+
+	// Find the MongoDB user document using the Clerk user ID
+	const currentUser = clerkUserId
+		? ((await User.findOne({ clerkId: clerkUserId }).lean()) as UserType | null)
+		: null;
 
 	// Check if the current user is the author of the report
-	const isAuthor = userId === report.owner.toString();
+	const isAuthor = !!(
+		currentUser && currentUser._id.toString() === report.owner.toString()
+	);
 
 	if (!report) {
 		return (

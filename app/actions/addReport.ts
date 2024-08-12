@@ -22,24 +22,24 @@ async function addReport(formData: FormData) {
 	try {
 		await connectDB();
 
-		const { userId: ClerkUserId } = auth();
+		const { userId: clerkUserId } = auth();
 
 		// NOTE: throwing an Error from our server actions will be caught by our
 		// error.jsx ErrorBoundary component and show the user an Error page with
 		// message of the thrown error.
 
-		if (!ClerkUserId) {
+		if (!clerkUserId) {
 			throw new Error("User ID is required");
 		}
 
 		// Find the user in your database using the Clerk userId
-		const user = await User.findOne({ clerkId: ClerkUserId });
+		const user = await User.findOne({ clerkId: clerkUserId });
 
 		if (!user) {
 			throw new Error("User not found in the database");
 		}
 
-		const { success } = await reportRateLimit.limit(ClerkUserId);
+		const { success } = await reportRateLimit.limit(clerkUserId);
 
 		if (!success) {
 			throw new Error("Too many reports. Please try again later.");
