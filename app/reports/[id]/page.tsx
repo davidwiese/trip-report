@@ -25,10 +25,8 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 
 	await connectDB();
 
-	// Query the report in the DB
-	const reportDoc = (await Report.findById(
-		params.id
-	).lean()) as ReportType | null;
+	// Query the report in the DB and populate the owner field
+	const reportDoc = await Report.findById(params.id).populate("owner").lean();
 
 	// Null check
 	if (!reportDoc) {
@@ -38,20 +36,15 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	}
 
 	// Convert the document to a plain js object so we can pass to client components
-	const report = convertToSerializableObject(reportDoc) as ReportType;
+	const report = convertToSerializableObject(reportDoc) as ReportType & {
+		owner: UserType;
+	};
 
-	// Find the user by their MongoDB ID
-	const userDoc = (await User.findById(report.owner).lean()) as UserType | null;
-	if (!userDoc) {
-		return (
-			<h1 className="text-center text-2xl font-bold mt-10">User Not Found</h1>
-		);
-	}
-	const user = convertToSerializableObject(userDoc) as UserType;
+	const user = report.owner;
 
 	const author = {
 		name: user.username,
-		id: user.clerkId, // Use clerkId for the author ID
+		id: user.clerkId,
 	};
 
 	// Get the current user from the Clerk auth
@@ -64,7 +57,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 
 	// Check if the current user is the author of the report
 	const isAuthor = !!(
-		currentUser && currentUser._id.toString() === report.owner.toString()
+		currentUser && currentUser._id.toString() === report.owner._id.toString()
 	);
 
 	if (!report) {
