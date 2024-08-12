@@ -15,7 +15,7 @@ type NavbarProps = {
 };
 
 const Navbar: React.FC<NavbarProps> = () => {
-	const { isSignedIn, user } = useUser();
+	const { isSignedIn } = useUser();
 
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -146,7 +146,13 @@ const Navbar: React.FC<NavbarProps> = () => {
 									<UnreadMessageCount />
 								</Link>
 								<div className="relative mx-2 flex items-center rounded-full">
-									<UserButton />
+									<UserButton>
+										<UserButton.UserProfilePage
+											label="Profile"
+											url="/profile"
+											labelIcon={<ProfileButton />}
+										></UserButton.UserProfilePage>
+									</UserButton>
 								</div>
 							</>
 						) : (
