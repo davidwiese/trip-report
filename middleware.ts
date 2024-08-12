@@ -10,10 +10,33 @@ const isProtectedRoute = createRouteMatcher([
 	"/messages",
 ]);
 
+const allowedOrigins = [
+	"https://www.tripreport.co",
+	"https://tripreport.co",
+	"https://accounts.tripreport.co",
+];
+
 export default clerkMiddleware((auth, req) => {
 	if (isProtectedRoute(req)) auth().protect();
 
-	return NextResponse.next();
+	const res = NextResponse.next();
+
+	const origin = req.headers.get("origin");
+	if (origin && allowedOrigins.includes(origin)) {
+		res.headers.set("Access-Control-Allow-Origin", origin);
+	}
+
+	res.headers.set(
+		"Access-Control-Allow-Methods",
+		"GET,POST,PUT,DELETE,OPTIONS"
+	);
+	res.headers.set(
+		"Access-Control-Allow-Headers",
+		"Content-Type, Authorization, svix-id, svix-signature, svix-timestamp"
+	);
+	res.headers.set("Access-Control-Allow-Credentials", "true");
+
+	return res;
 });
 
 export const config = {
