@@ -146,13 +146,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 									<UnreadMessageCount />
 								</Link>
 								<div className="relative mx-2 flex items-center rounded-full">
-									<UserButton>
-										<UserButton.UserProfilePage
-											label="Profile"
-											url="/profile"
-											labelIcon={<ProfileButton />}
-										></UserButton.UserProfilePage>
-									</UserButton>
+									<UserButton />
 								</div>
 							</>
 						) : (
