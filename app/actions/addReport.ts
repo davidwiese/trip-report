@@ -22,17 +22,24 @@ async function addReport(formData: FormData) {
 	try {
 		await connectDB();
 
-		const { userId } = auth();
+		const { userId: ClerkUserId } = auth();
 
 		// NOTE: throwing an Error from our server actions will be caught by our
 		// error.jsx ErrorBoundary component and show the user an Error page with
 		// message of the thrown error.
 
-		if (!userId) {
+		if (!ClerkUserId) {
 			throw new Error("User ID is required");
 		}
 
-		const { success } = await reportRateLimit.limit(userId);
+		// Find the user in your database using the Clerk userId
+		const user = await User.findOne({ clerkId: ClerkUserId });
+
+		if (!user) {
+			throw new Error("User not found in the database");
+		}
+
+		const { success } = await reportRateLimit.limit(ClerkUserId);
 
 		if (!success) {
 			throw new Error("Too many reports. Please try again later.");
@@ -64,7 +71,7 @@ async function addReport(formData: FormData) {
 			caltopoUrl?: FormDataEntryValue | null;
 			isFeatured: boolean;
 		} = {
-			owner: userId,
+			owner: user._id,
 			title: sanitizeText(formData.get("title") as string),
 			activityType: formData
 				.getAll("activityType")
@@ -197,7 +204,7 @@ async function addReport(formData: FormData) {
 			const elevationLoss = parseFloat(reportData.elevationLoss as string);
 
 			// Update the user's reports array and totals
-			await User.findByIdAndUpdate(userId, {
+			await User.findByIdAndUpdate(user._id, {
 				$push: { reports: newReport._id },
 				$inc: {
 					totalReports: 1,
