@@ -13,19 +13,7 @@ const isProtectedRoute = createRouteMatcher([
 export default clerkMiddleware((auth, req) => {
 	if (isProtectedRoute(req)) auth().protect();
 
-	// Add CORS headers
-	const res = NextResponse.next();
-	res.headers.set("Access-Control-Allow-Origin", "*");
-	res.headers.set(
-		"Access-Control-Allow-Methods",
-		"GET, POST, PUT, DELETE, OPTIONS"
-	);
-	res.headers.set(
-		"Access-Control-Allow-Headers",
-		"Content-Type, Authorization, svix-id, svix-signature, svix-timestamp"
-	);
-
-	return res;
+	return NextResponse.next();
 });
 
 export const config = {
