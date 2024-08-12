@@ -14,6 +14,18 @@ type NavbarProps = {
 	// Add any props here if needed
 };
 
+const DotIcon = () => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 512 512"
+			fill="currentColor"
+		>
+			<path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
+		</svg>
+	);
+};
+
 const Navbar: React.FC<NavbarProps> = () => {
 	const { isSignedIn } = useUser();
 
@@ -146,7 +158,13 @@ const Navbar: React.FC<NavbarProps> = () => {
 									<UnreadMessageCount />
 								</Link>
 								<div className="relative mx-2 flex items-center rounded-full">
-									<UserButton />
+									<UserButton>
+										<UserButton.UserProfileLink
+											label="Profile"
+											url="/profile"
+											labelIcon={<DotIcon />}
+										/>
+									</UserButton>
 								</div>
 							</>
 						) : (
