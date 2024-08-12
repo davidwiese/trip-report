@@ -16,98 +16,111 @@ type ReportPageProps = {
 };
 
 const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
-	// NOTE: here we can check if we are running in production on vercel and get
-	// the public URL at build time for the ShareButtons, or fall back to localhost in development.
+	try {
+		const PUBLIC_DOMAIN = process.env.VERCEL_URL
+			? `https://${process.env.VERCEL_URL}`
+			: "http://localhost:3000";
 
-	const PUBLIC_DOMAIN = process.env.VERCEL_URL
-		? `https://${process.env.VERCEL_URL}`
-		: "http://localhost:3000";
+		await connectDB();
 
-	await connectDB();
+		// Query the report in the DB and populate the owner field
+		const reportDoc = await Report.findById(params.id).populate("owner").lean();
 
-	// Query the report in the DB and populate the owner field
-	const reportDoc = await Report.findById(params.id).populate("owner").lean();
+		// Null check
+		if (!reportDoc) {
+			return (
+				<h1 className="text-center text-2xl font-bold mt-10">
+					Report Not Found
+				</h1>
+			);
+		}
 
-	// Null check
-	if (!reportDoc) {
-		return (
-			<h1 className="text-center text-2xl font-bold mt-10">Report Not Found</h1>
+		// Convert the document to a plain js object so we can pass to client components
+		const report = convertToSerializableObject(reportDoc) as ReportType & {
+			owner: UserType;
+		};
+
+		const user = report.owner;
+
+		const author = {
+			name: user.username,
+			id: user.clerkId,
+		};
+
+		// Get the current user from the Clerk auth
+		const { userId: clerkUserId } = auth();
+
+		// Find the current user in the database using the Clerk userId
+		let currentUser: UserType | null = null;
+		if (clerkUserId) {
+			currentUser = (await User.findOne({
+				clerkId: clerkUserId,
+			}).lean()) as UserType | null;
+		}
+
+		// Check if the current user is the author of the report
+		const isAuthor = !!(
+			currentUser && currentUser._id.toString() === report.owner._id.toString()
 		);
-	}
 
-	// Convert the document to a plain js object so we can pass to client components
-	const report = convertToSerializableObject(reportDoc) as ReportType & {
-		owner: UserType;
-	};
+		if (!report) {
+			return (
+				<h1 className="text-center text-2xl font-bold mt-10">
+					Report Not Found
+				</h1>
+			);
+		}
 
-	const user = report.owner;
-
-	const author = {
-		name: user.username,
-		id: user.clerkId,
-	};
-
-	// Get the current user from the Clerk auth
-	const { userId: clerkUserId } = auth();
-
-	// Find the MongoDB user document using the Clerk user ID
-	const currentUser = clerkUserId
-		? ((await User.findOne({ clerkId: clerkUserId }).lean()) as UserType | null)
-		: null;
-
-	// Check if the current user is the author of the report
-	const isAuthor = !!(
-		currentUser && currentUser._id.toString() === report.owner._id.toString()
-	);
-
-	if (!report) {
 		return (
-			<h1 className="text-center text-2xl font-bold mt-10">Report Not Found</h1>
-		);
-	}
-
-	return (
-		<>
-			{report.images && report.images.length > 0 && (
-				<ReportHeaderImage image={report.images[0]} />
-			)}
-			<section className="bg-white py-10">
-				<div className="container mx-auto px-6">
-					<div className="grid grid-cols-1 gap-6">
-						<ReportDetails
-							report={report}
-							author={author}
-							isAuthor={isAuthor}
-						/>
-					</div>
-				</div>
-			</section>
-			{report.caltopoUrl && (
-				<section className="mb-10">
-					<div className="container mx-auto max-w-6xl px-6">
-						<div className="rounded-xl shadow-xl overflow-hidden bg-gray-100">
-							<iframe
-								src={report.caltopoUrl}
-								width="100%"
-								height="500"
-								style={{ border: 0 }}
-								allowFullScreen
-								className="rounded-xl"
-							></iframe>
+			<>
+				{report.images && report.images.length > 0 && (
+					<ReportHeaderImage image={report.images[0]} />
+				)}
+				<section className="bg-white py-10">
+					<div className="container mx-auto px-6">
+						<div className="grid grid-cols-1 gap-6">
+							<ReportDetails
+								report={report}
+								author={author}
+								isAuthor={isAuthor}
+							/>
 						</div>
 					</div>
 				</section>
-			)}
-			<section className="mb-10">
-				{report.images && report.images.length > 0 && (
-					<ReportImages images={report.images} />
+				{report.caltopoUrl && (
+					<section className="mb-10">
+						<div className="container mx-auto max-w-6xl px-6">
+							<div className="rounded-xl shadow-xl overflow-hidden bg-gray-100">
+								<iframe
+									src={report.caltopoUrl}
+									width="100%"
+									height="500"
+									style={{ border: 0 }}
+									allowFullScreen
+									className="rounded-xl"
+								></iframe>
+							</div>
+						</div>
+					</section>
 				)}
-			</section>
-			<section className="mb-10">
-				<ShareButtons report={report} PUBLIC_DOMAIN={PUBLIC_DOMAIN} />
-			</section>
-		</>
-	);
+				<section className="mb-10">
+					{report.images && report.images.length > 0 && (
+						<ReportImages images={report.images} />
+					)}
+				</section>
+				<section className="mb-10">
+					<ShareButtons report={report} PUBLIC_DOMAIN={PUBLIC_DOMAIN} />
+				</section>
+			</>
+		);
+	} catch (error) {
+		console.error("Error in ReportPage:", error);
+		return (
+			<h1 className="text-center text-2xl font-bold mt-10">
+				An error occurred. Please try again later.
+			</h1>
+		);
+	}
 };
 
 export default ReportPage;
