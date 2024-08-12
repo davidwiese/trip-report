@@ -1,6 +1,7 @@
 import MessageCard from "@/components/Message";
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
+import User from "@/models/User";
 import { auth } from "@clerk/nextjs/server";
 import { Message as MessageType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
@@ -12,9 +13,9 @@ type MessagesPageProps = {
 const MessagePage: React.FC<MessagesPageProps> = async () => {
 	await connectDB();
 
-	const { userId } = auth();
+	const { userId: clerkUserId } = auth();
 
-	if (!userId) {
+	if (!clerkUserId) {
 		return (
 			<section className="bg-blue-50">
 				<div className="container m-auto py-24 max-w-6xl">
@@ -27,13 +28,30 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 		);
 	}
 
-	const readMessages = await Message.find({ recipient: userId, read: true })
+	// Find the user in your database using the Clerk userId
+	const user = await User.findOne({ clerkId: clerkUserId });
+
+	if (!user) {
+		console.error(`No user found for Clerk ID: ${clerkUserId}`);
+		return (
+			<section className="bg-blue-50">
+				<div className="container m-auto py-24 max-w-6xl">
+					<div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
+						<h1 className="text-3xl font-bold mb-4">Your Messages</h1>
+						<p>User not found</p>
+					</div>
+				</div>
+			</section>
+		);
+	}
+
+	const readMessages = await Message.find({ recipient: user._id, read: true })
 		.sort({ createdAt: -1 }) // Sort read messages in asc order
 		.populate("sender", "username")
 		.lean();
 
 	const unreadMessages = await Message.find({
-		recipient: userId,
+		recipient: user._id,
 		read: false,
 	})
 		.sort({ createdAt: -1 }) // Sort read messages in asc order
