@@ -20,11 +20,14 @@ import { useUser } from "@clerk/nextjs";
 
 type ProfileReportCardProps = {
 	report: ReportType;
+	currentUserId: string;
 };
 
-const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
-	const { user } = useUser();
-	const isAuthor = user?.id === report.owner;
+const ProfileReportCard: React.FC<ProfileReportCardProps> = ({
+	report,
+	currentUserId,
+}) => {
+	const isAuthor = currentUserId === report.owner;
 
 	const placeholderImage = "/images/placeholder-image.png";
 

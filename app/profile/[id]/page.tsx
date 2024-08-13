@@ -10,7 +10,6 @@ import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
 import { auth } from "@clerk/nextjs/server";
 import { findUserByClerkId } from "@/utils/userUtils";
-import mongoose from "mongoose";
 
 type PublicProfilePageProps = {
 	params: {
@@ -25,12 +24,7 @@ type PublicProfilePageProps = {
 async function loader(userId: string, pageSize: number, page: number) {
 	await connectDB();
 
-	let user;
-	if (mongoose.Types.ObjectId.isValid(userId)) {
-		user = await User.findById(userId);
-	} else {
-		user = await User.findOne({ clerkId: userId });
-	}
+	const user = await User.findById(userId);
 
 	if (!user) {
 		return {
@@ -44,7 +38,6 @@ async function loader(userId: string, pageSize: number, page: number) {
 	const totalReports = await Report.countDocuments({ owner: user._id });
 	const totalPages = Math.ceil(totalReports / pageSize);
 
-	// Ensure the page is within valid range
 	let currentPage = page;
 	if (currentPage < 1 || currentPage > totalPages) {
 		currentPage = 1;
@@ -88,7 +81,7 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 		? await findUserByClerkId(currentUserClerkId)
 		: null;
 	const isOwnProfile = currentUser
-		? currentUser._id.toString() === user._id.toString()
+		? currentUser._id.toString() === params.id
 		: false;
 
 	return (
@@ -107,7 +100,11 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 							</p>
 						) : (
 							reports.map((report) => (
-								<PublicProfileReportCard key={report._id} report={report} />
+								<PublicProfileReportCard
+									key={report._id}
+									report={report}
+									currentUserId={currentUser ? currentUser._id.toString() : ""}
+								/>
 							))
 						)}
 					</div>
@@ -121,7 +118,7 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 					)}
 				</div>
 			</section>
-			{!isOwnProfile && (
+			{!isOwnProfile && currentUser && (
 				<section className="bg-white py-10">
 					<div className="container mx-auto px-6">
 						<ProfileContactForm recipientId={user._id.toString()} />

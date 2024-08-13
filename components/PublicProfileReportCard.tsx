@@ -16,11 +16,14 @@ import { montserrat } from "@/app/ui/fonts";
 
 type PublicProfileReportCardProps = {
 	report: Report;
+	currentUserId: string;
 };
 
 const PublicProfileReportCard: React.FC<PublicProfileReportCardProps> = ({
 	report,
+	currentUserId,
 }) => {
+	const isAuthor = currentUserId === report.owner;
 	const placeholderImage = "/images/placeholder-image.png";
 	const thumbnailImage =
 		report.images && report.images.length > 0
