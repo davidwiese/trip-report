@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import PublicProfileReportCard from "@/components/PublicProfileReportCard";
 import ProfileContactForm from "@/components/ProfileContactForm";
 import connectDB from "@/config/database";
+import User from "@/models/User";
 import Report from "@/models/Report";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
@@ -20,10 +21,10 @@ type PublicProfilePageProps = {
 	};
 };
 
-async function loader(clerkUserId: string, pageSize: number, page: number) {
+async function loader(userId: string, pageSize: number, page: number) {
 	await connectDB();
 
-	const user = await findUserByClerkId(clerkUserId);
+	const user = await User.findById(userId);
 
 	if (!user) {
 		return {
@@ -77,13 +78,16 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 	}
 
 	const { userId: currentUserClerkId } = auth();
-	const isOwnProfile = currentUserClerkId === params.id;
+	const currentUser = currentUserClerkId
+		? await findUserByClerkId(currentUserClerkId)
+		: null;
+	const isOwnProfile = currentUser && currentUser._id.toString() === params.id;
 
 	return (
 		<>
 			<section className="bg-white py-10">
 				<div className="container mx-auto px-6">
-					<UserStatsCard user={user} isOwnProfile={isOwnProfile} />
+					<UserStatsCard user={user} isOwnProfile={!!isOwnProfile} />
 				</div>
 			</section>
 			<section className="bg-white py-10">

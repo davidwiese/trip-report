@@ -14,6 +14,7 @@ import {
 	sanitizeDescription,
 } from "@/utils/sanitizeHtml";
 import { reportRateLimit } from "@/utils/ratelimit";
+import { findUserByClerkId } from "@/utils/userUtils";
 
 async function updateReport(reportId: string, formData: FormData) {
 	let updatedReport;
@@ -21,16 +22,21 @@ async function updateReport(reportId: string, formData: FormData) {
 	try {
 		await connectDB();
 
-		const { userId } = auth();
+		const { userId: clerkUserId } = auth();
 
-		if (!userId) {
+		if (!clerkUserId) {
 			throw new Error("User ID is required");
 		}
 
-		const { success } = await reportRateLimit.limit(userId);
+		const { success } = await reportRateLimit.limit(clerkUserId);
 
 		if (!success) {
 			throw new Error("Too many update requests. Please try again later.");
+		}
+
+		const user = await findUserByClerkId(clerkUserId);
+		if (!user) {
+			throw new Error("User not found");
 		}
 
 		const existingReport = await Report.findById(reportId);
@@ -40,7 +46,7 @@ async function updateReport(reportId: string, formData: FormData) {
 		}
 
 		// Verify ownership
-		if (existingReport.owner.toString() !== userId) {
+		if (existingReport.owner.toString() !== user._id.toString()) {
 			throw new Error("Current user does not own this report");
 		}
 
@@ -250,7 +256,7 @@ async function updateReport(reportId: string, formData: FormData) {
 			Number(existingReport.elevationLoss);
 
 		await User.findByIdAndUpdate(
-			userId,
+			user._id,
 			{
 				$inc: {
 					totalDistance: distanceDifference,
