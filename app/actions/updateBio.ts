@@ -5,25 +5,31 @@ import User from "@/models/User";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { standardRateLimit } from "@/utils/ratelimit";
+import { findUserByClerkId } from "@/utils/userUtils";
 
 async function updateBio(bio: string) {
 	await connectDB();
 
-	const { userId } = auth();
+	const { userId: clerkUserId } = auth();
 
-	if (!userId) {
+	if (!clerkUserId) {
 		return { error: "User not authenticated" };
 	}
 
-	const { success } = await standardRateLimit.limit(userId);
+	const { success } = await standardRateLimit.limit(clerkUserId);
 
 	if (!success) {
 		return { error: "Too many requests. Please try again later." };
 	}
 
 	try {
+		const user = await findUserByClerkId(clerkUserId);
+		if (!user) {
+			return { error: "User not found" };
+		}
+
 		const updateUser = await User.findByIdAndUpdate(
-			userId,
+			user._id,
 			{ bio },
 			{ new: true, runValidators: true }
 		);

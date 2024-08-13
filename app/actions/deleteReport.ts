@@ -8,28 +8,34 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
 import { reportRateLimit } from "@/utils/ratelimit";
+import { findUserByClerkId } from "@/utils/userUtils";
 
 async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
-	const { userId } = auth();
+	const { userId: clerkUserId } = auth();
 
 	// Check for session
-	if (!userId) {
+	if (!clerkUserId) {
 		throw new Error("User ID is required");
 	}
 
-	const { success } = await reportRateLimit.limit(userId);
+	const { success } = await reportRateLimit.limit(clerkUserId);
 	if (!success) {
 		throw new Error("Too many requests. Please try again later.");
 	}
 
 	await connectDB();
 
+	const user = await findUserByClerkId(clerkUserId);
+	if (!user) {
+		throw new Error("User not found");
+	}
+
 	const report = await Report.findById(reportId);
 
 	if (!report) throw new Error("Report Not Found");
 
 	// Verify ownership
-	if (report.owner.toString() !== userId) {
+	if (report.owner.toString() !== user._id.toString()) {
 		throw new Error("Unauthorized");
 	}
 
@@ -72,7 +78,7 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 		await report.deleteOne();
 
 		// Update the user's reports array and totalReports count
-		await User.findByIdAndUpdate(userId, {
+		await User.findByIdAndUpdate(user._id, {
 			$pull: { reports: reportId, bookmarks: reportId },
 			$inc: {
 				totalReports: -1,
