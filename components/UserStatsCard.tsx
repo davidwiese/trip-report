@@ -51,10 +51,10 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({
 						height={100}
 					/>
 					<p className="text-gray-600 mb-2">
-						<span className="font-bold">Name:</span> {user.username}
+						<span className="font-bold">Name:</span> {user.username || "N/A"}
 					</p>
 					<p className="text-gray-600 mb-4">
-						<span className="font-bold">Email:</span> {user.email}
+						<span className="font-bold">Email:</span> {user.email || "N/A"}
 					</p>
 					<div className="relative w-full mb-4">
 						{isEditing ? (
@@ -113,19 +113,19 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({
 										height={24}
 									/>
 								),
-								value: `${user.totalReports} Reports`,
+								value: `${user.totalReports || 0} Reports`,
 							},
 							{
 								icon: <RxRulerHorizontal className="inline-block text-2xl" />,
-								value: `${Math.round(user.totalDistance)} miles`,
+								value: `${Math.round(user.totalDistance || 0)} miles`,
 							},
 							{
 								icon: <LuMoveUpRight className="inline-block text-2xl" />,
-								value: `${Math.round(user.totalElevationGain)} ft`,
+								value: `${Math.round(user.totalElevationGain || 0)} ft`,
 							},
 							{
 								icon: <LuMoveDownRight className="inline-block text-2xl" />,
-								value: `${Math.round(user.totalElevationLoss)} ft`,
+								value: `${Math.round(user.totalElevationLoss || 0)} ft`,
 							},
 						].map((stat, index) => (
 							<Card

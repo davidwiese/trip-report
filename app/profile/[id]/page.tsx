@@ -10,6 +10,7 @@ import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
 import { auth } from "@clerk/nextjs/server";
 import { findUserByClerkId } from "@/utils/userUtils";
+import mongoose from "mongoose";
 
 type PublicProfilePageProps = {
 	params: {
@@ -24,7 +25,12 @@ type PublicProfilePageProps = {
 async function loader(userId: string, pageSize: number, page: number) {
 	await connectDB();
 
-	const user = await User.findById(userId);
+	let user;
+	if (mongoose.Types.ObjectId.isValid(userId)) {
+		user = await User.findById(userId);
+	} else {
+		user = await User.findOne({ clerkId: userId });
+	}
 
 	if (!user) {
 		return {
@@ -82,7 +88,7 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 		? await findUserByClerkId(currentUserClerkId)
 		: null;
 	const isOwnProfile = currentUser
-		? currentUser._id.toString() === params.id
+		? currentUser._id.toString() === user._id.toString()
 		: false;
 
 	return (
