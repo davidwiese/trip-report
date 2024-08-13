@@ -57,14 +57,15 @@ async function bookmarkReport(reportId: string | mongoose.Types.ObjectId) {
 		await user.save();
 		console.log("User saved successfully");
 
+		// Revalidate the cache
+		revalidatePath("/reports/bookmarks", "page");
+
 		console.log("Returning message:", message);
 		return { message, isBookmarked };
 	} catch (error) {
 		console.error("Error in bookmarkReport:", error);
 		return { error: "An error occurred while updating the bookmark" };
 	}
-	// Revalidate the cache
-	revalidatePath("/reports/bookmarks", "page");
 }
 
 export default bookmarkReport;
