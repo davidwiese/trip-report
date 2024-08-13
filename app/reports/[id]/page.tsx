@@ -4,11 +4,9 @@ import ReportImages from "@/components/ReportImages";
 import ShareButtons from "@/components/ShareButtons";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
-import User from "@/models/User";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
 import { auth } from "@clerk/nextjs/server";
-import { isValidObjectId } from "mongoose";
 
 type ReportPageProps = {
 	params: {
@@ -55,10 +53,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		console.log("clerkUserId:", clerkUserId);
 
 		// Check if the current user is the author of the report
-		let isAuthor = false;
-		if (clerkUserId) {
-			isAuthor = clerkUserId === report.owner.clerkId;
-		}
+		const isAuthor = clerkUserId === report.owner.clerkId;
 		console.log("isAuthor:", isAuthor);
 
 		return (
