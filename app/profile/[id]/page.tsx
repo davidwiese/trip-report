@@ -81,13 +81,15 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 	const currentUser = currentUserClerkId
 		? await findUserByClerkId(currentUserClerkId)
 		: null;
-	const isOwnProfile = currentUser && currentUser._id.toString() === params.id;
+	const isOwnProfile = currentUser
+		? currentUser._id.toString() === params.id
+		: false;
 
 	return (
 		<>
 			<section className="bg-white py-10">
 				<div className="container mx-auto px-6">
-					<UserStatsCard user={user} isOwnProfile={!!isOwnProfile} />
+					<UserStatsCard user={user} isOwnProfile={isOwnProfile} />
 				</div>
 			</section>
 			<section className="bg-white py-10">

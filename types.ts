@@ -19,7 +19,7 @@ export type GpxFileObject = {
 
 export type Report = {
 	_id: string;
-	owner: string;
+	owner: Types.ObjectId | User; // This can be populated with a User object
 	title: string;
 	activityType: string[];
 	description: string;
@@ -49,9 +49,9 @@ export type User = {
 	totalDistance: number;
 	totalElevationGain: number;
 	totalElevationLoss: number;
-	reports: Report[];
+	reports: Types.ObjectId[] | Report[];
 	image?: string;
-	bookmarks: Report[];
+	bookmarks: Types.ObjectId[] | Report[];
 	createdAt: string;
 	updatedAt: string;
 };

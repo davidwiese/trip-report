@@ -1,7 +1,7 @@
 "use client";
 
 import { useUser } from "@clerk/nextjs";
-import { Report as ReportType } from "@/types";
+import { Report as ReportType, User as UserType } from "@/types";
 import Link from "next/link";
 import { TbEdit } from "react-icons/tb";
 import { Button } from "@/components/ui/bookmark-button";
@@ -12,9 +12,12 @@ type EditButtonProps = {
 
 const EditButton: React.FC<EditButtonProps> = ({ report }) => {
 	const { user } = useUser();
-	const userId = user?.id;
+	const userClerkId = user?.id;
 
-	if (userId !== report.owner.toString()) {
+	const ownerClerkId =
+		(report.owner as UserType)?.clerkId || (report.owner as UserType)?.clerkId;
+
+	if (userClerkId !== ownerClerkId) {
 		return null;
 	}
 
