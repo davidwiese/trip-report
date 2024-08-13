@@ -44,12 +44,9 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		};
 		console.log("report:", JSON.stringify(report, null, 2));
 
-		const user = report.owner;
-		console.log("user:", JSON.stringify(user, null, 2));
-
 		const author = {
-			name: user.username,
-			id: user.clerkId,
+			name: report.owner.username,
+			id: report.owner.clerkId,
 		};
 		console.log("author:", author);
 
@@ -57,26 +54,11 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		const { userId: clerkUserId } = auth();
 		console.log("clerkUserId:", clerkUserId);
 
+		// Check if the current user is the author of the report
 		let isAuthor = false;
-		let currentUser: UserType | null = null;
-
 		if (clerkUserId) {
-			try {
-				currentUser = await User.findOne({ clerkId: clerkUserId }).lean();
-				console.log("currentUser:", JSON.stringify(currentUser, null, 2));
-
-				if (
-					currentUser &&
-					isValidObjectId(currentUser._id) &&
-					isValidObjectId(report.owner._id)
-				) {
-					isAuthor = currentUser._id.toString() === report.owner._id.toString();
-				}
-			} catch (userError) {
-				console.error("Error finding current user:", userError);
-			}
+			isAuthor = clerkUserId === report.owner.clerkId;
 		}
-
 		console.log("isAuthor:", isAuthor);
 
 		return (
