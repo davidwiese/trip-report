@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export type Location = {
 	country: string;
 	region: string;
@@ -38,7 +40,7 @@ export type Report = {
 };
 
 export type User = {
-	_id: string;
+	_id: Types.ObjectId;
 	clerkId: string;
 	email: string;
 	username: string;

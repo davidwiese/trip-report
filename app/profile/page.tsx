@@ -1,30 +1,17 @@
 import ProfileReportCard from "@/components/ProfileReportCard";
 import connectDB from "@/config/database";
 import { auth } from "@clerk/nextjs/server";
-import User from "@/models/User";
 import Report from "@/models/Report";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
 import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
+import { findUserByClerkId } from "@/utils/userUtils";
 
-async function loader(pageSize: number, page: number) {
+async function loader(pageSize: number, page: number, clerkUserId: string) {
 	await connectDB();
-	const { userId } = auth();
 
-	if (!userId) {
-		return {
-			reports: [],
-			user: null,
-			totalReports: 0,
-			currentPage: 1,
-		};
-	}
-
-	const userDoc = await User.findById(userId).lean();
-	const user = userDoc
-		? (convertToSerializableObject(userDoc) as UserType)
-		: null;
+	const user = await findUserByClerkId(clerkUserId);
 
 	if (!user) {
 		return {
@@ -35,17 +22,16 @@ async function loader(pageSize: number, page: number) {
 		};
 	}
 
-	const totalReports = await Report.countDocuments({ owner: userId });
+	const totalReports = await Report.countDocuments({ owner: user._id });
 	const totalPages = Math.ceil(totalReports / pageSize);
 
-	// Ensure the page is within valid range
 	let currentPage = page;
 	if (currentPage < 1 || currentPage > totalPages) {
 		currentPage = 1;
 	}
 
 	const skip = (currentPage - 1) * pageSize;
-	const reportsDocs = await Report.find({ owner: userId })
+	const reportsDocs = await Report.find({ owner: user._id })
 		.skip(skip)
 		.limit(pageSize)
 		.lean();
@@ -53,7 +39,7 @@ async function loader(pageSize: number, page: number) {
 
 	return {
 		reports,
-		user,
+		user: convertToSerializableObject(user) as UserType,
 		totalReports,
 		currentPage,
 	};
@@ -69,20 +55,26 @@ type ProfilePageProps = {
 const ProfilePage: React.FC<ProfilePageProps> = async ({
 	searchParams: { pageSize = "4", page = "1" },
 }) => {
+	const { userId: clerkUserId } = auth();
+
+	if (!clerkUserId) {
+		return <p>You must be logged in to view this page.</p>;
+	}
+
 	const validPage = parseInt(page, 10) || 1;
 	const validPageSize = parseInt(pageSize, 10) || 6;
 
 	const { reports, user, totalReports, currentPage } = await loader(
 		validPageSize,
-		validPage
+		validPage,
+		clerkUserId
 	);
 
 	if (!user) {
-		return <p>You must be logged in to view this page.</p>;
+		return <p>User not found.</p>;
 	}
 
-	const { userId } = auth();
-	const isOwnProfile = userId === user._id.toString();
+	const isOwnProfile = true;
 
 	return (
 		<>

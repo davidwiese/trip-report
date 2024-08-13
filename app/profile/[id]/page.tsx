@@ -2,13 +2,13 @@ import { notFound } from "next/navigation";
 import PublicProfileReportCard from "@/components/PublicProfileReportCard";
 import ProfileContactForm from "@/components/ProfileContactForm";
 import connectDB from "@/config/database";
-import User from "@/models/User";
 import Report from "@/models/Report";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
 import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
 import { auth } from "@clerk/nextjs/server";
+import { findUserByClerkId } from "@/utils/userUtils";
 
 type PublicProfilePageProps = {
 	params: {
@@ -20,13 +20,10 @@ type PublicProfilePageProps = {
 	};
 };
 
-async function loader(userId: string, pageSize: number, page: number) {
+async function loader(clerkUserId: string, pageSize: number, page: number) {
 	await connectDB();
 
-	const userDoc = await User.findById(userId).lean();
-	const user = userDoc
-		? (convertToSerializableObject(userDoc) as UserType)
-		: null;
+	const user = await findUserByClerkId(clerkUserId);
 
 	if (!user) {
 		return {
@@ -37,7 +34,7 @@ async function loader(userId: string, pageSize: number, page: number) {
 		};
 	}
 
-	const totalReports = await Report.countDocuments({ owner: userId });
+	const totalReports = await Report.countDocuments({ owner: user._id });
 	const totalPages = Math.ceil(totalReports / pageSize);
 
 	// Ensure the page is within valid range
@@ -47,7 +44,7 @@ async function loader(userId: string, pageSize: number, page: number) {
 	}
 
 	const skip = (currentPage - 1) * pageSize;
-	const reportsDocs = await Report.find({ owner: userId })
+	const reportsDocs = await Report.find({ owner: user._id })
 		.skip(skip)
 		.limit(pageSize)
 		.lean();
@@ -55,7 +52,7 @@ async function loader(userId: string, pageSize: number, page: number) {
 
 	return {
 		reports,
-		user,
+		user: convertToSerializableObject(user) as UserType,
 		totalReports,
 		currentPage,
 	};
@@ -79,8 +76,8 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 		return null;
 	}
 
-	const { userId } = auth();
-	const isOwnProfile = userId === params.id;
+	const { userId: currentUserClerkId } = auth();
+	const isOwnProfile = currentUserClerkId === params.id;
 
 	return (
 		<>
