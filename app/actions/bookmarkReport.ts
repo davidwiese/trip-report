@@ -22,7 +22,7 @@ async function bookmarkReport(reportId: string | mongoose.Types.ObjectId) {
 	}
 
 	// Find user in database
-	const user = await User.findById({ clerkId: clerkUserId });
+	const user = await User.findOne({ clerkId: clerkUserId });
 
 	if (!user) {
 		return { error: "User not found" };
