@@ -26,10 +26,11 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 
 		// Query the report in the DB and populate the owner field
 		const reportDoc = await Report.findById(params.id).populate("owner").lean();
-		console.log("reportDoc:", reportDoc);
+		console.log("reportDoc:", JSON.stringify(reportDoc, null, 2));
 
 		// Null check
 		if (!reportDoc) {
+			console.log("Report not found for ID:", params.id);
 			return (
 				<h1 className="text-center text-2xl font-bold mt-10">
 					Report Not Found
@@ -41,10 +42,10 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		const report = convertToSerializableObject(reportDoc) as ReportType & {
 			owner: UserType;
 		};
-		console.log("report:", report);
+		console.log("report:", JSON.stringify(report, null, 2));
 
 		const user = report.owner;
-		console.log("user:", user);
+		console.log("user:", JSON.stringify(user, null, 2));
 
 		const author = {
 			name: user.username,
@@ -57,31 +58,26 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		console.log("clerkUserId:", clerkUserId);
 
 		let isAuthor = false;
+		let currentUser: UserType | null = null;
 
 		if (clerkUserId) {
-			// Find the MongoDB user document using the Clerk user ID
-			const currentUser = (await User.findOne({
-				clerkId: clerkUserId,
-			}).lean()) as UserType | null;
-			console.log("currentUser:", currentUser);
+			try {
+				currentUser = await User.findOne({ clerkId: clerkUserId }).lean();
+				console.log("currentUser:", JSON.stringify(currentUser, null, 2));
 
-			// Check if the current user is the author of the report
-			if (
-				currentUser &&
-				isValidObjectId(currentUser._id) &&
-				currentUser._id.toString() === report.owner._id.toString()
-			) {
-				isAuthor = true;
+				if (
+					currentUser &&
+					isValidObjectId(currentUser._id) &&
+					isValidObjectId(report.owner._id)
+				) {
+					isAuthor = currentUser._id.toString() === report.owner._id.toString();
+				}
+			} catch (userError) {
+				console.error("Error finding current user:", userError);
 			}
 		}
 
-		if (!report) {
-			return (
-				<h1 className="text-center text-2xl font-bold mt-10">
-					Report Not Found
-				</h1>
-			);
-		}
+		console.log("isAuthor:", isAuthor);
 
 		return (
 			<>
