@@ -1,21 +1,15 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
-import { Report as ReportType, User as UserType } from "@/types";
+import { Report as ReportType } from "@/types";
 import Link from "next/link";
 import { TbEdit } from "react-icons/tb";
 import { Button } from "@/components/ui/bookmark-button";
 
 type EditButtonProps = {
 	report: ReportType;
-	isAuthor: boolean;
 };
 
-const EditButton: React.FC<EditButtonProps> = ({ report, isAuthor }) => {
-	if (!isAuthor) {
-		return null;
-	}
-
+const EditButton: React.FC<EditButtonProps> = ({ report }) => {
 	return (
 		<Button
 			asChild

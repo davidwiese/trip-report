@@ -100,11 +100,7 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 							</p>
 						) : (
 							reports.map((report) => (
-								<PublicProfileReportCard
-									key={report._id}
-									report={report}
-									currentUserId={currentUser ? currentUser._id.toString() : ""}
-								/>
+								<PublicProfileReportCard key={report._id} report={report} />
 							))
 						)}
 					</div>

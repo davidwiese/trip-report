@@ -16,7 +16,6 @@ import {
 import { montserrat } from "@/app/ui/fonts";
 import EditButton from "@/components/EditButton";
 import DeleteButton from "@/components/DeleteButton";
-import { useUser } from "@clerk/nextjs";
 
 type ProfileReportCardProps = {
 	report: ReportType;
@@ -27,8 +26,6 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({
 	report,
 	currentUserId,
 }) => {
-	const isAuthor = currentUserId === report.owner;
-
 	const placeholderImage = "/images/placeholder-image.png";
 
 	return (
@@ -83,7 +80,7 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({
 				</CardContent>
 				<div className="flex-grow" />
 				<CardFooter className="flex justify-between items-center">
-					<EditButton report={report} isAuthor={isAuthor} />
+					<EditButton report={report} />
 					<DeleteButton report={report} />
 				</CardFooter>
 			</div>
