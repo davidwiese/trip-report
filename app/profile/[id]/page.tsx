@@ -27,6 +27,12 @@ async function loader(userId: string, pageSize: number, page: number) {
 
 	const user = await User.findById(userId);
 
+	if (user) {
+		console.log("User ID:", user._id); // Add this line
+	} else {
+		console.log("User is undefined or null"); // Add this line
+	}
+
 	if (!user) {
 		return {
 			reports: [],
@@ -72,7 +78,8 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 		validPage
 	);
 
-	if (!user) {
+	if (!user || !user._id) {
+		// Additional check here
 		notFound();
 		return null;
 	}
@@ -83,9 +90,10 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 
 	if (currentUserClerkId) {
 		currentUser = await findUserByClerkId(currentUserClerkId);
-		isOwnProfile = currentUser
-			? currentUser._id.toString() === params.id
-			: false;
+		isOwnProfile =
+			currentUser && currentUser._id && user._id
+				? currentUser._id.toString() === user._id.toString() // Ensure both IDs exist
+				: false;
 	}
 
 	return (
@@ -122,11 +130,7 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 				<section className="bg-white py-10">
 					<div className="container mx-auto px-6">
 						<ProfileContactForm
-							recipientId={
-								typeof user._id === "string"
-									? user._id
-									: (user._id as Types.ObjectId).toString()
-							}
+							recipientId={user._id.toString()} // Safely access _id
 						/>
 					</div>
 				</section>
