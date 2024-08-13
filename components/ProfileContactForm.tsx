@@ -120,6 +120,7 @@ const ProfileContactForm: React.FC<ProfileContactFormProps> = ({
 							name="message"
 							placeholder="Enter your message"
 							required
+							maxLength={4000}
 						></textarea>
 					</div>
 					<div>
