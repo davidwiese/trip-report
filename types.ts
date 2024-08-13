@@ -19,7 +19,7 @@ export type GpxFileObject = {
 
 export type Report = {
 	_id: string;
-	owner: Types.ObjectId | User; // This can be populated with a User object
+	owner: User; // This can be populated with a User object
 	title: string;
 	activityType: string[];
 	description: string;
