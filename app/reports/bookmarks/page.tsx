@@ -6,19 +6,10 @@ import { Report as ReportType, User as UserType } from "@/types";
 import Pagination from "@/components/Pagination";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 
-async function loader(pageSize: number, page: number) {
+async function loader(pageSize: number, page: number, clerkUserId: string) {
 	await connectDB();
-	const { userId } = auth();
 
-	if (!userId) {
-		return {
-			bookmarkedReports: [],
-			totalReports: 0,
-			currentPage: 1,
-		};
-	}
-
-	const user: UserType | null = await User.findById(userId)
+	const user: UserType | null = await User.findOne({ clerkId: clerkUserId })
 		.populate("bookmarks")
 		.lean();
 
@@ -63,9 +54,9 @@ const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({
 }) => {
 	await connectDB();
 
-	const { userId } = auth();
+	const { userId: clerkUserId } = auth();
 
-	if (!userId) {
+	if (!clerkUserId) {
 		return (
 			<section className="px-4 py-6">
 				<h1 className="text-2xl mb-4">Bookmarked Reports</h1>
@@ -81,7 +72,8 @@ const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({
 
 	const { bookmarkedReports, totalReports, currentPage } = await loader(
 		validPageSize,
-		validPage
+		validPage,
+		clerkUserId
 	);
 
 	// Convert the entire result to serializable objects
