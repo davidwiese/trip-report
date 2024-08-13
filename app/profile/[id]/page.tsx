@@ -10,6 +10,7 @@ import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
 import { auth } from "@clerk/nextjs/server";
 import { findUserByClerkId } from "@/utils/userUtils";
+import { Types } from "mongoose";
 
 type PublicProfilePageProps = {
 	params: {
@@ -77,12 +78,15 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 	}
 
 	const { userId: currentUserClerkId } = auth();
-	const currentUser = currentUserClerkId
-		? await findUserByClerkId(currentUserClerkId)
-		: null;
-	const isOwnProfile = currentUser
-		? currentUser._id.toString() === params.id
-		: false;
+	let currentUser = null;
+	let isOwnProfile = false;
+
+	if (currentUserClerkId) {
+		currentUser = await findUserByClerkId(currentUserClerkId);
+		isOwnProfile = currentUser
+			? currentUser._id.toString() === params.id
+			: false;
+	}
 
 	return (
 		<>
@@ -117,7 +121,13 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 			{!isOwnProfile && currentUser && (
 				<section className="bg-white py-10">
 					<div className="container mx-auto px-6">
-						<ProfileContactForm recipientId={user._id.toString()} />
+						<ProfileContactForm
+							recipientId={
+								typeof user._id === "string"
+									? user._id
+									: (user._id as Types.ObjectId).toString()
+							}
+						/>
 					</div>
 				</section>
 			)}
