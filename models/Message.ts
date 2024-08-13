@@ -36,7 +36,7 @@ const MessageSchema = new Schema(
 
 // Add indexes for frequently queried fields
 MessageSchema.index({ sender: 1, recipient: 1 });
-MessageSchema.index({ read: 1 });
+MessageSchema.index({ recipient: 1, read: 1, createdAt: -1 });
 
 // Prevent creation of multiple instances of the same model
 const Message = models.Message || model("Message", MessageSchema);

@@ -1,10 +1,10 @@
 import MessageCard from "@/components/Message";
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
-import User from "@/models/User";
 import { auth } from "@clerk/nextjs/server";
 import { Message as MessageType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
+import { findUserByClerkId } from "@/utils/userUtils";
 
 type MessagesPageProps = {
 	// Add any props here if needed
@@ -29,7 +29,7 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 	}
 
 	// Find the user in your database using the Clerk userId
-	const user = await User.findOne({ clerkId: clerkUserId });
+	const user = await findUserByClerkId(clerkUserId);
 
 	if (!user) {
 		console.error(`No user found for Clerk ID: ${clerkUserId}`);
