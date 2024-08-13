@@ -8,13 +8,11 @@ import { Button } from "@/components/ui/bookmark-button";
 
 type EditButtonProps = {
 	report: ReportType;
+	isAuthor: boolean;
 };
 
-const EditButton: React.FC<EditButtonProps> = ({ report }) => {
-	const { user } = useUser();
-	const userClerkId = user?.id;
-
-	if (userClerkId !== report.owner.clerkId) {
+const EditButton: React.FC<EditButtonProps> = ({ report, isAuthor }) => {
+	if (!isAuthor) {
 		return null;
 	}
 
