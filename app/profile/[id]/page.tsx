@@ -140,12 +140,11 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 					)}
 				</div>
 			</section>
-			{!isOwnProfile && currentUser && (
+
+			{!isOwnProfile && currentUser && user && user._id && (
 				<section className="bg-white py-10">
 					<div className="container mx-auto px-6">
-						<ProfileContactForm
-							recipientId={user._id.toString()} // Safely access _id
-						/>
+						<ProfileContactForm recipientId={user._id.toString()} />
 					</div>
 				</section>
 			)}
@@ -153,4 +152,5 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 	);
 };
 
+console.log("After rendering ProfileContactForm");
 export default PublicProfilePage;
