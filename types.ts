@@ -42,9 +42,6 @@ export type User = {
 	clerkId: string;
 	email: string;
 	username: string;
-	password?: string;
-	provider?: string;
-	providerId?: string;
 	bio?: string;
 	totalReports: number;
 	totalDistance: number;
