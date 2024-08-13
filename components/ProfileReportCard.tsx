@@ -19,13 +19,9 @@ import DeleteButton from "@/components/DeleteButton";
 
 type ProfileReportCardProps = {
 	report: ReportType;
-	currentUserId: string;
 };
 
-const ProfileReportCard: React.FC<ProfileReportCardProps> = ({
-	report,
-	currentUserId,
-}) => {
+const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
 	const placeholderImage = "/images/placeholder-image.png";
 
 	return (
