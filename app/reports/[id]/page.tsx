@@ -8,6 +8,7 @@ import User from "@/models/User";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
 import { auth } from "@clerk/nextjs/server";
+import { isValidObjectId } from "mongoose";
 
 type ReportPageProps = {
 	params: {
@@ -25,6 +26,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 
 		// Query the report in the DB and populate the owner field
 		const reportDoc = await Report.findById(params.id).populate("owner").lean();
+		console.log("reportDoc:", reportDoc);
 
 		// Null check
 		if (!reportDoc) {
@@ -39,28 +41,39 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		const report = convertToSerializableObject(reportDoc) as ReportType & {
 			owner: UserType;
 		};
+		console.log("report:", report);
 
 		const user = report.owner;
+		console.log("user:", user);
 
 		const author = {
 			name: user.username,
 			id: user.clerkId,
 		};
+		console.log("author:", author);
 
 		// Get the current user from the Clerk auth
 		const { userId: clerkUserId } = auth();
+		console.log("clerkUserId:", clerkUserId);
 
-		// Find the MongoDB user document using the Clerk user ID
-		const currentUser = clerkUserId
-			? ((await User.findOne({
-					clerkId: clerkUserId,
-			  }).lean()) as UserType | null)
-			: null;
+		let isAuthor = false;
 
-		// Check if the current user is the author of the report
-		const isAuthor = !!(
-			currentUser && currentUser._id.toString() === report.owner._id.toString()
-		);
+		if (clerkUserId) {
+			// Find the MongoDB user document using the Clerk user ID
+			const currentUser = (await User.findOne({
+				clerkId: clerkUserId,
+			}).lean()) as UserType | null;
+			console.log("currentUser:", currentUser);
+
+			// Check if the current user is the author of the report
+			if (
+				currentUser &&
+				isValidObjectId(currentUser._id) &&
+				currentUser._id.toString() === report.owner._id.toString()
+			) {
+				isAuthor = true;
+			}
+		}
 
 		if (!report) {
 			return (
