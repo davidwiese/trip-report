@@ -14,10 +14,7 @@ const EditButton: React.FC<EditButtonProps> = ({ report }) => {
 	const { user } = useUser();
 	const userClerkId = user?.id;
 
-	const ownerClerkId =
-		(report.owner as UserType)?.clerkId || (report.owner as UserType)?.clerkId;
-
-	if (userClerkId !== ownerClerkId) {
+	if (userClerkId !== report.owner.clerkId) {
 		return null;
 	}
 
