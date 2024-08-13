@@ -50,13 +50,12 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		// Get the current user from the Clerk auth
 		const { userId: clerkUserId } = auth();
 
-		// Find the current user in the database using the Clerk userId
-		let currentUser: UserType | null = null;
-		if (clerkUserId) {
-			currentUser = (await User.findOne({
-				clerkId: clerkUserId,
-			}).lean()) as UserType | null;
-		}
+		// Find the MongoDB user document using the Clerk user ID
+		const currentUser = clerkUserId
+			? ((await User.findOne({
+					clerkId: clerkUserId,
+			  }).lean()) as UserType | null)
+			: null;
 
 		// Check if the current user is the author of the report
 		const isAuthor = !!(

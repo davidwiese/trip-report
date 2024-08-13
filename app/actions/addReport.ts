@@ -24,10 +24,6 @@ async function addReport(formData: FormData) {
 
 		const { userId: clerkUserId } = auth();
 
-		// NOTE: throwing an Error from our server actions will be caught by our
-		// error.jsx ErrorBoundary component and show the user an Error page with
-		// message of the thrown error.
-
 		if (!clerkUserId) {
 			throw new Error("User ID is required");
 		}
@@ -198,19 +194,14 @@ async function addReport(formData: FormData) {
 			const newReport = new Report(reportData);
 			await newReport.save();
 
-			// Convert distance, elevation gain, and elevation loss to numbers
-			const distance = parseFloat(reportData.distance as string);
-			const elevationGain = parseFloat(reportData.elevationGain as string);
-			const elevationLoss = parseFloat(reportData.elevationLoss as string);
-
 			// Update the user's reports array and totals
 			await User.findByIdAndUpdate(user._id, {
 				$push: { reports: newReport._id },
 				$inc: {
 					totalReports: 1,
-					totalDistance: distance,
-					totalElevationGain: elevationGain,
-					totalElevationLoss: elevationLoss,
+					totalDistance: parseFloat(reportData.distance as string),
+					totalElevationGain: parseFloat(reportData.elevationGain as string),
+					totalElevationLoss: parseFloat(reportData.elevationLoss as string),
 				},
 			});
 

@@ -21,12 +21,6 @@ async function addMessage(
 
 	const { userId: clerkUserId } = auth();
 
-	// NOTE: Here we return an { error } object back which we can use to then show
-	// the user a toast message.
-	// We don't want to throw here like we did in our report server actions as that would
-	// then be 'caught' by our error.jsx ErrorBoundary component and show the user
-	// our Error page.
-
 	if (!clerkUserId) {
 		return { error: "You must be logged in to send a message" };
 	}
