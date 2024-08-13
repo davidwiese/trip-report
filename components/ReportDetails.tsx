@@ -157,7 +157,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({
 						<div className="self-end space-y-1">
 							{isAuthor && (
 								<div>
-									<EditButton report={report} isAuthor={isAuthor} />
+									<EditButton report={report} />
 								</div>
 							)}
 							<div>
