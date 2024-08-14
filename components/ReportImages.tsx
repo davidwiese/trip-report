@@ -99,7 +99,6 @@ const SingleImage: React.FC<ImageWithDimensions> = ({ image, dimensions }) => {
 					className="object-cover h-[400px] mx-auto rounded-xl cursor-pointer"
 					width={1800}
 					height={400}
-					priority={true}
 				/>
 			)}
 		</Item>
@@ -139,7 +138,6 @@ const MultipleImages: React.FC<{
 								width={0}
 								height={0}
 								sizes="100vw"
-								priority={true}
 							/>
 						)}
 					</Item>
