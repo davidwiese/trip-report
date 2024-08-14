@@ -7,23 +7,11 @@ import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import logo from "@/public/images/logo_fill.png";
 import ProfileButton from "@/components/ProfileButton";
-import { useUser, SignInButton, UserButton } from "@clerk/nextjs";
+import { useUser, SignInButton } from "@clerk/nextjs";
 import UnreadMessageCount from "@/components/UnreadMessageCount";
 
 type NavbarProps = {
 	// Add any props here if needed
-};
-
-const DotIcon = () => {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 512 512"
-			fill="currentColor"
-		>
-			<path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512z" />
-		</svg>
-	);
 };
 
 const Navbar: React.FC<NavbarProps> = () => {
@@ -139,7 +127,9 @@ const Navbar: React.FC<NavbarProps> = () => {
 										className="relative flex items-center justify-center h-10 w-10 rounded-full text-white border border-black bg-black p-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
 									>
 										<span className="absolute -inset-1.5"></span>
-										<span className="sr-only">View notifications</span>
+										<span className="sr-only">
+											View notifications and messages
+										</span>
 										<svg
 											className="h-6 w-6"
 											fill="none"
@@ -158,13 +148,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 									<UnreadMessageCount />
 								</Link>
 								<div className="relative mx-2 flex items-center rounded-full">
-									<UserButton>
-										<UserButton.UserProfileLink
-											label="Profile"
-											url="/profile"
-											labelIcon={<DotIcon />}
-										/>
-									</UserButton>
+									<ProfileButton />
 								</div>
 							</>
 						) : (

@@ -16,7 +16,7 @@ import { FaUser } from "react-icons/fa";
 
 const ProfileButton = () => {
 	const { user } = useUser();
-	const { signOut } = useClerk();
+	const { signOut, openUserProfile } = useClerk();
 	const profileImage = user?.imageUrl;
 
 	const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -61,13 +61,24 @@ const ProfileButton = () => {
 						href="/reports/bookmarks"
 						className="block px-4 py-2 text-sm w-full text-left"
 						role="menuitem"
-						id="user-menu-item-2"
+						id="user-menu-item-1"
 						onClick={() => {
 							setIsProfileMenuOpen(false);
 						}}
 					>
 						Bookmarks
 					</Link>
+				</DropdownMenuItem>
+				<DropdownMenuItem
+					onClick={() => {
+						setIsProfileMenuOpen(false);
+						openUserProfile();
+					}}
+					className="block px-4 py-2 text-sm w-full text-left"
+					role="menuitem"
+					id="user-menu-item-2"
+				>
+					Manage Account
 				</DropdownMenuItem>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem asChild>
@@ -78,7 +89,7 @@ const ProfileButton = () => {
 						}}
 						className="w-full text-center"
 						role="menuitem"
-						id="user-menu-item-2"
+						id="user-menu-item-3"
 					>
 						Sign Out
 					</Button>
