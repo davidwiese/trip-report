@@ -91,17 +91,17 @@ const ReportSchema = new Schema(
 				message: "End date must be equal to or later than the start date.",
 			},
 		},
-		// NOTE: Limit the user to a maximum of 5 images
+		// NOTE: Limit the user to a maximum of 10 images
 		images: {
 			type: [ImageSchema],
 			default: undefined,
 			validate: {
 				validator: (v: Array<{ url: string; originalFilename: string }>) =>
-					v.length <= 5,
+					v.length <= 10,
 				message: (props: {
 					value: Array<{ url: string; originalFilename: string }>;
 				}) =>
-					`The images array can contain a maximum of 5 images, but has ${props.value.length}`,
+					`The images array can contain a maximum of 10 images, but has ${props.value.length}`,
 			},
 		},
 		isFeatured: {

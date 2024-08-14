@@ -115,8 +115,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				}
 			}
 
-			if (totalImages > 5) {
-				toast.error("You can select up to 5 images in total");
+			if (totalImages > 10) {
+				toast.error("You can select up to 10 images in total");
 				setImages([]); // Clear the previously selected images
 				e.target.value = ""; // Clear the file input
 			} else {
@@ -205,8 +205,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 		const totalImages =
 			existingImageCount - markedForRemovalCount + newImageCount;
 
-		if (totalImages > 5) {
-			newErrors.push("You can select up to 5 images in total");
+		if (totalImages > 10) {
+			newErrors.push("You can select up to 10 images in total");
 		}
 
 		setErrors(newErrors);
@@ -815,7 +815,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 
 			<div className="mb-4">
 				<label htmlFor="images" className="block text-gray-700 font-bold mb-2">
-					Images (Select up to 5 images)
+					Images (max 10)
 				</label>
 				<input
 					type="file"

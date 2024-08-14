@@ -134,8 +134,8 @@ async function updateReport(reportId: string, formData: FormData) {
 		const totalImages =
 			existingImageCount - markedForRemovalCount + newImageCount;
 
-		if (totalImages > 5) {
-			throw new Error("You can have a maximum of 5 images in total.");
+		if (totalImages > 10) {
+			throw new Error("You can have a maximum of 10 images in total.");
 		}
 
 		// Merge new images with existing images and filter out any images marked for removal

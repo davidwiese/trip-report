@@ -108,8 +108,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 				}
 			}
 
-			if (totalImages > 5) {
-				toast.error("You can select up to 5 images");
+			if (totalImages > 10) {
+				toast.error("You can select up to 10 images");
 				setImages([]); // Clear the previously selected images
 				e.target.value = ""; // Clear the file input
 			} else {
@@ -210,8 +210,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 
 		const totalImages = images.length;
 
-		if (totalImages > 5) {
-			newErrors.push("You can select up to 5 images in total");
+		if (totalImages > 10) {
+			newErrors.push("You can select up to 10 images in total");
 		}
 
 		setErrors(newErrors);
@@ -768,7 +768,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 
 			<div className="mb-4">
 				<label htmlFor="images" className="block text-gray-700 font-bold mb-2">
-					Images (Select up to 5 images)
+					Images (max 10)
 				</label>
 				<input
 					type="file"
