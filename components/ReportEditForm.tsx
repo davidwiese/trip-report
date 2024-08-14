@@ -18,6 +18,22 @@ type ImageObject = {
 	originalFilename: string;
 };
 
+const Label: React.FC<{
+	htmlFor: string;
+	required?: boolean;
+	children: React.ReactNode;
+}> = ({ htmlFor, required = false, children }) => (
+	<label
+		htmlFor={htmlFor}
+		className={`block text-gray-700 font-bold mb-2 ${
+			required ? "required" : ""
+		}`}
+	>
+		{children}
+		{required && <span className="text-red-500 ml-1">*</span>}
+	</label>
+);
+
 const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [body, setBody] = useState<string>(report.body || "");
 	const [description, setDescription] = useState<string>(
@@ -338,9 +354,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</h2>
 
 			<div className="mb-4">
-				<label className="block text-gray-700 font-bold mb-2">
+				<Label htmlFor="activityType" required>
 					Activity Type
-				</label>
+				</Label>
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-2">
 					<div>
 						<input
@@ -548,12 +564,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div className="mb-4">
-				<label
-					htmlFor="description"
-					className="block text-gray-700 font-bold mb-2"
-				>
+				<Label htmlFor="description" required>
 					Description
-				</label>
+				</Label>
 				<textarea
 					id="description"
 					name="description"
@@ -571,7 +584,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div className="mb-4">
-				<label className="block text-gray-700 font-bold mb-2">Location</label>
+				<Label htmlFor="location" required>
+					Location
+				</Label>
 				<CountryDropdown
 					value={country}
 					onChange={handleCountryChange}
@@ -622,12 +637,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 
 			<div className="mb-4 flex flex-wrap -mx-2">
 				<div className="w-full sm:w-1/3 px-2 mb-4 sm:mb-0">
-					<label
-						htmlFor="distance"
-						className="block text-gray-700 font-bold mb-2"
-					>
+					<Label htmlFor="distance" required>
 						Distance (miles)
-					</label>
+					</Label>
 					<input
 						type="number"
 						id="distance"
@@ -640,12 +652,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					/>
 				</div>
 				<div className="w-full sm:w-1/3 px-2 mb-4 sm:mb-0">
-					<label
-						htmlFor="elevationGain"
-						className="block text-gray-700 font-bold mb-2"
-					>
+					<Label htmlFor="elevationGain" required>
 						Elevation Gain (ft)
-					</label>
+					</Label>
 					<input
 						type="number"
 						id="elevationGain"
@@ -657,12 +666,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					/>
 				</div>
 				<div className="w-full sm:w-1/3 px-2">
-					<label
-						htmlFor="elevationLoss"
-						className="block text-gray-700 font-bold mb-2"
-					>
+					<Label htmlFor="elevationLoss" required>
 						Elevation Loss (ft)
-					</label>
+					</Label>
 					<input
 						type="number"
 						id="elevationLoss"
@@ -676,12 +682,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div className="mb-4">
-				<label
-					htmlFor="duration"
-					className="block text-gray-700 font-bold mb-2"
-				>
+				<Label htmlFor="duration" required>
 					Duration (hours)
-				</label>
+				</Label>
 				<input
 					type="number"
 					id="duration"
@@ -695,12 +698,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div className="mb-4">
-				<label
-					htmlFor="startDate"
-					className="block text-gray-700 font-bold mb-2"
-				>
+				<Label htmlFor="startDate" required>
 					Start Date
-				</label>
+				</Label>
 				<input
 					type="date"
 					id="startDate"
@@ -713,9 +713,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div className="mb-4">
-				<label htmlFor="endDate" className="block text-gray-700 font-bold mb-2">
+				<Label htmlFor="endDate" required>
 					End Date
-				</label>
+				</Label>
 				<input
 					type="date"
 					id="endDate"
@@ -729,7 +729,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 
 			<div className="mb-4">
 				<label htmlFor="gpxFile" className="block text-gray-700 font-bold mb-2">
-					Upload GPX File (optional)
+					Upload GPX File
 				</label>
 				{report.gpxFile && (
 					<div className="flex items-center">
@@ -774,7 +774,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					htmlFor="caltopoUrl"
 					className="block text-gray-700 font-bold mb-2"
 				>
-					Caltopo URL (optional)
+					Caltopo URL
 				</label>
 				<input
 					type="url"
@@ -788,9 +788,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div className="mb-4">
-				<label htmlFor="title" className="block text-gray-700 font-bold mb-2">
+				<Label htmlFor="title" required>
 					Title
-				</label>
+				</Label>
 				<input
 					type="text"
 					id="title"
@@ -804,9 +804,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			</div>
 
 			<div className="mb-4">
-				<label htmlFor="body" className="block text-gray-700 font-bold mb-2">
+				<Label htmlFor="body" required>
 					Trip Report
-				</label>
+				</Label>
 				<input type="hidden" name="body" value={body} />
 				<div className="border rounded">
 					<ReportBodyEditor value={body} onChange={handleBodyChange} />
@@ -815,7 +815,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 
 			<div className="mb-4">
 				<label htmlFor="images" className="block text-gray-700 font-bold mb-2">
-					Images (Select up to 5 images, optional)
+					Images (Select up to 5 images)
 				</label>
 				<input
 					type="file"

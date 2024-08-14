@@ -22,7 +22,7 @@ const HomeStatistics: React.FC = async () => {
 							<h3 className="text-4xl font-bold text-primary-600">
 								{statistics.totalDistance}
 							</h3>
-							<p className="text-gray-600">Miles Hiked</p>
+							<p className="text-gray-600">Miles Explored</p>
 						</div>
 						<div>
 							<h3 className="text-4xl font-bold text-primary-600">
