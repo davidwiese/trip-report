@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server";
-import cloudinary from "cloudinary";
 import { standardRateLimit } from "@/utils/ratelimit";
+import cloudinary from "cloudinary";
+import { NextResponse } from "next/server";
 
 cloudinary.v2.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

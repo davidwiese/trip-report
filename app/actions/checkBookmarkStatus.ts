@@ -2,9 +2,9 @@
 
 import connectDB from "@/config/database";
 import User from "@/models/User";
+import { readRateLimit } from "@/utils/ratelimit";
 import { auth } from "@clerk/nextjs/server";
 import mongoose from "mongoose";
-import { readRateLimit } from "@/utils/ratelimit";
 
 async function checkBookmarkStatus(reportId: string | mongoose.Types.ObjectId) {
 	await connectDB();

@@ -2,11 +2,11 @@
 
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
+import User from "@/models/User";
+import { standardRateLimit } from "@/utils/ratelimit";
+import { sanitizeText } from "@/utils/sanitizeHtml";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import User from "@/models/User";
-import { sanitizeText } from "@/utils/sanitizeHtml";
-import { standardRateLimit } from "@/utils/ratelimit";
 
 type FormState = {
 	error: string;

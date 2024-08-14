@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
+import ProfileButton from "@/components/ProfileButton";
+import UnreadMessageCount from "@/components/UnreadMessageCount";
 import { Button, buttonVariants } from "@/components/ui/button";
 import logo from "@/public/images/logo_fill.png";
-import ProfileButton from "@/components/ProfileButton";
-import { useUser, SignInButton } from "@clerk/nextjs";
-import UnreadMessageCount from "@/components/UnreadMessageCount";
+import { SignInButton, useUser } from "@clerk/nextjs";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type NavbarProps = {
 	// Add any props here if needed
@@ -185,14 +185,9 @@ const Navbar: React.FC<NavbarProps> = () => {
 						)}
 
 						{!isSignedIn && pathname !== "/auth/signin" && (
-							<Button asChild variant={"secondary"}>
-								<Link
-									href="/auth/signin"
-									className="flex justify-center items-center px-3 py-2"
-								>
-									<span>Login or Register</span>
-								</Link>
-							</Button>
+							<SignInButton mode="modal">
+								<Button variant="secondary">Login or Register</Button>
+							</SignInButton>
 						)}
 					</div>
 				</div>

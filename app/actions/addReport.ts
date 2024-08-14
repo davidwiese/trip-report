@@ -1,19 +1,19 @@
 "use server";
 
+import cloudinary from "@/config/cloudinary";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import User from "@/models/User";
+import { reportRateLimit } from "@/utils/ratelimit";
+import {
+	sanitizeDescription,
+	sanitizeHtmlContent,
+	sanitizeText,
+} from "@/utils/sanitizeHtml";
 import { auth } from "@clerk/nextjs/server";
-import cloudinary from "@/config/cloudinary";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-import {
-	sanitizeHtmlContent,
-	sanitizeText,
-	sanitizeDescription,
-} from "@/utils/sanitizeHtml";
-import { reportRateLimit } from "@/utils/ratelimit";
 
 async function addReport(formData: FormData) {
 	let redirectUrl = "";

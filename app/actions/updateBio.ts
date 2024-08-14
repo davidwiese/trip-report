@@ -2,10 +2,10 @@
 
 import connectDB from "@/config/database";
 import User from "@/models/User";
-import { auth } from "@clerk/nextjs/server";
-import { revalidatePath } from "next/cache";
 import { standardRateLimit } from "@/utils/ratelimit";
 import { findUserByClerkId } from "@/utils/userUtils";
+import { auth } from "@clerk/nextjs/server";
+import { revalidatePath } from "next/cache";
 
 async function updateBio(bio: string) {
 	await connectDB();

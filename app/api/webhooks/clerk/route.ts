@@ -1,8 +1,8 @@
-import { Webhook } from "svix";
-import { headers } from "next/headers";
-import { WebhookEvent } from "@clerk/nextjs/server";
 import connectDB from "@/config/database";
 import User from "@/models/User";
+import { WebhookEvent } from "@clerk/nextjs/server";
+import { headers } from "next/headers";
+import { Webhook } from "svix";
 
 export async function POST(req: Request) {
 	console.log("Webhook received"); // Log when the webhook is hit

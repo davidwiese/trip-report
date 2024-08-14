@@ -3,9 +3,9 @@
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import User from "@/models/User";
+import { standardRateLimit } from "@/utils/ratelimit";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { standardRateLimit } from "@/utils/ratelimit";
 
 async function markMessageAsRead(messageId: string) {
 	await connectDB();

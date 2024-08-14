@@ -3,8 +3,8 @@
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
 import User from "@/models/User";
-import { auth } from "@clerk/nextjs/server";
 import { readRateLimit } from "@/utils/ratelimit";
+import { auth } from "@clerk/nextjs/server";
 
 async function getUnreadMessageCount() {
 	await connectDB();

@@ -1,6 +1,6 @@
 import connectDB from "@/config/database";
-import User from "@/models/User";
 import Report from "@/models/Report";
+import User from "@/models/User";
 
 export const getHomeStatistics = async () => {
 	await connectDB();
