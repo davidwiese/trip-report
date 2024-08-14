@@ -10,7 +10,6 @@ import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
 import { auth } from "@clerk/nextjs/server";
 import { findUserByClerkId } from "@/utils/userUtils";
-import { Types } from "mongoose";
 
 type PublicProfilePageProps = {
 	params: {
@@ -22,27 +21,20 @@ type PublicProfilePageProps = {
 	};
 };
 
-async function loader(userId: string, pageSize: number, page: number) {
+async function getProfileUser(userId: string): Promise<UserType | null> {
 	await connectDB();
+	const user = await User.findById(userId).lean();
+	return user ? (convertToSerializableObject(user) as UserType) : null;
+}
 
-	const user = await User.findById(userId);
-
-	if (user) {
-		console.log("User ID:", user._id); // Add this line
-	} else {
-		console.log("User is undefined or null"); // Add this line
-	}
+async function loader(userId: string, pageSize: number, page: number) {
+	const user = await getProfileUser(userId);
 
 	if (!user) {
-		return {
-			reports: [],
-			user: null,
-			totalReports: 0,
-			currentPage: 1,
-		};
+		return null;
 	}
 
-	const totalReports = await Report.countDocuments({ owner: user._id });
+	const totalReports = await Report.countDocuments({ owner: userId });
 	const totalPages = Math.ceil(totalReports / pageSize);
 
 	let currentPage = page;
@@ -59,7 +51,7 @@ async function loader(userId: string, pageSize: number, page: number) {
 
 	return {
 		reports,
-		user: convertToSerializableObject(user) as UserType,
+		user,
 		totalReports,
 		currentPage,
 	};
@@ -75,22 +67,18 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 	const validPageSize = parseInt(pageSize, 10) || 6;
 
 	console.log("Calling loader function");
-	const { reports, user, totalReports, currentPage } = await loader(
-		params.id,
-		validPageSize,
-		validPage
-	);
-	console.log("Loader function returned");
-	console.log("User:", user);
-	console.log("Total reports:", totalReports);
-	console.log("Current page:", currentPage);
+	const loaderResult = await loader(params.id, validPageSize, validPage);
 
-	if (!user) {
-		// Additional check here
+	if (!loaderResult) {
 		console.log("User not found, returning 404");
 		notFound();
 		return null;
 	}
+
+	const { reports, user, totalReports, currentPage } = loaderResult;
+	console.log("User:", user);
+	console.log("Total reports:", totalReports);
+	console.log("Current page:", currentPage);
 
 	console.log("Getting current user from auth");
 	const { userId: currentUserClerkId } = auth();
@@ -102,10 +90,7 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 		console.log("Finding current user by Clerk ID");
 		currentUser = await findUserByClerkId(currentUserClerkId);
 		console.log("Current user:", currentUser);
-		isOwnProfile =
-			currentUser && currentUser._id && user._id
-				? currentUser._id.toString() === user._id.toString() // Ensure both IDs exist
-				: false;
+		isOwnProfile = currentUser?._id.toString() === params.id;
 		console.log("Is own profile:", isOwnProfile);
 	}
 
