@@ -21,7 +21,7 @@ import StatCard from "@/components/StatCard";
 
 type ReportDetailsProps = {
 	report: Report;
-	author: { name: string; id: string };
+	author: { name: string; id: string; mongoId: string };
 	isAuthor: boolean;
 };
 
@@ -66,7 +66,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({
 								<div>
 									<PiPersonSimpleHikeBold className="inline-block mr-1" />
 									<Link
-										href={`/profile/${author.id}`}
+										href={`/profile/${author.mongoId}`}
 										className="text-gray-600 text-sm underline ml-1"
 									>
 										{author.name}

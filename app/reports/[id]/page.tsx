@@ -45,6 +45,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		const author = {
 			name: report.owner.username,
 			id: report.owner.clerkId,
+			mongoId: report.owner._id.toString(),
 		};
 		console.log("author:", author);
 
