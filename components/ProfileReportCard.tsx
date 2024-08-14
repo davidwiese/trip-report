@@ -41,7 +41,6 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
 					sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 					style={{ objectFit: "cover", objectPosition: "center" }}
 					className="rounded-t-xl"
-					priority
 				/>
 			</Link>
 			<div className="flex flex-col flex-grow p-1">

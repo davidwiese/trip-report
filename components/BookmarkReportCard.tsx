@@ -37,7 +37,6 @@ const BookmarkReportCard: React.FC<BookmarkReportCardProps> = ({ report }) => {
 					sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 					style={{ objectFit: "cover", objectPosition: "center" }}
 					className="rounded-t-xl"
-					priority
 				/>
 			</div>
 			<div className="flex flex-col flex-grow p-1">
