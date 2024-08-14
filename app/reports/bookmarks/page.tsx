@@ -1,10 +1,10 @@
 import BookmarkReportCard from "@/components/BookmarkReportCard";
+import Pagination from "@/components/Pagination";
 import connectDB from "@/config/database";
 import User from "@/models/User";
-import { auth } from "@clerk/nextjs/server";
 import { Report as ReportType, User as UserType } from "@/types";
-import Pagination from "@/components/Pagination";
 import { convertToSerializableObject } from "@/utils/convertToObject";
+import { auth } from "@clerk/nextjs/server";
 
 async function loader(pageSize: number, page: number, clerkUserId: string) {
 	await connectDB();

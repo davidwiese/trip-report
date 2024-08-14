@@ -1,12 +1,12 @@
-import ProfileReportCard from "@/components/ProfileReportCard";
-import connectDB from "@/config/database";
-import { auth } from "@clerk/nextjs/server";
-import Report from "@/models/Report";
-import { convertToSerializableObject } from "@/utils/convertToObject";
-import { Report as ReportType, User as UserType } from "@/types";
-import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
+import ProfileReportCard from "@/components/ProfileReportCard";
+import UserStatsCard from "@/components/UserStatsCard";
+import connectDB from "@/config/database";
+import Report from "@/models/Report";
+import { Report as ReportType, User as UserType } from "@/types";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 import { findUserByClerkId } from "@/utils/userUtils";
+import { auth } from "@clerk/nextjs/server";
 
 async function loader(pageSize: number, page: number, clerkUserId: string) {
 	await connectDB();

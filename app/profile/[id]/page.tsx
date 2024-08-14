@@ -1,15 +1,15 @@
-import { notFound } from "next/navigation";
-import PublicProfileReportCard from "@/components/PublicProfileReportCard";
-import ProfileContactForm from "@/components/ProfileContactForm";
-import connectDB from "@/config/database";
-import User from "@/models/User";
-import Report from "@/models/Report";
-import { convertToSerializableObject } from "@/utils/convertToObject";
-import { Report as ReportType, User as UserType } from "@/types";
-import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
-import { auth } from "@clerk/nextjs/server";
+import ProfileContactForm from "@/components/ProfileContactForm";
+import PublicProfileReportCard from "@/components/PublicProfileReportCard";
+import UserStatsCard from "@/components/UserStatsCard";
+import connectDB from "@/config/database";
+import Report from "@/models/Report";
+import User from "@/models/User";
+import { Report as ReportType, User as UserType } from "@/types";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 import { findUserByClerkId } from "@/utils/userUtils";
+import { auth } from "@clerk/nextjs/server";
+import { notFound } from "next/navigation";
 
 type PublicProfilePageProps = {
 	params: {

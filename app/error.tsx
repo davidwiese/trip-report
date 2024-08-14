@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { FaExclamationTriangle, FaCopy } from "react-icons/fa";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useState } from "react";
+import { FaCopy, FaExclamationTriangle } from "react-icons/fa";
 
 interface ErrorPageProps {
 	error: Error;

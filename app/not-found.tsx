@@ -1,6 +1,6 @@
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FaExclamationTriangle } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
 
 const NotFoundPage: React.FC = () => {
 	return (

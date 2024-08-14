@@ -1,11 +1,11 @@
-import Link from "next/link";
-import { FaArrowAltCircleLeft } from "react-icons/fa";
+import Pagination from "@/components/Pagination";
 import ReportCard from "@/components/ReportCard";
-import Report from "@/models/Report";
 import ReportSearchForm from "@/components/ReportSearchForm";
 import connectDB from "@/config/database";
+import Report from "@/models/Report";
 import { convertToSerializableObject } from "@/utils/convertToObject";
-import Pagination from "@/components/Pagination";
+import Link from "next/link";
+import { FaArrowAltCircleLeft } from "react-icons/fa";
 
 type SearchResultsPageProps = {
 	searchParams: {

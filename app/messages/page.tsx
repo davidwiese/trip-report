@@ -1,10 +1,10 @@
 import MessageCard from "@/components/Message";
 import connectDB from "@/config/database";
 import Message from "@/models/Message";
-import { auth } from "@clerk/nextjs/server";
 import { Message as MessageType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { findUserByClerkId } from "@/utils/userUtils";
+import { auth } from "@clerk/nextjs/server";
 
 type MessagesPageProps = {
 	// Add any props here if needed

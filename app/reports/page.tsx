@@ -1,9 +1,9 @@
-import Reports from "@/components/Reports";
 import ReportSearchForm from "@/components/ReportSearchForm";
-import Report from "@/models/Report";
+import Reports from "@/components/Reports";
 import connectDB from "@/config/database";
-import { convertToSerializableObject } from "@/utils/convertToObject";
+import Report from "@/models/Report";
 import { Report as ReportType } from "@/types";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 
 type ReportsPageProps = {
 	searchParams: {

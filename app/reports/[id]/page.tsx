@@ -1,11 +1,11 @@
-import ReportHeaderImage from "@/components/ReportHeaderImage";
 import ReportDetails from "@/components/ReportDetails";
+import ReportHeaderImage from "@/components/ReportHeaderImage";
 import ReportImages from "@/components/ReportImages";
 import ShareButtons from "@/components/ShareButtons";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
-import { convertToSerializableObject } from "@/utils/convertToObject";
 import { Report as ReportType, User as UserType } from "@/types";
+import { convertToSerializableObject } from "@/utils/convertToObject";
 import { auth } from "@clerk/nextjs/server";
 
 type ReportPageProps = {

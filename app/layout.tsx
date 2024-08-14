@@ -1,13 +1,13 @@
+import { CSPostHogProvider } from "@/app/_analytics/provider";
+import "@/assets/styles/globals.css";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import { GlobalProvider } from "@/context/GlobalContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GeistSans } from "geist/font/sans";
-import "@/assets/styles/globals.css";
-import "react-toastify/dist/ReactToastify.css";
 import "photoswipe/dist/photoswipe.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { CSPostHogProvider } from "@/app/_analytics/provider";
 import { ToastContainer } from "react-toastify";
-import { GlobalProvider } from "@/context/GlobalContext";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata = {
 	title: "Trip Report",

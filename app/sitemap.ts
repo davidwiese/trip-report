@@ -1,7 +1,7 @@
-import { MetadataRoute } from "next";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import User from "@/models/User";
+import { MetadataRoute } from "next";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const baseUrl = "https://www.tripreport.co";
