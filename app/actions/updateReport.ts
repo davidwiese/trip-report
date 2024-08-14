@@ -50,6 +50,63 @@ async function updateReport(reportId: string, formData: FormData) {
 			throw new Error("Current user does not own this report");
 		}
 
+		// Validation for required fields
+		const requiredFields = [
+			"title",
+			"activityType",
+			"description",
+			"location.country",
+			"location.region",
+			"location.localArea",
+			"location.objective",
+			"distance",
+			"elevationGain",
+			"elevationLoss",
+			"duration",
+			"body",
+			"startDate",
+			"endDate",
+		];
+
+		for (const field of requiredFields) {
+			if (field === "activityType") {
+				if (formData.getAll(field).length === 0) {
+					throw new Error("At least one activity type is required");
+				}
+			} else if (field === "body") {
+				const bodyValue = formData.get(field);
+				if (typeof bodyValue === "string" && bodyValue.trim() === "") {
+					throw new Error("Trip report body cannot be empty");
+				}
+			} else if (!formData.get(field)) {
+				throw new Error(`${field.replace(".", " ")} is required`);
+			}
+		}
+
+		// Validation for numeric fields
+		const numericFields = [
+			"distance",
+			"elevationGain",
+			"elevationLoss",
+			"duration",
+		];
+		for (const field of numericFields) {
+			const value = formData.get(field);
+			if (value && isNaN(Number(value))) {
+				throw new Error(`${field} must be a number`);
+			}
+		}
+
+		// Validation for date range
+		const startDate = new Date(formData.get("startDate") as string);
+		const endDate = new Date(formData.get("endDate") as string);
+
+		if (endDate < startDate) {
+			throw new Error(
+				"End date must be equal to or later than the start date."
+			);
+		}
+
 		// Handle removed images
 		const imagesToRemove = formData.getAll("imagesToRemove").map(String);
 		for (const imageUrl of imagesToRemove) {
@@ -268,9 +325,13 @@ async function updateReport(reportId: string, formData: FormData) {
 		);
 	} catch (error) {
 		console.error("Error updating report:", error);
-		throw new Error(
-			"An error occurred while updating the report. Please try again."
-		);
+		if (error instanceof Error) {
+			throw new Error(error.message);
+		} else {
+			throw new Error(
+				"An error occurred while updating the report. Please try again."
+			);
+		}
 	}
 
 	// Revalidate the cache

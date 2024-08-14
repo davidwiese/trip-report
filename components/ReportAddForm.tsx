@@ -139,21 +139,63 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			document.querySelectorAll("input[name='activityType']:checked")
 		).length;
 
-		if (checkedActivities === 0)
+		if (checkedActivities === 0) {
 			newErrors.push("At least one activity type is required");
+		}
 		if (!description) newErrors.push("Description is required");
-		if (description.length > maxDescriptionLength)
+		if (description.length > maxDescriptionLength) {
 			newErrors.push("Description is too long");
+		}
 		if (!country) newErrors.push("Country is required");
 		if (!region) newErrors.push("Region is required");
-		if (dateError) {
-			newErrors.push(dateError);
+		if (!(document.getElementById("localArea") as HTMLInputElement).value) {
+			newErrors.push("Local area is required");
 		}
+		if (!(document.getElementById("objective") as HTMLInputElement).value) {
+			newErrors.push("Objective is required");
+		}
+		if (!(document.getElementById("distance") as HTMLInputElement).value) {
+			newErrors.push("Distance is required");
+		}
+		if (!(document.getElementById("elevationGain") as HTMLInputElement).value) {
+			newErrors.push("Elevation gain is required");
+		}
+		if (!(document.getElementById("elevationLoss") as HTMLInputElement).value) {
+			newErrors.push("Elevation loss is required");
+		}
+		if (!(document.getElementById("duration") as HTMLInputElement).value) {
+			newErrors.push("Duration is required");
+		}
+		if (!startDate) newErrors.push("Start date is required");
+		if (!endDate) newErrors.push("End date is required");
+		if (!(document.getElementById("title") as HTMLInputElement).value) {
+			newErrors.push("Title is required");
+		}
+		if (!body.trim()) newErrors.push("Trip report body cannot be empty");
+
+		// Check if end date is before start date
+		if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
+			newErrors.push("End date must be equal to or later than the start date");
+		}
+
+		// Validate numeric fields
+		const numericFields = [
+			"distance",
+			"elevationGain",
+			"elevationLoss",
+			"duration",
+		];
+		numericFields.forEach((field) => {
+			const value = (document.getElementById(field) as HTMLInputElement).value;
+			if (value && isNaN(Number(value))) {
+				newErrors.push(`${field} must be a number`);
+			}
+		});
 
 		const totalImages = images.length;
 
 		if (totalImages > 5) {
-			newErrors.push("You can select up to 5 images");
+			newErrors.push("You can select up to 5 images in total");
 		}
 
 		setErrors(newErrors);
