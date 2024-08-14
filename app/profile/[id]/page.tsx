@@ -10,6 +10,7 @@ import UserStatsCard from "@/components/UserStatsCard";
 import Pagination from "@/components/Pagination";
 import { auth } from "@clerk/nextjs/server";
 import { findUserByClerkId } from "@/utils/userUtils";
+import { Types } from "mongoose";
 
 type PublicProfilePageProps = {
 	params: {
@@ -24,13 +25,21 @@ type PublicProfilePageProps = {
 async function loader(userId: string, pageSize: number, page: number) {
 	await connectDB();
 
-	const user = await User.findById(userId).lean();
+	const user = await User.findById(userId);
 
 	if (user) {
-		console.log("User found:", user._id);
+		console.log("User ID:", user._id); // Add this line
 	} else {
-		console.log("User not found");
-		return null;
+		console.log("User is undefined or null"); // Add this line
+	}
+
+	if (!user) {
+		return {
+			reports: [],
+			user: null,
+			totalReports: 0,
+			currentPage: 1,
+		};
 	}
 
 	const totalReports = await Report.countDocuments({ owner: user._id });
@@ -66,37 +75,41 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 	const validPageSize = parseInt(pageSize, 10) || 6;
 
 	console.log("Calling loader function");
-	const loaderResult = await loader(params.id, validPageSize, validPage);
+	const { reports, user, totalReports, currentPage } = await loader(
+		params.id,
+		validPageSize,
+		validPage
+	);
 	console.log("Loader function returned");
-
-	if (!loaderResult) {
-    		console.log("User not found, returning 404");
-    		notFound();
-    		return null;
-	  }
-	
-	const { reports, user, totalReports, currentPage } = loaderResult;
 	console.log("User:", user);
 	console.log("Total reports:", totalReports);
 	console.log("Current page:", currentPage);
 
+	if (!user) {
+		// Additional check here
+		console.log("User not found, returning 404");
+		notFound();
+		return null;
+	}
+
 	console.log("Getting current user from auth");
-  	const { userId: currentUserClerkId } = auth();
-  	console.log("Current user Clerk ID:", currentUserClerkId);
- 	 let currentUser = null;
- 	 let isOwnProfile = false;
+	const { userId: currentUserClerkId } = auth();
+	console.log("Current user Clerk ID:", currentUserClerkId);
+	let currentUser = null;
+	let isOwnProfile = false;
 
-  	if (currentUserClerkId) {
-    		console.log("Finding current user by Clerk ID");
-    		currentUser = await findUserByClerkId(currentUserClerkId);
-    		console.log("Current user:", currentUser);
-    		isOwnProfile = currentUser && currentUser._id && user._id
-      			? currentUser._id.toString() === user._id.toString()
-      			: false;
-    		console.log("Is own profile:", isOwnProfile);
- 	 }
+	if (currentUserClerkId) {
+		console.log("Finding current user by Clerk ID");
+		currentUser = await findUserByClerkId(currentUserClerkId);
+		console.log("Current user:", currentUser);
+		isOwnProfile =
+			currentUser && currentUser._id && user._id
+				? currentUser._id.toString() === user._id.toString() // Ensure both IDs exist
+				: false;
+		console.log("Is own profile:", isOwnProfile);
+	}
 
-  	console.log("Rendering PublicProfilePage components");
+	console.log("Rendering PublicProfilePage components");
 	return (
 		<>
 			<section className="bg-white py-10">
