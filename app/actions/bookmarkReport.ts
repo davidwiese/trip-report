@@ -8,13 +8,10 @@ import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
 
 async function bookmarkReport(reportId: string | mongoose.Types.ObjectId) {
-	console.log("bookmarkReport called with reportId:", reportId);
-
 	try {
 		await connectDB();
 
 		const { userId: clerkUserId } = auth();
-		console.log("clerkUserId:", clerkUserId);
 
 		if (!clerkUserId) {
 			console.log("User ID is required");
@@ -23,22 +20,18 @@ async function bookmarkReport(reportId: string | mongoose.Types.ObjectId) {
 
 		const { success } = await standardRateLimit.limit(clerkUserId);
 		if (!success) {
-			console.log("Rate limit exceeded");
 			return { error: "Too many requests. Please try again later." };
 		}
 
 		// Find user in database
 		const user = await User.findOne({ clerkId: clerkUserId });
-		console.log("User found:", user ? "Yes" : "No");
 
 		if (!user) {
-			console.log("User not found");
 			return { error: "User not found" };
 		}
 
 		// Check if report is bookmarked
 		let isBookmarked = user.bookmarks.includes(reportId);
-		console.log("Is report already bookmarked:", isBookmarked);
 
 		let message;
 
@@ -55,12 +48,10 @@ async function bookmarkReport(reportId: string | mongoose.Types.ObjectId) {
 		}
 
 		await user.save();
-		console.log("User saved successfully");
 
 		// Revalidate the cache
 		revalidatePath("/reports/bookmarks", "page");
 
-		console.log("Returning message:", message);
 		return { message, isBookmarked };
 	} catch (error) {
 		console.error("Error in bookmarkReport:", error);

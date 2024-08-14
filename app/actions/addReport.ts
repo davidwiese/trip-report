@@ -278,8 +278,6 @@ async function addReport(formData: FormData) {
 		);
 	}
 	// Revalidate the cache
-	// NOTE: since reports are pretty much on every page, we can simply
-	// revalidate everything that uses our top level layout
 	revalidatePath("/", "layout");
 
 	if (redirectUrl) {

@@ -335,8 +335,6 @@ async function updateReport(reportId: string, formData: FormData) {
 	}
 
 	// Revalidate the cache
-	// NOTE: since reports are pretty much on every page, we can simply
-	// revalidate everything that uses our top level layout
 	revalidatePath(`/reports/${reportId}`);
 	revalidatePath(`/reports/${reportId}/edit`, "layout");
 	revalidatePath("/", "layout");

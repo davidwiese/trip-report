@@ -5,8 +5,6 @@ import { headers } from "next/headers";
 import { Webhook } from "svix";
 
 export async function POST(req: Request) {
-	console.log("Webhook received"); // Log when the webhook is hit
-
 	// Handle CORS
 	const corsHeaders = {
 		"Access-Control-Allow-Origin": "*",
@@ -35,8 +33,6 @@ export async function POST(req: Request) {
 	const svix_timestamp = headerPayload.get("svix-timestamp");
 	const svix_signature = headerPayload.get("svix-signature");
 
-	console.log("Svix headers:", { svix_id, svix_timestamp, svix_signature });
-
 	// If there are no headers, error out
 	if (!svix_id || !svix_timestamp || !svix_signature) {
 		console.error("Missing Svix headers");
@@ -48,7 +44,6 @@ export async function POST(req: Request) {
 	// Get the body
 	const payload = await req.json();
 	const body = JSON.stringify(payload);
-	console.log("Webhook payload:", body);
 
 	// Create a new Svix instance with your secret.
 	const wh = new Webhook(WEBHOOK_SECRET);
@@ -62,7 +57,6 @@ export async function POST(req: Request) {
 			"svix-timestamp": svix_timestamp,
 			"svix-signature": svix_signature,
 		}) as WebhookEvent;
-		console.log("Webhook verified successfully");
 	} catch (err) {
 		console.error("Error verifying webhook:", err);
 		return new Response("Error occurred during verification", {
@@ -72,16 +66,9 @@ export async function POST(req: Request) {
 
 	// Handle the webhook
 	const eventType = evt.type;
-	console.log(`Event type: ${eventType}`);
 
 	if (eventType === "user.created" || eventType === "user.updated") {
 		const { id, email_addresses, username, image_url } = evt.data;
-		console.log("User data received:", {
-			id,
-			email_addresses,
-			username,
-			image_url,
-		});
 
 		const userEmail = email_addresses[0]?.email_address;
 
@@ -92,7 +79,6 @@ export async function POST(req: Request) {
 
 		try {
 			await connectDB();
-			console.log("Connected to database (webhook)");
 
 			const userData = {
 				clerkId: id,
@@ -101,14 +87,10 @@ export async function POST(req: Request) {
 				image: image_url,
 			};
 
-			console.log("User data to be saved:", userData);
-
 			const result = await User.findOneAndUpdate({ clerkId: id }, userData, {
 				upsert: true,
 				new: true,
 			});
-
-			console.log("User created/updated in database:", result);
 
 			return new Response("User created or updated", { status: 200 });
 		} catch (error) {
@@ -122,7 +104,7 @@ export async function POST(req: Request) {
 			});
 		}
 	} else {
-		console.log(`Unhandled event type: ${eventType}`);
+		console.error(`Unhandled event type: ${eventType}`);
 	}
 
 	return new Response("Webhook processed", {

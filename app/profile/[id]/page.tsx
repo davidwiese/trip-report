@@ -61,40 +61,27 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 	params,
 	searchParams: { pageSize = "4", page = "1" },
 }) => {
-	console.log("Starting PublicProfilePage render");
-	console.log("Params:", params);
 	const validPage = parseInt(page, 10) || 1;
 	const validPageSize = parseInt(pageSize, 10) || 6;
 
-	console.log("Calling loader function");
 	const loaderResult = await loader(params.id, validPageSize, validPage);
 
 	if (!loaderResult) {
-		console.log("User not found, returning 404");
 		notFound();
 		return null;
 	}
 
 	const { reports, user, totalReports, currentPage } = loaderResult;
-	console.log("User:", user);
-	console.log("Total reports:", totalReports);
-	console.log("Current page:", currentPage);
 
-	console.log("Getting current user from auth");
 	const { userId: currentUserClerkId } = auth();
-	console.log("Current user Clerk ID:", currentUserClerkId);
 	let currentUser = null;
 	let isOwnProfile = false;
 
 	if (currentUserClerkId) {
-		console.log("Finding current user by Clerk ID");
 		currentUser = await findUserByClerkId(currentUserClerkId);
-		console.log("Current user:", currentUser);
 		isOwnProfile = currentUser?._id.toString() === params.id;
-		console.log("Is own profile:", isOwnProfile);
 	}
 
-	console.log("Rendering PublicProfilePage components");
 	return (
 		<>
 			<section className="bg-white py-10">
@@ -137,5 +124,4 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 	);
 };
 
-console.log("After rendering ProfileContactForm");
 export default PublicProfilePage;

@@ -24,11 +24,9 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 
 		// Query the report in the DB and populate the owner field
 		const reportDoc = await Report.findById(params.id).populate("owner").lean();
-		console.log("reportDoc:", JSON.stringify(reportDoc, null, 2));
 
 		// Null check
 		if (!reportDoc) {
-			console.log("Report not found for ID:", params.id);
 			return (
 				<h1 className="text-center text-2xl font-bold mt-10">
 					Report Not Found
@@ -40,22 +38,18 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		const report = convertToSerializableObject(reportDoc) as ReportType & {
 			owner: UserType;
 		};
-		console.log("report:", JSON.stringify(report, null, 2));
 
 		const author = {
 			name: report.owner.username,
 			id: report.owner.clerkId,
 			mongoId: report.owner._id.toString(),
 		};
-		console.log("author:", author);
 
 		// Get the current user from the Clerk auth
 		const { userId: clerkUserId } = auth();
-		console.log("clerkUserId:", clerkUserId);
 
 		// Check if the current user is the author of the report
 		const isAuthor = clerkUserId === report.owner.clerkId;
-		console.log("isAuthor:", isAuthor);
 
 		return (
 			<>

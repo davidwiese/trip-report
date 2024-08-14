@@ -18,7 +18,6 @@ export default function ContactForm({ initialErrorMessage }: ContactFormProps) {
 	const router = useRouter();
 
 	useEffect(() => {
-		console.log("Initial error message:", initialErrorMessage); // Debug log
 		if (initialErrorMessage) {
 			setMessage(
 				`Error encountered: ${initialErrorMessage}\n\nPlease provide any additional details about what you were doing when this error occurred:`
