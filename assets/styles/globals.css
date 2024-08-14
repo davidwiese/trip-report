@@ -132,11 +132,6 @@ h1 {
 	letter-spacing: 0.0125em;
 }
 
-.required::after {
-	content: " *";
-	color: #e53e3e; /* Tailwind's red-600 */
-}
-
 .cl-avatarBox {
 	width: 40px;
 	height: 40px;
