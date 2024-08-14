@@ -1,11 +1,11 @@
 "use client";
 
+import addMessage from "@/app/actions/addMessage";
 import { useUser } from "@clerk/nextjs";
+import { useEffect, useRef } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 import { FaPaperPlane } from "react-icons/fa";
 import { toast } from "react-toastify";
-import addMessage from "@/app/actions/addMessage";
-import { useFormStatus, useFormState } from "react-dom";
-import { useEffect, useRef } from "react";
 
 type ProfileContactFormProps = {
 	recipientId: string;

@@ -1,8 +1,8 @@
-import { toast } from "react-toastify";
 import deleteReport from "@/app/actions/deleteReport";
-import { Report as ReportType } from "@/types";
 import { Button } from "@/components/ui/button";
+import { Report as ReportType } from "@/types";
 import { AiOutlineDelete } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 type DeleteButtonProps = {
 	report: ReportType;

@@ -1,16 +1,16 @@
 import { type Editor } from "@tiptap/react";
 import {
-	Pilcrow,
 	BoldIcon,
-	Italic,
-	Strikethrough,
 	Heading2,
+	Italic,
 	List,
 	ListOrdered,
-	Quote,
 	Minus,
-	Undo,
+	Pilcrow,
+	Quote,
 	Redo,
+	Strikethrough,
+	Undo,
 } from "lucide-react";
 
 type Props = {

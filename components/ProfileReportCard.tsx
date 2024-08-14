@@ -1,11 +1,8 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
-import { Report as ReportType } from "@/types";
-import { LuMoveUpRight, LuMoveDownRight } from "react-icons/lu";
-import { RxRulerHorizontal } from "react-icons/rx";
-import { TbMap2 } from "react-icons/tb";
+import { montserrat } from "@/app/ui/fonts";
+import DeleteButton from "@/components/DeleteButton";
+import EditButton from "@/components/EditButton";
 import {
 	Card,
 	CardContent,
@@ -13,9 +10,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { montserrat } from "@/app/ui/fonts";
-import EditButton from "@/components/EditButton";
-import DeleteButton from "@/components/DeleteButton";
+import { Report as ReportType } from "@/types";
+import Image from "next/image";
+import Link from "next/link";
+import { LuMoveDownRight, LuMoveUpRight } from "react-icons/lu";
+import { RxRulerHorizontal } from "react-icons/rx";
+import { TbMap2 } from "react-icons/tb";
 
 type ProfileReportCardProps = {
 	report: ReportType;

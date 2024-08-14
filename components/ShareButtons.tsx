@@ -1,18 +1,18 @@
 "use client";
 
+import { Report } from "@/types";
 import {
-	FacebookShareButton,
-	TwitterShareButton,
-	TelegramShareButton,
-	RedditShareButton,
+	EmailIcon,
 	EmailShareButton,
 	FacebookIcon,
-	TwitterIcon,
-	TelegramIcon,
+	FacebookShareButton,
 	RedditIcon,
-	EmailIcon,
+	RedditShareButton,
+	TelegramIcon,
+	TelegramShareButton,
+	TwitterIcon,
+	TwitterShareButton,
 } from "react-share";
-import { Report } from "@/types";
 
 type ShareButtonsProps = {
 	report: Report;

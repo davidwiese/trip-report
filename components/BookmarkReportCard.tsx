@@ -1,9 +1,7 @@
-import { Report } from "@/types";
-import Image from "next/image";
-import Link from "next/link";
-import { LuMoveUpRight, LuMoveDownRight } from "react-icons/lu";
-import { RxRulerHorizontal } from "react-icons/rx";
-import { TbMap2 } from "react-icons/tb";
+import { montserrat } from "@/app/ui/fonts";
+import BookmarkButton from "@/components/BookmarkButton";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -11,10 +9,12 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { montserrat } from "@/app/ui/fonts";
-import BookmarkButton from "@/components/BookmarkButton";
+import { Report } from "@/types";
+import Image from "next/image";
+import Link from "next/link";
+import { LuMoveDownRight, LuMoveUpRight } from "react-icons/lu";
+import { RxRulerHorizontal } from "react-icons/rx";
+import { TbMap2 } from "react-icons/tb";
 
 type BookmarkReportCardProps = {
 	report: Report;

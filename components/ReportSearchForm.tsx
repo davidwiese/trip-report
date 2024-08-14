@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { SearchButton } from "@/components/SearchButton";
 import { Input } from "@/components/ui/input";
 import {
@@ -9,10 +7,11 @@ import {
 	SelectGroup,
 	SelectItem,
 	SelectLabel,
-	SelectTrigger,
 	SelectValue,
 	SelectWithTrigger,
 } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type ReportSearchFormProps = {
 	// Add any props here if needed

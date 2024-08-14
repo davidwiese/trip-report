@@ -1,5 +1,5 @@
-import { montserrat } from "@/app/ui/fonts";
 import { getHomeStatistics } from "@/app/actions/getHomeStatistics";
+import { montserrat } from "@/app/ui/fonts";
 
 const HomeStatistics: React.FC = async () => {
 	const statistics = await getHomeStatistics();

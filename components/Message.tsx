@@ -1,11 +1,11 @@
 "use client";
 
+import deleteMessage from "@/app/actions/deleteMessage";
+import markMessageAsRead from "@/app/actions/markMessageAsRead";
+import { useGlobalContext } from "@/context/GlobalContext";
+import { Message as MessageType } from "@/types";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useGlobalContext } from "@/context/GlobalContext";
-import markMessageAsRead from "@/app/actions/markMessageAsRead";
-import deleteMessage from "@/app/actions/deleteMessage";
-import { Message as MessageType } from "@/types";
 
 type MessageProps = {
 	message: MessageType;

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useUser, useClerk } from "@clerk/nextjs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -9,9 +9,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { useClerk, useUser } from "@clerk/nextjs";
 import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 
 const ProfileButton = () => {

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { Gallery, Item, type GalleryProps } from "react-photoswipe-gallery";
-import { useState, useEffect } from "react";
 
 type ImageObject = {
 	url: string;

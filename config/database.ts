@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import User from "@/models/User";
-import Report from "@/models/Report";
 import Message from "@/models/Message";
+import Report from "@/models/Report";
+import User from "@/models/User";
+import mongoose from "mongoose";
 
 const options = {
 	bufferCommands: false, // Disable mongoose buffering

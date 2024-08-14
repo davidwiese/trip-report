@@ -1,6 +1,6 @@
-import { Report } from "@/types";
-import ReportCard from "@/components/ReportCard";
 import Pagination from "@/components/Pagination";
+import ReportCard from "@/components/ReportCard";
+import { Report } from "@/types";
 
 type ReportsProps = {
 	reports: Report[];

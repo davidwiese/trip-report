@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Spotlight } from "@/components/ui/Spotlight";
 import { montserrat } from "@/app/ui/fonts";
+import { Spotlight } from "@/components/ui/Spotlight";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type CallToActionProps = {
 	// Add any props here if needed

@@ -1,12 +1,12 @@
-import Link from "next/link";
+import { montserrat } from "@/app/ui/fonts";
 import ReportCard from "@/components/ReportCard";
-import connectDB from "@/config/database";
-import { Report as ReportType } from "@/types";
-import Report from "@/models/Report";
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/sparkles";
-import { montserrat } from "@/app/ui/fonts";
+import connectDB from "@/config/database";
+import Report from "@/models/Report";
+import { Report as ReportType } from "@/types";
 import { unstable_noStore as noStore } from "next/cache";
+import Link from "next/link";
 
 type HomeReportsProps = {
 	// Add any props here if needed

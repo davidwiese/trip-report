@@ -1,17 +1,17 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import MenuBar from "@/components/MenuBar";
-import Heading from "@tiptap/extension-heading";
-import Blockquote from "@tiptap/extension-blockquote";
-import HorizontalRule from "@tiptap/extension-horizontal-rule";
-import BulletList from "@tiptap/extension-bullet-list";
-import OrderedList from "@tiptap/extension-ordered-list";
-import ListItem from "@tiptap/extension-list-item";
 import { Extension } from "@tiptap/core";
+import Blockquote from "@tiptap/extension-blockquote";
+import BulletList from "@tiptap/extension-bullet-list";
+import Heading from "@tiptap/extension-heading";
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
+import ListItem from "@tiptap/extension-list-item";
+import OrderedList from "@tiptap/extension-ordered-list";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import { Plugin, PluginKey } from "prosemirror-state";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const MaxLength = Extension.create({
 	name: "maxLength",

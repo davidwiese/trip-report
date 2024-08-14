@@ -2,7 +2,7 @@
 
 import getUnreadMessageCount from "@/app/actions/getUnreadMessageCount";
 import { useUser } from "@clerk/nextjs";
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface ContextType {
 	unreadCount: number;

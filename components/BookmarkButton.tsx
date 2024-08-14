@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import bookmarkReport from "@/app/actions/bookmarkReport";
+import checkBookmarkStatus from "@/app/actions/checkBookmarkStatus";
+import { Button } from "@/components/ui/bookmark-button";
 import { Report as ReportType } from "@/types";
 import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
+import { LuBookmark, LuBookmarkMinus, LuBookmarkPlus } from "react-icons/lu";
 import { toast } from "react-toastify";
-import { LuBookmark, LuBookmarkPlus, LuBookmarkMinus } from "react-icons/lu";
-import checkBookmarkStatus from "@/app/actions/checkBookmarkStatus";
-import bookmarkReport from "@/app/actions/bookmarkReport";
-import { Button } from "@/components/ui/bookmark-button";
 
 type BookmarkButtonProps = {
 	report: ReportType;

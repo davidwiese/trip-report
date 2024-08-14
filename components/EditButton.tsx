@@ -1,9 +1,9 @@
 "use client";
 
+import { Button } from "@/components/ui/bookmark-button";
 import { Report as ReportType } from "@/types";
 import Link from "next/link";
 import { TbEdit } from "react-icons/tb";
-import { Button } from "@/components/ui/bookmark-button";
 
 type EditButtonProps = {
 	report: ReportType;

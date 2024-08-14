@@ -1,16 +1,16 @@
 "use client";
 
-import { User as UserType } from "@/types";
-import { Card, CardContent } from "@/components/ui/card";
-import Image from "next/image";
-import profileDefault from "@/public/images/profile.png";
-import { LuMoveUpRight, LuMoveDownRight } from "react-icons/lu";
-import { RxRulerHorizontal } from "react-icons/rx";
-import tripReportLogo from "@/public/images/logo_fill.png";
-import { useState } from "react";
 import updateBio from "@/app/actions/updateBio";
-import { TbEdit } from "react-icons/tb";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import tripReportLogo from "@/public/images/logo_fill.png";
+import profileDefault from "@/public/images/profile.png";
+import { User as UserType } from "@/types";
+import Image from "next/image";
+import { useState } from "react";
+import { LuMoveDownRight, LuMoveUpRight } from "react-icons/lu";
+import { RxRulerHorizontal } from "react-icons/rx";
+import { TbEdit } from "react-icons/tb";
 
 type UserStatsCardProps = {
 	user: UserType;

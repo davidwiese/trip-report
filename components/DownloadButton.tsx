@@ -1,6 +1,6 @@
-import { RxDownload } from "react-icons/rx";
 import { Button } from "@/components/ui/download-button";
 import { Report as ReportType } from "@/types";
+import { RxDownload } from "react-icons/rx";
 
 type DownloadButtonProps = {
 	report: ReportType;

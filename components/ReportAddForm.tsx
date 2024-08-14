@@ -1,18 +1,18 @@
 "use client";
 
 import addReport from "@/app/actions/addReport";
-import {
-	ChangeEvent,
-	useState,
-	FormEvent,
-	useEffect,
-	useCallback,
-} from "react";
-import { uploadImage } from "@/utils/cloudinaryUploader";
-import { toast } from "react-toastify";
-import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
+import { uploadImage } from "@/utils/cloudinaryUploader";
+import {
+	ChangeEvent,
+	FormEvent,
+	useCallback,
+	useEffect,
+	useState,
+} from "react";
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
+import { toast } from "react-toastify";
 
 type ReportAddFormProps = {
 	// Add any props here if needed

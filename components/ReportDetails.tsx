@@ -1,23 +1,22 @@
-import Link from "next/link";
-import {
-	LuMoveUpRight,
-	LuMoveDownRight,
-	LuClock4,
-	LuGlobe2,
-} from "react-icons/lu";
-import { RxRulerHorizontal } from "react-icons/rx";
-import { TbCalendarSmile } from "react-icons/tb";
-import { PiPersonSimpleHikeBold } from "react-icons/pi";
-import { Report } from "@/types";
 import { montserrat } from "@/app/ui/fonts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BookmarkButton from "@/components/BookmarkButton";
+import DateCard from "@/components/DateCard";
 import DownloadButton from "@/components/DownloadButton";
 import EditButton from "@/components/EditButton";
-import { Badge } from "@/components/ui/badge";
-import { TbMap2 } from "react-icons/tb";
-import DateCard from "@/components/DateCard";
 import StatCard from "@/components/StatCard";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Report } from "@/types";
+import Link from "next/link";
+import {
+	LuClock4,
+	LuGlobe2,
+	LuMoveDownRight,
+	LuMoveUpRight,
+} from "react-icons/lu";
+import { PiPersonSimpleHikeBold } from "react-icons/pi";
+import { RxRulerHorizontal } from "react-icons/rx";
+import { TbCalendarSmile, TbMap2 } from "react-icons/tb";
 
 type ReportDetailsProps = {
 	report: Report;
