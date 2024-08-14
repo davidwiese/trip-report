@@ -1,7 +1,13 @@
 "use client";
 
 import addReport from "@/app/actions/addReport";
-import { ChangeEvent, useState, FormEvent } from "react";
+import {
+	ChangeEvent,
+	useState,
+	FormEvent,
+	useEffect,
+	useCallback,
+} from "react";
 import { uploadImage } from "@/utils/cloudinaryUploader";
 import { toast } from "react-toastify";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
@@ -17,6 +23,9 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [description, setDescription] = useState<string>("");
 	const [country, setCountry] = useState("");
 	const [region, setRegion] = useState("");
+	const [startDate, setStartDate] = useState<string>("");
+	const [endDate, setEndDate] = useState<string>("");
+	const [dateError, setDateError] = useState<string>("");
 	const [errors, setErrors] = useState<string[]>([]);
 	const [gpxFile, setGpxFile] = useState<File | null>(null);
 	const [images, setImages] = useState<File[]>([]);
@@ -97,6 +106,32 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		setImages((prevImages) => prevImages.filter((_, i) => i !== index));
 	};
 
+	const handleStartDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setStartDate(e.target.value);
+	};
+
+	const handleEndDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setEndDate(e.target.value);
+	};
+
+	const validateDates = useCallback(() => {
+		if (startDate && endDate) {
+			const start = new Date(startDate);
+			const end = new Date(endDate);
+			if (end < start) {
+				setDateError("End date must be equal to or later than the start date.");
+			} else {
+				setDateError("");
+			}
+		} else {
+			setDateError("");
+		}
+	}, [startDate, endDate]);
+
+	useEffect(() => {
+		validateDates();
+	}, [validateDates]);
+
 	const validateForm = () => {
 		const newErrors: string[] = [];
 
@@ -111,6 +146,9 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			newErrors.push("Description is too long");
 		if (!country) newErrors.push("Country is required");
 		if (!region) newErrors.push("Region is required");
+		if (dateError) {
+			newErrors.push(dateError);
+		}
 
 		const totalImages = images.length;
 
@@ -218,12 +256,31 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			// Handle success
 			toast.success("Report added successfully!");
 		} catch (error) {
-			// Handle error
-			toast.error(
-				`Error adding report. Please try again. ${
-					error instanceof Error ? error.message : ""
-				}`
-			);
+			// Handle specific errors
+			if (error instanceof Error) {
+				switch (error.message) {
+					case "Please ensure the end date is not earlier than the start date.":
+						setErrors([
+							"End date must be equal to or later than the start date.",
+						]);
+						toast.error("Please check the start and end dates.");
+						break;
+					case "You've reached the limit for adding reports. Please try again later.":
+						toast.error("Report limit reached. Please try again later.");
+						break;
+					case "Unable to add report. Please try logging out and back in.":
+						toast.error("Session error. Please try logging out and back in.");
+						break;
+					default:
+						toast.error(
+							"An error occurred while adding the report. Please check your inputs and try again."
+						);
+						setErrors(["An unexpected error occurred. Please try again."]);
+				}
+			} else {
+				toast.error("An unexpected error occurred. Please try again.");
+				setErrors(["An unexpected error occurred. Please try again."]);
+			}
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -578,6 +635,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					id="startDate"
 					name="startDate"
 					className="border rounded w-full py-2 px-3"
+					value={startDate}
+					onChange={handleStartDateChange}
 					required
 				/>
 			</div>
@@ -591,6 +650,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					id="endDate"
 					name="endDate"
 					className="border rounded w-full py-2 px-3"
+					value={endDate}
+					onChange={handleEndDateChange}
 					required
 				/>
 			</div>

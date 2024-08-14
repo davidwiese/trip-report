@@ -140,6 +140,15 @@ async function addReport(formData: FormData) {
 			}
 		});
 
+		const startDate = new Date(formData.get("startDate") as string);
+		const endDate = new Date(formData.get("endDate") as string);
+
+		if (endDate < startDate) {
+			throw new Error(
+				"End date must be equal to or later than the start date."
+			);
+		}
+
 		// If validation passes, proceed with file uploads and saving the report
 		if (requiredFieldsValid && numericFieldsValid) {
 			// Handle GPX file upload to Cloudinary
@@ -241,8 +250,31 @@ async function addReport(formData: FormData) {
 			}
 		}
 
+		// Handle specific errors
+		if (error instanceof Error) {
+			if (
+				error.message ===
+				"End date must be equal to or later than the start date."
+			) {
+				throw new Error(
+					"Please ensure the end date is not earlier than the start date."
+				);
+			} else if (
+				error.message === "Too many reports. Please try again later."
+			) {
+				throw new Error(
+					"You've reached the limit for adding reports. Please try again later."
+				);
+			} else if (error.message === "User not found in the database") {
+				throw new Error(
+					"Unable to add report. Please try logging out and back in."
+				);
+			}
+		}
+
+		// Generic error message for other cases
 		throw new Error(
-			"An error occurred while adding the report. Please try again."
+			"An error occurred while adding the report. Please check your inputs and try again."
 		);
 	}
 	// Revalidate the cache
