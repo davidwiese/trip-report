@@ -78,9 +78,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 						<div className="container mx-auto max-w-6xl px-6">
 							<div className="rounded-xl shadow-xl overflow-hidden bg-gray-100">
 								<iframe
-									src={`https://caltopo.com/m/${report.caltopoUrl
-										.split("/")
-										.pop()}#embed`}
+									src={report.caltopoUrl}
 									width="100%"
 									height="500"
 									style={{ border: 0 }}
