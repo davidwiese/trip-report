@@ -793,9 +793,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					Trip Report
 				</Label>
 				<input type="hidden" name="body" value={body} />
-				<div className="border rounded">
-					<ReportBodyEditor value={body} onChange={handleBodyChange} />
-				</div>
+				<ReportBodyEditor onChange={handleBodyChange} />
 			</div>
 
 			<div className="mb-4">
