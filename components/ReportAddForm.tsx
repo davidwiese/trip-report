@@ -1,6 +1,7 @@
 "use client";
 
 import addReport from "@/app/actions/addReport";
+import Label from "@/components/Label";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
 import { uploadImage } from "@/utils/cloudinaryUploader";
@@ -17,22 +18,6 @@ import { toast } from "react-toastify";
 type ReportAddFormProps = {
 	// Add any props here if needed
 };
-
-const Label: React.FC<{
-	htmlFor: string;
-	required?: boolean;
-	children: React.ReactNode;
-}> = ({ htmlFor, required = false, children }) => (
-	<label
-		htmlFor={htmlFor}
-		className={`block text-gray-700 font-bold mb-2 ${
-			required ? "required" : ""
-		}`}
-	>
-		{children}
-		{required && <span className="text-red-500 ml-1">*</span>}
-	</label>
-);
 
 const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [body, setBody] = useState<string>("");

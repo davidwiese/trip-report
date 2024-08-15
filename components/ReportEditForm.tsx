@@ -1,6 +1,7 @@
 "use client";
 
 import updateReport from "@/app/actions/updateReport";
+import Label from "@/components/Label";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
 import { Report as ReportType } from "@/types";
@@ -17,22 +18,6 @@ type ImageObject = {
 	url: string;
 	originalFilename: string;
 };
-
-const Label: React.FC<{
-	htmlFor: string;
-	required?: boolean;
-	children: React.ReactNode;
-}> = ({ htmlFor, required = false, children }) => (
-	<label
-		htmlFor={htmlFor}
-		className={`block text-gray-700 font-bold mb-2 ${
-			required ? "required" : ""
-		}`}
-	>
-		{children}
-		{required && <span className="text-red-500 ml-1">*</span>}
-	</label>
-);
 
 const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [body, setBody] = useState<string>(report.body || "");
