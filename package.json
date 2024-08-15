@@ -30,6 +30,7 @@
 		"@tsparticles/slim": "^3.4.0",
 		"@upstash/ratelimit": "^1.2.1",
 		"axios": "^1.7.2",
+		"browser-image-compression": "^2.0.2",
 		"class-variance-authority": "^0.7.0",
 		"cloudinary": "^2.0.3",
 		"clsx": "^2.1.1",
