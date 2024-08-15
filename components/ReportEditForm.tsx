@@ -89,11 +89,11 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			const newImageCount = selectedFiles.length;
 			const totalImages =
 				existingImageCount - markedForRemovalCount + newImageCount;
-			const maxFileSize = 5 * 1024 * 1024; // 5 MB
+			const maxFileSize = 12 * 1024 * 1024; // 12MB
 
 			for (const file of selectedFiles) {
 				if (file.size > maxFileSize) {
-					toast.error(`${file.name} is too large. Maximum size is 5MB.`);
+					toast.error(`${file.name} is too large. Maximum size is 12MB.`);
 					setImages([]); // Clear the previously selected images
 					e.target.value = ""; // Clear the file input
 					return;
@@ -101,7 +101,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			}
 
 			if (totalImages > 10) {
-				toast.error("You can select up to 10 images in total");
+				toast.error("You can select up to 10 images");
 				setImages([]); // Clear the previously selected images
 				e.target.value = ""; // Clear the file input
 			} else {
