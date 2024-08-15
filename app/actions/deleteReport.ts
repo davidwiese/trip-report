@@ -39,37 +39,66 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 		throw new Error("Unauthorized");
 	}
 
+	// Helper function to extract public ID from Cloudinary URL
+	const getPublicIdFromUrl = (url: string): string | null => {
+		const match = url.match(/\/v\d+\/(.+?)\./);
+		return match ? match[1] : null;
+	};
+
 	// Delete images from Cloudinary
 	if (report.images && report.images.length > 0) {
 		for (const image of report.images) {
-			const fileName = image.url.split("/").pop()?.split(".")[0];
-			if (fileName) {
+			const publicId = getPublicIdFromUrl(image.url);
+			if (publicId) {
 				try {
-					await cloudinary.uploader.destroy(`trip-report/${fileName}`);
+					const result = await cloudinary.uploader.destroy(
+						`trip-report/${publicId}`
+					);
+					if (result.result !== "ok") {
+						console.error(
+							`Failed to delete image: ${publicId}. Cloudinary response:`,
+							result
+						);
+					}
 				} catch (error) {
 					console.error(
-						`Error deleting image with file name ${fileName}:`,
+						`Error deleting image with public ID ${publicId}:`,
 						error
 					);
 				}
+			} else {
+				console.error(`Could not extract public ID from URL: ${image.url}`);
 			}
 		}
 	}
 
 	// Delete GPX file from Cloudinary (if any)
 	if (report.gpxFile) {
-		const publicId = report.gpxFile.url.split("/").pop();
-		if (publicId) {
+		const gpxPublicId = getPublicIdFromUrl(report.gpxFile.url);
+		if (gpxPublicId) {
 			try {
-				await cloudinary.uploader.destroy(`trip-report/gpx/${publicId}`, {
-					resource_type: "raw",
-				});
+				const result = await cloudinary.uploader.destroy(
+					`trip-report/gpx/${gpxPublicId}`,
+					{
+						resource_type: "raw",
+					}
+				);
+				if (result.result !== "ok") {
+					console.error(
+						`Failed to delete GPX file: ${gpxPublicId}. Cloudinary response:`,
+						result
+					);
+				}
 			} catch (error) {
 				console.error(
-					`Error deleting GPX file with public ID ${publicId}:`,
+					`Error deleting GPX file with public ID ${gpxPublicId}:`,
 					error
 				);
 			}
+		} else {
+			console.error(
+				`Could not extract public ID from GPX file URL: ${report.gpxFile.url}`
+			);
 		}
 	}
 
