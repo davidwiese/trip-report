@@ -1,10 +1,27 @@
 import axios from "axios";
+import imageCompression from "browser-image-compression";
+
+async function compressImage(file: File): Promise<File> {
+	const options = {
+		maxSizeMB: 2,
+		maxWidthOrHeight: 2048,
+		useWebWorker: true,
+	};
+
+	try {
+		return await imageCompression(file, options);
+	} catch (error) {
+		console.error("Error compressing image:", error);
+		return file; // Return original file if compression fails
+	}
+}
 
 export async function uploadImage(
 	file: File
 ): Promise<{ url: string; originalFilename: string }> {
+	const compressedFile = await compressImage(file);
 	const formData = new FormData();
-	formData.append("file", file);
+	formData.append("file", compressedFile);
 	formData.append("folder", "trip-report");
 
 	try {
