@@ -82,11 +82,11 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		if (e.target.files) {
 			const selectedFiles = Array.from(e.target.files);
 			const totalImages = images.length + selectedFiles.length;
-			const maxFileSize = 12 * 1024 * 1024; // 12MB
+			const maxFileSize = 10 * 1024 * 1024; // 10MB
 
 			for (const file of selectedFiles) {
 				if (file.size > maxFileSize) {
-					toast.error(`${file.name} is too large. Maximum size is 12MB.`);
+					toast.error(`${file.name} is too large. Maximum size is 10MB.`);
 					setImages([]); // Clear the previously selected images
 					e.target.value = ""; // Clear the file input
 					return;
