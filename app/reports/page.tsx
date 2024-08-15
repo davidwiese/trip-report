@@ -25,6 +25,7 @@ async function fetchReports(page: number, pageSize: number) {
 
 	const skip = (currentPage - 1) * pageSize;
 	const reports = (await Report.find({})
+		.sort({ createdAt: -1 })
 		.skip(skip)
 		.limit(pageSize)
 		.lean()) as ReportType[];
