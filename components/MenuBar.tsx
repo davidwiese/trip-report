@@ -23,7 +23,7 @@ const MenuBar = ({ editor }: Props) => {
 	}
 
 	return (
-		<div className="flex flex-wrap gap-2 mb-8">
+		<div className="flex flex-wrap gap-2 mb-2 p-2 border-b bg-white">
 			<button
 				onClick={(e) => {
 					e.preventDefault();

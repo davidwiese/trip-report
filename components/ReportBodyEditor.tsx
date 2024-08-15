@@ -128,12 +128,15 @@ const ReportBodyEditor = ({
 	}
 
 	return (
-		<div className="rounded p-4">
-			<input type="hidden" name="body" value={editor.getHTML()} />
-			<MenuBar editor={editor} />
-			<EditorContent editor={editor} />
-			<div className="text-sm text-gray-500 mt-2">
-				{charCount}/20000 characters
+		<div className="relative">
+			<div className="sticky top-0 bg-white z-10 pb-2">
+				<MenuBar editor={editor} />
+			</div>
+			<div className="border rounded p-4">
+				<EditorContent editor={editor} />
+				<div className="text-sm text-gray-500 mt-2">
+					{charCount}/20000 characters
+				</div>
 			</div>
 		</div>
 	);
