@@ -15,6 +15,11 @@ const allowedOrigins = [
 	"https://accounts.tripreport.co",
 ];
 
+// Add your ngrok URL to allowed origins for development
+if (process.env.NODE_ENV === "development") {
+	allowedOrigins.push("https://suddenly-legal-dinosaur.ngrok-free.app");
+}
+
 export default clerkMiddleware((auth, req) => {
 	if (isProtectedRoute(req)) auth().protect();
 
