@@ -5,8 +5,6 @@ import { headers } from "next/headers";
 import { Webhook } from "svix";
 
 export async function POST(req: Request) {
-	console.log("Received webhook request"); // Add this log
-
 	// Handle CORS
 	const corsHeaders = {
 		"Access-Control-Allow-Origin": "*",
@@ -51,8 +49,6 @@ export async function POST(req: Request) {
 	const payload = await req.json();
 	const body = JSON.stringify(payload);
 
-	console.log("Webhook payload:", payload); // Add this log
-
 	// Create a new Svix instance with your secret.
 	const wh = new Webhook(WEBHOOK_SECRET);
 
@@ -65,7 +61,6 @@ export async function POST(req: Request) {
 			"svix-timestamp": svix_timestamp,
 			"svix-signature": svix_signature,
 		}) as WebhookEvent;
-		console.log("Webhook verified successfully"); // Add this log
 	} catch (err) {
 		console.error("Error verifying webhook:", err);
 		return new Response("Error occurred during verification", {
@@ -88,7 +83,6 @@ export async function POST(req: Request) {
 
 		try {
 			await connectDB();
-			console.log("Connected to MongoDB"); // Add this log
 
 			const userData = {
 				clerkId: id,
@@ -101,8 +95,6 @@ export async function POST(req: Request) {
 				upsert: true,
 				new: true,
 			});
-
-			console.log("User created/updated in MongoDB:", result); // Add this log
 
 			return new Response("User created or updated", { status: 200 });
 		} catch (error) {
