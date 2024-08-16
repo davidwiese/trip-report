@@ -25,11 +25,10 @@ export default clerkMiddleware((auth, req) => {
 	console.log("Middleware running for URL:", req.url);
 	console.log("Is protected route:", isProtectedRoute(req));
 	console.log("User ID:", auth().userId);
+	console.log("Session ID:", auth().sessionId);
 
-	const session = auth().sessionId;
-
-	if (isProtectedRoute(req) && !session) {
-		return NextResponse.redirect("/auth/signin"); // Redirect only if no session
+	if (isProtectedRoute(req)) {
+		auth().protect();
 	}
 
 	const res = NextResponse.next();
