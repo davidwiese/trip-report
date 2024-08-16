@@ -21,11 +21,14 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
+	const publishableKey =
+		process.env.NODE_ENV === "production"
+			? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+			: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY_DEV ||
+			  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
 	return (
-		<ClerkProvider
-			publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
-			afterSignOutUrl={"/"}
-		>
+		<ClerkProvider publishableKey={publishableKey} afterSignOutUrl={"/"}>
 			<CSPostHogProvider>
 				<GlobalProvider>
 					<html lang="en" className={GeistSans.className}>
