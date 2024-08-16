@@ -23,12 +23,7 @@ if (process.env.NODE_ENV === "development") {
 
 export default clerkMiddleware((auth, req) => {
 	if (isProtectedRoute(req)) {
-		const { userId } = auth();
-		if (!userId) {
-			const signInUrl = new URL("/auth/signin", req.url);
-			signInUrl.searchParams.set("redirect_url", req.url);
-			return NextResponse.redirect(signInUrl);
-		}
+		auth().protect();
 	}
 
 	const res = NextResponse.next();
