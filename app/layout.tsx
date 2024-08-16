@@ -21,14 +21,32 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	const publishableKey =
-		process.env.NODE_ENV === "production"
-			? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
-			: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY_DEV ||
-			  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+	const isDevelopment = process.env.NODE_ENV === "development";
+
+	const publishableKey = isDevelopment
+		? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY_DEV
+		: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+	if (!publishableKey) {
+		throw new Error("Missing Clerk Publishable Key");
+	}
+
+	// Only use these configs in development
+	const devConfig = isDevelopment
+		? {
+				signInUrl: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
+				signUpUrl: process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL,
+				afterSignInUrl: process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL,
+				afterSignUpUrl: process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL,
+		  }
+		: {};
 
 	return (
-		<ClerkProvider publishableKey={publishableKey} afterSignOutUrl={"/"}>
+		<ClerkProvider
+			publishableKey={publishableKey}
+			afterSignOutUrl={"/"}
+			{...devConfig}
+		>
 			<CSPostHogProvider>
 				<GlobalProvider>
 					<html lang="en" className={GeistSans.className}>

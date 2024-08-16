@@ -13,6 +13,7 @@ const allowedOrigins = [
 	"https://www.tripreport.co",
 	"https://tripreport.co",
 	"https://accounts.tripreport.co",
+	"http://localhost:3000",
 ];
 
 // Add your ngrok URL to allowed origins for development
@@ -21,7 +22,14 @@ if (process.env.NODE_ENV === "development") {
 }
 
 export default clerkMiddleware((auth, req) => {
-	if (isProtectedRoute(req)) auth().protect();
+	if (isProtectedRoute(req)) {
+		const { userId } = auth();
+		if (!userId) {
+			const signInUrl = new URL("/sign-in", req.url);
+			signInUrl.searchParams.set("redirect_url", req.url);
+			return NextResponse.redirect(signInUrl);
+		}
+	}
 
 	const res = NextResponse.next();
 
