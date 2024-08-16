@@ -19,6 +19,11 @@ async function addReport(formData: FormData) {
 	let redirectUrl = "";
 	let reportData: any = {};
 
+	const cloudinaryFolder =
+		process.env.NODE_ENV === "production"
+			? process.env.CLOUDINARY_FOLDER
+			: process.env.CLOUDINARY_FOLDER_DEV || process.env.CLOUDINARY_FOLDER;
+
 	try {
 		await connectDB();
 
@@ -166,7 +171,7 @@ async function addReport(formData: FormData) {
 				);
 
 				const result = await cloudinary.uploader.upload(base64File, {
-					folder: "trip-report/gpx",
+					folder: `${cloudinaryFolder}/gpx`,
 					resource_type: "raw",
 					public_id: `${uuidv4()}.${fileExtension}`,
 				});
@@ -228,7 +233,9 @@ async function addReport(formData: FormData) {
 				const publicId = imageUrl.split("/").pop()?.split(".")[0];
 				if (publicId) {
 					try {
-						await cloudinary.uploader.destroy(`trip-report/${publicId}`);
+						await cloudinary.uploader.destroy(
+							`${cloudinaryFolder}/${publicId}`
+						);
 					} catch (error) {
 						console.error("Error deleting image:", error);
 					}
@@ -241,9 +248,12 @@ async function addReport(formData: FormData) {
 			const publicId = reportData.gpxFile.split("/").pop()?.split(".")[0];
 			if (publicId) {
 				try {
-					await cloudinary.uploader.destroy(`trip-report/gpx/${publicId}`, {
-						resource_type: "raw",
-					});
+					await cloudinary.uploader.destroy(
+						`${cloudinaryFolder}/gpx/${publicId}`,
+						{
+							resource_type: "raw",
+						}
+					);
 				} catch (error) {
 					console.error("Error deleting GPX file:", error);
 				}
