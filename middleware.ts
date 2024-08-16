@@ -25,7 +25,7 @@ export default clerkMiddleware((auth, req) => {
 	if (isProtectedRoute(req)) {
 		const { userId } = auth();
 		if (!userId) {
-			const signInUrl = new URL("/sign-in", req.url);
+			const signInUrl = new URL("/auth/signin", req.url);
 			signInUrl.searchParams.set("redirect_url", req.url);
 			return NextResponse.redirect(signInUrl);
 		}
