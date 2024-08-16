@@ -11,7 +11,7 @@ const HomeStatistics: React.FC = async () => {
 					<h2 className={`text-3xl font-bold mb-8 ${montserrat.className}`}>
 						Community Stats
 					</h2>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+					<div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
 						<div>
 							<h3 className="text-4xl font-bold text-primary-600">
 								{statistics.totalReports}
@@ -29,12 +29,6 @@ const HomeStatistics: React.FC = async () => {
 								{statistics.totalElevationGain}
 							</h3>
 							<p className="text-gray-600">Feet Climbed</p>
-						</div>
-						<div>
-							<h3 className="text-4xl font-bold text-primary-600">
-								{statistics.totalUsers}
-							</h3>
-							<p className="text-gray-600">Users Joined</p>
 						</div>
 					</div>
 				</div>
