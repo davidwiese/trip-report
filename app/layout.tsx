@@ -32,10 +32,14 @@ export default function RootLayout({
 	}
 
 	// Only use these configs in development
-	const devConfig = isDevelopment
+	const clerkConfig = isDevelopment
 		? {
 				signInUrl: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
 				signUpUrl: process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL,
+				afterSignInUrl:
+					process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL,
+				afterSignUpUrl:
+					process.env.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL,
 				fallbackRedirectUrl:
 					process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL,
 		  }
@@ -45,7 +49,7 @@ export default function RootLayout({
 		<ClerkProvider
 			publishableKey={publishableKey}
 			afterSignOutUrl={"/"}
-			{...devConfig}
+			{...clerkConfig}
 		>
 			<CSPostHogProvider>
 				<GlobalProvider>
