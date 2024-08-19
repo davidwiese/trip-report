@@ -36,6 +36,12 @@ export default clerkMiddleware(
 		console.log("Session ID:", auth().sessionId);
 		console.log("Using secret key:", secretKey ? "Set" : "Not set");
 
+		const session = auth().sessionId;
+		console.log("Full Session Object:", session);
+
+		const cookies = req.headers.get("cookie");
+		console.log("Cookies:", cookies); // Log the cookies to see if the __session cookie is present
+
 		if (isProtectedRoute(req)) {
 			auth().protect();
 		}
