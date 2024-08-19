@@ -34,12 +34,6 @@ if (process.env.NODE_ENV === "development") {
 
 export default clerkMiddleware(
 	(auth, req) => {
-		// Skip protection for all routes in development
-		if (process.env.NODE_ENV === "development") {
-			console.log("Development mode: Skipping route protection");
-			return NextResponse.next();
-		}
-
 		if (isProtectedRoute(req)) auth().protect();
 
 		const res = NextResponse.next();
