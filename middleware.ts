@@ -26,6 +26,12 @@ const allowedOrigins = [
 	"https://accounts.tripreport.co",
 ];
 
+// Add your ngrok URL to allowed origins for development
+if (process.env.NODE_ENV === "development") {
+	allowedOrigins.push("https://suddenly-legal-dinosaur.ngrok-free.app");
+	allowedOrigins.push("http://localhost:3000");
+}
+
 export default clerkMiddleware(
 	(auth, req) => {
 		// Skip protection for all routes in development
