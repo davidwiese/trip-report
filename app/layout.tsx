@@ -21,10 +21,30 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
+	const isDevelopment = process.env.NODE_ENV === "development";
+
+	const publishableKey = isDevelopment
+		? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY_DEV
+		: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+	if (!publishableKey) {
+		throw new Error("Missing Clerk Publishable Key");
+	}
+
+	// Only use these configs in development
+	const clerkConfig = isDevelopment
+		? {
+				signInUrl: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL,
+				signUpUrl: process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL,
+				forceRedirectUrl:
+					process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL,
+		  }
+		: {};
 	return (
 		<ClerkProvider
-			publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+			publishableKey={publishableKey}
 			afterSignOutUrl={"/"}
+			{...clerkConfig}
 		>
 			<CSPostHogProvider>
 				<GlobalProvider>

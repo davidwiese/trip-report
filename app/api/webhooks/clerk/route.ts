@@ -18,7 +18,11 @@ export async function POST(req: Request) {
 		return new Response(null, { headers: corsHeaders });
 	}
 
-	const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+	// Determine the correct webhook secret based on the environment
+	const isProduction = process.env.NODE_ENV === "production";
+	const WEBHOOK_SECRET = isProduction
+		? process.env.WEBHOOK_SECRET
+		: process.env.WEBHOOK_SECRET_DEV;
 
 	if (!WEBHOOK_SECRET) {
 		console.error("WEBHOOK_SECRET is not set");

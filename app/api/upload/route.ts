@@ -16,10 +16,15 @@ export async function POST(request: Request) {
 		return NextResponse.json({ error: "Too many requests" }, { status: 429 });
 	}
 
+	// Define cloudinaryFolder based on the environment
+	const cloudinaryFolder =
+		process.env.NODE_ENV === "production"
+			? process.env.CLOUDINARY_FOLDER
+			: process.env.CLOUDINARY_FOLDER_DEV || process.env.CLOUDINARY_FOLDER;
+
 	try {
 		const data = await request.formData();
 		const file = data.get("file") as File;
-		const folder = data.get("folder") as string;
 
 		// Convert file to base64
 		const arrayBuffer = await file.arrayBuffer();
@@ -28,7 +33,7 @@ export async function POST(request: Request) {
 		const result = await cloudinary.v2.uploader.upload(
 			`data:${file.type};base64,${base64File}`,
 			{
-				folder,
+				folder: cloudinaryFolder,
 				resource_type: "auto",
 			}
 		);

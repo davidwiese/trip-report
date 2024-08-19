@@ -46,8 +46,12 @@ const connectDB = async () => {
 		return;
 	}
 
-	// Connect to MongoDB
-	const mongoURI = process.env.MONGODB_URI;
+	// Use MONGODB_URI_DEV if it's set, otherwise fall back to MONGODB_URI
+	const mongoURI =
+		process.env.NODE_ENV === "production"
+			? process.env.MONGODB_URI
+			: process.env.MONGODB_URI_DEV || process.env.MONGODB_URI;
+
 	if (!mongoURI) {
 		console.error("MongoDB URI is not defined.");
 		throw new Error("MongoDB connection URI is not defined.");

@@ -9,34 +9,54 @@ const isProtectedRoute = createRouteMatcher([
 	"/messages",
 ]);
 
+const secretKey =
+	process.env.NODE_ENV === "production"
+		? process.env.CLERK_SECRET_KEY
+		: process.env.CLERK_SECRET_KEY_DEV || process.env.CLERK_SECRET_KEY;
+
+const publishableKey =
+	process.env.NODE_ENV === "production"
+		? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+		: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY_DEV ||
+		  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
 const allowedOrigins = [
 	"https://www.tripreport.co",
 	"https://tripreport.co",
 	"https://accounts.tripreport.co",
 ];
 
-export default clerkMiddleware((auth, req) => {
-	if (isProtectedRoute(req)) auth().protect();
+// Add your ngrok URL to allowed origins for development
+if (process.env.NODE_ENV === "development") {
+	allowedOrigins.push("https://suddenly-legal-dinosaur.ngrok-free.app");
+	allowedOrigins.push("http://localhost:3000");
+}
 
-	const res = NextResponse.next();
+export default clerkMiddleware(
+	(auth, req) => {
+		if (isProtectedRoute(req)) auth().protect();
 
-	const origin = req.headers.get("origin");
-	if (origin && allowedOrigins.includes(origin)) {
-		res.headers.set("Access-Control-Allow-Origin", origin);
-	}
+		const res = NextResponse.next();
 
-	res.headers.set(
-		"Access-Control-Allow-Methods",
-		"GET,POST,PUT,DELETE,OPTIONS"
-	);
-	res.headers.set(
-		"Access-Control-Allow-Headers",
-		"Content-Type, Authorization, svix-id, svix-signature, svix-timestamp"
-	);
-	res.headers.set("Access-Control-Allow-Credentials", "true");
+		const origin = req.headers.get("origin");
+		if (origin && allowedOrigins.includes(origin)) {
+			res.headers.set("Access-Control-Allow-Origin", origin);
+		}
 
-	return res;
-});
+		res.headers.set(
+			"Access-Control-Allow-Methods",
+			"GET,POST,PUT,DELETE,OPTIONS"
+		);
+		res.headers.set(
+			"Access-Control-Allow-Headers",
+			"Content-Type, Authorization, svix-id, svix-signature, svix-timestamp"
+		);
+		res.headers.set("Access-Control-Allow-Credentials", "true");
+
+		return res;
+	},
+	{ secretKey: secretKey, publishableKey: publishableKey }
+);
 
 export const config = {
 	matcher: [

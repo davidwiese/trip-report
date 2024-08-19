@@ -19,6 +19,11 @@ import { v4 as uuidv4 } from "uuid";
 async function updateReport(reportId: string, formData: FormData) {
 	let updatedReport;
 
+	const cloudinaryFolder =
+		process.env.NODE_ENV === "production"
+			? process.env.CLOUDINARY_FOLDER
+			: process.env.CLOUDINARY_FOLDER_DEV || process.env.CLOUDINARY_FOLDER;
+
 	try {
 		await connectDB();
 
@@ -113,7 +118,7 @@ async function updateReport(reportId: string, formData: FormData) {
 			const fileName = imageUrl.split("/").pop()?.split(".")[0];
 			if (fileName) {
 				try {
-					await cloudinary.uploader.destroy(`trip-report/${fileName}`);
+					await cloudinary.uploader.destroy(`${cloudinaryFolder}/${fileName}`);
 				} catch (error) {
 					console.error(
 						`Error deleting image with file name ${fileName}:`,
@@ -160,7 +165,7 @@ async function updateReport(reportId: string, formData: FormData) {
 				if (publicId) {
 					try {
 						const result = await cloudinary.uploader.destroy(
-							`trip-report/gpx/${publicId}`,
+							`${cloudinaryFolder}/gpx/${publicId}`,
 							{
 								resource_type: "raw",
 							}
@@ -181,7 +186,7 @@ async function updateReport(reportId: string, formData: FormData) {
 				if (publicId) {
 					try {
 						const result = await cloudinary.uploader.destroy(
-							`trip-report/gpx/${publicId}`,
+							`${cloudinaryFolder}/gpx/${publicId}`,
 							{
 								resource_type: "raw",
 							}
@@ -207,7 +212,7 @@ async function updateReport(reportId: string, formData: FormData) {
 			const base64File = `data:${fileMime};base64,${base64}`;
 
 			const result = await cloudinary.uploader.upload(base64File, {
-				folder: "trip-report/gpx",
+				folder: `${cloudinaryFolder}/gpx`,
 				resource_type: "raw",
 				public_id: `${uuidv4()}`,
 			});

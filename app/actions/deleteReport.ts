@@ -11,6 +11,11 @@ import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
 
 async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
+	const cloudinaryFolder =
+		process.env.NODE_ENV === "production"
+			? process.env.CLOUDINARY_FOLDER
+			: process.env.CLOUDINARY_FOLDER_DEV || process.env.CLOUDINARY_FOLDER;
+
 	const { userId: clerkUserId } = auth();
 
 	// Check for session
@@ -45,7 +50,7 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 			const fileName = image.url.split("/").pop()?.split(".")[0];
 			if (fileName) {
 				try {
-					await cloudinary.uploader.destroy(`trip-report/${fileName}`);
+					await cloudinary.uploader.destroy(`${cloudinaryFolder}/${fileName}`);
 				} catch (error) {
 					console.error(
 						`Error deleting image with file name ${fileName}:`,
@@ -61,9 +66,12 @@ async function deleteReport(reportId: string | mongoose.Types.ObjectId) {
 		const publicId = report.gpxFile.url.split("/").pop();
 		if (publicId) {
 			try {
-				await cloudinary.uploader.destroy(`trip-report/gpx/${publicId}`, {
-					resource_type: "raw",
-				});
+				await cloudinary.uploader.destroy(
+					`${cloudinaryFolder}/gpx/${publicId}`,
+					{
+						resource_type: "raw",
+					}
+				);
 			} catch (error) {
 				console.error(
 					`Error deleting GPX file with public ID ${publicId}:`,

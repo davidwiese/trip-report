@@ -22,7 +22,6 @@ export async function uploadImage(
 	const compressedFile = await compressImage(file);
 	const formData = new FormData();
 	formData.append("file", compressedFile);
-	formData.append("folder", "trip-report");
 
 	try {
 		const response = await axios.post("/api/upload", formData, {
