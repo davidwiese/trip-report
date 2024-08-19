@@ -15,58 +15,34 @@ const allowedOrigins = [
 	"https://accounts.tripreport.co",
 ];
 
-const secretKey =
-	process.env.NODE_ENV === "production"
-		? process.env.CLERK_SECRET_KEY
-		: process.env.CLERK_SECRET_KEY_DEV || process.env.CLERK_SECRET_KEY;
+export default clerkMiddleware((auth, req) => {
+	// Skip protection for all routes in development
+	if (process.env.NODE_ENV === "development") {
+		console.log("Development mode: Skipping route protection");
+		return NextResponse.next();
+	}
 
-// Add your ngrok URL to allowed origins for development
-if (process.env.NODE_ENV === "development") {
-	allowedOrigins.push("https://suddenly-legal-dinosaur.ngrok-free.app");
-	allowedOrigins.push("http://localhost:3000");
-	allowedOrigins.push("https://strong-trout-33.accounts.dev");
-	allowedOrigins.push("https://strong-trout-33.clerk.accounts.dev");
-}
+	if (isProtectedRoute(req)) auth().protect();
 
-export default clerkMiddleware(
-	(auth, req) => {
-		console.log("Middleware running for URL:", req.url);
-		console.log("Is protected route:", isProtectedRoute(req));
-		console.log("User ID:", auth().userId);
-		console.log("Session ID:", auth().sessionId);
-		console.log("Using secret key:", secretKey ? "Set" : "Not set");
+	const res = NextResponse.next();
 
-		const session = auth().sessionId;
-		console.log("Full Session Object:", session);
+	const origin = req.headers.get("origin");
+	if (origin && allowedOrigins.includes(origin)) {
+		res.headers.set("Access-Control-Allow-Origin", origin);
+	}
 
-		const cookies = req.headers.get("cookie");
-		console.log("Cookies:", cookies); // Log the cookies to see if the __session cookie is present
+	res.headers.set(
+		"Access-Control-Allow-Methods",
+		"GET,POST,PUT,DELETE,OPTIONS"
+	);
+	res.headers.set(
+		"Access-Control-Allow-Headers",
+		"Content-Type, Authorization, svix-id, svix-signature, svix-timestamp"
+	);
+	res.headers.set("Access-Control-Allow-Credentials", "true");
 
-		if (isProtectedRoute(req)) {
-			auth().protect();
-		}
-
-		const res = NextResponse.next();
-
-		const origin = req.headers.get("origin");
-		if (origin && allowedOrigins.includes(origin)) {
-			res.headers.set("Access-Control-Allow-Origin", origin);
-		}
-
-		res.headers.set(
-			"Access-Control-Allow-Methods",
-			"GET,POST,PUT,DELETE,OPTIONS"
-		);
-		res.headers.set(
-			"Access-Control-Allow-Headers",
-			"Content-Type, Authorization, svix-id, svix-signature, svix-timestamp"
-		);
-		res.headers.set("Access-Control-Allow-Credentials", "true");
-
-		return res;
-	},
-	{ debug: process.env.NODE_ENV === "development", secretKey: secretKey }
-);
+	return res;
+});
 
 export const config = {
 	matcher: [
