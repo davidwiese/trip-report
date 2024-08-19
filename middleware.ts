@@ -15,6 +15,11 @@ const allowedOrigins = [
 	"https://accounts.tripreport.co",
 ];
 
+const secretKey =
+	process.env.NODE_ENV === "production"
+		? process.env.CLERK_SECRET_KEY
+		: process.env.CLERK_SECRET_KEY_DEV || process.env.CLERK_SECRET_KEY;
+
 // Add your ngrok URL to allowed origins for development
 if (process.env.NODE_ENV === "development") {
 	allowedOrigins.push("https://suddenly-legal-dinosaur.ngrok-free.app");
@@ -29,6 +34,7 @@ export default clerkMiddleware(
 		console.log("Is protected route:", isProtectedRoute(req));
 		console.log("User ID:", auth().userId);
 		console.log("Session ID:", auth().sessionId);
+		console.log("Using secret key:", secretKey ? "Set" : "Not set");
 
 		if (isProtectedRoute(req)) {
 			auth().protect();
@@ -53,7 +59,7 @@ export default clerkMiddleware(
 
 		return res;
 	},
-	{ debug: process.env.NODE_ENV === "development" }
+	{ debug: process.env.NODE_ENV === "development", secretKey: secretKey }
 );
 
 export const config = {
