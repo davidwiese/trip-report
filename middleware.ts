@@ -9,40 +9,54 @@ const isProtectedRoute = createRouteMatcher([
 	"/messages",
 ]);
 
+const secretKey =
+	process.env.NODE_ENV === "production"
+		? process.env.CLERK_SECRET_KEY
+		: process.env.CLERK_SECRET_KEY_DEV || process.env.CLERK_SECRET_KEY;
+
+const publishableKey =
+	process.env.NODE_ENV === "production"
+		? process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+		: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY_DEV ||
+		  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
 const allowedOrigins = [
 	"https://www.tripreport.co",
 	"https://tripreport.co",
 	"https://accounts.tripreport.co",
 ];
 
-export default clerkMiddleware((auth, req) => {
-	// Skip protection for all routes in development
-	if (process.env.NODE_ENV === "development") {
-		console.log("Development mode: Skipping route protection");
-		return NextResponse.next();
-	}
+export default clerkMiddleware(
+	(auth, req) => {
+		// Skip protection for all routes in development
+		if (process.env.NODE_ENV === "development") {
+			console.log("Development mode: Skipping route protection");
+			return NextResponse.next();
+		}
 
-	if (isProtectedRoute(req)) auth().protect();
+		if (isProtectedRoute(req)) auth().protect();
 
-	const res = NextResponse.next();
+		const res = NextResponse.next();
 
-	const origin = req.headers.get("origin");
-	if (origin && allowedOrigins.includes(origin)) {
-		res.headers.set("Access-Control-Allow-Origin", origin);
-	}
+		const origin = req.headers.get("origin");
+		if (origin && allowedOrigins.includes(origin)) {
+			res.headers.set("Access-Control-Allow-Origin", origin);
+		}
 
-	res.headers.set(
-		"Access-Control-Allow-Methods",
-		"GET,POST,PUT,DELETE,OPTIONS"
-	);
-	res.headers.set(
-		"Access-Control-Allow-Headers",
-		"Content-Type, Authorization, svix-id, svix-signature, svix-timestamp"
-	);
-	res.headers.set("Access-Control-Allow-Credentials", "true");
+		res.headers.set(
+			"Access-Control-Allow-Methods",
+			"GET,POST,PUT,DELETE,OPTIONS"
+		);
+		res.headers.set(
+			"Access-Control-Allow-Headers",
+			"Content-Type, Authorization, svix-id, svix-signature, svix-timestamp"
+		);
+		res.headers.set("Access-Control-Allow-Credentials", "true");
 
-	return res;
-});
+		return res;
+	},
+	{ secretKey: secretKey, publishableKey: publishableKey }
+);
 
 export const config = {
 	matcher: [
