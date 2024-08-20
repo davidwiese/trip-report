@@ -72,6 +72,8 @@ export async function generateMetadata(
 		};
 	}
 
+	console.log("Author:", report.owner);
+
 	const imageUrls = report.images?.map((img: { url: string }) => img.url) || [];
 
 	const keywords = [
