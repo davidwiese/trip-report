@@ -17,17 +17,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
 	// Static routes
 	const routes = [
-		"",
-		"/reports",
-		"/reports/add",
-		"/reports/bookmarks",
-		"/auth/signin",
-		"/contact",
-		"/messages",
-		"/privacy-policy",
-		"/terms",
+		{ url: `${baseUrl}`, changefreq: "daily", priority: 1 },
+		{ url: `${baseUrl}/reports`, changefreq: "daily", priority: 0.8 },
+		{ url: `${baseUrl}/contact`, changefreq: "monthly", priority: 0.5 },
+		{ url: `${baseUrl}/privacy-policy`, changefreq: "yearly", priority: 0.3 },
+		{ url: `${baseUrl}/terms`, changefreq: "yearly", priority: 0.3 },
 	].map((route) => ({
-		url: `${baseUrl}${route}`,
+		...route,
 		lastModified: new Date().toISOString(),
 	}));
 
@@ -35,12 +31,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const reportRoutes = reports.map((report) => ({
 		url: `${baseUrl}/reports/${report._id}`,
 		lastModified: report.updatedAt.toISOString(),
+		changefreq: "daily" as const,
+		priority: 0.8,
 	}));
 
 	// Dynamic routes for user profiles
 	const userRoutes = users.map((user) => ({
 		url: `${baseUrl}/profile/${user._id}`,
 		lastModified: user.updatedAt.toISOString(),
+		changefreq: "daily" as const,
+		priority: 0.7,
 	}));
 
 	return [...routes, ...reportRoutes, ...userRoutes];

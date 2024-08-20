@@ -7,3 +7,5 @@ Disallow: /api/
 Disallow: /auth/
 Disallow: /actions/
 Disallow: /messages/
+Disallow: /reports/add
+Disallow: /reports/*/edit
