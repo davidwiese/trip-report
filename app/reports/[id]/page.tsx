@@ -7,12 +7,85 @@ import Report from "@/models/Report";
 import { Report as ReportType, User as UserType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata, ResolvingMetadata } from "next";
 
 type ReportPageProps = {
 	params: {
 		id: string;
 	};
 };
+
+export async function generateMetadata(
+	{ params }: ReportPageProps,
+	parent: ResolvingMetadata
+): Promise<Metadata> {
+	// Fetch the report data
+	const report = (await Report.findById(params.id).lean()) as ReportType | null;
+
+	if (!report) {
+		return {
+			title: "Report Not Found",
+		};
+	}
+
+	const imageUrls = report.images?.map((img: { url: string }) => img.url) || [];
+
+	const keywords = [
+		report.title,
+		...report.activityType,
+		report.location.country,
+		report.location.region,
+		report.location.localArea,
+		report.location.objective,
+		"trip report",
+		"trip reports",
+		"hiking",
+		"backpacking",
+		"trail running",
+		"rock climbing",
+		"sport climbing",
+		"trad climbing",
+		"aid climbing",
+		"ice climbing",
+		"mixed climbing",
+		"mountaineering",
+		"ski mountaineering",
+		"ski touring",
+		"canyoneering",
+		"mountain biking",
+		"cycling",
+		"biking",
+		"bicycle",
+		"bikepacking",
+		"bicycling",
+		"kayaking",
+		"packrafting",
+	].filter(Boolean);
+
+	return {
+		title: `${report.title} | Trip Report`,
+		description: report.description,
+		keywords: keywords,
+		openGraph: {
+			title: report.title,
+			description: report.description,
+			type: "article",
+			authors: [report.owner],
+			images: imageUrls,
+			section: report.activityType.join(", "),
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: report.title,
+			description: report.description,
+			images: imageUrls,
+		},
+		other: {
+			"geo.region": `${report.location.country}-${report.location.region}`,
+			"geo.placename": report.location.localArea,
+		},
+	};
+}
 
 const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	try {
