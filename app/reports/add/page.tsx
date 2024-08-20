@@ -1,8 +1,6 @@
 import ReportAddForm from "@/components/ReportAddForm";
 
-type ReportAddPageProps = {
-	// Add any props here if needed
-};
+type ReportAddPageProps = {};
 
 const ReportAddPage: React.FC<ReportAddPageProps> = () => {
 	return (

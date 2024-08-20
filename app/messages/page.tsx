@@ -6,9 +6,7 @@ import { convertToSerializableObject } from "@/utils/convertToObject";
 import { findUserByClerkId } from "@/utils/userUtils";
 import { auth } from "@clerk/nextjs/server";
 
-type MessagesPageProps = {
-	// Add any props here if needed
-};
+type MessagesPageProps = {};
 
 const MessagePage: React.FC<MessagesPageProps> = async () => {
 	await connectDB();

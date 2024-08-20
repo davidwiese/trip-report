@@ -2,9 +2,7 @@ import logo from "@/public/images/logo_fill.png";
 import Image from "next/image";
 import Link from "next/link";
 
-type FooterProps = {
-	// Add any props here if needed
-};
+type FooterProps = {};
 
 const Footer: React.FC<FooterProps> = () => {
 	const currentYear = new Date().getFullYear();

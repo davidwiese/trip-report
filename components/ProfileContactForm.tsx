@@ -11,10 +11,9 @@ type ProfileContactFormProps = {
 	recipientId: string;
 };
 
-// NOTE: Using a separate component for our submit button allows us to use the
+// Using a separate component for our submit button allows us to use the
 // useFormStatus hook to give the user feedback about sending a message, in the
 // button itself.
-// https://react.dev/reference/react-dom/hooks/useFormStatus
 
 function SubmitMessageButton() {
 	const status = useFormStatus();
@@ -33,8 +32,7 @@ const ProfileContactForm: React.FC<ProfileContactFormProps> = ({
 	recipientId,
 }) => {
 	const { isSignedIn, user } = useUser();
-	// NOTE: use the useFormState hook to know when form has submitted.
-	// https://react.dev/reference/react-dom/hooks/useFormState
+	// Use the useFormState hook to know when form has submitted
 	const [submitState, formAction] = useFormState(addMessage, {
 		error: "",
 		submitted: false,

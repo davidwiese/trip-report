@@ -20,7 +20,7 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
 	const [unreadCount, setUnreadCount] = useState(0);
 	const { isSignedIn, user } = useUser();
 
-	// NOTE: since our GlobalContext is responsible for unreadCount state then it
+	// Since our GlobalContext is responsible for unreadCount state then it
 	// makes sense to also fetch the unreadCount here too and remove that from the
 	// UnreadMessageCount component.
 	// Additionally here we are using a server action to get the unreadCount
