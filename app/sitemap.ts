@@ -6,7 +6,6 @@ import { MetadataRoute } from "next";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	const baseUrl = "https://www.tripreport.co";
 
-	// Connect to the database
 	await connectDB();
 
 	// Fetch all reports
