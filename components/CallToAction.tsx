@@ -3,9 +3,7 @@ import { Spotlight } from "@/components/ui/Spotlight";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-type CallToActionProps = {
-	// Add any props here if needed
-};
+type CallToActionProps = {};
 
 const CallToAction: React.FC<CallToActionProps> = () => {
 	return (

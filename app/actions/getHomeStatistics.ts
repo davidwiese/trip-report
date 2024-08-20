@@ -5,7 +5,6 @@ import User from "@/models/User";
 export const getHomeStatistics = async () => {
 	await connectDB();
 
-	const totalUsers = await User.countDocuments();
 	const totalReports = await Report.countDocuments();
 
 	const users = await User.find();
@@ -20,7 +19,6 @@ export const getHomeStatistics = async () => {
 	);
 
 	return {
-		totalUsers,
 		totalReports,
 		totalDistance,
 		totalElevationGain,

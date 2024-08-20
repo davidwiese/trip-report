@@ -11,10 +11,53 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
-	title: "Trip Report",
-	description: "Create trip reports, find beta, or blog your entire thru-hike",
-	keywords:
-		"trip report, trip reports, hiking, hikes, backpacking, climbing, mountaineering, alpinism, skimo, skiing, ski mountaineering, beta, info, information, thru-hike, thru-hiking, blog, thruhiking, thruhike, thru hike, thru hiking",
+	title: {
+		default: "Trip Report | Create and Share Your Outdoor Adventures",
+		template: "%s | Trip Report",
+	},
+	description:
+		"Create trip reports, find beta, or blog your entire thru-hike. Share your outdoor adventures with a community of hikers, climbers, and explorers.",
+	keywords: [
+		"trip report",
+		"trip reports",
+		"hiking",
+		"hikes",
+		"backpacking",
+		"climbing",
+		"mountaineering",
+		"alpinism",
+		"skimo",
+		"skiing",
+		"ski mountaineering",
+		"beta",
+		"info",
+		"information",
+		"thru-hike",
+		"thru-hiking",
+		"blog",
+		"thruhiking",
+		"thruhike",
+		"thru hike",
+		"thru hiking",
+	],
+	openGraph: {
+		type: "website",
+		locale: "en_US",
+		url: "https://www.tripreport.co/",
+		siteName: "Trip Report",
+		images: [
+			{
+				url: "https://www.tripreport.co/images/logo_fill.png",
+				alt: "Trip Report - Share Your Outdoor Adventures",
+			},
+		],
+	},
+	twitter: {
+		card: "summary_large_image",
+	},
+	icons: {
+		icon: "/favicon.ico",
+	},
 };
 
 export default function RootLayout({

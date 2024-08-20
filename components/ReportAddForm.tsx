@@ -15,9 +15,7 @@ import {
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
 
-type ReportAddFormProps = {
-	// Add any props here if needed
-};
+type ReportAddFormProps = {};
 
 const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [body, setBody] = useState<string>("");

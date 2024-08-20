@@ -8,9 +8,7 @@ import { Report as ReportType } from "@/types";
 import { unstable_noStore as noStore } from "next/cache";
 import Link from "next/link";
 
-type HomeReportsProps = {
-	// Add any props here if needed
-};
+type HomeReportsProps = {};
 
 const HomeReports: React.FC<HomeReportsProps> = async () => {
 	noStore();
