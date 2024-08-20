@@ -39,7 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		url: `${baseUrl}/profile/${user._id}`,
 		lastModified: user.updatedAt.toISOString(),
 		changefreq: "daily" as const,
-		priority: 0.7,
+		priority: 0.8,
 	}));
 
 	return [...routes, ...reportRoutes, ...userRoutes];

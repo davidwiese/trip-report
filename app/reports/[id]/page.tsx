@@ -16,7 +16,10 @@ type ReportPageProps = {
 	};
 };
 
-function generateJsonLd(report: ReportType, fullUrl: string) {
+function generateJsonLd(
+	report: ReportType & { owner: UserType },
+	fullUrl: string
+) {
 	return {
 		"@context": "https://schema.org",
 		"@type": "Article",
@@ -27,7 +30,7 @@ function generateJsonLd(report: ReportType, fullUrl: string) {
 		dateModified: report.updatedAt,
 		author: {
 			"@type": "Person",
-			name: report.owner,
+			name: report.owner.username,
 		},
 		publisher: {
 			"@type": "Organization",
@@ -63,16 +66,16 @@ export async function generateMetadata(
 	{ params }: ReportPageProps,
 	parent: ResolvingMetadata
 ): Promise<Metadata> {
-	// Fetch the report data
-	const report = (await Report.findById(params.id).lean()) as ReportType | null;
+	// Fetch the report data and populate the owner field
+	const report = (await Report.findById(params.id).populate("owner").lean()) as
+		| (ReportType & { owner: UserType })
+		| null;
 
 	if (!report) {
 		return {
 			title: "Report Not Found",
 		};
 	}
-
-	console.log("Author:", report.owner);
 
 	const imageUrls = report.images?.map((img: { url: string }) => img.url) || [];
 
@@ -108,7 +111,7 @@ export async function generateMetadata(
 			type: "article",
 			url: fullUrl,
 			siteName: "Trip Report",
-			authors: report.owner,
+			authors: [report.owner.username],
 			images: imageUrls,
 			publishedTime: report.createdAt,
 			modifiedTime: report.updatedAt,
