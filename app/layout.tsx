@@ -48,8 +48,6 @@ export const metadata: Metadata = {
 		images: [
 			{
 				url: "https://www.tripreport.co/images/logo_fill.png",
-				width: 1200,
-				height: 630,
 				alt: "Trip Report - Share Your Outdoor Adventures",
 			},
 		],

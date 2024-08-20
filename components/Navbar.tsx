@@ -10,9 +10,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type NavbarProps = {
-	// Add any props here if needed
-};
+type NavbarProps = {};
 
 const Navbar: React.FC<NavbarProps> = () => {
 	const { isSignedIn } = useUser();
