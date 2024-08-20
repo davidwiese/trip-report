@@ -5,11 +5,12 @@ import Navbar from "@/components/Navbar";
 import { GlobalProvider } from "@/context/GlobalContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GeistSans } from "geist/font/sans";
+import { Metadata } from "next";
 import "photoswipe/dist/photoswipe.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const metadata = {
+export const metadata: Metadata = {
 	title: "Trip Report",
 	description: "Create trip reports, find beta, or blog your entire thru-hike",
 	keywords:
