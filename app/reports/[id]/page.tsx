@@ -8,12 +8,56 @@ import { Report as ReportType, User as UserType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { auth } from "@clerk/nextjs/server";
 import { Metadata, ResolvingMetadata } from "next";
+import Script from "next/script";
 
 type ReportPageProps = {
 	params: {
 		id: string;
 	};
 };
+
+function generateJsonLd(report: ReportType, fullUrl: string) {
+	return {
+		"@context": "https://schema.org",
+		"@type": "Article",
+		headline: report.title,
+		description: report.description,
+		image: report.images?.map((img) => img.url) || [],
+		datePublished: report.createdAt,
+		dateModified: report.updatedAt,
+		author: {
+			"@type": "Person",
+			name: report.owner,
+		},
+		publisher: {
+			"@type": "Organization",
+			name: "Trip Report",
+			logo: {
+				"@type": "ImageObject",
+				url: "https://www.tripreport.co/images/logo_fill.png",
+			},
+		},
+		mainEntityOfPage: {
+			"@type": "WebPage",
+			"@id": fullUrl,
+		},
+		keywords: report.activityType.join(", "),
+		articleSection: "Trip Reports",
+		inLanguage: "en-US",
+		locationCreated: {
+			"@type": "Place",
+			name: `${report.location.objective}, ${report.location.localArea}, ${report.location.region}, ${report.location.country}`,
+		},
+	};
+}
+
+const JsonLd = ({ data }: { data: any }) => (
+	<Script
+		id="json-ld"
+		type="application/ld+json"
+		dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+	/>
+);
 
 export async function generateMetadata(
 	{ params }: ReportPageProps,
@@ -39,28 +83,18 @@ export async function generateMetadata(
 		report.location.objective,
 		"trip report",
 		"trip reports",
-		"hiking",
-		"backpacking",
-		"trail running",
-		"rock climbing",
-		"sport climbing",
-		"trad climbing",
-		"aid climbing",
-		"ice climbing",
-		"mixed climbing",
-		"mountaineering",
-		"ski mountaineering",
-		"ski touring",
-		"canyoneering",
-		"mountain biking",
-		"cycling",
-		"biking",
-		"bicycle",
-		"bikepacking",
-		"bicycling",
-		"kayaking",
-		"packrafting",
 	].filter(Boolean);
+
+	// Determine the base URL based on the environment
+	const baseUrl =
+		process.env.NODE_ENV === "production"
+			? `https://${process.env.VERCEL_URL}`
+			: "http://localhost:3000";
+
+	// Construct the full URL for this report
+	const fullUrl = `${baseUrl}/reports/${params.id}`;
+
+	const jsonLd = generateJsonLd(report, fullUrl);
 
 	return {
 		title: `${report.title} | Trip Report`,
@@ -70,8 +104,12 @@ export async function generateMetadata(
 			title: report.title,
 			description: report.description,
 			type: "article",
-			authors: [report.owner],
+			url: fullUrl,
+			siteName: "Trip Report",
+			authors: report.owner,
 			images: imageUrls,
+			publishedTime: report.createdAt,
+			modifiedTime: report.updatedAt,
 			section: report.activityType.join(", "),
 		},
 		twitter: {
@@ -83,15 +121,17 @@ export async function generateMetadata(
 		other: {
 			"geo.region": `${report.location.country}-${report.location.region}`,
 			"geo.placename": report.location.localArea,
+			"json-ld": JSON.stringify(jsonLd),
 		},
 	};
 }
 
 const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	try {
-		const PUBLIC_DOMAIN = process.env.VERCEL_URL
-			? `https://${process.env.VERCEL_URL}`
-			: "http://localhost:3000";
+		const PUBLIC_DOMAIN =
+			process.env.NODE_ENV === "production"
+				? `https://${process.env.VERCEL_URL}`
+				: "http://localhost:3000";
 
 		await connectDB();
 
@@ -124,8 +164,14 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		// Check if the current user is the author of the report
 		const isAuthor = clerkUserId === report.owner.clerkId;
 
+		const jsonLd = generateJsonLd(
+			report,
+			`${PUBLIC_DOMAIN}/reports/${params.id}`
+		);
+
 		return (
 			<>
+				<JsonLd data={jsonLd} />
 				{report.images && report.images.length > 0 && (
 					<ReportHeaderImage image={report.images[0]} />
 				)}
