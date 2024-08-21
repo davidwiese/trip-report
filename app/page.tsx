@@ -5,7 +5,7 @@ import HomeStatistics from "@/components/HomeStatistics";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "Create and Share Your Outdoor Adventures | Trip Report",
+	title: "Trip Report",
 	description:
 		"Join Trip Report to create and share your hiking, climbing, and outdoor adventure reports. Connect with a community of nature enthusiasts and explorers.",
 	openGraph: {

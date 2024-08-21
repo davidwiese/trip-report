@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 export const metadata: Metadata = {
 	title: {
-		default: "Trip Report | Create and Share Your Outdoor Adventures",
+		default: "Trip Report",
 		template: "%s | Trip Report",
 	},
 	description:

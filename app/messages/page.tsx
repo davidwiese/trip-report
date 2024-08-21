@@ -10,7 +10,7 @@ import { Metadata } from "next";
 type MessagesPageProps = {};
 
 export const metadata: Metadata = {
-	title: "Messages | Trip Report",
+	title: "Messages",
 	description: "View and manage your messages on Trip Report.",
 	robots: { index: false, follow: false }, // Since this is a private page
 };

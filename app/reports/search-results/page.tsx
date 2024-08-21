@@ -68,7 +68,7 @@ async function loader(
 }
 
 export const metadata: Metadata = {
-	title: "Search Results | Trip Report",
+	title: "Search Results",
 	description: "Explore trip reports matching your search criteria.",
 	robots: { index: false, follow: true }, // Allow following links, but don't index search results
 };

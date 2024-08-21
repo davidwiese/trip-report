@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export const metadata: Metadata = {
-	title: "Contact Us | Trip Report",
+	title: "Contact Us",
 	description:
 		"Get in touch with the Trip Report team. We're here to help with any questions or feedback you may have.",
 	openGraph: {

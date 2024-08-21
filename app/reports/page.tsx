@@ -43,7 +43,7 @@ async function fetchReports(page: number, pageSize: number) {
 }
 
 export const metadata: Metadata = {
-	title: "Reports | Trip Report",
+	title: "Reports",
 	description:
 		"Explore a wide range of trip reports from outdoor enthusiasts. Find inspiration for your next adventure.",
 	openGraph: {

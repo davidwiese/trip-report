@@ -71,7 +71,7 @@ export async function generateMetadata({
 	}
 
 	return {
-		title: `${user.username}'s Profile | Trip Report`,
+		title: `${user.username}'s Profile`,
 		description: `Check out ${user.username}'s trip reports and outdoor adventures on Trip Report.`,
 		openGraph: {
 			title: `${user.username} on Trip Report`,

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "Privacy Policy | Trip Report",
+	title: "Privacy Policy",
 	description:
 		"Learn about how Trip Report collects, uses, and protects your personal information.",
 	openGraph: {

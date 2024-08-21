@@ -2,7 +2,7 @@ import TermsOfService from "@/components/TermsOfService";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "Terms of Service | Trip Report",
+	title: "Terms of Service",
 	description:
 		"Read our Terms of Service to understand the rules and regulations governing the use of Trip Report.",
 	openGraph: {
