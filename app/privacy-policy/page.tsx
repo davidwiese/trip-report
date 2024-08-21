@@ -1,3 +1,16 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Privacy Policy | Trip Report",
+	description:
+		"Learn about how Trip Report collects, uses, and protects your personal information.",
+	openGraph: {
+		title: "Trip Report Privacy Policy",
+		description: "Our commitment to protecting your privacy and personal data.",
+		type: "website",
+	},
+};
+
 const PrivacyPolicy: React.FC = () => {
 	return (
 		<div className="container mx-auto p-12">

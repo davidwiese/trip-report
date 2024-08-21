@@ -7,6 +7,7 @@ import { Report as ReportType, User as UserType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { findUserByClerkId } from "@/utils/userUtils";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 
 async function loader(pageSize: number, page: number, clerkUserId: string) {
 	await connectDB();
@@ -50,6 +51,13 @@ type ProfilePageProps = {
 		pageSize?: string;
 		page?: string;
 	};
+};
+
+export const metadata: Metadata = {
+	title: "Profile | Trip Report",
+	description:
+		"View and manage your Trip Report profile, including your trip reports and statistics.",
+	robots: { index: false, follow: false }, // Since this is a private page
 };
 
 const ProfilePage: React.FC<ProfilePageProps> = async ({

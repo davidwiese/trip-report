@@ -102,7 +102,7 @@ export async function generateMetadata(
 	const jsonLd = generateJsonLd(report, fullUrl);
 
 	return {
-		title: `${report.title} | Trip Report`,
+		title: `${report.title}`,
 		description: report.description,
 		keywords: keywords,
 		openGraph: {

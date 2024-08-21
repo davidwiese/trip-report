@@ -9,6 +9,7 @@ import { Report as ReportType, User as UserType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { findUserByClerkId } from "@/utils/userUtils";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 type PublicProfilePageProps = {
@@ -54,6 +55,29 @@ async function loader(userId: string, pageSize: number, page: number) {
 		user,
 		totalReports,
 		currentPage,
+	};
+}
+
+export async function generateMetadata({
+	params,
+}: PublicProfilePageProps): Promise<Metadata> {
+	const user = await getProfileUser(params.id);
+
+	if (!user) {
+		return {
+			title: "User Not Found | Trip Report",
+			description: "The requested user profile could not be found.",
+		};
+	}
+
+	return {
+		title: `${user.username}'s Profile | Trip Report`,
+		description: `Check out ${user.username}'s trip reports and outdoor adventures on Trip Report.`,
+		openGraph: {
+			title: `${user.username} on Trip Report`,
+			description: `View ${user.username}'s outdoor adventures and trip reports.`,
+			type: "profile",
+		},
 	};
 }
 
