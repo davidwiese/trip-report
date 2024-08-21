@@ -792,8 +792,11 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 				<Label htmlFor="body" required>
 					Trip Report
 				</Label>
-				<input type="hidden" name="body" value={report.body} />
-				<ReportBodyEditor onChange={handleBodyChange} />
+				<input type="hidden" name="body" value={body} />
+				<ReportBodyEditor
+					initialValue={report.body}
+					onChange={handleBodyChange}
+				/>
 			</div>
 
 			<div className="mb-4">

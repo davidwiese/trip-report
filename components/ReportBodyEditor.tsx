@@ -43,10 +43,10 @@ const MaxLength = Extension.create({
 });
 
 const ReportBodyEditor = ({
-	value,
+	initialValue,
 	onChange,
 }: {
-	value?: string;
+	initialValue?: string;
 	onChange: (content: string) => void;
 }) => {
 	const [charCount, setCharCount] = useState(0);
@@ -109,7 +109,7 @@ const ReportBodyEditor = ({
 			},
 		},
 		content:
-			value ||
+			initialValue ||
 			`<h2>Your Trip Report</h2><p>Share your experience to help fellow adventurers! Here are some key points to consider:</p><p></p><ul><li><strong>Weather Conditions:</strong> Describe the weather you encountered. Was it as forecasted?</li><li><strong>Trail Conditions:</strong> How was the trail? Any challenging sections or recent changes?</li><li><strong>Gear:</strong> What gear was essential? Anything you wish you had brought or left behind?</li><li><strong>Timing:</strong> How long did different sections take? Any recommendations on start times?</li><li><strong>Navigation:</strong> Were there any tricky navigation points? How well-marked was the route?</li><li><strong>Highlights:</strong> What were the best parts of your trip? Any unexpected discoveries?</li><li><strong>Challenges:</strong> What difficulties did you face? How did you overcome them?</li><li><strong>Wildlife & Nature:</strong> Did you encounter any wildlife or notable natural features?</li><li><strong>Tips for Others:</strong> What advice would you give to someone planning this trip?</li></ul><p></p><p>Remember, your insights are valuable! The more detail you provide, the more helpful your report will be. Use the formatting tools above to organize your thoughts and make your report beautiful.</p><p></p><p>Happy reporting, and thanks for sharing your adventure!</p>`,
 		onUpdate({ editor }) {
 			onChange(editor.getHTML());
@@ -119,9 +119,12 @@ const ReportBodyEditor = ({
 
 	useEffect(() => {
 		if (editor) {
+			if (initialValue) {
+				editor.commands.setContent(initialValue);
+			}
 			setCharCount(editor.state.doc.textContent.length);
 		}
-	}, [editor]);
+	}, [editor, initialValue]);
 
 	if (!editor) {
 		return null;
