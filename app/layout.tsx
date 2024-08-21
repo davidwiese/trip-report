@@ -3,6 +3,8 @@ import "@/assets/styles/globals.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { GlobalProvider } from "@/context/GlobalContext";
+import { ThemeProvider } from "@/context/ThemeContext";
+import ThemeScript from "@/components/ThemeScript";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
@@ -94,10 +96,13 @@ export default function RootLayout({
 				<GlobalProvider>
 					<html lang="en" className={GeistSans.className}>
 						<body>
-							<Navbar />
-							<main>{children}</main>
-							<Footer />
-							<ToastContainer />
+							<ThemeScript />
+							<ThemeProvider>
+								<Navbar />
+								<main>{children}</main>
+								<Footer />
+								<ToastContainer />
+							</ThemeProvider>
 						</body>
 					</html>
 				</GlobalProvider>

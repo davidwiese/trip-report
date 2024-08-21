@@ -1,6 +1,7 @@
 "use client";
 
 import ProfileButton from "@/components/ProfileButton";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import UnreadMessageCount from "@/components/UnreadMessageCount";
 import { Button, buttonVariants } from "@/components/ui/button";
 import logo from "@/public/images/logo_fill.png";
@@ -112,6 +113,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
 					{/* Right Side Menu */}
 					<div className="flex items-center justify-end flex-1">
+						<ThemeSwitcher />
 						{isSignedIn ? (
 							<>
 								<Link
