@@ -91,7 +91,7 @@ const ReportSchema = new Schema(
 				message: "End date must be equal to or later than the start date.",
 			},
 		},
-		// NOTE: Limit the user to a maximum of 10 images
+		// Limit the user to a maximum of 10 images
 		images: {
 			type: [ImageSchema],
 			default: undefined,

@@ -13,9 +13,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-type ReportSearchFormProps = {
-	// Add any props here if needed
-};
+type ReportSearchFormProps = {};
 
 const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 	const [location, setLocation] = useState("");

@@ -5,6 +5,7 @@ import User from "@/models/User";
 import { Report as ReportType, User as UserType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 
 async function loader(pageSize: number, page: number, clerkUserId: string) {
 	await connectDB();
@@ -47,6 +48,12 @@ type BookmarkedReportsPageProps = {
 		pageSize?: string;
 		page?: string;
 	};
+};
+
+export const metadata: Metadata = {
+	title: "Bookmarks",
+	description: "View and manage your bookmarked trip reports.",
+	robots: { index: false, follow: false }, // Since this is a private page
 };
 
 const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({

@@ -1,7 +1,13 @@
 import ReportAddForm from "@/components/ReportAddForm";
+import { Metadata } from "next";
 
-type ReportAddPageProps = {
-	// Add any props here if needed
+type ReportAddPageProps = {};
+
+export const metadata: Metadata = {
+	title: "Add Trip Report",
+	description:
+		"Create and share a new trip report with the Trip Report community.",
+	robots: { index: false, follow: false }, // Since this is a private page
 };
 
 const ReportAddPage: React.FC<ReportAddPageProps> = () => {

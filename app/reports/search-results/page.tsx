@@ -4,6 +4,7 @@ import ReportSearchForm from "@/components/ReportSearchForm";
 import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { convertToSerializableObject } from "@/utils/convertToObject";
+import { Metadata } from "next";
 import Link from "next/link";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 
@@ -65,6 +66,12 @@ async function loader(
 		currentPage,
 	};
 }
+
+export const metadata: Metadata = {
+	title: "Search Results",
+	description: "Explore trip reports matching your search criteria.",
+	robots: { index: false, follow: true }, // Allow following links, but don't index search results
+};
 
 const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 	searchParams: { location, reportType, pageSize = "6", page = "1" },

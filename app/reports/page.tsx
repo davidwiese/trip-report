@@ -4,6 +4,7 @@ import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { Report as ReportType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
+import { Metadata } from "next";
 
 type ReportsPageProps = {
 	searchParams: {
@@ -40,6 +41,18 @@ async function fetchReports(page: number, pageSize: number) {
 		itemsPerPage: pageSize,
 	};
 }
+
+export const metadata: Metadata = {
+	title: "Reports",
+	description:
+		"Explore a wide range of trip reports from outdoor enthusiasts. Find inspiration for your next adventure.",
+	openGraph: {
+		title: "Explore Trip Reports",
+		description:
+			"Discover outdoor adventures and get inspired for your next trip.",
+		type: "website",
+	},
+};
 
 const ReportsPage: React.FC<ReportsPageProps> = async ({
 	searchParams: { pageSize = "6", page = "1" },

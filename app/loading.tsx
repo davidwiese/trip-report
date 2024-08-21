@@ -2,9 +2,7 @@
 
 import ClipLoader from "react-spinners/ClipLoader";
 
-type LoadingPageProps = {
-	// Add any props here if needed
-};
+type LoadingPageProps = {};
 
 const override = {
 	display: "block",

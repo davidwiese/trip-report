@@ -14,7 +14,6 @@ async function bookmarkReport(reportId: string | mongoose.Types.ObjectId) {
 		const { userId: clerkUserId } = auth();
 
 		if (!clerkUserId) {
-			console.log("User ID is required");
 			return { error: "User ID is required" };
 		}
 

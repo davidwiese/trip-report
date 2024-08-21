@@ -2,14 +2,12 @@
 
 import { useGlobalContext } from "@/context/GlobalContext";
 
-// NOTE: here the logic for getting the unread message count has been moved to
+// Here the logic for getting the unread message count has been moved to
 // GlobalContext since that component is also responsible for managing that
 // state, additionally we can use a server action to get the unread message
-// count.
+// count
 
-type UnreadMessageCountProps = {
-	// Add any props here if needed
-};
+type UnreadMessageCountProps = {};
 
 const UnreadMessageCount: React.FC<UnreadMessageCountProps> = () => {
 	const { unreadCount } = useGlobalContext();

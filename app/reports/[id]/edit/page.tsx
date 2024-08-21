@@ -3,12 +3,35 @@ import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { Report as ReportType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
+import { Metadata } from "next";
 
 type ReportEditPageProps = {
 	params: {
 		id: string;
 	};
 };
+
+export async function generateMetadata({
+	params,
+}: ReportEditPageProps): Promise<Metadata> {
+	await connectDB();
+	const report = (await Report.findById(params.id).lean()) as ReportType | null;
+
+	if (!report) {
+		return {
+			title: "Report Not Found",
+		};
+	}
+
+	return {
+		title: `Edit: ${report.title}`,
+		description: `Edit your trip report for ${report.title}`,
+		robots: {
+			index: false,
+			follow: false,
+		},
+	};
+}
 
 const ReportEditPage: React.FC<ReportEditPageProps> = async ({ params }) => {
 	await connectDB();

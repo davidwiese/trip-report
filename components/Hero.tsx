@@ -11,9 +11,8 @@ import { PiChartLineUpBold } from "react-icons/pi";
 import { RiImageEditFill } from "react-icons/ri";
 import { TbMap2 } from "react-icons/tb";
 
-type HeroProps = {
-	// Add any props here if needed
-};
+type HeroProps = {};
+
 const Hero: React.FC<HeroProps> = () => {
 	return (
 		<section className="relative bg-gray-900 text-white">

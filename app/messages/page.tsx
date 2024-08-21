@@ -5,9 +5,14 @@ import { Message as MessageType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
 import { findUserByClerkId } from "@/utils/userUtils";
 import { auth } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 
-type MessagesPageProps = {
-	// Add any props here if needed
+type MessagesPageProps = {};
+
+export const metadata: Metadata = {
+	title: "Messages",
+	description: "View and manage your messages on Trip Report.",
+	robots: { index: false, follow: false }, // Since this is a private page
 };
 
 const MessagePage: React.FC<MessagesPageProps> = async () => {
