@@ -121,7 +121,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 					</div>
 
 					{/* Right Side Menu */}
-					<div className="flex items-center justify-end flex-1">
+					<div className="flex items-center justify-end flex-1 mr-2">
 						{isSignedIn ? (
 							<>
 								<Link
