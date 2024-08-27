@@ -21,6 +21,7 @@
 		"@radix-ui/react-slot": "^1.0.2",
 		"@radix-ui/react-toggle": "^1.0.3",
 		"@radix-ui/react-toggle-group": "^1.0.4",
+		"@sentry/nextjs": "^8.27.0",
 		"@tiptap/extension-character-count": "^2.4.0",
 		"@tiptap/pm": "^2.3.0",
 		"@tiptap/react": "^2.3.0",
