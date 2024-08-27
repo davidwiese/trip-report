@@ -182,14 +182,6 @@ const Navbar: React.FC<NavbarProps> = () => {
 									) : (
 										<Button variant="secondary">Login or Register</Button>
 									)}
-									{isMobile ? (
-										<Button variant="secondary" size="icon">
-											<TbLogin2 className="h-6 w-6" />
-											<span className="sr-only">Login or Register</span>
-										</Button>
-									) : (
-										<Button variant="secondary">Login or Register</Button>
-									)}
 								</SignInButton>
 							)
 						)}
@@ -221,10 +213,6 @@ const Navbar: React.FC<NavbarProps> = () => {
 
 						{!isSignedIn && pathname !== "/auth/signin" && (
 							<SignInButton mode="modal">
-								<Button variant="secondary" className="w-full justify-center">
-									<TbLogin2 className="h-6 w-6 mr-1" />
-									Login or Register
-								</Button>
 								<Button variant="secondary" className="w-full justify-center">
 									<TbLogin2 className="h-6 w-6 mr-1" />
 									Login or Register
