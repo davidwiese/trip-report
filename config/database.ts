@@ -13,19 +13,21 @@ let connectionAttempts = 0;
 
 const connectDB = async () => {
 	const timestamp = new Date().toISOString();
-	console.log(`[${timestamp}] Connection attempt ${++connectionAttempts}`);
-	console.log(
-		`[${timestamp}] MongoDB connection state: ${mongoose.connection.readyState}`
-	);
+
+	// Only log connection attempts if not already connected
+	if (mongoose.connection.readyState !== 1) {
+		console.log(
+			`[${timestamp}] Connection attempt ${++connectionAttempts}. State: ${
+				mongoose.connection.readyState
+			}`
+		);
+	}
 	// Only fields specified in our schema will be saved to the db
 	mongoose.set("strictQuery", true);
-	console.log(
-		`MongoDB connection state on function start: ${mongoose.connection.readyState}`
-	);
+
 	// Since we're using Next API serverless functions, check mongoose connection state
 	// 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
 	if (mongoose.connection.readyState === 1) {
-		console.log("MongoDB is already connected...");
 		return;
 	}
 
@@ -40,28 +42,22 @@ const connectDB = async () => {
 
 			const onConnected = () => {
 				clearTimeout(timeout);
-				console.log(
-					"MongoDB connection successfully established during in-progress state."
-				);
 				mongoose.connection.off("error", onError);
 				mongoose.connection.off("disconnected", onDisconnected);
 				resolve();
 			};
+
 			const onError = (err: Error) => {
 				clearTimeout(timeout);
-				console.error(
-					`[${new Date().toISOString()}] Error occurred during MongoDB connection attempt:`,
-					err
-				);
+				console.error(`[${timestamp}] Connection error:`, err);
 				mongoose.connection.off("connected", onConnected);
 				mongoose.connection.off("disconnected", onDisconnected);
 				reject(err);
 			};
+
 			const onDisconnected = () => {
 				clearTimeout(timeout);
-				console.error(
-					`[${new Date().toISOString()}] MongoDB connection was disconnected during an attempt.`
-				);
+				console.error(`[${timestamp}] Disconnected during connection attempt`);
 				mongoose.connection.off("connected", onConnected);
 				mongoose.connection.off("error", onError);
 				reject(new Error("Disconnected during connection attempt"));
@@ -79,10 +75,6 @@ const connectDB = async () => {
 		process.env.NODE_ENV === "production"
 			? process.env.MONGODB_URI
 			: process.env.MONGODB_URI_DEV || process.env.MONGODB_URI;
-
-	console.log(
-		`[${timestamp}] Attempting to connect to MongoDB with URI: ${mongoURI}`
-	);
 
 	if (!mongoURI) {
 		console.error(`[${timestamp}] MongoDB URI is not defined.`);
