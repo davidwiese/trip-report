@@ -11,14 +11,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { TbLogin2 } from "react-icons/tb";
-import { TbLogin2 } from "react-icons/tb";
 
 type NavbarProps = {};
 
 const Navbar: React.FC<NavbarProps> = () => {
 	const { isSignedIn } = useUser();
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-	const [isMobile, setIsMobile] = useState(false);
 	const [isMobile, setIsMobile] = useState(false);
 	const pathname = usePathname();
 
