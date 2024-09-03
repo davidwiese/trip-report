@@ -6,7 +6,9 @@ import connectDB from "@/config/database";
 import Report from "@/models/Report";
 import { Report as ReportType, User as UserType } from "@/types";
 import { convertToSerializableObject } from "@/utils/convertToObject";
+import { getBaseUrl } from "@/utils/getBaseUrl";
 import { auth } from "@clerk/nextjs/server";
+import { isValidObjectId } from "mongoose";
 import { Metadata, ResolvingMetadata } from "next";
 import Script from "next/script";
 
@@ -66,79 +68,101 @@ export async function generateMetadata(
 	{ params }: ReportPageProps,
 	parent: ResolvingMetadata
 ): Promise<Metadata> {
-	// Fetch the report data and populate the owner field
-	const report = (await Report.findById(params.id).populate("owner").lean()) as
-		| (ReportType & { owner: UserType })
-		| null;
+	try {
+		await connectDB();
 
-	if (!report) {
+		// Validate the ID
+		if (!isValidObjectId(params.id)) {
+			console.error(`Invalid report ID: ${params.id}`);
+			return {
+				title: "Invalid Report ID",
+				description: "The provided report ID is invalid.",
+			};
+		}
+
+		// Fetch the report data and populate the owner field
+		const report = (await Report.findById(params.id)
+			.populate("owner")
+			.lean()) as (ReportType & { owner: UserType }) | null;
+
+		if (!report) {
+			return {
+				title: "Report Not Found",
+				description: "The requested report does not exist.",
+			};
+		}
+
+		const imageUrls =
+			report.images?.map((img: { url: string }) => img.url) || [];
+
+		const keywords = [
+			report.title,
+			...report.activityType,
+			report.location.country,
+			report.location.region,
+			report.location.localArea,
+			report.location.objective,
+			"trip report",
+			"trip reports",
+		].filter(Boolean);
+
+		const baseUrl = getBaseUrl();
+		const fullUrl = `${baseUrl}/reports/${params.id}`;
+
+		const jsonLd = generateJsonLd(report, fullUrl);
+
 		return {
-			title: "Report Not Found",
+			title: `${report.title}`,
+			description: report.description,
+			keywords: keywords,
+			openGraph: {
+				title: report.title,
+				description: report.description,
+				type: "article",
+				url: fullUrl,
+				siteName: "Trip Report",
+				authors: [report.owner.username],
+				images: imageUrls,
+				publishedTime: report.createdAt,
+				modifiedTime: report.updatedAt,
+				section: report.activityType.join(", "),
+			},
+			twitter: {
+				card: "summary_large_image",
+				title: report.title,
+				description: report.description,
+				images: imageUrls,
+			},
+			other: {
+				"geo.region": `${report.location.country}-${report.location.region}`,
+				"geo.placename": report.location.localArea,
+				"json-ld": JSON.stringify(jsonLd),
+			},
+		};
+	} catch (error) {
+		console.error("Error generating metadata:", error);
+		return {
+			title: "Error Loading Report",
+			description: "An error occurred while loading the report metadata.",
 		};
 	}
-
-	const imageUrls = report.images?.map((img: { url: string }) => img.url) || [];
-
-	const keywords = [
-		report.title,
-		...report.activityType,
-		report.location.country,
-		report.location.region,
-		report.location.localArea,
-		report.location.objective,
-		"trip report",
-		"trip reports",
-	].filter(Boolean);
-
-	// Determine the base URL based on the environment
-	const baseUrl =
-		process.env.NODE_ENV === "production"
-			? `https://${process.env.VERCEL_URL}`
-			: "http://localhost:3000";
-
-	// Construct the full URL for this report
-	const fullUrl = `${baseUrl}/reports/${params.id}`;
-
-	const jsonLd = generateJsonLd(report, fullUrl);
-
-	return {
-		title: `${report.title}`,
-		description: report.description,
-		keywords: keywords,
-		openGraph: {
-			title: report.title,
-			description: report.description,
-			type: "article",
-			url: fullUrl,
-			siteName: "Trip Report",
-			authors: [report.owner.username],
-			images: imageUrls,
-			publishedTime: report.createdAt,
-			modifiedTime: report.updatedAt,
-			section: report.activityType.join(", "),
-		},
-		twitter: {
-			card: "summary_large_image",
-			title: report.title,
-			description: report.description,
-			images: imageUrls,
-		},
-		other: {
-			"geo.region": `${report.location.country}-${report.location.region}`,
-			"geo.placename": report.location.localArea,
-			"json-ld": JSON.stringify(jsonLd),
-		},
-	};
 }
 
 const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	try {
-		const PUBLIC_DOMAIN =
-			process.env.NODE_ENV === "production"
-				? `https://${process.env.VERCEL_URL}`
-				: "http://localhost:3000";
+		const PUBLIC_DOMAIN = getBaseUrl();
 
 		await connectDB();
+
+		// Validate the ID
+		if (!isValidObjectId(params.id)) {
+			console.error(`Invalid report ID: ${params.id}`);
+			return (
+				<h1 className="text-center text-2xl font-bold mt-10">
+					Invalid Report ID
+				</h1>
+			);
+		}
 
 		// Query the report in the DB and populate the owner field
 		const reportDoc = await Report.findById(params.id).populate("owner").lean();
