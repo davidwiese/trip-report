@@ -14,5 +14,5 @@ Sentry.init({
 	tracesSampleRate: isProd ? 0.1 : 1,
 
 	// Setting this option to true will print useful information to the console while you're setting up Sentry.
-	debug: !isProd,
+	debug: false,
 });
