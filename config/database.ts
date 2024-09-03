@@ -1,4 +1,7 @@
 import mongoose from "mongoose";
+import User from "@/models/User";
+import Report from "@/models/Report";
+import Message from "@/models/Message";
 
 interface MongooseCache {
 	conn: typeof mongoose | null;
@@ -46,6 +49,17 @@ const connectDB = async () => {
 
 	try {
 		cached.conn = await cached.promise;
+
+		// Ensure models are registered only if they haven't been already
+		if (!mongoose.models.User) {
+			mongoose.model("User", User.schema);
+		}
+		if (!mongoose.models.Report) {
+			mongoose.model("Report", Report.schema);
+		}
+		if (!mongoose.models.Message) {
+			mongoose.model("Message", Message.schema);
+		}
 	} catch (error) {
 		cached.promise = null;
 		throw error;
