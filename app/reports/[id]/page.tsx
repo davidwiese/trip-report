@@ -1,3 +1,4 @@
+import MapOverlay from "@/components/MapOverlay";
 import ReportDetails from "@/components/ReportDetails";
 import ReportHeaderImage from "@/components/ReportHeaderImage";
 import ReportImages from "@/components/ReportImages";
@@ -219,14 +220,16 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 					<section className="mb-10">
 						<div className="container mx-auto max-w-6xl px-6">
 							<div className="rounded-xl shadow-xl overflow-hidden bg-gray-100">
-								<iframe
-									src={report.caltopoUrl}
-									width="100%"
-									height="500"
-									style={{ border: 0 }}
-									allowFullScreen
-									className="rounded-xl"
-								></iframe>
+								<MapOverlay>
+									<iframe
+										src={report.caltopoUrl}
+										width="100%"
+										height="500"
+										style={{ border: 0 }}
+										allowFullScreen
+										className="rounded-xl"
+									></iframe>
+								</MapOverlay>
 							</div>
 						</div>
 					</section>
