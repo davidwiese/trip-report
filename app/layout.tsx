@@ -3,8 +3,7 @@ import "@/assets/styles/globals.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { GlobalProvider } from "@/context/GlobalContext";
-import { ThemeProvider } from "@/context/ThemeContext";
-import ThemeScript from "@/components/ThemeScript";
+import { ThemeProvider } from "next-themes";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
@@ -86,6 +85,7 @@ export default function RootLayout({
 					process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL,
 		  }
 		: {};
+
 	return (
 		<ClerkProvider
 			publishableKey={publishableKey}
@@ -94,10 +94,17 @@ export default function RootLayout({
 		>
 			<CSPostHogProvider>
 				<GlobalProvider>
-					<html lang="en" className={GeistSans.className}>
+					<html
+						lang="en"
+						className={GeistSans.className}
+						suppressHydrationWarning
+					>
 						<body>
-							<ThemeScript />
-							<ThemeProvider>
+							<ThemeProvider
+								attribute="class"
+								defaultTheme="system"
+								enableSystem
+							>
 								<Navbar />
 								<main>{children}</main>
 								<Footer />

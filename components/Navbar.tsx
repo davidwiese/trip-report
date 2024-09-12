@@ -1,12 +1,11 @@
 "use client";
 
 import ProfileButton from "@/components/ProfileButton";
-import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import ThemedLogo from "@/components/ThemedLogo";
+import ThemeSwitcher from "@/components/ThemeSwitcher";
 import UnreadMessageCount from "@/components/UnreadMessageCount";
 import { Button, buttonVariants } from "@/components/ui/button";
-import logo from "@/public/images/logo_fill.png";
 import { SignInButton, useUser } from "@clerk/nextjs";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -52,8 +51,15 @@ const Navbar: React.FC<NavbarProps> = () => {
 		return isActive ? buttonVariants() : buttonVariants({ variant: "outline" });
 	};
 
+	const messageIconClasses = () => {
+		const isActive = pathname === "/messages";
+		return isActive
+			? "bg-black text-white hover:text-white hover:bg-primary/90"
+			: "";
+	};
+
 	return (
-		<nav className="bg-white border-b border-gray-500">
+		<nav className="bg-white dark:bg-black border-b border-gray-500 dark:border-black">
 			<div className="container mx-auto px-2 sm:px-6 lg:px-8 relative">
 				<div className="relative flex h-20 items-center justify-between">
 					<div className="absolute inset-y-0 left-0 flex items-center md:hidden ml-2">
@@ -63,7 +69,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 							type="button"
 							variant={"outline"}
 							id="mobile-dropdown-button"
-							className="relative inline-flex items-center justify-center rounded-md p-2"
+							className="relative inline-flex items-center justify-center rounded-md p-2 dark:bg-black dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black"
 							aria-controls="mobile-menu"
 							aria-expanded={isMobileMenuOpen}
 						>
@@ -93,12 +99,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 							href="/"
 							onClick={(e) => e.currentTarget.blur()}
 						>
-							<Image
-								className="h-12 w-auto"
-								src={logo}
-								alt="Trip Report"
-								priority
-							/>
+							<ThemedLogo />
 							{/* <span className="hidden md:block text-black text-2xl font-bold ml-2">
 								Trip Report
 							</span> */}
@@ -109,13 +110,17 @@ const Navbar: React.FC<NavbarProps> = () => {
 					<div className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 space-x-2">
 						<Link
 							href="/"
-							className={`${linkClasses("/")} w-[110px] text-center`}
+							className={`${linkClasses(
+								"/"
+							)} w-[110px] text-center dark:border-white dark:border`}
 						>
 							Home
 						</Link>
 						<Link
 							href="/reports"
-							className={`${linkClasses("/reports")} w-[110px] text-center`}
+							className={`${linkClasses(
+								"/reports"
+							)} w-[110px] text-center dark:border-white dark:border`}
 						>
 							Reports
 						</Link>
@@ -124,7 +129,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 								href="/reports/add"
 								className={`${linkClasses(
 									"/reports/add"
-								)} w-[110px] text-center`}
+								)} w-[110px] text-center dark:border-white dark:border`}
 							>
 								Create Report
 							</Link>
@@ -143,8 +148,10 @@ const Navbar: React.FC<NavbarProps> = () => {
 								>
 									<Button
 										onClick={(e) => e.currentTarget.blur()}
+										variant="outline"
 										type="button"
-										className="relative flex items-center justify-center h-10 w-10 rounded-full text-white border border-black bg-black p-1 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+										size="icon"
+										className={`relative flex items-center justify-center h-10 w-10 rounded-full bg-background hover:bg-accent hover:text-accent-foreground ${messageIconClasses()}`}
 									>
 										<span className="absolute -inset-1.5"></span>
 										<span className="sr-only">
@@ -175,12 +182,16 @@ const Navbar: React.FC<NavbarProps> = () => {
 							pathname !== "/auth/signin" && (
 								<SignInButton mode="modal">
 									{isMobile ? (
-										<Button variant="secondary" size="icon">
-											<TbLogin2 className="h-6 w-6" />
+										<Button
+											variant="outline"
+											size="icon"
+											className="dark:bg-black dark:border-white dark:hover:bg-white"
+										>
+											<TbLogin2 className="h-6 w-6 dark:text-white dark:hover:text-black" />
 											<span className="sr-only">Login or Register</span>
 										</Button>
 									) : (
-										<Button variant="secondary">Login or Register</Button>
+										<Button variant="outline">Login or Register</Button>
 									)}
 								</SignInButton>
 							)
@@ -193,19 +204,28 @@ const Navbar: React.FC<NavbarProps> = () => {
 			{isMobileMenuOpen && (
 				<div id="mobile-menu">
 					<div className="flex flex-col items-stretch space-y-1 px-2 pb-3 pt-2">
-						<Link href="/" className={`${linkClasses("/")} w-full text-center`}>
+						<Link
+							href="/"
+							className={`${linkClasses(
+								"/"
+							)} w-full text-center dark:border-white dark:border`}
+						>
 							Home
 						</Link>
 						<Link
 							href="/reports"
-							className={`${linkClasses("/reports")} w-full text-center`}
+							className={`${linkClasses(
+								"/reports"
+							)} w-full text-center dark:border-white dark:border`}
 						>
 							Reports
 						</Link>
 						{isSignedIn && (
 							<Link
 								href="/reports/add"
-								className={`${linkClasses("/reports/add")} w-full text-center`}
+								className={`${linkClasses(
+									"/reports/add"
+								)} w-full text-center dark:border-white dark:border`}
 							>
 								Add Report
 							</Link>
@@ -213,7 +233,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
 						{!isSignedIn && pathname !== "/auth/signin" && (
 							<SignInButton mode="modal">
-								<Button variant="secondary" className="w-full justify-center">
+								<Button variant="outline" className="w-full justify-center">
 									<TbLogin2 className="h-6 w-6 mr-1" />
 									Login or Register
 								</Button>
