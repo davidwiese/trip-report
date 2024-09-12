@@ -1,8 +1,8 @@
 "use client";
 
 import ProfileButton from "@/components/ProfileButton";
-import ThemedLogo from "@/components/ThemedLogo";
 import ThemeSwitcher from "@/components/ThemeSwitcher";
+import ThemedLogo from "@/components/ThemedLogo";
 import UnreadMessageCount from "@/components/UnreadMessageCount";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SignInButton, useUser } from "@clerk/nextjs";
