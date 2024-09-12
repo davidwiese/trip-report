@@ -30,16 +30,6 @@ const Navbar: React.FC<NavbarProps> = () => {
 	}, []);
 
 	useEffect(() => {
-		const checkMobile = () => {
-			setIsMobile(window.innerWidth < 768); // Adjust this breakpoint as needed
-		};
-
-		checkMobile();
-		window.addEventListener("resize", checkMobile);
-		return () => window.removeEventListener("resize", checkMobile);
-	}, []);
-
-	useEffect(() => {
 		// Close mobile menu if viewport size is changed
 		window.addEventListener("resize", () => {
 			setIsMobileMenuOpen(false);
