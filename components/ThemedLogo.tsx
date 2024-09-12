@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { useTheme } from "next-themes";
-import logoFill from "@/public/images/logo_fill.png";
 import logoOutline from "@/public/images/logo_darkmode.png";
+import logoFill from "@/public/images/logo_fill.png";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const ThemedLogo = () => {
 	const [mounted, setMounted] = useState(false);
