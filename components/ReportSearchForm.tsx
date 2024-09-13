@@ -97,7 +97,7 @@ const ReportSearchForm: React.FC<ReportSearchFormProps> = () => {
 			<SearchButton
 				type="submit"
 				style={{ boxShadow: "0 0 3px 1px rgba(255, 255, 255, 0.5)" }}
-				className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 border border-white focus:outline-2 focus:outline-white"
+				className="md:ml-4 mt-4 md:mt-0 w-full md:w-auto px-6 py-3 border border-white focus:outline-2 focus:outline-white hover:bg-[#191919] transition-colors duration-300 ease-in-out"
 			>
 				Search
 			</SearchButton>
