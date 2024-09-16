@@ -22,8 +22,8 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 
 	if (!clerkUserId) {
 		return (
-			<section className="bg-white">
-				<div className="container m-auto py-24 max-w-6xl">
+			<section className="bg-white min-h-screen flex dark:bg-black dark:bg-gradient-to-b dark:from-black dark:via-black dark:to-[#191919]">
+				<div className="container mx-auto py-24 max-w-6xl">
 					<div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
 						<h1 className="text-3xl font-bold mb-4">Your Messages</h1>
 						<p>You are not logged in</p>
@@ -39,8 +39,8 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 	if (!user) {
 		console.error(`No user found for Clerk ID: ${clerkUserId}`);
 		return (
-			<section className="bg-white">
-				<div className="container m-auto py-24 max-w-6xl">
+			<section className="bg-white min-h-screen flex dark:bg-black dark:bg-gradient-to-b dark:from-black dark:via-black dark:to-[#191919]">
+				<div className="container mx-auto py-24 max-w-6xl">
 					<div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
 						<h1 className="text-3xl font-bold mb-4">Your Messages</h1>
 						<p>User not found</p>
@@ -68,9 +68,9 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 	);
 
 	return (
-		<section className="bg-white">
-			<div className="container m-auto py-24 max-w-6xl">
-				<div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
+		<section className="bg-white min-h-screen flex flex-col dark:bg-black dark:bg-gradient-to-b dark:from-black dark:via-black dark:to-[#191919]">
+			<div className="container mx-auto py-24 max-w-6xl">
+				<div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0 dark:bg-black dark:text-white">
 					<h1 className="text-3xl font-bold mb-4">Your Messages</h1>
 
 					<div className="space-y-4">
