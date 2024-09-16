@@ -530,7 +530,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 				<textarea
 					id="description"
 					name="description"
-					className="border rounded w-full py-2 px-3"
+					className="border rounded w-full py-2 px-3 dark:text-white"
 					rows={4}
 					placeholder="Add a brief description of your trip (500 character limit)"
 					maxLength={500}
@@ -551,7 +551,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					value={country}
 					onChange={handleCountryChange}
 					priorityOptions={["US", "CA", "MX", "GB", "FR", "DE", "IT", "ES"]}
-					classes="border rounded w-full py-2 px-3 mb-2"
+					classes="border rounded w-full py-2 px-3 mb-2 dark:text-white"
 				/>
 				<RegionDropdown
 					country={country}
@@ -559,7 +559,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					onChange={handleRegionChange}
 					disableWhenEmpty={true}
 					blankOptionLabel="Select Region"
-					classes="border rounded w-full py-2 px-3 mb-2"
+					classes="border rounded w-full py-2 px-3 mb-2 dark:text-white"
 				/>
 				<input
 					type="hidden"
@@ -577,7 +577,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="text"
 					id="localArea"
 					name="location.localArea"
-					className="border rounded w-full py-2 px-3 mb-2"
+					className="border rounded w-full py-2 px-3 mb-2 dark:text-white"
 					placeholder="Local area (mountain range, park, etc.)"
 					maxLength={50}
 					required
@@ -586,7 +586,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="text"
 					id="objective"
 					name="location.objective"
-					className="border rounded w-full py-2 px-3"
+					className="border rounded w-full py-2 px-3 dark:text-white"
 					placeholder="Objective (specific trail, peak, or climb, etc.)"
 					maxLength={50}
 					required
@@ -603,7 +603,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 						id="distance"
 						name="distance"
 						step="0.1"
-						className="border rounded w-full py-2 px-3"
+						className="border rounded w-full py-2 px-3 dark:text-white"
 						max={10000}
 						required
 					/>
@@ -616,7 +616,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 						type="number"
 						id="elevationGain"
 						name="elevationGain"
-						className="border rounded w-full py-2 px-3"
+						className="border rounded w-full py-2 px-3 dark:text-white"
 						max={99999}
 						required
 					/>
@@ -629,7 +629,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 						type="number"
 						id="elevationLoss"
 						name="elevationLoss"
-						className="border rounded w-full py-2 px-3"
+						className="border rounded w-full py-2 px-3 dark:text-white"
 						max={99999}
 						required
 					/>
@@ -644,7 +644,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="number"
 					id="duration"
 					name="duration"
-					className="border rounded w-full py-2 px-3"
+					className="border rounded w-full py-2 px-3 dark:text-white"
 					step="0.1"
 					max={1000}
 					required
@@ -659,7 +659,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="date"
 					id="startDate"
 					name="startDate"
-					className="border rounded w-full py-2 px-3"
+					className="border rounded w-full py-2 px-3 dark:text-white"
 					value={startDate}
 					onChange={handleStartDateChange}
 					required
@@ -674,7 +674,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="date"
 					id="endDate"
 					name="endDate"
-					className="border rounded w-full py-2 px-3"
+					className="border rounded w-full py-2 px-3 dark:text-white"
 					value={endDate}
 					onChange={handleEndDateChange}
 					required
@@ -718,7 +718,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="url"
 					id="caltopoUrl"
 					name="caltopoUrl"
-					className="border rounded w-full py-2 px-3"
+					className="border rounded w-full py-2 px-3 dark:text-white"
 					placeholder="e.g. https://caltopo.com/m/EH41"
 					maxLength={100}
 				/>
@@ -732,7 +732,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="text"
 					id="title"
 					name="title"
-					className="border rounded w-full py-2 px-3 mb-2"
+					className="border rounded w-full py-2 px-3 mb-2 dark:text-white"
 					placeholder="Enter a title for your trip report"
 					maxLength={75}
 					required
