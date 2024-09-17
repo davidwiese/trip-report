@@ -68,7 +68,7 @@ const MessagePage: React.FC<MessagesPageProps> = async () => {
 	);
 
 	return (
-		<section className="bg-white min-h-screen flex flex-col dark:bg-black dark:bg-gradient-to-b dark:from-black dark:via-black dark:to-[#191919]">
+		<section className="bg-white min-h-screen flex flex-col dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-[#191919]">
 			<div className="container mx-auto py-24 max-w-6xl">
 				<div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0 dark:bg-black dark:text-white">
 					<h1 className="text-3xl font-bold mb-4">Your Messages</h1>
