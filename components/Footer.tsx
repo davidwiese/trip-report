@@ -8,7 +8,7 @@ const Footer: React.FC<FooterProps> = () => {
 	const currentYear = new Date().getFullYear();
 
 	return (
-		<footer className="bg-gray-200 dark:bg-gradient-to-b dark:from-[#191919] dark:to-black py-4 mt-0">
+		<footer className="bg-gray-200 dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-black py-4 mt-0">
 			<div className="container mx-auto px-2 sm:px-6 lg:px-8">
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-2 items-center">
 					<div className="flex items-center justify-center md:justify-start">

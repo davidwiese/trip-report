@@ -49,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 	};
 
 	return (
-		<nav className="bg-white dark:bg-black border-b border-gray-500 dark:border-black">
+		<nav className="bg-white border-b border-gray-500 dark:bg-gradient-to-b dark:from-black dark:via-black dark:to-[#191919] dark:border-black">
 			<div className="container mx-auto px-2 sm:px-6 lg:px-8 relative">
 				<div className="relative flex h-20 items-center justify-between">
 					<div className="absolute inset-y-0 left-0 flex items-center md:hidden ml-2">
