@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const TermsPage: React.FC = () => {
 	return (
-		<main className="bg-white p-8">
+		<main className="container mx-auto p-12 dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-[#191919]">
 			<TermsOfService />
 		</main>
 	);

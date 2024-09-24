@@ -1,8 +1,8 @@
 const TermsOfService: React.FC = () => {
 	return (
-		<div className="container mx-auto px-4 py-8">
+		<div className="container mx-auto px-4 py-8 dark:text-white">
 			<h1 className="text-4xl font-bold mb-6">Terms of Service</h1>
-			<div className="prose max-w-none">
+			<div className="prose max-w-none dark:text-white">
 				<p>
 					<em>Last updated: July 11, 2024</em>
 				</p>
@@ -18,7 +18,10 @@ const TermsOfService: React.FC = () => {
 				<p>
 					When we say &quot;Company&quot;, &quot;we&quot;, &quot;our&quot;, or
 					&quot;us&quot; in this document, we are referring to{" "}
-					<a href="https://www.tripreport.co">Trip Report</a>.
+					<a className="dark:text-white" href="https://www.tripreport.co">
+						Trip Report
+					</a>
+					.
 				</p>
 
 				<p>
@@ -41,17 +44,26 @@ const TermsOfService: React.FC = () => {
 					the latest Terms. There may be times where we do not exercise or
 					enforce a right or provision of the Terms; however, that does not mean
 					we are waiving that right or provision.{" "}
-					<strong>These Terms do contain a limitation of our liability.</strong>
+					<strong className="dark:text-white">
+						These Terms do contain a limitation of our liability.
+					</strong>
 				</p>
 
 				<p>
 					If you violate any of the Terms, we may terminate your account.
 					That&apos;s a broad statement and it means you need to place a lot of
 					trust in us. We do our best to deserve that trust by keeping an open
-					door to <a href="https://www.tripreport.co/contact">your feedback</a>.
+					door to{" "}
+					<a
+						className="dark:text-white"
+						href="https://www.tripreport.co/contact"
+					>
+						your feedback
+					</a>
+					.
 				</p>
 
-				<h2>Account Terms</h2>
+				<h2 className="dark:text-white">Account Terms</h2>
 				<ol>
 					<li>
 						You are responsible for maintaining the security of your account and
@@ -70,7 +82,7 @@ const TermsOfService: React.FC = () => {
 					</li>
 				</ol>
 
-				<h2>Uptime, Security, and Privacy</h2>
+				<h2 className="dark:text-white">Uptime, Security, and Privacy</h2>
 				<ol>
 					<li>
 						Your use of the Services is at your sole risk. We provide these
@@ -94,19 +106,24 @@ const TermsOfService: React.FC = () => {
 						When you use our Services, you entrust us with your data. We take
 						that trust to heart. You agree that Trip Report may process your
 						data as described in our{" "}
-						<a href="https://www.tripreport.co/privacy-policy">
+						<a
+							className="dark:text-white"
+							href="https://www.tripreport.co/privacy-policy"
+						>
 							Privacy Policy
 						</a>{" "}
 						and for no other purpose. We as humans can access your data for the
 						following reasons:
 						<ul>
 							<li>
-								<strong>To help you with support requests you make.</strong>{" "}
+								<strong className="dark:text-white">
+									To help you with support requests you make.
+								</strong>{" "}
 								We&apos;ll ask for express consent before accessing your
 								account.
 							</li>
 							<li>
-								<strong>
+								<strong className="dark:text-white">
 									On the rare occasions when an error occurs that stops an
 									automated process partway through.
 								</strong>{" "}
@@ -118,15 +135,20 @@ const TermsOfService: React.FC = () => {
 								recurring.
 							</li>
 							<li>
-								<strong>To safeguard Trip Report.</strong> We&apos;ll look at
-								logs and metadata as part of our work to ensure the security of
-								your data and the Services as a whole. If necessary, we may also
-								access accounts as part of an abuse report investigation.
+								<strong className="dark:text-white">
+									To safeguard Trip Report.
+								</strong>{" "}
+								We&apos;ll look at logs and metadata as part of our work to
+								ensure the security of your data and the Services as a whole. If
+								necessary, we may also access accounts as part of an abuse
+								report investigation.
 							</li>
 							<li>
-								<strong>To the extent required by applicable law.</strong> As a
-								US company with all data infrastructure located in the US, we
-								only preserve or share customer data if compelled by a US
+								<strong className="dark:text-white">
+									To the extent required by applicable law.
+								</strong>{" "}
+								As a US company with all data infrastructure located in the US,
+								we only preserve or share customer data if compelled by a US
 								government authority with a legally binding order or proper
 								request under the Stored Communications Act, or in limited
 								circumstances in the event of an emergency request. If a non-US
@@ -152,8 +174,11 @@ const TermsOfService: React.FC = () => {
 						Services. That means we process any data you share with us only for
 						the purpose you signed up for and as described in these Terms and
 						the{" "}
-						<a href="https://www.tripreport.co/privacy-policy">
-							Privacy policy
+						<a
+							className="dark:text-white"
+							href="https://www.tripreport.co/privacy-policy"
+						>
+							Privacy Policy
 						</a>
 						. We do not retain, use, disclose, or sell any of that information
 						for any other commercial purposes unless we have your explicit
@@ -163,7 +188,7 @@ const TermsOfService: React.FC = () => {
 					</li>
 				</ol>
 
-				<h2>Copyright and Content Ownership</h2>
+				<h2 className="dark:text-white">Copyright and Content Ownership</h2>
 				<ol>
 					<li>
 						All content posted on the Services must comply with U.S. copyright
@@ -189,8 +214,13 @@ const TermsOfService: React.FC = () => {
 						visual design elements without express written permission from the
 						Company. You must request permission to use the Company&apos;s logos
 						or any Service logos for promotional purposes. Please{" "}
-						<a href="http://www.tripreport.co/contact">contact us</a> for
-						requests to use logos. We reserve the right to rescind any
+						<a
+							className="dark:text-white"
+							href="http://www.tripreport.co/contact"
+						>
+							contact us
+						</a>{" "}
+						for requests to use logos. We reserve the right to rescind any
 						permissions if you violate these Terms.
 					</li>
 					<li>
@@ -200,7 +230,7 @@ const TermsOfService: React.FC = () => {
 					</li>
 				</ol>
 
-				<h2>Features and Bugs</h2>
+				<h2 className="dark:text-white">Features and Bugs</h2>
 				<p>
 					We design our Services with care, based on our own experience and the
 					experiences of customers who share their time and feedback. However,
@@ -216,7 +246,7 @@ const TermsOfService: React.FC = () => {
 					and we don&apos;t guarantee completely error-free Services.
 				</p>
 
-				<h2>Services Adaptations and API Terms</h2>
+				<h2 className="dark:text-white">Services Adaptations and API Terms</h2>
 				<p>
 					We offer Application Program Interfaces (&quot;API&quot;s) for some of
 					our Services. Any use of the API, including through a third-party
@@ -250,14 +280,14 @@ const TermsOfService: React.FC = () => {
 					</li>
 				</ol>
 
-				<h2>Liability</h2>
+				<h2 className="dark:text-white">Liability</h2>
 				<p>
 					We mention liability throughout these Terms but to put it all in one
 					section:
 				</p>
 				<p>
 					<em>
-						<strong>
+						<strong className="dark:text-white">
 							You expressly understand and agree that the Company shall not be
 							liable, in law or in equity, to you or to any third party for any
 							direct, indirect, incidental, lost profits, special,
@@ -290,7 +320,13 @@ const TermsOfService: React.FC = () => {
 
 				<p>
 					If you have a question about any of these Terms, please{" "}
-					<a href="https://www.tripreport.co/contact">contact us</a>.
+					<a
+						className="dark:text-white"
+						href="https://www.tripreport.co/contact"
+					>
+						contact us
+					</a>
+					.
 				</p>
 			</div>
 		</div>
