@@ -23,12 +23,12 @@ export const metadata: Metadata = {
 
 const HomePage: React.FC = async () => {
 	return (
-		<>
+		<div className="bg-white dark:bg-black">
 			<Hero />
 			<HomeReports />
 			<HomeStatistics />
 			<CallToAction />
-		</>
+		</div>
 	);
 };
 
