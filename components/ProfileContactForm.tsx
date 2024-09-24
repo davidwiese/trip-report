@@ -19,7 +19,7 @@ function SubmitMessageButton() {
 	const status = useFormStatus();
 	return (
 		<button
-			className="bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center"
+			className="bg-black hover:bg-gray-600 text-white dark:border font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center"
 			type="submit"
 		>
 			<FaPaperPlane className="mr-2" />{" "}
@@ -56,7 +56,7 @@ const ProfileContactForm: React.FC<ProfileContactFormProps> = ({
 	}, [submitState]);
 
 	return (
-		<div className="bg-white p-6 rounded-lg shadow-md">
+		<div className="bg-white p-6 rounded-lg shadow-md dark:bg-black dark:text-white border border-transparent dark:border-white">
 			<h3 className="text-xl font-bold mb-6">Contact User</h3>
 			{!isSignedIn ? (
 				<p>You must be logged in to send a message</p>
@@ -75,13 +75,13 @@ const ProfileContactForm: React.FC<ProfileContactFormProps> = ({
 					/>
 					<div className="mb-4">
 						<label
-							className="block text-gray-700 text-sm font-bold mb-2"
+							className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
 							htmlFor="name"
 						>
 							Name:
 						</label>
 						<input
-							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline"
 							id="name"
 							name="name"
 							type="text"
@@ -91,13 +91,13 @@ const ProfileContactForm: React.FC<ProfileContactFormProps> = ({
 					</div>
 					<div className="mb-4">
 						<label
-							className="block text-gray-700 text-sm font-bold mb-2"
+							className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
 							htmlFor="email"
 						>
 							Email:
 						</label>
 						<input
-							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-white leading-tight focus:outline-none focus:shadow-outline"
 							id="email"
 							name="email"
 							type="email"
@@ -107,13 +107,13 @@ const ProfileContactForm: React.FC<ProfileContactFormProps> = ({
 					</div>
 					<div className="mb-4">
 						<label
-							className="block text-gray-700 text-sm font-bold mb-2"
+							className="block text-gray-700 dark:text-white text-sm font-bold mb-2"
 							htmlFor="message"
 						>
 							Message:
 						</label>
 						<textarea
-							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-44 focus:outline-none focus:shadow-outline"
+							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 dark:text-white h-44 focus:outline-none focus:shadow-outline"
 							id="message"
 							name="message"
 							placeholder="Enter your message"

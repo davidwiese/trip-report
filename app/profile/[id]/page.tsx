@@ -108,12 +108,12 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 
 	return (
 		<>
-			<section className="bg-white py-10">
+			<section className="bg-white py-10 dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-black">
 				<div className="container mx-auto px-6">
 					<UserStatsCard user={user} isOwnProfile={isOwnProfile} />
 				</div>
 			</section>
-			<section className="bg-white py-10">
+			<section className="bg-white py-10 dark:bg-black dark:bg-gradient-to-b dark:from-black dark:via-black dark:to-[#191919]">
 				<div className="container mx-auto px-6">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 						{reports.length === 0 ? (
@@ -138,7 +138,7 @@ const PublicProfilePage: React.FC<PublicProfilePageProps> = async ({
 			</section>
 
 			{!isOwnProfile && currentUser && user && user._id && (
-				<section className="bg-white py-10">
+				<section className="bg-white py-10 dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-[#191919]">
 					<div className="container mx-auto px-6">
 						<ProfileContactForm recipientId={user._id.toString()} />
 					</div>
