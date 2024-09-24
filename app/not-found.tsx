@@ -4,9 +4,9 @@ import { FaExclamationTriangle } from "react-icons/fa";
 
 const NotFoundPage: React.FC = () => {
 	return (
-		<section className="min-h-screen flex-grow">
+		<section className="min-h-screen flex-grow dark:bg-black dark:text-white">
 			<div className="container m-auto max-w-2xl py-24">
-				<div className="bg-white px-6 py-24 mb-4 shadow-md rounded-md border m-4 md:m-0">
+				<div className="bg-white dark:bg-black dark:text-white px-6 py-24 mb-4 shadow-md rounded-md border m-4 md:m-0">
 					<div className="flex justify-center">
 						<FaExclamationTriangle className="text-8xl text-yellow-400" />
 					</div>
@@ -18,7 +18,7 @@ const NotFoundPage: React.FC = () => {
 						<Button
 							asChild
 							variant="secondary"
-							className="bg-black hover:bg-gray-800 text-white w-1/3"
+							className="bg-black hover:bg-gray-800 text-white w-1/3 dark:border dark:border-white"
 						>
 							<Link href="/">Go Home</Link>
 						</Button>
