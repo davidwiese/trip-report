@@ -55,7 +55,7 @@ export default function ContactForm({ initialErrorMessage }: ContactFormProps) {
 	return (
 		<form onSubmit={handleSubmit} className="space-y-4">
 			<div>
-				<label htmlFor="name" className="block mb-2">
+				<label htmlFor="name" className="block mb-2 dark:text-white">
 					Name
 				</label>
 				<input
@@ -64,11 +64,11 @@ export default function ContactForm({ initialErrorMessage }: ContactFormProps) {
 					value={name}
 					onChange={(e) => setName(e.target.value)}
 					required
-					className="w-full px-3 py-2 border rounded"
+					className="w-full px-3 py-2 border rounded dark:text-white dark:bg-black"
 				/>
 			</div>
 			<div>
-				<label htmlFor="email" className="block mb-2">
+				<label htmlFor="email" className="block mb-2 dark:text-white">
 					Email
 				</label>
 				<input
@@ -77,11 +77,11 @@ export default function ContactForm({ initialErrorMessage }: ContactFormProps) {
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 					required
-					className="w-full px-3 py-2 border rounded"
+					className="w-full px-3 py-2 border rounded dark:text-white dark:bg-black"
 				/>
 			</div>
 			<div>
-				<label htmlFor="message" className="block mb-2">
+				<label htmlFor="message" className="block mb-2 dark:text-white">
 					Message
 				</label>
 				<textarea
@@ -89,12 +89,16 @@ export default function ContactForm({ initialErrorMessage }: ContactFormProps) {
 					value={message}
 					onChange={(e) => setMessage(e.target.value)}
 					required
-					className="w-full px-3 py-2 border rounded"
+					className="w-full px-3 py-2 border rounded dark:text-white dark:bg-black"
 					rows={6}
 					maxLength={4000}
 				></textarea>
 			</div>
-			<Button type="submit" disabled={isSubmitting}>
+			<Button
+				type="submit"
+				disabled={isSubmitting}
+				className="dark:border dark:hover:bg-[#191919] transition-colors duration-300 ease-in-out"
+			>
 				{isSubmitting ? "Sending..." : "Send Message"}
 			</Button>
 		</form>

@@ -21,7 +21,7 @@ const HomeReports: React.FC<HomeReportsProps> = async () => {
 
 	return (
 		<>
-			<div className="relative bg-gradient-to-b from-white via-blue-100 to-white">
+			<div className="relative bg-gradient-to-b from-white dark:from-black dark:via-[#030711] via-blue-100 to-white dark:to-black">
 				<div className="absolute inset-0 w-full h-full pointer-events-none z-0">
 					<SparklesCore
 						background="transparent"
@@ -29,14 +29,13 @@ const HomeReports: React.FC<HomeReportsProps> = async () => {
 						maxSize={1.1}
 						particleDensity={45}
 						className="w-full h-full"
-						particleColor="#000000"
 						speed={1}
 					/>
 				</div>
-				<section className="relative z-10 px-4 py-6 mt-4">
+				<section className="relative z-10 px-4 py-6">
 					<div className="container-xl lg:container m-auto">
 						<h2
-							className={`text-4xl font-bold text-black mb-8 text-center ${montserrat.className}`}
+							className={`text-4xl font-bold text-black dark:text-white pt-4 mb-8 text-center ${montserrat.className}`}
 						>
 							Recent Reports
 						</h2>
@@ -51,8 +50,11 @@ const HomeReports: React.FC<HomeReportsProps> = async () => {
 						</div>
 					</div>
 				</section>
-				<section className="relative z-10 m-auto max-w-lg my-10 px-6">
-					<Button asChild className="w-full">
+				<section className="relative z-10 m-auto max-w-lg px-6 pb-12">
+					<Button
+						asChild
+						className="w-full dark:border dark:border-white dark:hover:bg-[#191919] transition-colors duration-300 ease-in-out"
+					>
 						<Link href="/reports">View All Reports</Link>
 					</Button>
 				</section>

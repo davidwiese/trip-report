@@ -67,7 +67,7 @@ const ReportsPage: React.FC<ReportsPageProps> = async ({
 
 	return (
 		<>
-			<section className="bg-black text-white py-4">
+			<section className="bg-black text-white py-4 dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-black">
 				<div className="max-w-7xl mx-auto px-4 flex flex-col items-start sm:px-6 lg:px-8">
 					<ReportSearchForm />
 				</div>

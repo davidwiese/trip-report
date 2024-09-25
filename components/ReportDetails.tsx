@@ -43,10 +43,10 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({
 
 	return (
 		<main className="space-y-6">
-			<Card className="bg-white rounded-xl shadow-md max-w-6xl mx-auto mb-16">
+			<Card className="bg-white dark:bg-black dark:border rounded-xl shadow-md max-w-6xl mx-auto mb-16">
 				<CardHeader>
 					<CardTitle className={`mb-1 ${montserrat.className}`}>
-						<div className="text-gray-700 flex flex-col md:flex-row justify-between items-start mt-2">
+						<div className="text-gray-700 dark:text-white flex flex-col md:flex-row justify-between items-start mt-2">
 							<div className="flex flex-col text-lg flex-shrink">
 								<div className="mb-1">
 									<TbMap2 className="inline-block text-2xl mr-1" />
@@ -66,7 +66,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({
 									<PiPersonSimpleHikeBold className="inline-block mr-1" />
 									<Link
 										href={`/profile/${author.mongoId}`}
-										className="text-gray-600 text-sm underline ml-1"
+										className="text-gray-600 dark:text-white text-sm underline ml-1"
 									>
 										{author.name}
 									</Link>
@@ -130,7 +130,7 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({
 							</>
 						)}
 					</div>
-					<div className="text-gray-700 mb-6">
+					<div className="text-gray-700 dark:text-white mb-6">
 						<h3 className="text-lg font-bold mb-2">Description</h3>
 						<p
 							style={{
@@ -142,12 +142,16 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({
 							{report.description}
 						</p>
 					</div>
-					<div className="text-gray-700 mb-4 flex justify-between items-center">
+					<div className="text-gray-700 dark:text-white mb-4 flex justify-between items-center">
 						<div>
 							<h3 className="text-lg font-bold mb-2">Trip Type</h3>
 							<div className="flex flex-wrap gap-1">
 								{report.activityType.map((type) => (
-									<Badge key={type} variant="outline" className="mr-1">
+									<Badge
+										key={type}
+										variant="outline"
+										className="mr-1 dark:text-white"
+									>
 										{type}
 									</Badge>
 								))}
@@ -170,12 +174,14 @@ const ReportDetails: React.FC<ReportDetailsProps> = ({
 				</CardContent>
 			</Card>
 
-			<div className="bg-white rounded-xl max-w-[45rem] mx-auto p-6">
-				<h2 className={`text-4xl font-bold mb-10 ${montserrat.className}`}>
+			<div className="bg-white dark:bg-black dark:border dark:text-white rounded-xl max-w-[45rem] mx-auto p-6">
+				<h2
+					className={`text-4xl dark:text-white font-bold mb-10 ${montserrat.className}`}
+				>
 					{report.title}
 				</h2>
 				<div
-					className="prose max-w-none report-body"
+					className="prose max-w-none report-body dark:prose-dark"
 					dangerouslySetInnerHTML={{ __html: report.body }}
 				/>
 			</div>

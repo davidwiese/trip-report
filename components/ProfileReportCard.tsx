@@ -2,7 +2,7 @@
 
 import { montserrat } from "@/app/ui/fonts";
 import DeleteButton from "@/components/DeleteButton";
-import EditButton from "@/components/EditButton";
+import EditButton from "@/components/ProfileEditButton";
 import {
 	Card,
 	CardContent,
@@ -25,7 +25,7 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
 	const placeholderImage = "/images/placeholder-image.png";
 
 	return (
-		<Card className="bg-white rounded-xl shadow-md relative z-20 flex flex-col h-full min-w-[288px] mb-10">
+		<Card className="bg-white dark:bg-black dark:border rounded-xl shadow-md relative z-20 flex flex-col h-full min-w-[288px] mb-10">
 			<Link
 				href={`/reports/${report._id}`}
 				className="relative h-48 w-full block"
@@ -43,7 +43,7 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
 					className="rounded-t-xl"
 				/>
 			</Link>
-			<div className="flex flex-col flex-grow p-1">
+			<div className="flex flex-col flex-grow p-1 dark:text-white">
 				<CardHeader>
 					<CardTitle
 						className={`text-xl font-bold ${montserrat.className} line-clamp-1`}
@@ -52,13 +52,13 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="flex-grow">
-					<div className="flex items-center gap-2 mb-4 text-gray-700">
+					<div className="flex items-center gap-2 mb-4 text-gray-700 dark:text-white">
 						<TbMap2 className="inline-block text-2xl" />
 						<span className="font-medium">
 							{report.location.objective}, {report.location.region}
 						</span>
 					</div>
-					<div className="mb-4 text-sm text-gray-700">
+					<div className="mb-4 text-sm text-gray-700 dark:text-white">
 						<p className="flex items-center gap-1">
 							<RxRulerHorizontal className="text-xl mr-2" />
 							<span>Distance: {report.distance.toFixed(2)} miles</span>
@@ -74,7 +74,7 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
 					</div>
 				</CardContent>
 				<div className="flex-grow" />
-				<CardFooter className="flex justify-between items-center">
+				<CardFooter className="flex flex-col justify-between items-center gap-1">
 					<EditButton report={report} />
 					<DeleteButton report={report} />
 				</CardFooter>

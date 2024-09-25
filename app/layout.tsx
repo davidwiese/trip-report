@@ -106,7 +106,7 @@ export default function RootLayout({
 								enableSystem
 							>
 								<Navbar />
-								<main>{children}</main>
+								<main className="-mb-[6px]">{children}</main>
 								<Footer />
 								<ToastContainer />
 							</ThemeProvider>

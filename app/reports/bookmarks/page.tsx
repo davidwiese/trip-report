@@ -65,10 +65,16 @@ const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({
 
 	if (!clerkUserId) {
 		return (
-			<section className="px-4 py-6">
-				<h1 className="text-2xl mb-4">Bookmarked Reports</h1>
-				<div className="container-xl lg:container m-auto px-4 py-6">
-					<p>Must be logged in to view bookmarked reports</p>
+			<section className="bg-white min-h-screen flex flex-col dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-[#191919]">
+				<div className="container mx-auto py-12 max-w-6xl">
+					<div className="bg-white dark:bg-gray-800 px-6 py-8 mb-4 shadow-md rounded-md border dark:border-gray-700 m-4 md:m-0">
+						<h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+							Bookmarked Reports
+						</h1>
+						<p className="text-gray-700 dark:text-gray-300">
+							Must be logged in to view bookmarked reports
+						</p>
+					</div>
 				</div>
 			</section>
 		);
@@ -91,11 +97,13 @@ const BookmarkedReportsPage: React.FC<BookmarkedReportsPageProps> = async ({
 	});
 
 	return (
-		<section className="px-4 py-6">
-			<h1 className="text-2xl text-center mb-4">Bookmarked Reports</h1>
-			<div className="container-xl lg:container m-auto px-4 py-6">
+		<section className="bg-white min-h-screen flex flex-col dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-[#191919]">
+			<div className="container mx-auto py-12 max-w-6xl">
+				<h1 className="text-2xl text-center mb-4 dark:text-white">
+					Bookmarked Reports
+				</h1>
 				{serializableResult.bookmarkedReports.length === 0 ? (
-					<p>No bookmarked reports</p>
+					<p className="dark:text-white">No bookmarked reports</p>
 				) : (
 					<div className="grid grid-cols-1 custom-lg:grid-cols-3 gap-6">
 						{serializableResult.bookmarkedReports.map((report: ReportType) => (

@@ -159,9 +159,13 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		if (!isValidObjectId(params.id)) {
 			console.error(`Invalid report ID: ${params.id}`);
 			return (
-				<h1 className="text-center text-2xl font-bold mt-10">
-					Invalid Report ID
-				</h1>
+				<section className="min-h-screen flex flex-col bg-white py-40 -mb-[2px] dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-[#191919]">
+					<div className="container mx-auto px-6">
+						<h1 className="text-center text-2xl font-bold mt-1 dark:text-white">
+							Invalid Report ID
+						</h1>
+					</div>
+				</section>
 			);
 		}
 
@@ -171,9 +175,13 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		// Null check
 		if (!reportDoc) {
 			return (
-				<h1 className="text-center text-2xl font-bold mt-10">
-					Report Not Found
-				</h1>
+				<section className="min-h-screen flex flex-col bg-white py-40 -mb-[2px] dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-[#191919]">
+					<div className="container mx-auto px-6">
+						<h1 className="text-center text-2xl font-bold mt-1 dark:text-white">
+							Report Not Found
+						</h1>
+					</div>
+				</section>
 			);
 		}
 
@@ -205,7 +213,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 				{report.images && report.images.length > 0 && (
 					<ReportHeaderImage image={report.images[0]} />
 				)}
-				<section className="bg-white py-10">
+				<section className="bg-white py-10 -mb-[2px] dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-black">
 					<div className="container mx-auto px-6">
 						<div className="grid grid-cols-1 gap-6">
 							<ReportDetails
@@ -217,7 +225,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 					</div>
 				</section>
 				{report.caltopoUrl && (
-					<section className="mb-10">
+					<section className="pb-10 dark:bg-black -mb-[2px]">
 						<div className="container mx-auto max-w-6xl px-6">
 							<div className="rounded-xl shadow-xl overflow-hidden bg-gray-100">
 								<MapOverlay>
@@ -234,12 +242,12 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 						</div>
 					</section>
 				)}
-				<section className="mb-10">
+				<section className="pb-10 dark:bg-black -mb-[2px]">
 					{report.images && report.images.length > 0 && (
 						<ReportImages images={report.images} />
 					)}
 				</section>
-				<section className="mb-10">
+				<section className="pb-10 -mb-[2px] dark:bg-black dark:text-white dark:bg-gradient-to-b dark:from-black dark:via-black dark:to-[#191919]">
 					<ShareButtons report={report} PUBLIC_DOMAIN={PUBLIC_DOMAIN} />
 				</section>
 			</>
@@ -247,7 +255,7 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 	} catch (error) {
 		console.error("Error in ReportPage:", error);
 		return (
-			<h1 className="text-center text-2xl font-bold mt-10">
+			<h1 className="text-center dark:text-white text-2xl font-bold mt-10">
 				An error occurred. Please try again later.
 			</h1>
 		);
