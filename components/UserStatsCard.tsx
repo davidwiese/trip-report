@@ -40,7 +40,7 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({
 	};
 
 	return (
-		<Card className="bg-white rounded-lg shadow-md p-6 mx-auto max-w-2xl">
+		<Card className="bg-white dark:bg-black dark:border rounded-lg shadow-md p-6 mx-auto max-w-2xl">
 			<CardContent>
 				<div className="flex flex-col items-center">
 					<Image
@@ -50,10 +50,10 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({
 						width={100}
 						height={100}
 					/>
-					<p className="text-gray-600 mb-2">
+					<p className="text-gray-600 dark:text-white mb-2">
 						<span className="font-bold">Name:</span> {user.username || "N/A"}
 					</p>
-					<p className="text-gray-600 mb-4">
+					<p className="text-gray-600 dark:text-white mb-4">
 						<span className="font-bold">Email:</span> {user.email || "N/A"}
 					</p>
 					<div className="relative w-full mb-4">
@@ -62,7 +62,7 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({
 								<textarea
 									value={bio}
 									onChange={handleBioChange}
-									className="w-full p-2 border rounded"
+									className="w-full p-2 border rounded  dark:text-white"
 									rows={4}
 									maxLength={330}
 								/>
@@ -76,7 +76,7 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({
 									</Button>
 									<Button
 										onClick={handleBioSubmit}
-										className="px-3 py-1 min-w-28"
+										className="px-3 py-1 min-w-28 dark:border dark:border-white"
 									>
 										Save
 									</Button>
@@ -85,17 +85,17 @@ const UserStatsCard: React.FC<UserStatsCardProps> = ({
 						) : (
 							<div className="relative pb-8">
 								{" "}
-								<p className="text-gray-600 whitespace-pre-wrap px-[2px] pb-1">
+								<p className="text-gray-600 dark:text-white whitespace-pre-wrap px-[2px] pb-1">
 									{bio || "No bio yet."}
 								</p>
 								{isOwnProfile && (
 									<button
 										onClick={() => setIsEditing(true)}
-										className="absolute bottom-0 left-0 text-gray-600 flex items-center"
+										className="absolute bottom-0 left-0 text-gray-600 dark:text-white flex items-center"
 										aria-label="Edit bio"
 									>
-										<TbEdit className="text-2xl mr-1" />
-										<span className="underline">Add/Edit</span>
+										<TbEdit className="text-2xl mr-1  dark:text-white" />
+										<span className="underline  dark:text-white">Add/Edit</span>
 									</button>
 								)}
 							</div>
