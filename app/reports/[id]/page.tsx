@@ -159,9 +159,13 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		if (!isValidObjectId(params.id)) {
 			console.error(`Invalid report ID: ${params.id}`);
 			return (
-				<h1 className="text-center text-2xl font-bold mt-10 dark:text-white">
-					Invalid Report ID
-				</h1>
+				<section className="min-h-screen flex flex-col bg-white py-40 -mb-[2px] dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-[#191919]">
+					<div className="container mx-auto px-6">
+						<h1 className="text-center text-2xl font-bold mt-1 dark:text-white">
+							Invalid Report ID
+						</h1>
+					</div>
+				</section>
 			);
 		}
 
@@ -171,9 +175,13 @@ const ReportPage: React.FC<ReportPageProps> = async ({ params }) => {
 		// Null check
 		if (!reportDoc) {
 			return (
-				<h1 className="text-center text-2xl font-bold mt-10 dark:text-white">
-					Report Not Found
-				</h1>
+				<section className="min-h-screen flex flex-col bg-white py-40 -mb-[2px] dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-[#191919]">
+					<div className="container mx-auto px-6">
+						<h1 className="text-center text-2xl font-bold mt-1 dark:text-white">
+							Report Not Found
+						</h1>
+					</div>
+				</section>
 			);
 		}
 

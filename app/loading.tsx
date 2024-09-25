@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 type LoadingPageProps = {};
 
@@ -12,27 +12,61 @@ const override = {
 };
 
 const LoadingPage: React.FC<LoadingPageProps> = () => {
-	const { theme } = useTheme(); // Directly get the active theme
+	const { resolvedTheme } = useTheme();
 	const [mounted, setMounted] = useState(false);
 
-	// Ensure the component is mounted to avoid SSR issues
+	// Log to check the theme and mounting state
+	console.log("Resolved theme:", resolvedTheme);
+	console.log("Is component mounted:", mounted);
+
+	// Ensure the component is mounted before rendering the UI to avoid hydration issues
 	useEffect(() => {
 		setMounted(true);
+		console.log("Component is now mounted.");
 	}, []);
 
-	// Render nothing until the component is mounted
-	if (!mounted) {
-		return null;
-	}
+	// Determine default values for SSR or unmounted state
+	const backgroundColor = resolvedTheme === "dark" ? "#000000" : "#FFFFFF";
+	const spinnerColor = resolvedTheme === "dark" ? "#FFFFFF" : "#000000";
 
-	// Set spinner color based on theme, default to light mode if theme isn't defined
-	const spinnerColor = theme === "dark" ? "#fff" : "#000";
+	// Log to check what background and spinner color are being applied
+	console.log("Background color:", backgroundColor);
+	console.log("Spinner color:", spinnerColor);
+
+	// Before the component is mounted, you can assume a default, like light theme
+	if (!mounted) {
+		console.log("Rendering default spinner (light mode assumed).");
+		return (
+			<div
+				style={{
+					backgroundColor: "#FFFFFF",
+					height: "100vh",
+					width: "100vw",
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+				}}
+			>
+				<ClipLoader
+					color="#000000"
+					cssOverride={override}
+					size={150}
+					aria-label="Loading spinner"
+				/>
+			</div>
+		);
+	}
 
 	return (
 		<div
-			className={`min-h-screen flex items-center justify-center ${
-				theme === "dark" ? "bg-black" : "bg-white"
-			}`}
+			style={{
+				backgroundColor: backgroundColor,
+				height: "100vh",
+				width: "100vw",
+				display: "flex",
+				justifyContent: "center",
+				alignItems: "center",
+			}}
 		>
 			<ClipLoader
 				color={spinnerColor}
