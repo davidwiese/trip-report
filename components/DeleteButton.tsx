@@ -25,7 +25,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ report }) => {
 		<Button
 			onClick={() => handleDeleteReport(report._id)}
 			variant="destructive"
-			className="flex items-center justify-center w-[183px]"
+			className="flex items-center justify-center w-2/3"
 		>
 			<AiOutlineDelete className="mr-2 text-xl" /> Delete Report
 		</Button>

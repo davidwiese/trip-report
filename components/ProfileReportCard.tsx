@@ -2,7 +2,7 @@
 
 import { montserrat } from "@/app/ui/fonts";
 import DeleteButton from "@/components/DeleteButton";
-import EditButton from "@/components/EditButton";
+import EditButton from "@/components/ProfileEditButton";
 import {
 	Card,
 	CardContent,
@@ -74,7 +74,7 @@ const ProfileReportCard: React.FC<ProfileReportCardProps> = ({ report }) => {
 					</div>
 				</CardContent>
 				<div className="flex-grow" />
-				<CardFooter className="flex justify-between items-center">
+				<CardFooter className="flex flex-col justify-between items-center gap-1">
 					<EditButton report={report} />
 					<DeleteButton report={report} />
 				</CardFooter>
