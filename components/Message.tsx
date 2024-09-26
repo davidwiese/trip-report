@@ -36,15 +36,15 @@ const MessageCard: React.FC<MessageProps> = ({ message }) => {
 	}
 
 	return (
-		<div className="relative bg-white p-4 rounded-md shadow-md border border-gray-200">
+		<div className="relative bg-white p-4 rounded-md shadow-md border border-gray-200 dark:bg-black dark:text-white">
 			{!isRead ? (
 				<div className="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded-md">
 					New
 				</div>
 			) : null}
-			<p className="text-gray-700">{message.body}</p>
+			<p className="text-gray-700 dark:text-white">{message.body}</p>
 
-			<ul className="mt-4">
+			<ul className="mt-4 dark:bg-black dark:text-white">
 				<li>
 					<strong>Name:</strong> {message.sender.username}
 				</li>
@@ -60,7 +60,9 @@ const MessageCard: React.FC<MessageProps> = ({ message }) => {
 			<button
 				onClick={handleReadClick}
 				className={`mt-4 mr-3 ${
-					isRead ? "bg-gray-300" : "bg-black text-white"
+					isRead
+						? "bg-gray-300 dark:bg-white dark:text-black"
+						: "bg-black text-white dark:bg-black dark:text-white dark:border"
 				} py-1 px-3 rounded-md`}
 			>
 				{isRead ? "Mark As New" : "Mark As Read"}

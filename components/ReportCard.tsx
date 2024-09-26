@@ -27,7 +27,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 			: placeholderImage;
 
 	return (
-		<Card className="bg-white rounded-xl shadow-md relative z-20 flex flex-col h-full  min-w-[288px]">
+		<Card className="bg-white dark:bg-black dark:border rounded-xl shadow-md relative z-20 flex flex-col h-full  min-w-[288px]">
 			<div className="relative h-48 w-full">
 				<Image
 					src={thumbnailImage}
@@ -41,19 +41,19 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 			<div className="flex flex-col flex-grow p-1">
 				<CardHeader>
 					<CardTitle
-						className={`text-xl font-bold ${montserrat.className} line-clamp-1`}
+						className={`text-xl font-bold ${montserrat.className} line-clamp-1 dark:text-white`}
 					>
 						{report.title}
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="flex-grow">
-					<div className="flex items-center gap-2 mb-4 text-gray-700">
+					<div className="flex items-center gap-2 mb-4 text-gray-700  dark:text-white">
 						<TbMap2 className="inline-block text-2xl" />
 						<span className="font-medium">
 							{report.location.objective}, {report.location.region}
 						</span>
 					</div>
-					<div className="mb-4 text-sm text-gray-700">
+					<div className="mb-4 text-sm text-gray-700  dark:text-white">
 						<p className="flex items-center gap-1">
 							<RxRulerHorizontal className="text-xl mr-2" />
 							<span>Distance: {report.distance.toFixed(2)} miles</span>
@@ -69,7 +69,7 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					</div>
 					{report.description && (
 						<p
-							className="text-sm text-gray-700 line-clamp-3 mb-6"
+							className="text-sm text-gray-700 line-clamp-3 mb-6  dark:text-white"
 							style={{
 								whiteSpace: "pre-wrap",
 								wordWrap: "break-word",
@@ -81,19 +81,22 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					)}
 					<div className="flex flex-wrap gap-1">
 						{report.activityType.map((type) => (
-							<Badge key={type} variant="outline" className="">
+							<Badge key={type} variant="outline" className="dark:text-white">
 								{type}
 							</Badge>
 						))}
 					</div>
 				</CardContent>
 				<div className="flex-grow" />
-				<CardFooter className="mt-4 flex justify-between items-center pt-4">
-					<Button asChild variant="outline">
+				<CardFooter className="mt-4 flex flex-col justify-between items-center gap-1 pt-4">
+					<Button asChild variant="outline" className="w-2/3">
 						<Link href={`/profile/${report.owner}`}>View Profile</Link>
 					</Button>
-					<Button asChild className="z-30">
-						<Link href={`/reports/${report._id}`} className="cursor-pointer">
+					<Button asChild className="z-30 w-2/3">
+						<Link
+							href={`/reports/${report._id}`}
+							className="cursor-pointer dark:border"
+						>
 							Report Details
 						</Link>
 					</Button>

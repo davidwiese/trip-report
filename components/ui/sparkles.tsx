@@ -4,6 +4,7 @@ import type { Container, SingleOrMultiple } from "@tsparticles/engine";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { motion, useAnimation } from "framer-motion";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 type ParticlesProps = {
@@ -38,6 +39,8 @@ export const SparklesCore = (props: ParticlesProps) => {
 	}, []);
 	const controls = useAnimation();
 
+	const { theme, resolvedTheme } = useTheme();
+
 	const particlesLoaded = async (container?: Container) => {
 		if (container) {
 			controls.start({
@@ -47,6 +50,11 @@ export const SparklesCore = (props: ParticlesProps) => {
 				},
 			});
 		}
+	};
+
+	const getParticleColor = () => {
+		if (particleColor) return particleColor;
+		return theme === "dark" || resolvedTheme === "dark" ? "#ffffff" : "#000000";
 	};
 
 	return (
@@ -124,7 +132,7 @@ export const SparklesCore = (props: ParticlesProps) => {
 								},
 							},
 							color: {
-								value: particleColor || "#ffffff",
+								value: getParticleColor(),
 								animation: {
 									h: {
 										count: 0,

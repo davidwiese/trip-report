@@ -88,22 +88,23 @@ const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({
 
 	return (
 		<>
-			<section className="bg-black text-white py-4">
+			<section className="bg-black text-white py-4 dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-black">
 				<div className="max-w-7xl mx-auto px-4 flex flex-col items-start sm:px-6 lg:px-8">
 					<ReportSearchForm />
 				</div>
 			</section>
-			<section className="px-4 py-6">
+			<section className="px-4 py-6 min-h-screen dark:bg-gradient-to-b dark:from-black dark:via-black dark:to-[#191919]">
 				<div className="container-xl lg:container m-auto px-4 py-6">
 					<Link
 						href="/reports"
-						className="flex items-center text-gray-500 hover:underline mb-3"
+						className="flex items-center text-gray-500 hover:underline mb-3 dark:text-white"
 					>
-						<FaArrowAltCircleLeft className="mr-2 mb-1" /> Back To Reports
+						<FaArrowAltCircleLeft className="mr-2 mb-1 dark:text-white" /> Back
+						To Reports
 					</Link>
-					<h1 className="text-2xl mb-4">Search Results</h1>
+					<h1 className="text-2xl mb-4 dark:text-white">Search Results</h1>
 					{reports.length === 0 ? (
-						<p>No search results found</p>
+						<p className="dark:text-white">No search results found</p>
 					) : (
 						<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 							{reports.map((report: any) => (

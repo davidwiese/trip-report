@@ -131,12 +131,15 @@ const ReportBodyEditor = ({
 	}
 
 	return (
-		<div className="relative">
+		<div className="relative rounded dark:bg-black">
 			<div className="sticky top-0 bg-white z-10 pb-2">
 				<MenuBar editor={editor} />
 			</div>
-			<div className="border rounded p-4">
-				<EditorContent editor={editor} />
+			<div className="border p-4">
+				<EditorContent
+					editor={editor}
+					className="dark:bg-black dark:text-white"
+				/>
 				<div className="text-sm text-gray-500 mt-2">
 					{charCount}/20000 characters
 				</div>

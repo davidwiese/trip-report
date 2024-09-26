@@ -74,12 +74,6 @@ const Hero: React.FC<HeroProps> = () => {
 					/>
 				</div>
 			</div>
-			<div className="w-full absolute left-1/2 transform -translate-x-1/2">
-				<div className="absolute inset-x-0 top-0 bg-gradient-to-r from-transparent via-indigo-900 to-transparent h-[5px] w-full blur-sm"></div>
-				<div className="absolute inset-x-0 top-0 bg-gradient-to-r from-transparent via-indigo-800 to-transparent h-px w-full"></div>
-				<div className="absolute inset-x-0 top-0 bg-gradient-to-r from-transparent via-sky-800 to-transparent h-[5px] w-full blur-sm"></div>
-				<div className="absolute inset-x-0 top-0 bg-gradient-to-r from-transparent via-sky-700 to-transparent h-px w-full"></div>
-			</div>
 		</section>
 	);
 };

@@ -23,14 +23,16 @@ const MenuBar = ({ editor }: Props) => {
 	}
 
 	return (
-		<div className="flex flex-wrap gap-2 mb-2 p-2 border-b bg-white">
+		<div className="flex flex-wrap gap-2 mb-2 p-2 rounded border-b bg-white dark:bg-black dark:border-white dark:text-white">
 			<button
 				onClick={(e) => {
 					e.preventDefault();
 					editor.chain().focus().setParagraph().run();
 				}}
 				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
-					editor.isActive("paragraph") ? "bg-black text-white" : ""
+					editor.isActive("paragraph")
+						? "bg-black text-white dark:bg-white dark:text-black"
+						: ""
 				}`}
 			>
 				<Pilcrow className="w-4 h-4" />
@@ -41,7 +43,9 @@ const MenuBar = ({ editor }: Props) => {
 					editor.chain().focus().toggleBold().run();
 				}}
 				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
-					editor.isActive("bold") ? "bg-black text-white" : ""
+					editor.isActive("bold")
+						? "bg-black text-white dark:bg-white dark:text-black"
+						: ""
 				}`}
 			>
 				<BoldIcon className="w-4 h-4" />
@@ -52,7 +56,9 @@ const MenuBar = ({ editor }: Props) => {
 					editor.chain().focus().toggleItalic().run();
 				}}
 				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
-					editor.isActive("italic") ? "bg-black text-white" : ""
+					editor.isActive("italic")
+						? "bg-black text-white dark:bg-white dark:text-black"
+						: ""
 				}`}
 			>
 				<Italic className="w-4 h-4" />
@@ -63,7 +69,9 @@ const MenuBar = ({ editor }: Props) => {
 					editor.chain().focus().toggleStrike().run();
 				}}
 				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
-					editor.isActive("strike") ? "bg-black text-white" : ""
+					editor.isActive("strike")
+						? "bg-black text-white dark:bg-white dark:text-black"
+						: ""
 				}`}
 			>
 				<Strikethrough className="w-4 h-4" />
@@ -74,7 +82,9 @@ const MenuBar = ({ editor }: Props) => {
 					editor.chain().focus().toggleHeading({ level: 2 }).run();
 				}}
 				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
-					editor.isActive("heading", { level: 2 }) ? "bg-black text-white" : ""
+					editor.isActive("heading", { level: 2 })
+						? "bg-black text-white dark:bg-white dark:text-black"
+						: ""
 				}`}
 			>
 				<Heading2 className="w-4 h-4" />
@@ -85,7 +95,9 @@ const MenuBar = ({ editor }: Props) => {
 					editor.chain().focus().toggleBulletList().run();
 				}}
 				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
-					editor.isActive("bulletList") ? "bg-black text-white" : ""
+					editor.isActive("bulletList")
+						? "bg-black text-white dark:bg-white dark:text-black"
+						: ""
 				}`}
 			>
 				<List className="w-4 h-4" />
@@ -96,7 +108,9 @@ const MenuBar = ({ editor }: Props) => {
 					editor.chain().focus().toggleOrderedList().run();
 				}}
 				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
-					editor.isActive("orderedList") ? "bg-black text-white" : ""
+					editor.isActive("orderedList")
+						? "bg-black text-white dark:bg-white dark:text-black"
+						: ""
 				}`}
 			>
 				<ListOrdered className="w-4 h-4" />
@@ -107,7 +121,9 @@ const MenuBar = ({ editor }: Props) => {
 					editor.chain().focus().toggleBlockquote().run();
 				}}
 				className={`flex gap-2 border-gray-50 border items-center justify-center rounded-lg px-2 py-1 ${
-					editor.isActive("blockquote") ? "bg-black text-white" : ""
+					editor.isActive("blockquote")
+						? "bg-black text-white dark:bg-white dark:text-black"
+						: ""
 				}`}
 			>
 				<Quote className="w-4 h-4" />

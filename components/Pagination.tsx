@@ -29,19 +29,19 @@ const Pagination: React.FC<PaginationProps> = ({
 		<section className="container mx-auto flex justify-center items-center my-8">
 			{page > 1 ? (
 				<Link
-					className="mr-2 px-2 py-1 border border-gray-300 rounded"
+					className="mr-2 px-2 py-1 border border-gray-300 rounded dark:text-white dark:bg-black hover:bg-[#f1f5f9] dark:hover:bg-[#252525]"
 					href={`${basePath}?page=${page - 1}&pageSize=${pageSize}`}
 					scroll={false}
 				>
 					Previous
 				</Link>
 			) : null}
-			<span className="mx-2">
+			<span className="mx-2 dark:text-white">
 				Page {page} of {totalPages}
 			</span>
 			{page < totalPages ? (
 				<Link
-					className="ml-2 px-2 py-1 border border-gray-300 rounded"
+					className="ml-2 px-2 py-1 border border-gray-300 rounded dark:text-white dark:bg-black hover:bg-[#f1f5f9] dark:hover:bg-[#252525]"
 					href={`${basePath}?page=${page + 1}&pageSize=${pageSize}`}
 					scroll={false}
 				>

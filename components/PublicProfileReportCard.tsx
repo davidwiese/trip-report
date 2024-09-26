@@ -28,8 +28,11 @@ const PublicProfileReportCard: React.FC<PublicProfileReportCardProps> = ({
 			: placeholderImage;
 
 	return (
-		<Card className="bg-white rounded-xl shadow-md relative z-20 flex flex-col h-full min-w-[288px]">
-			<div className="relative h-48 w-full">
+		<Card className="bg-white dark:bg-black dark:border rounded-xl shadow-md relative z-20 flex flex-col h-full min-w-[288px]">
+			<Link
+				href={`/reports/${report._id}`}
+				className="relative h-48 w-full block"
+			>
 				<Image
 					src={thumbnailImage}
 					alt={report.title}
@@ -38,23 +41,23 @@ const PublicProfileReportCard: React.FC<PublicProfileReportCardProps> = ({
 					style={{ objectFit: "cover", objectPosition: "center" }}
 					className="rounded-t-xl"
 				/>
-			</div>
+			</Link>
 			<div className="flex flex-col flex-grow p-1">
 				<CardHeader>
 					<CardTitle
-						className={`text-xl font-bold ${montserrat.className} line-clamp-1`}
+						className={`text-xl font-bold ${montserrat.className} line-clamp-1 dark:text-white`}
 					>
-						{report.title}
+						<Link href={`/reports/${report._id}`}>{report.title}</Link>
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="flex-grow">
-					<div className="flex items-center gap-2 mb-4 text-gray-700">
+					<div className="flex items-center gap-2 mb-4 text-gray-700  dark:text-white">
 						<TbMap2 className="inline-block text-2xl" />
 						<span className="font-medium">
 							{report.location.objective}, {report.location.region}
 						</span>
 					</div>
-					<div className="mb-4 text-sm text-gray-700">
+					<div className="mb-4 text-sm text-gray-700  dark:text-white">
 						<p className="flex items-center gap-1">
 							<RxRulerHorizontal className="text-xl mr-2" />
 							<span>Distance: {report.distance.toFixed(2)} miles</span>
@@ -71,7 +74,10 @@ const PublicProfileReportCard: React.FC<PublicProfileReportCardProps> = ({
 				</CardContent>
 				<CardFooter className="flex justify-between items-center">
 					<Button asChild className="z-30 w-full">
-						<Link href={`/reports/${report._id}`} className="cursor-pointer">
+						<Link
+							href={`/reports/${report._id}`}
+							className="cursor-pointer dark:border dark:hover:bg-[#191919]"
+						>
 							Report Details
 						</Link>
 					</Button>

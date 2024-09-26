@@ -13,8 +13,7 @@ const CallToAction: React.FC<CallToActionProps> = () => {
 					className="-top-40 left-0 md:left-80 md:-top-20"
 					fill="white"
 				/>
-				<div className="h-2/3 bg-gradient-to-b from-black via-black to-gray-600"></div>
-				<div className="h-1/3 bg-gradient-to-b from-gray-600 to-gray-200"></div>
+				<div className="h-full bg-gradient-to-b from-black via-gray-600 to-gray-200 dark:from-black dark:to-[#191919]"></div>
 			</div>
 			<div className="container mx-auto px-4 text-center relative z-10">
 				<h2

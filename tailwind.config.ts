@@ -91,6 +91,19 @@ const config = {
 				"accordion-up": "accordion-up 0.2s ease-out",
 				spotlight: "spotlight 2s ease .75s 1 forwards",
 			},
+			typography: (theme: (arg0: string) => any) => ({
+				dark: {
+					css: {
+						color: theme("colors.white"),
+						h1: { color: theme("colors.white") },
+						h2: { color: theme("colors.white") },
+						h3: { color: theme("colors.white") },
+						h4: { color: theme("colors.white") },
+						strong: { color: theme("colors.white") },
+						// Add more tag customizations if needed
+					},
+				},
+			}),
 			screens: {
 				"custom-md": "893px",
 				"custom-lg": "920px",

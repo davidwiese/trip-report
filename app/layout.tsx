@@ -6,6 +6,7 @@ import { GlobalProvider } from "@/context/GlobalContext";
 import { ClerkProvider } from "@clerk/nextjs";
 import { GeistSans } from "geist/font/sans";
 import { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
 import "photoswipe/dist/photoswipe.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -84,6 +85,7 @@ export default function RootLayout({
 					process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL,
 		  }
 		: {};
+
 	return (
 		<ClerkProvider
 			publishableKey={publishableKey}
@@ -92,12 +94,22 @@ export default function RootLayout({
 		>
 			<CSPostHogProvider>
 				<GlobalProvider>
-					<html lang="en" className={GeistSans.className}>
+					<html
+						lang="en"
+						className={GeistSans.className}
+						suppressHydrationWarning
+					>
 						<body>
-							<Navbar />
-							<main>{children}</main>
-							<Footer />
-							<ToastContainer />
+							<ThemeProvider
+								attribute="class"
+								defaultTheme="system"
+								enableSystem
+							>
+								<Navbar />
+								<main className="-mb-[6px]">{children}</main>
+								<Footer />
+								<ToastContainer />
+							</ThemeProvider>
 						</body>
 					</html>
 				</GlobalProvider>
