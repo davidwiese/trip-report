@@ -338,187 +338,275 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					Activity Type
 				</Label>
 				<div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_hiking"
 							name="activityType"
 							value="Hiking"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_hiking">Hiking</label>
+						<label
+							htmlFor="activityType_hiking"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Hiking
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_backpacking"
 							name="activityType"
 							value="Backpacking"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_backpacking">Backpacking</label>
+						<label
+							htmlFor="activityType_backpacking"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Backpacking
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_trailRunning"
 							name="activityType"
 							value="Trail Running"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_trailRunning">Trail Running</label>
+						<label
+							htmlFor="activityType_trailRunning"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Trail Running
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_rockClimbing"
 							name="activityType"
 							value="Rock Climbing"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_rockClimbing">Rock Climbing</label>
+						<label
+							htmlFor="activityType_rockClimbing"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Rock Climbing
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_sportClimbing"
 							name="activityType"
 							value="Sport Climbing"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_sportClimbing">Sport Climbing</label>
+						<label
+							htmlFor="activityType_sportClimbing"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Sport Climbing
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_tradClimbing"
 							name="activityType"
 							value="Trad Climbing"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_tradClimbing">Trad Climbing</label>
+						<label
+							htmlFor="activityType_tradClimbing"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Trad Climbing
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_aidClimbing"
 							name="activityType"
 							value="Aid Climbing"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_aidClimbing">Aid Climbing</label>
+						<label
+							htmlFor="activityType_aidClimbing"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Aid Climbing
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_iceClimbing"
 							name="activityType"
 							value="Ice Climbing"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_iceClimbing">Ice Climbing</label>
+						<label
+							htmlFor="activityType_iceClimbing"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Ice Climbing
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_mixedClimbing"
 							name="activityType"
 							value="Mixed Climbing"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_mixedClimbing">Mixed Climbing</label>
+						<label
+							htmlFor="activityType_mixedClimbing"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Mixed Climbing
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_mountaineering"
 							name="activityType"
 							value="Mountaineering"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_mountaineering">Mountaineering</label>
+						<label
+							htmlFor="activityType_mountaineering"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Mountaineering
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_skiTouring"
 							name="activityType"
 							value="Ski Touring"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_skiTouring">Ski Touring</label>
+						<label
+							htmlFor="activityType_skiTouring"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Ski Touring
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_skiMountaineering"
 							name="activityType"
 							value="Ski Mountaineering"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_skiMountaineering">
+						<label
+							htmlFor="activityType_skiMountaineering"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
 							Ski Mountaineering
 						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_canyoneering"
 							name="activityType"
 							value="Canyoneering"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_canyoneering">Canyoneering</label>
+						<label
+							htmlFor="activityType_canyoneering"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Canyoneering
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_mountainBiking"
 							name="activityType"
 							value="Mountain Biking"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_mountainBiking">Mountain Biking</label>
+						<label
+							htmlFor="activityType_mountainBiking"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Mountain Biking
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_cycling"
 							name="activityType"
 							value="Cycling"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_cycling">Cycling</label>
+						<label
+							htmlFor="activityType_cycling"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Cycling
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_bikepacking"
 							name="activityType"
 							value="Bikepacking"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_bikepacking">Bikepacking</label>
+						<label
+							htmlFor="activityType_bikepacking"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Bikepacking
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_kayaking"
 							name="activityType"
 							value="Kayaking"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_kayaking">Kayaking</label>
+						<label
+							htmlFor="activityType_kayaking"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Kayaking
+						</label>
 					</div>
-					<div>
+					<div className="flex items-center space-x-1">
 						<input
 							type="checkbox"
 							id="activityType_packrafting"
 							name="activityType"
 							value="Packrafting"
-							className="mr-2"
+							className="md:mr-2"
 						/>
-						<label htmlFor="activityType_packrafting">Packrafting</label>
+						<label
+							htmlFor="activityType_packrafting"
+							className="whitespace-nowrap text-xs md:text-base"
+						>
+							Packrafting
+						</label>
 					</div>
 				</div>
 			</div>
@@ -755,7 +843,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="file"
 					id="images"
 					name="images"
-					className="border rounded w-full py-2 px-3"
+					className="border rounded w-full py-2 px-3 text-xs md:text-base"
 					accept="image/*"
 					multiple
 					onChange={handleImageChange}
@@ -764,7 +852,10 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					<div className="mt-2">
 						<ul>
 							{images.map((image, index) => (
-								<li key={index} className="flex items-center">
+								<li
+									key={index}
+									className="flex items-center text-xs md:text-base"
+								>
 									<span>{image.name}</span>
 									<button
 										type="button"
