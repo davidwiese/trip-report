@@ -9,37 +9,65 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	await connectDB();
 
 	// Fetch all reports
-	const reports = await Report.find({}, "_id updatedAt").lean();
+	const reports = await Report.find({}, "_id updatedAt")
+		.sort({ updatedAt: -1 })
+		.limit(1000)
+		.lean();
 
 	// Fetch all user profiles
-	const users = await User.find({}, "_id updatedAt").lean();
+	const users = await User.find({}, "_id updatedAt")
+		.sort({ updatedAt: -1 })
+		.limit(1000)
+		.lean();
 
 	// Static routes
-	const routes = [
-		{ url: `${baseUrl}`, changefreq: "daily", priority: 1 },
-		{ url: `${baseUrl}/reports`, changefreq: "daily", priority: 0.8 },
-		{ url: `${baseUrl}/contact`, changefreq: "monthly", priority: 0.5 },
-		{ url: `${baseUrl}/privacy-policy`, changefreq: "yearly", priority: 0.3 },
-		{ url: `${baseUrl}/terms`, changefreq: "yearly", priority: 0.3 },
-	].map((route) => ({
-		...route,
-		lastModified: new Date().toISOString(),
-	}));
+	const routes: MetadataRoute.Sitemap = [
+		{
+			url: baseUrl,
+			lastModified: new Date(),
+			changeFrequency: "daily",
+			priority: 1,
+		},
+		{
+			url: `${baseUrl}/reports`,
+			lastModified: new Date(),
+			changeFrequency: "daily",
+			priority: 0.8,
+		},
+		{
+			url: `${baseUrl}/contact`,
+			lastModified: new Date(),
+			changeFrequency: "monthly",
+			priority: 0.5,
+		},
+		{
+			url: `${baseUrl}/privacy-policy`,
+			lastModified: new Date(),
+			changeFrequency: "yearly",
+			priority: 0.3,
+		},
+		{
+			url: `${baseUrl}/terms`,
+			lastModified: new Date(),
+			changeFrequency: "yearly",
+			priority: 0.3,
+		},
+	];
 
 	// Dynamic routes for reports
-	const reportRoutes = reports.map((report) => ({
+	const reportRoutes: MetadataRoute.Sitemap = reports.map((report) => ({
 		url: `${baseUrl}/reports/${report._id}`,
-		lastModified: report.updatedAt.toISOString(),
-		changefreq: "daily" as const,
-		priority: 0.8,
+		lastModified: report.updatedAt,
+		changeFrequency: "weekly",
+		priority: 0.7,
 	}));
 
 	// Dynamic routes for user profiles
-	const userRoutes = users.map((user) => ({
+	const userRoutes: MetadataRoute.Sitemap = users.map((user) => ({
 		url: `${baseUrl}/profile/${user._id}`,
-		lastModified: user.updatedAt.toISOString(),
-		changefreq: "daily" as const,
-		priority: 0.8,
+		lastModified: user.updatedAt,
+		changeFrequency: "weekly",
+		priority: 0.6,
 	}));
 
 	return [...routes, ...reportRoutes, ...userRoutes];
