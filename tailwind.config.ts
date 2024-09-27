@@ -100,6 +100,7 @@ const config = {
 						h3: { color: theme("colors.white") },
 						h4: { color: theme("colors.white") },
 						strong: { color: theme("colors.white") },
+						blockquote: { color: theme("colors.white") },
 						// Add more tag customizations if needed
 					},
 				},
