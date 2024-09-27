@@ -104,7 +104,6 @@ export async function generateMetadata(
 			report.location.localArea,
 			report.location.objective,
 			"trip report",
-			"trip reports",
 		].filter(Boolean);
 
 		const baseUrl = getBaseUrl();
@@ -113,8 +112,8 @@ export async function generateMetadata(
 		const jsonLd = generateJsonLd(report, fullUrl);
 
 		return {
-			title: `${report.title}`,
-			description: report.description,
+			title: `${report.title} | Trip Report`,
+			description: `${report.description.slice(0, 150)}...`,
 			keywords: keywords,
 			openGraph: {
 				title: report.title,
@@ -124,6 +123,7 @@ export async function generateMetadata(
 				siteName: "Trip Report",
 				authors: [report.owner.username],
 				images: imageUrls,
+				locale: "en_US",
 				publishedTime: report.createdAt,
 				modifiedTime: report.updatedAt,
 				section: report.activityType.join(", "),
@@ -135,6 +135,8 @@ export async function generateMetadata(
 				images: imageUrls,
 			},
 			other: {
+				"og:locale": "en_US",
+				"og:site_name": "Trip Report",
 				"geo.region": `${report.location.country}-${report.location.region}`,
 				"geo.placename": report.location.localArea,
 				"json-ld": JSON.stringify(jsonLd),
