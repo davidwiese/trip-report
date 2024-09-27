@@ -328,23 +328,22 @@ async function updateReport(reportId: string, formData: FormData) {
 			},
 			{ new: true }
 		);
+
+		// Revalidate the cache
+		revalidatePath(`/reports/${reportId}`);
+		revalidatePath(`/reports/${reportId}/edit`, "layout");
+		revalidatePath("/", "layout");
+
+		return { success: true, reportId: updatedReport._id.toString() };
 	} catch (error) {
 		console.error("Error updating report:", error);
+		let errorMessage =
+			"An error occurred while updating the report. Please try again.";
 		if (error instanceof Error) {
-			throw new Error(error.message);
-		} else {
-			throw new Error(
-				"An error occurred while updating the report. Please try again."
-			);
+			errorMessage = error.message;
 		}
+		return { success: false, error: errorMessage };
 	}
-
-	// Revalidate the cache
-	revalidatePath(`/reports/${reportId}`);
-	revalidatePath(`/reports/${reportId}/edit`, "layout");
-	revalidatePath("/", "layout");
-
-	redirect(`/reports/${updatedReport._id}`);
 }
 
 export default updateReport;

@@ -45,6 +45,7 @@ async function loader(userId: string, pageSize: number, page: number) {
 
 	const skip = (currentPage - 1) * pageSize;
 	const reportsDocs = await Report.find({ owner: user._id })
+		.sort({ createdAt: -1 })
 		.skip(skip)
 		.limit(pageSize)
 		.lean();

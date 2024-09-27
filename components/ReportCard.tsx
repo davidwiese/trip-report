@@ -28,7 +28,10 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 
 	return (
 		<Card className="bg-white dark:bg-black dark:border rounded-xl shadow-md relative z-20 flex flex-col h-full  min-w-[288px]">
-			<div className="relative h-48 w-full">
+			<Link
+				href={`/reports/${report._id}`}
+				className="relative h-48 w-full block"
+			>
 				<Image
 					src={thumbnailImage}
 					alt={report.title}
@@ -37,13 +40,13 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					style={{ objectFit: "cover", objectPosition: "center" }}
 					className="rounded-t-xl"
 				/>
-			</div>
+			</Link>
 			<div className="flex flex-col flex-grow p-1">
 				<CardHeader>
 					<CardTitle
 						className={`text-xl font-bold ${montserrat.className} line-clamp-1 dark:text-white`}
 					>
-						{report.title}
+						<Link href={`/reports/${report._id}`}>{report.title}</Link>
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="flex-grow">
@@ -89,16 +92,16 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 				</CardContent>
 				<div className="flex-grow" />
 				<CardFooter className="mt-4 flex flex-col justify-between items-center gap-1 pt-4">
-					<Button asChild variant="outline" className="w-2/3">
-						<Link href={`/profile/${report.owner}`}>View Profile</Link>
-					</Button>
 					<Button asChild className="z-30 w-2/3">
 						<Link
 							href={`/reports/${report._id}`}
-							className="cursor-pointer dark:border"
+							className="cursor-pointer dark:border dark:hover:bg-[#191919] ease-in-out transition-colors duration-300"
 						>
 							Report Details
 						</Link>
+					</Button>
+					<Button asChild variant="outline" className="w-2/3">
+						<Link href={`/profile/${report.owner}`}>View Profile</Link>
 					</Button>
 				</CardFooter>
 			</div>

@@ -6,6 +6,7 @@ import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
 import { Report as ReportType } from "@/types";
 import { uploadImage } from "@/utils/cloudinaryUploader";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
@@ -40,7 +41,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [images, setImages] = useState<File[]>([]);
 	const [removeImages, setRemoveImages] = useState<ImageObject[]>([]); // Track images marked for removal
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isRedirecting, setIsRedirecting] = useState(false);
 	const maxDescriptionLength = 500;
+	const router = useRouter();
 
 	const handleBodyChange = (content: string) => {
 		setBody(content);
@@ -200,6 +203,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if (isSubmitting || isRedirecting) return;
 
 		if (!validateForm()) {
 			return;
@@ -314,19 +318,24 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			}
 
 			// Submit form data to the server action
-			await updateReport(report._id, formData);
+			const result = await updateReport(report._id, formData);
 
-			// Handle success
-			toast.success("Report updated successfully!");
-		} catch (error) {
-			// Handle error
-			console.error("Error updating report:", error);
-			if (error instanceof Error) {
-				setErrors([error.message]);
+			if (result.success && result.reportId) {
+				toast.success("Report updated successfully!");
+				setIsRedirecting(true);
+				router.push(`/reports/${result.reportId}`);
 			} else {
-				setErrors(["An unexpected error occurred. Please try again."]);
+				toast.error(
+					result.error || "Failed to update report. Please try again."
+				);
+				setErrors([
+					result.error || "Failed to update report. Please try again.",
+				]);
 			}
-			toast.error("Error updating report. Please check the form for errors.");
+		} catch (error) {
+			console.error("Error updating report:", error);
+			toast.error("An unexpected error occurred. Please try again.");
+			setErrors(["An unexpected error occurred. Please try again."]);
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -947,9 +956,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 
 			<div>
 				<SubmitButton
-					isSubmitting={isSubmitting}
+					isSubmitting={isSubmitting || isRedirecting}
 					text="Update Report"
-					pendingText="Updating Report..."
+					pendingText={isRedirecting ? "Redirecting..." : "Updating Report..."}
 				/>
 			</div>
 			{errors.length > 0 && (

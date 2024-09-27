@@ -5,6 +5,7 @@ import Label from "@/components/Label";
 import ReportBodyEditor from "@/components/ReportBodyEditor";
 import SubmitButton from "@/components/SubmitButton";
 import { uploadImage } from "@/utils/cloudinaryUploader";
+import { useRouter } from "next/navigation";
 import {
 	ChangeEvent,
 	FormEvent,
@@ -29,7 +30,9 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [gpxFile, setGpxFile] = useState<File | null>(null);
 	const [images, setImages] = useState<File[]>([]);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [isRedirecting, setIsRedirecting] = useState(false);
 	const maxDescriptionLength = 500;
+	const router = useRouter();
 
 	const handleBodyChange = (content: string) => {
 		setBody(content);
@@ -203,6 +206,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if (isSubmitting || isRedirecting) return;
 
 		if (!validateForm()) {
 			return;
@@ -292,36 +296,20 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			}
 
 			// Submit form data to the server action
-			await addReport(formData);
+			const result = await addReport(formData);
 
-			// Handle success
-			toast.success("Report added successfully!");
-		} catch (error) {
-			// Handle specific errors
-			if (error instanceof Error) {
-				switch (error.message) {
-					case "Please ensure the end date is not earlier than the start date.":
-						setErrors([
-							"End date must be equal to or later than the start date.",
-						]);
-						toast.error("Please check the start and end dates.");
-						break;
-					case "You've reached the limit for adding reports. Please try again later.":
-						toast.error("Report limit reached. Please try again later.");
-						break;
-					case "Unable to add report. Please try logging out and back in.":
-						toast.error("Session error. Please try logging out and back in.");
-						break;
-					default:
-						toast.error(
-							"An error occurred while adding the report. Please check your inputs and try again."
-						);
-						setErrors(["An unexpected error occurred. Please try again."]);
-				}
+			if (result.success && result.reportId) {
+				toast.success("Report added successfully!");
+				setIsRedirecting(true);
+				router.push(`/reports/${result.reportId}`);
 			} else {
-				toast.error("An unexpected error occurred. Please try again.");
-				setErrors(["An unexpected error occurred. Please try again."]);
+				toast.error(result.error || "Failed to add report. Please try again.");
+				setErrors([result.error || "Failed to add report. Please try again."]);
 			}
+		} catch (error) {
+			console.error("Error submitting form:", error);
+			toast.error("An unexpected error occurred. Please try again.");
+			setErrors(["An unexpected error occurred. Please try again."]);
 		} finally {
 			setIsSubmitting(false);
 		}
@@ -873,9 +861,9 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 
 			<div>
 				<SubmitButton
-					isSubmitting={isSubmitting}
+					isSubmitting={isSubmitting || isRedirecting}
 					text="Add Report"
-					pendingText="Adding Report..."
+					pendingText={isRedirecting ? "Redirecting..." : "Adding Report..."}
 				/>
 			</div>
 			{errors.length > 0 && (
