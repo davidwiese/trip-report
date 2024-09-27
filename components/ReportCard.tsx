@@ -28,7 +28,10 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 
 	return (
 		<Card className="bg-white dark:bg-black dark:border rounded-xl shadow-md relative z-20 flex flex-col h-full  min-w-[288px]">
-			<div className="relative h-48 w-full">
+			<Link
+				href={`/reports/${report._id}`}
+				className="relative h-48 w-full block"
+			>
 				<Image
 					src={thumbnailImage}
 					alt={report.title}
@@ -37,13 +40,13 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 					style={{ objectFit: "cover", objectPosition: "center" }}
 					className="rounded-t-xl"
 				/>
-			</div>
+			</Link>
 			<div className="flex flex-col flex-grow p-1">
 				<CardHeader>
 					<CardTitle
 						className={`text-xl font-bold ${montserrat.className} line-clamp-1 dark:text-white`}
 					>
-						{report.title}
+						<Link href={`/reports/${report._id}`}>{report.title}</Link>
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="flex-grow">
