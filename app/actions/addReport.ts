@@ -12,11 +12,10 @@ import {
 } from "@/utils/sanitizeHtml";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 
 async function addReport(formData: FormData) {
-	let redirectUrl = "";
+	let reportId = null;
 	let reportData: any = {};
 
 	const cloudinaryFolder =
@@ -207,6 +206,7 @@ async function addReport(formData: FormData) {
 
 			const newReport = new Report(reportData);
 			await newReport.save();
+			reportId = newReport._id;
 
 			// Update the user's reports array and totals
 			await User.findByIdAndUpdate(user._id, {
@@ -219,8 +219,8 @@ async function addReport(formData: FormData) {
 				},
 			});
 
-			// Set the redirect URL
-			redirectUrl = `/reports/${newReport._id}`;
+			revalidatePath("/", "layout");
+			return { success: true, reportId: reportId.toString() };
 		} else {
 			throw new Error("Validation failed. Please check the required fields.");
 		}
@@ -260,38 +260,13 @@ async function addReport(formData: FormData) {
 			}
 		}
 
-		// Handle specific errors
+		let errorMessage =
+			"An error occurred while adding the report. Please try again.";
 		if (error instanceof Error) {
-			if (
-				error.message ===
-				"End date must be equal to or later than the start date."
-			) {
-				throw new Error(
-					"Please ensure the end date is not earlier than the start date."
-				);
-			} else if (
-				error.message === "Too many reports. Please try again later."
-			) {
-				throw new Error(
-					"You've reached the limit for adding reports. Please try again later."
-				);
-			} else if (error.message === "User not found in the database") {
-				throw new Error(
-					"Unable to add report. Please try logging out and back in."
-				);
-			}
+			errorMessage = error.message;
 		}
 
-		// Generic error message for other cases
-		throw new Error(
-			"An error occurred while adding the report. Please check your inputs and try again."
-		);
-	}
-	// Revalidate the cache
-	revalidatePath("/", "layout");
-
-	if (redirectUrl) {
-		redirect(redirectUrl);
+		return { success: false, error: errorMessage };
 	}
 }
 
