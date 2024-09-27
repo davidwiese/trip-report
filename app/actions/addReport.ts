@@ -11,8 +11,15 @@ import {
 	sanitizeText,
 } from "@/utils/sanitizeHtml";
 import { auth } from "@clerk/nextjs/server";
+import { JSDOM } from "jsdom";
 import { revalidatePath } from "next/cache";
 import { v4 as uuidv4 } from "uuid";
+
+const isBodyEmpty = (html: string) => {
+	const dom = new JSDOM(html);
+	const text = dom.window.document.body.textContent || "";
+	return !text.trim();
+};
 
 async function addReport(formData: FormData) {
 	let reportId = null;
@@ -120,9 +127,8 @@ async function addReport(formData: FormData) {
 				}
 			} else if (field === "body") {
 				const bodyValue = formData.get(field);
-				if (typeof bodyValue === "string" && bodyValue.trim() === "") {
-					reportData.body =
-						"<h2>Type your Trip Report here...</h2><p>Format it with the menu bar above.</p>";
+				if (typeof bodyValue === "string" && isBodyEmpty(bodyValue)) {
+					throw new Error("Trip report body cannot be empty");
 				}
 			} else if (!formData.get(field)) {
 				requiredFieldsValid = false;
