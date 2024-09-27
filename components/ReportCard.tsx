@@ -92,16 +92,16 @@ const ReportCard: React.FC<ReportCardProps> = ({ report }) => {
 				</CardContent>
 				<div className="flex-grow" />
 				<CardFooter className="mt-4 flex flex-col justify-between items-center gap-1 pt-4">
-					<Button asChild variant="outline" className="w-2/3">
-						<Link href={`/profile/${report.owner}`}>View Profile</Link>
-					</Button>
 					<Button asChild className="z-30 w-2/3">
 						<Link
 							href={`/reports/${report._id}`}
-							className="cursor-pointer dark:border"
+							className="cursor-pointer dark:border dark:hover:bg-[#191919] ease-in-out transition-colors duration-300"
 						>
 							Report Details
 						</Link>
+					</Button>
+					<Button asChild variant="outline" className="w-2/3">
+						<Link href={`/profile/${report.owner}`}>View Profile</Link>
 					</Button>
 				</CardFooter>
 			</div>

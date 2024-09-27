@@ -20,7 +20,7 @@ const ErrorPage = ({ error, reset }: ErrorPageProps) => {
 	};
 
 	return (
-		<section className="min-h-screen flex-grow">
+		<section className="min-h-screen flex-grow dark:bg-black dark:bg-gradient-to-b dark:from-[#191919] dark:via-black dark:to-[#191919]">
 			<div className="container m-auto max-w-2xl py-24">
 				<div className="bg-white dark:bg-black dark:text-white px-6 py-24 mb-4 shadow-md rounded-md border m-4 md:m-0">
 					<div className="flex justify-center">
@@ -37,7 +37,7 @@ const ErrorPage = ({ error, reset }: ErrorPageProps) => {
 							<Button
 								onClick={copyError}
 								variant="ghost"
-								className="mt-2 dark:border dark:border-white text-gray-600 hover:text-gray-800 flex items-center justify-center mx-auto"
+								className="mt-2 dark:border dark:border-white text-gray-600 dark:text-white hover:text-gray-800 flex items-center justify-center mx-auto"
 							>
 								<FaCopy className="mr-2" />
 								{copied ? "Copied!" : "Copy error message"}
