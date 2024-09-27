@@ -116,6 +116,12 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		setEndDate(e.target.value);
 	};
 
+	const stripHtml = (html: string) => {
+		const tmp = document.createElement("div");
+		tmp.innerHTML = html;
+		return tmp.textContent || tmp.innerText || "";
+	};
+
 	const validateDates = useCallback(() => {
 		if (startDate && endDate) {
 			const start = new Date(startDate);
@@ -173,7 +179,9 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 		if (!(document.getElementById("title") as HTMLInputElement).value) {
 			newErrors.push("Title is required");
 		}
-		if (!body.trim()) newErrors.push("Trip report body cannot be empty");
+		if (!stripHtml(body).trim()) {
+			newErrors.push("Trip report body cannot be empty");
+		}
 
 		// Check if end date is before start date
 		if (startDate && endDate && new Date(endDate) < new Date(startDate)) {
