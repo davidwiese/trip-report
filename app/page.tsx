@@ -6,6 +6,9 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: "Trip Report",
+	alternates: {
+		canonical: "https://www.tripreport.co",
+	},
 	description:
 		"Join Trip Report to create and share your hiking, climbing, and outdoor adventure reports. Connect with a community of nature enthusiasts and explorers.",
 	openGraph: {

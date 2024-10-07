@@ -52,6 +52,9 @@ type BookmarkedReportsPageProps = {
 
 export const metadata: Metadata = {
 	title: "Bookmarks",
+	alternates: {
+		canonical: "https://www.tripreport.co/reports/bookmarks",
+	},
 	description: "View and manage your bookmarked trip reports.",
 	robots: { index: false, follow: false }, // Since this is a private page
 };

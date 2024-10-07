@@ -16,6 +16,9 @@ export const metadata: Metadata = {
 		default: "Trip Report",
 		template: "%s | Trip Report",
 	},
+	alternates: {
+		canonical: "https://www.tripreport.co",
+	},
 	description:
 		"Create trip reports, find beta, or blog your entire thru-hike. Share your outdoor adventures with a community of hikers, climbers, and explorers.",
 	keywords: [

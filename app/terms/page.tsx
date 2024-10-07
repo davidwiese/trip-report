@@ -3,6 +3,9 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: "Terms of Service",
+	alternates: {
+		canonical: "https://www.tripreport.co/terms",
+	},
 	description:
 		"Read our Terms of Service to understand the rules and regulations governing the use of Trip Report.",
 	openGraph: {

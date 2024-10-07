@@ -2,6 +2,9 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: "Privacy Policy",
+	alternates: {
+		canonical: "https://www.tripreport.co/privacy-policy",
+	},
 	description:
 		"Learn about how Trip Report collects, uses, and protects your personal information.",
 	openGraph: {

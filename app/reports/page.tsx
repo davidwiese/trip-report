@@ -44,6 +44,9 @@ async function fetchReports(page: number, pageSize: number) {
 
 export const metadata: Metadata = {
 	title: "Reports",
+	alternates: {
+		canonical: "https://www.tripreport.co/reports",
+	},
 	description:
 		"Explore a wide range of trip reports from outdoor enthusiasts. Find inspiration for your next adventure.",
 	openGraph: {

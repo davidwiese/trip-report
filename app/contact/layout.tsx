@@ -2,6 +2,9 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
 	title: "Contact Us",
+	alternates: {
+		canonical: "https://www.tripreport.co/contact",
+	},
 	description:
 		"Get in touch with the Trip Report team. We're here to help with any questions or feedback you may have.",
 	openGraph: {

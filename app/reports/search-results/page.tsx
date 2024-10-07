@@ -69,6 +69,9 @@ async function loader(
 
 export const metadata: Metadata = {
 	title: "Search Results",
+	alternates: {
+		canonical: "https://www.tripreport.co/reports/search-results",
+	},
 	description: "Explore trip reports matching your search criteria.",
 	robots: { index: false, follow: true }, // Allow following links, but don't index search results
 };

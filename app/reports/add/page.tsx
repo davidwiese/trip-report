@@ -5,6 +5,9 @@ type ReportAddPageProps = {};
 
 export const metadata: Metadata = {
 	title: "Add Trip Report",
+	alternates: {
+		canonical: "https://www.tripreport.co/reports/add",
+	},
 	description:
 		"Create and share a new trip report with the Trip Report community.",
 	robots: { index: false, follow: false }, // Since this is a private page

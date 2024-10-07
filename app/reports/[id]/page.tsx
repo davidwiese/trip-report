@@ -114,6 +114,9 @@ export async function generateMetadata(
 		return {
 			title: `${report.title} | Trip Report`,
 			description: `${report.description.slice(0, 150)}...`,
+			alternates: {
+				canonical: `https://www.tripreport.co/reports/${params.id}`,
+			},
 			keywords: keywords,
 			openGraph: {
 				title: report.title,
