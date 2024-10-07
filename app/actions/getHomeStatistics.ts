@@ -20,7 +20,7 @@ export const getHomeStatistics = async () => {
 
 	return {
 		totalReports,
-		totalDistance,
-		totalElevationGain,
+		totalDistance: Math.round(totalDistance),
+		totalElevationGain: Math.round(totalElevationGain),
 	};
 };
