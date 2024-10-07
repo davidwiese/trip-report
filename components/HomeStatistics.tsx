@@ -13,15 +13,7 @@ const HomeStatistics: React.FC = async () => {
 					>
 						Community Stats
 					</h2>
-					<div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-						<div>
-							<h3 className="text-4xl font-bold text-primary-600 dark:text-white">
-								{statistics.totalReports}
-							</h3>
-							<p className="text-gray-600 dark:text-gray-300">
-								Reports Created
-							</p>
-						</div>
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-2xl mx-auto">
 						<div>
 							<h3 className="text-4xl font-bold text-primary-600 dark:text-white">
 								{statistics.totalDistance}
@@ -43,3 +35,26 @@ const HomeStatistics: React.FC = async () => {
 };
 
 export default HomeStatistics;
+
+// <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+// 	<div>
+// 		<h3 className="text-4xl font-bold text-primary-600 dark:text-white">
+// 			{statistics.totalReports}
+// 		</h3>
+// 		<p className="text-gray-600 dark:text-gray-300">
+// 			Reports Created
+// 		</p>
+// 	</div>
+// 	<div>
+// 		<h3 className="text-4xl font-bold text-primary-600 dark:text-white">
+// 			{statistics.totalDistance}
+// 		</h3>
+// 		<p className="text-gray-600 dark:text-gray-300">Miles Explored</p>
+// 	</div>
+// 	<div>
+// 		<h3 className="text-4xl font-bold text-primary-600 dark:text-white">
+// 			{statistics.totalElevationGain}
+// 		</h3>
+// 		<p className="text-gray-600 dark:text-gray-300">Feet Climbed</p>
+// 	</div>
+// </div>
