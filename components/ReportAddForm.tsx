@@ -40,12 +40,9 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	// Load saved form data on component mount and route change
 	useEffect(() => {
 		const loadFormData = () => {
-			console.log("Loading form data");
 			const savedFormData = sessionStorage.getItem("reportAddFormData");
-			console.log("Saved form data:", savedFormData);
 			if (savedFormData) {
 				const parsedData = JSON.parse(savedFormData);
-				console.log("Parsed form data:", parsedData);
 				setTitle(parsedData.title || "");
 				setBody(parsedData.body || "");
 				setDescription(parsedData.description || "");
@@ -85,10 +82,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 
 		// Only save if at least one field is non-empty
 		if (Object.values(formData).some((value) => value !== "")) {
-			console.log("Saving form data:", formData);
 			sessionStorage.setItem("reportAddFormData", JSON.stringify(formData));
 		} else {
-			console.log("Not saving empty form data");
 		}
 	}, [title, body, description, country, region, startDate, endDate]);
 
@@ -893,7 +888,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					Trip Report
 				</Label>
 				<input type="hidden" name="body" value={body} />
-				<ReportBodyEditor onChange={handleBodyChange} />
+				<ReportBodyEditor initialValue={body} onChange={handleBodyChange} />
 			</div>
 
 			<div className="mb-4">

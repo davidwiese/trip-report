@@ -7,7 +7,13 @@ import SubmitButton from "@/components/SubmitButton";
 import { Report as ReportType } from "@/types";
 import { uploadImage } from "@/utils/cloudinaryUploader";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useState } from "react";
+import {
+	ChangeEvent,
+	FormEvent,
+	useState,
+	useEffect,
+	useCallback,
+} from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
 
@@ -44,6 +50,30 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const [isRedirecting, setIsRedirecting] = useState(false);
 	const maxDescriptionLength = 500;
 	const router = useRouter();
+
+	const loadBodyFromSessionStorage = useCallback(() => {
+		const savedBody = sessionStorage.getItem(`reportEditBody_${report._id}`);
+		if (savedBody) {
+			setBody(savedBody);
+		}
+	}, [report._id]);
+
+	// Load body from sessionStorage on component mount and route changes
+	useEffect(() => {
+		loadBodyFromSessionStorage();
+
+		window.addEventListener("popstate", loadBodyFromSessionStorage);
+		return () => {
+			window.removeEventListener("popstate", loadBodyFromSessionStorage);
+		};
+	}, [loadBodyFromSessionStorage]);
+
+	// Save body to sessionStorage whenever it changes
+	useEffect(() => {
+		if (body !== report.body) {
+			sessionStorage.setItem(`reportEditBody_${report._id}`, body);
+		}
+	}, [body, report._id, report.body]);
 
 	const handleBodyChange = (content: string) => {
 		setBody(content);
@@ -329,6 +359,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			const result = await updateReport(report._id, formData);
 
 			if (result.success && result.reportId) {
+				sessionStorage.removeItem(`reportEditBody_${report._id}`);
 				toast.success("Report updated successfully!");
 				setIsRedirecting(true);
 				router.push(`/reports/${result.reportId}`);
@@ -899,10 +930,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					Trip Report
 				</Label>
 				<input type="hidden" name="body" value={body} />
-				<ReportBodyEditor
-					initialValue={report.body}
-					onChange={handleBodyChange}
-				/>
+				<ReportBodyEditor initialValue={body} onChange={handleBodyChange} />
 			</div>
 
 			<div className="mb-4">

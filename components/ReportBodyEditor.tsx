@@ -120,29 +120,31 @@ The more details you provide, the more helpful your report will be. Use the form
 		editorProps: {
 			attributes: {
 				class:
-					"report-body-editor min-h-[550px] md:min-h-[300px] focus:outline-none", // Add a class to the editor for styling if needed
+					"report-body-editor min-h-[550px] md:min-h-[300px] focus:outline-none",
 			},
 		},
-		content: initialValue || null,
+		content: initialValue,
 		onUpdate({ editor }) {
 			const html = editor.getHTML();
-			if (html !== "<p></p>") {
-				onChange(html);
-			} else {
-				onChange("");
-			}
+			onChange(html);
 			setCharCount(editor.state.doc.textContent.length);
 		},
 	});
 
 	useEffect(() => {
-		if (editor) {
-			if (initialValue) {
-				editor.commands.setContent(initialValue);
-			}
+		if (
+			editor &&
+			initialValue !== undefined &&
+			initialValue !== editor.getHTML()
+		) {
+			editor.commands.setContent(initialValue);
 			setCharCount(editor.state.doc.textContent.length);
 		}
 	}, [editor, initialValue]);
+
+	useEffect(() => {
+		console.log("Editor content:", editor?.getHTML());
+	}, [editor]);
 
 	if (!editor) {
 		return null;
