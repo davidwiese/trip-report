@@ -12,6 +12,7 @@ import {
 	useCallback,
 	useEffect,
 	useState,
+	useRef,
 } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
@@ -19,6 +20,7 @@ import { toast } from "react-toastify";
 type ReportAddFormProps = {};
 
 const ReportAddForm: React.FC<ReportAddFormProps> = () => {
+	const [title, setTitle] = useState<string>("");
 	const [body, setBody] = useState<string>("");
 	const [description, setDescription] = useState<string>("");
 	const [country, setCountry] = useState("");
@@ -33,9 +35,69 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [isRedirecting, setIsRedirecting] = useState(false);
 	const maxDescriptionLength = 500;
 	const router = useRouter();
+	const isInitialMount = useRef(true);
+
+	// Load saved form data on component mount and route change
+	useEffect(() => {
+		const loadFormData = () => {
+			console.log("Loading form data");
+			const savedFormData = sessionStorage.getItem("reportAddFormData");
+			console.log("Saved form data:", savedFormData);
+			if (savedFormData) {
+				const parsedData = JSON.parse(savedFormData);
+				console.log("Parsed form data:", parsedData);
+				setTitle(parsedData.title || "");
+				setBody(parsedData.body || "");
+				setDescription(parsedData.description || "");
+				setCountry(parsedData.country || "");
+				setRegion(parsedData.region || "");
+				setStartDate(parsedData.startDate || "");
+				setEndDate(parsedData.endDate || "");
+			}
+		};
+
+		loadFormData();
+
+		// Add event listener for route changes
+		window.addEventListener("popstate", loadFormData);
+
+		return () => {
+			window.removeEventListener("popstate", loadFormData);
+		};
+	}, []);
+
+	// Save form data to sessionStorage whenever it changes
+	useEffect(() => {
+		if (isInitialMount.current) {
+			isInitialMount.current = false;
+			return;
+		}
+
+		const formData = {
+			title,
+			body,
+			description,
+			country,
+			region,
+			startDate,
+			endDate,
+		};
+
+		// Only save if at least one field is non-empty
+		if (Object.values(formData).some((value) => value !== "")) {
+			console.log("Saving form data:", formData);
+			sessionStorage.setItem("reportAddFormData", JSON.stringify(formData));
+		} else {
+			console.log("Not saving empty form data");
+		}
+	}, [title, body, description, country, region, startDate, endDate]);
 
 	const handleBodyChange = (content: string) => {
 		setBody(content);
+	};
+
+	const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setTitle(e.target.value);
 	};
 
 	const handleDescriptionChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -309,6 +371,7 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			if (result.success && result.reportId) {
 				toast.success("Report added successfully!");
 				setIsRedirecting(true);
+				sessionStorage.removeItem("reportAddFormData");
 				router.push(`/reports/${result.reportId}`);
 			} else {
 				toast.error(result.error || "Failed to add report. Please try again.");
@@ -819,6 +882,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					className="border rounded w-full py-2 px-3 mb-2 dark:text-white"
 					placeholder="Enter a title for your trip report"
 					maxLength={75}
+					value={title}
+					onChange={handleTitleChange}
 					required
 				/>
 			</div>
