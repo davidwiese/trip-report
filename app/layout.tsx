@@ -45,6 +45,9 @@ export const metadata: Metadata = {
 		"thru hiking",
 	],
 	openGraph: {
+		title: "Trip Report",
+		description:
+			"Share your trips, find beta, and connect with other adventurers.",
 		type: "website",
 		locale: "en_US",
 		url: "https://www.tripreport.co/",
@@ -58,6 +61,15 @@ export const metadata: Metadata = {
 	},
 	twitter: {
 		card: "summary_large_image",
+		title: "Trip Report",
+		description:
+			"Share your trips, find beta, and connect with other adventurers.",
+		images: [
+			{
+				url: "https://www.tripreport.co/images/logo_fill.png",
+				alt: "Trip Report - Share Your Outdoor Adventures",
+			},
+		],
 	},
 	icons: {
 		icon: "/favicon.ico",
