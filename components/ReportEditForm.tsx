@@ -402,7 +402,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_hiking"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Hiking
 						</label>
@@ -418,7 +418,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_backpacking"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Backpacking
 						</label>
@@ -434,7 +434,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_trailRunning"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Trail Running
 						</label>
@@ -450,7 +450,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_rockClimbing"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Rock Climbing
 						</label>
@@ -466,7 +466,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_sportClimbing"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Sport Climbing
 						</label>
@@ -482,7 +482,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_tradClimbing"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Trad Climbing
 						</label>
@@ -498,7 +498,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_aidClimbing"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Aid Climbing
 						</label>
@@ -514,7 +514,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_iceClimbing"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Ice Climbing
 						</label>
@@ -530,7 +530,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_mixedClimbing"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Mixed Climbing
 						</label>
@@ -546,7 +546,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_mountaineering"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Mountaineering
 						</label>
@@ -562,7 +562,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_skiTouring"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Ski Touring
 						</label>
@@ -580,7 +580,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_skiMountaineering"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Ski Mountaineering
 						</label>
@@ -596,7 +596,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_canyoneering"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Canyoneering
 						</label>
@@ -612,7 +612,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_mountainBiking"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Mountain Biking
 						</label>
@@ -628,7 +628,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_cycling"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Cycling
 						</label>
@@ -644,7 +644,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_bikepacking"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Bikepacking
 						</label>
@@ -660,7 +660,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_kayaking"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Kayaking
 						</label>
@@ -676,7 +676,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						/>
 						<label
 							htmlFor="activityType_packrafting"
-							className="whitespace-nowrap text-xs md:text-base"
+							className="whitespace-nowrap text-xs sm:text-base"
 						>
 							Packrafting
 						</label>
