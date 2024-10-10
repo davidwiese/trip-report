@@ -75,12 +75,14 @@ const ReportsPage: React.FC<ReportsPageProps> = async ({
 					<ReportSearchForm />
 				</div>
 			</section>
-			<Reports
-				reports={reports}
-				total={total}
-				currentPage={currentPage}
-				pageSize={itemsPerPage}
-			/>
+			<div className="dark:text-white min-h-[calc(100vh-200px)] dark:bg-gradient-to-b dark:from-[#191919] dark:to-[#191919]">
+				<Reports
+					reports={reports}
+					total={total}
+					currentPage={currentPage}
+					pageSize={itemsPerPage}
+				/>
+			</div>
 		</>
 	);
 };
