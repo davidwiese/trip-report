@@ -40,7 +40,7 @@ function generateJsonLd(
 			name: "Trip Report",
 			logo: {
 				"@type": "ImageObject",
-				url: "https://www.tripreport.co/images/logo_fill.png",
+				url: "https://www.tripreport.co/og.png",
 			},
 		},
 		mainEntityOfPage: {
@@ -113,11 +113,11 @@ export async function generateMetadata(
 
 		return {
 			title: `${report.title} | Trip Report`,
-			description: `${report.description.slice(0, 150)}...`,
+			description: `${report.description.slice(0, 250)}...`,
 			alternates: {
 				canonical: `https://www.tripreport.co/reports/${params.id}`,
 			},
-			keywords: keywords,
+			keywords: keywords.join(", "),
 			openGraph: {
 				title: report.title,
 				description: report.description,
@@ -142,7 +142,6 @@ export async function generateMetadata(
 				"og:site_name": "Trip Report",
 				"geo.region": `${report.location.country}-${report.location.region}`,
 				"geo.placename": report.location.localArea,
-				"json-ld": JSON.stringify(jsonLd),
 			},
 		};
 	} catch (error) {

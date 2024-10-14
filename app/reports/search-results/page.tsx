@@ -73,7 +73,6 @@ export const metadata: Metadata = {
 		canonical: "https://www.tripreport.co/reports/search-results",
 	},
 	description: "Explore trip reports matching your search criteria.",
-	robots: { index: false, follow: true }, // Allow following links, but don't index search results
 };
 
 const SearchResultsPage: React.FC<SearchResultsPageProps> = async ({

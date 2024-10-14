@@ -61,7 +61,6 @@ export const metadata: Metadata = {
 	},
 	description:
 		"View and manage your Trip Report profile, including your trip reports and statistics.",
-	robots: { index: false, follow: false }, // Since this is a private page
 };
 
 const ProfilePage: React.FC<ProfilePageProps> = async ({

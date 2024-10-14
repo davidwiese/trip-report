@@ -54,7 +54,9 @@ export const metadata: Metadata = {
 		siteName: "Trip Report",
 		images: [
 			{
-				url: "https://www.tripreport.co/images/logo_fill.png",
+				url: "https://www.tripreport.co/og.png",
+				width: 1200,
+				height: 630,
 				alt: "Trip Report - Share Your Outdoor Adventures",
 			},
 		],
@@ -66,13 +68,35 @@ export const metadata: Metadata = {
 			"Share your trips, find beta, and connect with other adventurers.",
 		images: [
 			{
-				url: "https://www.tripreport.co/images/logo_fill.png",
+				url: "https://www.tripreport.co/og.png",
 				alt: "Trip Report - Share Your Outdoor Adventures",
 			},
 		],
 	},
 	icons: {
-		icon: "/favicon.ico",
+		icon: [
+			{ url: "/favicon.ico", sizes: "any" },
+			{ url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+			{ url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+			{
+				url: "/favicon/android-chrome-192x192.png",
+				sizes: "192x192",
+				type: "image/png",
+			},
+			{
+				url: "/favicon/android-chrome-512x512.png",
+				sizes: "512x512",
+				type: "image/png",
+			},
+		],
+		apple: [
+			{
+				url: "/favicon/apple-touch-icon.png",
+				sizes: "180x180",
+				type: "image/png",
+			},
+		],
+		other: [{ rel: "manifest", url: "/favicon/site.webmanifest" }],
 	},
 };
 

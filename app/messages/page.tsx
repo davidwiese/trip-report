@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 		canonical: "https://www.tripreport.co/messages",
 	},
 	description: "View and manage your messages on Trip Report.",
-	robots: { index: false, follow: false }, // Since this is a private page
 };
 
 const MessagePage: React.FC<MessagesPageProps> = async () => {

@@ -26,10 +26,6 @@ export async function generateMetadata({
 	return {
 		title: `Edit: ${report.title}`,
 		description: `Edit your trip report for ${report.title}`,
-		robots: {
-			index: false,
-			follow: false,
-		},
 	};
 }
 
