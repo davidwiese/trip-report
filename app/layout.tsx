@@ -54,7 +54,7 @@ export const metadata: Metadata = {
 		siteName: "Trip Report",
 		images: [
 			{
-				url: "https://www.tripreport.co/og.png",
+				url: "https://www.tripreport.co/opengraph-image.png",
 				width: 1200,
 				height: 630,
 				alt: "Trip Report - Share Your Outdoor Adventures",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
 			"Share your trips, find beta, and connect with other adventurers.",
 		images: [
 			{
-				url: "https://www.tripreport.co/og.png",
+				url: "https://www.tripreport.co/opengraph-image.png",
 				alt: "Trip Report - Share Your Outdoor Adventures",
 			},
 		],

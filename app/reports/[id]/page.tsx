@@ -40,7 +40,7 @@ function generateJsonLd(
 			name: "Trip Report",
 			logo: {
 				"@type": "ImageObject",
-				url: "https://www.tripreport.co/og.png",
+				url: "https://www.tripreport.co/opengraph-image.png",
 			},
 		},
 		mainEntityOfPage: {

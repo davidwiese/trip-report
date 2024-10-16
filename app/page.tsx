@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 			"Join Trip Report to create and share your hiking, climbing, and outdoor adventure reports. Connect with a community of nature enthusiasts and explorers.",
 		images: [
 			{
-				url: "https://www.tripreport.co/og.png",
+				url: "https://www.tripreport.co/opengraph-image.png",
 				alt: "Trip Report Homepage",
 			},
 		],
