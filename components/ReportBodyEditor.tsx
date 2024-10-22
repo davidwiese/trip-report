@@ -142,10 +142,6 @@ The more details you provide, the more helpful your report will be. Use the form
 		}
 	}, [editor, initialValue]);
 
-	useEffect(() => {
-		console.log("Editor content:", editor?.getHTML());
-	}, [editor]);
-
 	if (!editor) {
 		return null;
 	}
