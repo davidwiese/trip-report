@@ -7,13 +7,7 @@ import SubmitButton from "@/components/SubmitButton";
 import { Report as ReportType } from "@/types";
 import { uploadImage } from "@/utils/cloudinaryUploader";
 import { useRouter } from "next/navigation";
-import {
-	ChangeEvent,
-	FormEvent,
-	useState,
-	useEffect,
-	useCallback,
-} from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { toast } from "react-toastify";
 
@@ -27,6 +21,29 @@ type ImageObject = {
 };
 
 const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
+	const [title, setTitle] = useState<string>(report.title || "");
+	const [distance, setDistance] = useState<string>(
+		report.distance?.toString() || ""
+	);
+	const [elevationGain, setElevationGain] = useState<string>(
+		report.elevationGain?.toString() || ""
+	);
+	const [elevationLoss, setElevationLoss] = useState<string>(
+		report.elevationLoss?.toString() || ""
+	);
+	const [duration, setDuration] = useState<string>(
+		report.duration?.toString() || ""
+	);
+	const [caltopoUrl, setCaltopoUrl] = useState<string>(report.caltopoUrl || "");
+	const [localArea, setLocalArea] = useState<string>(
+		report.location.localArea || ""
+	);
+	const [objective, setObjective] = useState<string>(
+		report.location.objective || ""
+	);
+	const [activityTypes, setActivityTypes] = useState<string[]>(
+		report.activityType || []
+	);
 	const [body, setBody] = useState<string>(report.body || "");
 	const [description, setDescription] = useState<string>(
 		report.description || ""
@@ -51,29 +68,140 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 	const maxDescriptionLength = 500;
 	const router = useRouter();
 
-	const loadBodyFromSessionStorage = useCallback(() => {
-		const savedBody = sessionStorage.getItem(`reportEditBody_${report._id}`);
-		if (savedBody) {
-			setBody(savedBody);
-		}
-	}, [report._id]);
-
-	// Load body from sessionStorage on component mount and route changes
 	useEffect(() => {
-		loadBodyFromSessionStorage();
-
-		window.addEventListener("popstate", loadBodyFromSessionStorage);
-		return () => {
-			window.removeEventListener("popstate", loadBodyFromSessionStorage);
+		const loadStoredChanges = () => {
+			const storedChanges = sessionStorage.getItem(
+				`reportEditChanges_${report._id}`
+			);
+			if (storedChanges) {
+				const changes = JSON.parse(storedChanges);
+				setTitle(changes.title ?? report.title);
+				setBody(changes.body ?? report.body);
+				setDescription(changes.description ?? report.description);
+				setCountry(changes.country ?? report.location.country);
+				setRegion(changes.region ?? report.location.region);
+				setStartDate(changes.startDate ?? report.startDate);
+				setEndDate(changes.endDate ?? report.endDate);
+				setActivityTypes(changes.activityTypes ?? report.activityType);
+				setDistance(changes.distance ?? report.distance?.toString());
+				setElevationGain(
+					changes.elevationGain ?? report.elevationGain?.toString()
+				);
+				setElevationLoss(
+					changes.elevationLoss ?? report.elevationLoss?.toString()
+				);
+				setDuration(changes.duration ?? report.duration?.toString());
+				setCaltopoUrl(changes.caltopoUrl ?? report.caltopoUrl);
+				setLocalArea(changes.localArea ?? report.location.localArea);
+				setObjective(changes.objective ?? report.location.objective);
+			}
 		};
-	}, [loadBodyFromSessionStorage]);
 
-	// Save body to sessionStorage whenever it changes
+		loadStoredChanges();
+		window.addEventListener("popstate", loadStoredChanges);
+		return () => {
+			window.removeEventListener("popstate", loadStoredChanges);
+		};
+	}, [report]);
+
+	// Save changes to sessionStorage when fields are modified
 	useEffect(() => {
-		if (body !== report.body) {
-			sessionStorage.setItem(`reportEditBody_${report._id}`, body);
+		const changes = {
+			title,
+			body,
+			description,
+			country,
+			region,
+			startDate,
+			endDate,
+			activityTypes,
+			distance,
+			elevationGain,
+			elevationLoss,
+			duration,
+			caltopoUrl,
+			localArea,
+			objective,
+		};
+
+		const hasChanges = (
+			originalReport: ReportType,
+			currentChanges: typeof changes
+		): boolean => {
+			if (currentChanges.title !== originalReport.title) return true;
+			if (currentChanges.body !== originalReport.body) return true;
+			if (currentChanges.description !== originalReport.description)
+				return true;
+			if (currentChanges.country !== originalReport.location.country)
+				return true;
+			if (currentChanges.region !== originalReport.location.region) return true;
+			if (currentChanges.localArea !== originalReport.location.localArea)
+				return true;
+			if (currentChanges.objective !== originalReport.location.objective)
+				return true;
+			if (currentChanges.distance !== originalReport.distance?.toString())
+				return true;
+			if (
+				currentChanges.elevationGain !==
+				originalReport.elevationGain?.toString()
+			)
+				return true;
+			if (
+				currentChanges.elevationLoss !==
+				originalReport.elevationLoss?.toString()
+			)
+				return true;
+			if (currentChanges.duration !== originalReport.duration?.toString())
+				return true;
+			if (currentChanges.caltopoUrl !== originalReport.caltopoUrl) return true;
+			if (
+				JSON.stringify(currentChanges.activityTypes) !==
+				JSON.stringify(originalReport.activityType)
+			)
+				return true;
+
+			// Handle dates
+			const formattedStartDate = originalReport.startDate
+				? new Date(originalReport.startDate).toISOString().split("T")[0]
+				: "";
+			const formattedEndDate = originalReport.endDate
+				? new Date(originalReport.endDate).toISOString().split("T")[0]
+				: "";
+			if (currentChanges.startDate !== formattedStartDate) return true;
+			if (currentChanges.endDate !== formattedEndDate) return true;
+
+			return false;
+		};
+
+		if (hasChanges(report, changes)) {
+			sessionStorage.setItem(
+				`reportEditChanges_${report._id}`,
+				JSON.stringify(changes)
+			);
 		}
-	}, [body, report._id, report.body]);
+	}, [
+		report,
+		title,
+		body,
+		description,
+		country,
+		region,
+		startDate,
+		endDate,
+		activityTypes,
+		distance,
+		elevationGain,
+		elevationLoss,
+		duration,
+		caltopoUrl,
+		localArea,
+		objective,
+	]);
+
+	// Event handlers
+	const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setTitle(e.target.value);
+	};
 
 	const handleBodyChange = (content: string) => {
 		setBody(content);
@@ -85,22 +213,48 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 
 	const handleCountryChange = (val: string) => {
 		setCountry(val);
-		const countryInput = document.getElementById(
-			"location.country"
-		) as HTMLInputElement;
-		if (countryInput) {
-			countryInput.value = val;
-		}
 	};
 
 	const handleRegionChange = (val: string) => {
 		setRegion(val);
-		const regionInput = document.getElementById(
-			"location.region"
-		) as HTMLInputElement;
-		if (regionInput) {
-			regionInput.value = val;
-		}
+	};
+
+	const handleLocalAreaChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setLocalArea(e.target.value);
+	};
+
+	const handleObjectiveChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setObjective(e.target.value);
+	};
+
+	const handleDistanceChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setDistance(e.target.value);
+	};
+
+	const handleElevationGainChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setElevationGain(e.target.value);
+	};
+
+	const handleElevationLossChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setElevationLoss(e.target.value);
+	};
+
+	const handleDurationChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setDuration(e.target.value);
+	};
+
+	const handleCaltopoUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setCaltopoUrl(e.target.value);
+	};
+
+	const handleActivityTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setActivityTypes((prev) => {
+			if (e.target.checked) {
+				return [...prev, e.target.value];
+			} else {
+				return prev.filter((type) => type !== e.target.value);
+			}
+		});
 	};
 
 	const handleGpxFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -359,7 +513,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 			const result = await updateReport(report._id, formData);
 
 			if (result.success && result.reportId) {
-				sessionStorage.removeItem(`reportEditBody_${report._id}`);
+				sessionStorage.removeItem(`reportEditChanges_${report._id}`);
 				toast.success("Report updated successfully!");
 				setIsRedirecting(true);
 				router.push(`/reports/${result.reportId}`);
@@ -397,8 +551,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_hiking"
 							name="activityType"
 							value="Hiking"
+							checked={activityTypes.includes("Hiking")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Hiking")}
 						/>
 						<label
 							htmlFor="activityType_hiking"
@@ -413,8 +568,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_backpacking"
 							name="activityType"
 							value="Backpacking"
+							checked={activityTypes.includes("Backpacking")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Backpacking")}
 						/>
 						<label
 							htmlFor="activityType_backpacking"
@@ -429,8 +585,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_trailRunning"
 							name="activityType"
 							value="Trail Running"
+							checked={activityTypes.includes("Trail Running")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Trail Running")}
 						/>
 						<label
 							htmlFor="activityType_trailRunning"
@@ -445,8 +602,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_rockClimbing"
 							name="activityType"
 							value="Rock Climbing"
+							checked={activityTypes.includes("Rock Climbing")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Rock Climbing")}
 						/>
 						<label
 							htmlFor="activityType_rockClimbing"
@@ -461,8 +619,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_sportClimbing"
 							name="activityType"
 							value="Sport Climbing"
+							checked={activityTypes.includes("Sport Climbing")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Sport Climbing")}
 						/>
 						<label
 							htmlFor="activityType_sportClimbing"
@@ -477,8 +636,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_tradClimbing"
 							name="activityType"
 							value="Trad Climbing"
+							checked={activityTypes.includes("Trad Climbing")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Trad Climbing")}
 						/>
 						<label
 							htmlFor="activityType_tradClimbing"
@@ -493,8 +653,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_aidClimbing"
 							name="activityType"
 							value="Aid Climbing"
+							checked={activityTypes.includes("Aid Climbing")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Aid Climbing")}
 						/>
 						<label
 							htmlFor="activityType_aidClimbing"
@@ -509,8 +670,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_iceClimbing"
 							name="activityType"
 							value="Ice Climbing"
+							checked={activityTypes.includes("Ice Climbing")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Ice Climbing")}
 						/>
 						<label
 							htmlFor="activityType_iceClimbing"
@@ -525,8 +687,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_mixedClimbing"
 							name="activityType"
 							value="Mixed Climbing"
+							checked={activityTypes.includes("Mixed Climbing")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Mixed Climbing")}
 						/>
 						<label
 							htmlFor="activityType_mixedClimbing"
@@ -541,8 +704,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_mountaineering"
 							name="activityType"
 							value="Mountaineering"
+							checked={activityTypes.includes("Mountaineering")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Mountaineering")}
 						/>
 						<label
 							htmlFor="activityType_mountaineering"
@@ -557,8 +721,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_skiTouring"
 							name="activityType"
 							value="Ski Touring"
+							checked={activityTypes.includes("Ski Touring")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Ski Touring")}
 						/>
 						<label
 							htmlFor="activityType_skiTouring"
@@ -573,10 +738,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_skiMountaineering"
 							name="activityType"
 							value="Ski Mountaineering"
+							checked={activityTypes.includes("Ski Mountaineering")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes(
-								"Ski Mountaineering"
-							)}
 						/>
 						<label
 							htmlFor="activityType_skiMountaineering"
@@ -591,8 +755,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_canyoneering"
 							name="activityType"
 							value="Canyoneering"
+							checked={activityTypes.includes("Canyoneering")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Canyoneering")}
 						/>
 						<label
 							htmlFor="activityType_canyoneering"
@@ -607,8 +772,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_mountainBiking"
 							name="activityType"
 							value="Mountain Biking"
+							checked={activityTypes.includes("Mountain Biking")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Mountain Biking")}
 						/>
 						<label
 							htmlFor="activityType_mountainBiking"
@@ -623,8 +789,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_cycling"
 							name="activityType"
 							value="Cycling"
+							checked={activityTypes.includes("Cycling")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Cycling")}
 						/>
 						<label
 							htmlFor="activityType_cycling"
@@ -639,8 +806,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_bikepacking"
 							name="activityType"
 							value="Bikepacking"
+							checked={activityTypes.includes("Bikepacking")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Bikepacking")}
 						/>
 						<label
 							htmlFor="activityType_bikepacking"
@@ -655,8 +823,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_kayaking"
 							name="activityType"
 							value="Kayaking"
+							checked={activityTypes.includes("Kayaking")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Kayaking")}
 						/>
 						<label
 							htmlFor="activityType_kayaking"
@@ -671,8 +840,9 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 							id="activityType_packrafting"
 							name="activityType"
 							value="Packrafting"
+							checked={activityTypes.includes("Packrafting")}
+							onChange={handleActivityTypeChange}
 							className="md:mr-2"
-							defaultChecked={report.activityType?.includes("Packrafting")}
 						/>
 						<label
 							htmlFor="activityType_packrafting"
@@ -742,7 +912,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					placeholder="Local area (mountain range, park, etc.)"
 					maxLength={50}
 					required
-					defaultValue={report.location.localArea}
+					value={localArea}
+					onChange={handleLocalAreaChange}
 				/>
 				<input
 					type="text"
@@ -752,7 +923,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					placeholder="Objective (specific trail, peak, or climb, etc.)"
 					maxLength={50}
 					required
-					defaultValue={report.location.objective}
+					value={objective}
+					onChange={handleObjectiveChange}
 				/>
 			</div>
 
@@ -769,7 +941,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						className="border rounded w-full py-2 px-3 dark:text-white"
 						max={10000}
 						required
-						defaultValue={report.distance}
+						value={distance}
+						onChange={handleDistanceChange}
 					/>
 				</div>
 				<div className="w-full sm:w-1/3 px-2 mb-4 sm:mb-0">
@@ -783,7 +956,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						className="border rounded w-full py-2 px-3 dark:text-white"
 						max={99999}
 						required
-						defaultValue={report.elevationGain}
+						value={elevationGain}
+						onChange={handleElevationGainChange}
 					/>
 				</div>
 				<div className="w-full sm:w-1/3 px-2">
@@ -797,7 +971,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 						className="border rounded w-full py-2 px-3 dark:text-white"
 						max={99999}
 						required
-						defaultValue={report.elevationLoss}
+						value={elevationLoss}
+						onChange={handleElevationLossChange}
 					/>
 				</div>
 			</div>
@@ -813,8 +988,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					className="border rounded w-full py-2 px-3 dark:text-white"
 					step="0.1"
 					max={1000}
-					required
-					defaultValue={report.duration}
+					value={duration}
+					onChange={handleDurationChange}
 				/>
 			</div>
 
@@ -905,7 +1080,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					className="border rounded w-full py-2 px-3 dark:text-white"
 					placeholder="e.g. https://caltopo.com/m/EH41"
 					maxLength={100}
-					defaultValue={report.caltopoUrl || ""}
+					value={caltopoUrl}
+					onChange={handleCaltopoUrlChange}
 				/>
 			</div>
 
@@ -921,7 +1097,8 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					placeholder="Enter a title for your trip report"
 					maxLength={75}
 					required
-					defaultValue={report.title}
+					value={title}
+					onChange={handleTitleChange}
 				/>
 			</div>
 
