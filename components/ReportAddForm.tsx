@@ -27,6 +27,14 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 	const [region, setRegion] = useState("");
 	const [startDate, setStartDate] = useState<string>("");
 	const [endDate, setEndDate] = useState<string>("");
+	const [activityTypes, setActivityTypes] = useState<string[]>([]);
+	const [distance, setDistance] = useState<string>("");
+	const [elevationGain, setElevationGain] = useState<string>("");
+	const [elevationLoss, setElevationLoss] = useState<string>("");
+	const [duration, setDuration] = useState<string>("");
+	const [caltopoUrl, setCaltopoUrl] = useState<string>("");
+	const [localArea, setLocalArea] = useState<string>("");
+	const [objective, setObjective] = useState<string>("");
 	const [dateError, setDateError] = useState<string>("");
 	const [errors, setErrors] = useState<string[]>([]);
 	const [gpxFile, setGpxFile] = useState<File | null>(null);
@@ -50,6 +58,14 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 				setRegion(parsedData.region || "");
 				setStartDate(parsedData.startDate || "");
 				setEndDate(parsedData.endDate || "");
+				setActivityTypes(parsedData.activityTypes || []);
+				setDistance(parsedData.distance || "");
+				setElevationGain(parsedData.elevationGain || "");
+				setElevationLoss(parsedData.elevationLoss || "");
+				setDuration(parsedData.duration || "");
+				setCaltopoUrl(parsedData.caltopoUrl || "");
+				setLocalArea(parsedData.localArea || "");
+				setObjective(parsedData.objective || "");
 			}
 		};
 
@@ -78,6 +94,14 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			region,
 			startDate,
 			endDate,
+			activityTypes,
+			distance,
+			elevationGain,
+			elevationLoss,
+			duration,
+			caltopoUrl,
+			localArea,
+			objective,
 		};
 
 		// Only save if at least one field is non-empty
@@ -85,7 +109,61 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 			sessionStorage.setItem("reportAddFormData", JSON.stringify(formData));
 		} else {
 		}
-	}, [title, body, description, country, region, startDate, endDate]);
+	}, [
+		title,
+		body,
+		description,
+		country,
+		region,
+		startDate,
+		endDate,
+		activityTypes,
+		distance,
+		elevationGain,
+		elevationLoss,
+		duration,
+		caltopoUrl,
+		localArea,
+		objective,
+	]);
+
+	const handleActivityTypeChange = (e: ChangeEvent<HTMLInputElement>) => {
+		if (e.target.checked) {
+			setActivityTypes((prev) => [...prev, e.target.value]);
+		} else {
+			setActivityTypes((prev) =>
+				prev.filter((type) => type !== e.target.value)
+			);
+		}
+	};
+
+	const handleDistanceChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setDistance(e.target.value);
+	};
+
+	const handleElevationGainChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setElevationGain(e.target.value);
+	};
+
+	const handleElevationLossChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setElevationLoss(e.target.value);
+	};
+
+	const handleDurationChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setDuration(e.target.value);
+	};
+
+	const handleCaltopoUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setCaltopoUrl(e.target.value);
+	};
+
+	const handleLocalAreaChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setLocalArea(e.target.value);
+	};
+
+	const handleObjectiveChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setObjective(e.target.value);
+	};
 
 	const handleBodyChange = (content: string) => {
 		setBody(content);
@@ -399,6 +477,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Hiking"
 							className="md:mr-2"
+							checked={activityTypes.includes("Hiking")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_hiking"
@@ -414,6 +494,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Backpacking"
 							className="md:mr-2"
+							checked={activityTypes.includes("Backpacking")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_backpacking"
@@ -429,6 +511,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Trail Running"
 							className="md:mr-2"
+							checked={activityTypes.includes("Trail Running")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_trailRunning"
@@ -444,6 +528,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Rock Climbing"
 							className="md:mr-2"
+							checked={activityTypes.includes("Rock Climbing")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_rockClimbing"
@@ -459,6 +545,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Sport Climbing"
 							className="md:mr-2"
+							checked={activityTypes.includes("Sport Climbing")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_sportClimbing"
@@ -474,6 +562,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Trad Climbing"
 							className="md:mr-2"
+							checked={activityTypes.includes("Trad Climbing")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_tradClimbing"
@@ -489,6 +579,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Aid Climbing"
 							className="md:mr-2"
+							checked={activityTypes.includes("Aid Climbing")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_aidClimbing"
@@ -504,6 +596,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Ice Climbing"
 							className="md:mr-2"
+							checked={activityTypes.includes("Ice Climbing")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_iceClimbing"
@@ -519,6 +613,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Mixed Climbing"
 							className="md:mr-2"
+							checked={activityTypes.includes("Mixed Climbing")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_mixedClimbing"
@@ -534,6 +630,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Mountaineering"
 							className="md:mr-2"
+							checked={activityTypes.includes("Mountaineering")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_mountaineering"
@@ -549,6 +647,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Ski Touring"
 							className="md:mr-2"
+							checked={activityTypes.includes("Ski Touring")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_skiTouring"
@@ -564,6 +664,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Ski Mountaineering"
 							className="md:mr-2"
+							checked={activityTypes.includes("Ski Mountaineering")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_skiMountaineering"
@@ -579,6 +681,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Canyoneering"
 							className="md:mr-2"
+							checked={activityTypes.includes("Canyoneering")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_canyoneering"
@@ -594,6 +698,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Mountain Biking"
 							className="md:mr-2"
+							checked={activityTypes.includes("Mountain Biking")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_mountainBiking"
@@ -609,6 +715,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Cycling"
 							className="md:mr-2"
+							checked={activityTypes.includes("Cycling")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_cycling"
@@ -624,6 +732,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Bikepacking"
 							className="md:mr-2"
+							checked={activityTypes.includes("Bikepacking")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_bikepacking"
@@ -639,6 +749,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Kayaking"
 							className="md:mr-2"
+							checked={activityTypes.includes("Kayaking")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_kayaking"
@@ -654,6 +766,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 							name="activityType"
 							value="Packrafting"
 							className="md:mr-2"
+							checked={activityTypes.includes("Packrafting")}
+							onChange={handleActivityTypeChange}
 						/>
 						<label
 							htmlFor="activityType_packrafting"
@@ -719,6 +833,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="text"
 					id="localArea"
 					name="location.localArea"
+					value={localArea}
+					onChange={handleLocalAreaChange}
 					className="border rounded w-full py-2 px-3 mb-2 dark:text-white"
 					placeholder="Local area (mountain range, park, etc.)"
 					maxLength={50}
@@ -728,6 +844,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="text"
 					id="objective"
 					name="location.objective"
+					value={objective}
+					onChange={handleObjectiveChange}
 					className="border rounded w-full py-2 px-3 dark:text-white"
 					placeholder="Objective (specific trail, peak, or climb, etc.)"
 					maxLength={50}
@@ -744,6 +862,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 						type="number"
 						id="distance"
 						name="distance"
+						value={distance}
+						onChange={handleDistanceChange}
 						step="0.1"
 						className="border rounded w-full py-2 px-3 dark:text-white"
 						max={10000}
@@ -758,6 +878,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 						type="number"
 						id="elevationGain"
 						name="elevationGain"
+						value={elevationGain}
+						onChange={handleElevationGainChange}
 						className="border rounded w-full py-2 px-3 dark:text-white"
 						max={99999}
 						required
@@ -771,6 +893,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 						type="number"
 						id="elevationLoss"
 						name="elevationLoss"
+						value={elevationLoss}
+						onChange={handleElevationLossChange}
 						className="border rounded w-full py-2 px-3 dark:text-white"
 						max={99999}
 						required
@@ -786,6 +910,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="number"
 					id="duration"
 					name="duration"
+					value={duration}
+					onChange={handleDurationChange}
 					className="border rounded w-full py-2 px-3 dark:text-white"
 					step="0.1"
 					max={1000}
@@ -860,6 +986,8 @@ const ReportAddForm: React.FC<ReportAddFormProps> = () => {
 					type="url"
 					id="caltopoUrl"
 					name="caltopoUrl"
+					value={caltopoUrl}
+					onChange={handleCaltopoUrlChange}
 					className="border rounded w-full py-2 px-3 dark:text-white"
 					placeholder="e.g. https://caltopo.com/m/EH41"
 					maxLength={100}
