@@ -35,6 +35,7 @@ export async function POST(request: Request) {
 			{
 				folder: cloudinaryFolder,
 				resource_type: "auto",
+				format: "jpg",
 			}
 		);
 

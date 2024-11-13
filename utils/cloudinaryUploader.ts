@@ -2,6 +2,11 @@ import axios from "axios";
 import imageCompression from "browser-image-compression";
 
 async function compressImage(file: File): Promise<File> {
+	// Skip compression for HEIC/HEIF files
+	if (file.type.includes("heic") || file.type.includes("heif")) {
+		return file;
+	}
+	// Otherwise, compress the image
 	const options = {
 		maxSizeMB: 2,
 		maxWidthOrHeight: 2048,
