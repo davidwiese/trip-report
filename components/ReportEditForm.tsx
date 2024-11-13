@@ -1119,7 +1119,7 @@ const ReportEditForm: React.FC<ReportEditFormProps> = ({ report }) => {
 					id="images"
 					name="images"
 					className="border rounded w-full py-2 px-3 text-xs md:text-base"
-					accept="image/*"
+					accept="image/*,.heic,.heif"
 					multiple
 					onChange={handleImageChange}
 				/>
