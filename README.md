@@ -12,5 +12,6 @@ Trip Report is a full-stack web app designed to be the one-stop-shop for finding
 
 ## Optimizations In Progress
 
+- Report comments
 - Subscribe to users for new report notifications
 - Native iOS and Android apps
